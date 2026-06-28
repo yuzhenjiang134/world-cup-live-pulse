@@ -12,10 +12,12 @@ It is informational only. It does not place bets, give trading advice, connect w
 2. Check the source banner first.
 3. Read score, latest beat, AI commentary, event feed, market mood, and timeline together.
 4. Use the local fan score pick to choose a conversation scoreline. This stays local and is not a bet.
-5. Open team cards or match details only when you want deeper context.
-6. Use replay controls or key moments to move through the match.
-7. Open Settings and switch to Analyst Mode for source verification, or Judge Mode for demo chapters.
-8. Export the share card only after checking the data state.
+5. Download the fan pick card if you want a shareable local SVG.
+6. Open team cards or match details only when you want deeper context.
+7. Use replay controls or key moments to move through the match.
+8. Check the matchday hub for playable replay fixtures and official schedule seed matches.
+9. Open Settings and switch to Analyst Mode for source verification, or Judge Mode for demo chapters.
+10. Export the match pulse share card only after checking the data state.
 
 ## Data States
 
@@ -27,6 +29,8 @@ It is informational only. It does not place bets, give trading advice, connect w
 | Seed | Official schedule or static context, not a live feed. |
 
 The app must never invent live games. If credentials are missing, the public build stays in Replay + Seed mode.
+
+Always check the source banner before reading a match. It shows the data state, the checked timestamp, and whether the current view is a replay fixture, a schedule snapshot, or authenticated live data.
 
 ## Settings
 
@@ -44,6 +48,12 @@ The main page keeps secondary material collapsed by default. Presets apply sensi
 The score pick controls are local UI only. The score steppers and quick pick buttons help fans discuss a match outcome while watching the pulse, but they do not submit a wager, connect a wallet, store a prediction, or create a prediction market.
 
 The pick is intentionally shown beside source status and market mood context so users can compare their read with the current match pulse without treating the percentages as financial advice.
+
+The fan pick card download is generated entirely in the browser as an SVG. It is a local share artifact, not a submitted prediction and not a stored account record.
+
+## Matchday Hub
+
+The compact matchday hub separates playable Replay fixtures from official TxLINE schedule snapshot matches. Seed cards are useful for schedule awareness, but they stay labeled as token-required until authenticated score, event, and odds data are loaded.
 
 ## Authorized Video Sync
 

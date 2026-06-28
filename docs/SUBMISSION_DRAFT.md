@@ -26,11 +26,11 @@ The current build includes:
 
 - Replay mode with two World Cup scenarios.
 - Live mode wired through a real TxLINE HTTP adapter for fixtures, scores, and odds.
-- Today Board with official TxLINE schedule seed fixtures and Token Required live handling.
+- Source Board with official TxLINE schedule snapshot fixtures and Token Required live handling.
 - Daily Brief, Data Audit, and Live Readiness panels.
 - Operation Manual, Fixture Briefing, and Country Team Atlas for first-time users.
 - Optional Authorized Video Sync panel for rights-cleared official video embeds.
-- Trust & Accuracy Center for schedule seed, token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
+- Trust & Accuracy Center for schedule snapshot, token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
 - Judge Demo chapters for data integrity, goal swing, late volatility, and upset context.
 - Match Intelligence with phase summary, event stack, and player impact.
 - Match Center with kickoff time, referee, qualification note, discipline events, team profiles, key players, and group table where relevant.
@@ -42,7 +42,7 @@ The current build includes:
 
 The app is designed around the TxLINE integration boundary in `src/lib/txlineAdapter.ts`. The public build uses Replay and Seed data because a private TxLINE token is not deployed to GitHub Pages. Local builds can use `.env.local` to call the official TxLINE endpoints.
 
-The Today Board uses official TxLINE World Cup Schedule seed fixtures observed for 2026-06-28 UTC:
+The Source Board uses a TxLINE World Cup Schedule snapshot checked on 2026-06-28. The snapshot observed fixtures for 2026-06-28 UTC:
 
 - Fixture `17588325`: Jordan vs Argentina.
 - Fixture `17588326`: Algeria vs Austria.
@@ -75,7 +75,7 @@ World Cup matches are not available every day. The app does not invent live game
 ## Demo flow
 
 1. Open the deployed app.
-2. Show the Today Board with official schedule seed fixtures and data status labels.
+2. Show the Source Board with official schedule snapshot fixtures, checked timestamp, and data status labels.
 3. Show the Trust & Accuracy Center and explain Seed / Replay / Live / Delay.
 4. Use the Judge Demo chapter buttons: Data integrity, Goal swing, Late volatility, and Upset context.
 5. Open Settings to show optional modules only when needed: Operation Manual, Fixture Briefing, Country Team Atlas, and Authorized Video Sync status.

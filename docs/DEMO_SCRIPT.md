@@ -10,9 +10,11 @@ Say: World Cup Live Pulse is a fan-first match dashboard for the Consumer and Fa
 
 Show that the default Fan Mode opens directly on the match pulse, not on documentation. Point to the compact match hero, rolling ticker, match focus nav, watch-now panel, AI readout, and local fan score pick.
 
-Use the score buttons to change the local fan score pick once, then use a quick pick button. Say: This is a local fan conversation feature only. It does not place bets, create a prediction market, connect wallets, or store secrets.
+Use the score buttons to change the local fan score pick once, then use a quick pick button. Download the fan pick card. Say: This is a local fan conversation feature only. It does not place bets, create a prediction market, connect wallets, or store secrets.
 
 Use the focus nav once: jump to Timeline, Mood, and Teams. Show that the Teams button reveals the team atlas instead of being a decorative link.
+
+Scroll to the compact matchday hub and show the difference between Replay Available cards and official TxLINE schedule snapshot cards that still require token-gated live data. Point out the checked timestamp in the source banner.
 
 ## 0:45-1:35 Data consistency
 
@@ -20,7 +22,7 @@ Open Settings and switch to Judge Mode.
 
 Show the Source Board and Trust & Accuracy Center.
 
-Say: The app does not invent live data. The Today Board uses official TxLINE schedule seed fixtures for Jordan vs Argentina and Algeria vs Austria, but it keeps them as Seed / Token Required until authenticated live score, event, and odds feeds are loaded. Replay stays available so judges can evaluate the match flow even if no live fixture is open during review.
+Say: The app does not invent live data. The Source Board uses a TxLINE schedule snapshot observed for 2026-06-28 UTC, including Jordan vs Argentina and Algeria vs Austria, but it keeps them as Seed / Token Required until authenticated live score, event, and odds feeds are loaded. Replay stays available so judges can evaluate the match flow even if no live fixture is open during review.
 
 Point to Data Audit, Live Readiness, and the endpoint status cards. Explain mapped, token-gated, and planned feeds in one sentence.
 

@@ -12,7 +12,7 @@ import {
 import { dataConsistencyState } from "./data/matchCalendar";
 import { replayMatches } from "./data/replayMatch";
 import { buildPulseFrame } from "./lib/pulse";
-import { buildShareCardSvg, downloadShareCard } from "./lib/shareCard";
+import { buildShareCardSvg, downloadPredictionCard, downloadShareCard } from "./lib/shareCard";
 import { loadMatchData } from "./lib/txlineAdapter";
 import type { DataSourceState, MatchData, MatchEvent, MatchMode, Team } from "./types";
 
@@ -64,7 +64,10 @@ const copy = {
       "The public build only uses verified states: Replay for demo scenarios, Seed for observed schedule/context, and Live only after authenticated TxLINE payloads load.",
     checkedAt: "Source checked",
     source: "Source",
-    publicSeedSource: "Observed schedule seed + replay fixtures",
+    publicSeedSource: "Observed schedule snapshot + replay fixtures",
+    freshness: "Freshness",
+    sourceWindow: "Source window",
+    sourceBoundary: "Replay and Seed stay labeled until TxLINE live payloads authenticate.",
     consistencyRules: "Consistency rules",
     replayScenario: "Replay scenario",
     play: "Play",
@@ -251,6 +254,13 @@ const copy = {
     focusTimeline: "Timeline",
     focusMood: "Mood",
     focusTeams: "Teams",
+    matchdayHub: "Matchday hub",
+    todaysMatches: "Schedule snapshot",
+    nowPlaying: "Now playing",
+    tokenRequiredShort: "Token required",
+    replayAvailable: "Replay available",
+    officialSeed: "Official seed",
+    downloadPickCard: "Download pick card",
   },
   zh: {
     appEyebrow: "Superteam Earn / TxODDS 黑客松 MVP",
@@ -272,13 +282,13 @@ const copy = {
     sourceLiveReadyMessage: "实时模式已经通过 TxLINE adapter 边界预留。",
     sourceNeedsTokenMessage: "等主办方给 API 文档后，再把 token 放到本地环境变量。",
     sourceErrorMessage: "实时源不可用时，页面可以退回回放模式继续展示。",
-    todayBoard: "今日看板",
+    todayBoard: "数据源看板",
     dataConsistency: "数据一致性",
     noMatchDayRule:
       "不会伪造实时比赛。如果 TxLINE 当天没有比赛，或 token 未配置，公开版本会明确标注 Replay 和 Seed 数据。",
     checkedAt: "种子快照",
     source: "数据来源",
-    publicSeedSource: "公开版本：种子赛程 + 回放 fixture",
+    publicSeedSource: "公开版本：种子赛程 + 回放赛程",
     consistencyRules: "一致性规则",
     replayScenario: "回放场景",
     play: "播放",
@@ -440,7 +450,10 @@ const cleanZhCopy = {
     "公开版只使用可验证状态：Replay 用于演示回放，Seed 用于已观察到的赛程/背景资料，Live 只在 TxLINE 鉴权数据成功加载后出现。",
   checkedAt: "来源核验时间",
   source: "来源",
-  publicSeedSource: "赛程种子观察值 + 回放 fixture",
+  publicSeedSource: "赛程快照观察值 + 回放赛程",
+  freshness: "数据新鲜度",
+  sourceWindow: "来源窗口",
+  sourceBoundary: "Replay 和 Seed 会保持标签，直到 TxLINE 实时载荷鉴权成功。",
   consistencyRules: "一致性规则",
   replayScenario: "回放场景",
   play: "播放",
@@ -522,7 +535,7 @@ const cleanZhCopy = {
   pending: "待补",
   ready: "就绪",
   gated: "已隔离",
-  replayFixtures: "2 个回放 fixture",
+  replayFixtures: "2 个回放赛程",
   seedProfiles: "球队、球员、裁判、积分",
   noLiveFixture: "未配置实时赛程",
   replayFallbackReady: "回放兜底已就绪",
@@ -611,6 +624,13 @@ const cleanZhCopy = {
   focusTimeline: "时间线",
   focusMood: "走势",
   focusTeams: "球队",
+  matchdayHub: "比赛日入口",
+  todaysMatches: "赛程快照",
+  nowPlaying: "正在观看",
+  tokenRequiredShort: "需要 Token",
+  replayAvailable: "可回放",
+  officialSeed: "官方种子",
+  downloadPickCard: "下载预测卡",
 } satisfies CopyShape;
 
 const localizedCopy = {
@@ -635,7 +655,7 @@ const localizedCopy = {
     sourceLiveReadyMessage: "Live mode ya pasa por el límite del adaptador TxLINE.",
     sourceNeedsTokenMessage: "Agrega el token local solo cuando el sponsor entregue documentación.",
     sourceErrorMessage: "La app puede volver a Replay si la fuente live no está disponible.",
-    todayBoard: "Panel de hoy",
+    todayBoard: "Panel de fuente",
     dataConsistency: "Consistencia de datos",
     noMatchDayRule:
       "No inventamos partidos en vivo. Si TxLINE no tiene partido hoy o faltan credenciales, la versión pública marca Replay y Seed.",
@@ -795,7 +815,7 @@ const localizedCopy = {
     sourceLiveReadyMessage: "Live mode já passa pelo limite do adaptador TxLINE.",
     sourceNeedsTokenMessage: "Adicione o token local só quando o sponsor entregar a documentação.",
     sourceErrorMessage: "O app pode voltar para Replay se a fonte live estiver indisponível.",
-    todayBoard: "Painel de hoje",
+    todayBoard: "Painel de fonte",
     dataConsistency: "Consistência de dados",
     noMatchDayRule:
       "Não inventamos jogo ao vivo. Se a TxLINE não tiver jogo hoje ou faltarem credenciais, a build pública marca Replay e Seed.",
@@ -942,10 +962,10 @@ const trustCopy = {
   en: {
     eyebrow: "Trust & Accuracy",
     title: "Data truth center",
-    scheduleSeed: "Official schedule seed",
-    scheduleValue: "2 fixtures today",
+    scheduleSeed: "Official schedule snapshot",
+    scheduleValue: "2 seed fixtures",
     scheduleNote:
-      "TxLINE World Cup schedule lists Jordan vs Argentina and Algeria vs Austria for 2026-06-28 UTC.",
+      "TxLINE World Cup schedule snapshot observed Jordan vs Argentina and Algeria vs Austria for 2026-06-28 UTC.",
     liveGate: "Live gate",
     liveGateValue: "Token required",
     liveGateNote:
@@ -972,10 +992,10 @@ const trustCopy = {
   zh: {
     eyebrow: "可信度与准确性",
     title: "数据真实性中心",
-    scheduleSeed: "官方赛程种子",
-    scheduleValue: "今日 2 场",
+    scheduleSeed: "官方赛程快照",
+    scheduleValue: "2 场种子赛程",
     scheduleNote:
-      "TxLINE World Cup schedule 显示 2026-06-28 UTC 有 Jordan vs Argentina、Algeria vs Austria。",
+      "TxLINE World Cup schedule 快照在 2026-06-28 UTC 观察到 Jordan vs Argentina、Algeria vs Austria。",
     liveGate: "实时数据门槛",
     liveGateValue: "需要 Token",
     liveGateNote: "只有从 TxLINE 鉴权后的比分、事件、赔率接口加载成功后，页面才会显示 Live。",
@@ -999,10 +1019,10 @@ const trustCopy = {
   es: {
     eyebrow: "Confianza y exactitud",
     title: "Centro de verdad de datos",
-    scheduleSeed: "Calendario oficial seed",
-    scheduleValue: "2 partidos hoy",
+    scheduleSeed: "Snapshot oficial de calendario",
+    scheduleValue: "2 fixtures seed",
     scheduleNote:
-      "El schedule World Cup de TxLINE lista Jordan vs Argentina y Algeria vs Austria para 2026-06-28 UTC.",
+      "El snapshot World Cup de TxLINE observo Jordan vs Argentina y Algeria vs Austria para 2026-06-28 UTC.",
     liveGate: "Puerta live",
     liveGateValue: "Token requerido",
     liveGateNote:
@@ -1029,10 +1049,10 @@ const trustCopy = {
   pt: {
     eyebrow: "Confianca e precisao",
     title: "Centro de verdade dos dados",
-    scheduleSeed: "Calendario oficial seed",
-    scheduleValue: "2 jogos hoje",
+    scheduleSeed: "Snapshot oficial de calendario",
+    scheduleValue: "2 fixtures seed",
     scheduleNote:
-      "O schedule World Cup da TxLINE lista Jordan vs Argentina e Algeria vs Austria para 2026-06-28 UTC.",
+      "O snapshot World Cup da TxLINE observou Jordan vs Argentina e Algeria vs Austria para 2026-06-28 UTC.",
     liveGate: "Portao live",
     liveGateValue: "Token necessario",
     liveGateNote:
@@ -1063,10 +1083,10 @@ const localizedTrustCopy = {
   zh: {
     eyebrow: "可信度与准确性",
     title: "数据真实性中心",
-    scheduleSeed: "官方赛程种子",
-    scheduleValue: "今日 2 场",
+    scheduleSeed: "官方赛程快照",
+    scheduleValue: "2 场种子赛程",
     scheduleNote:
-      "TxLINE World Cup schedule 显示 2026-06-28 UTC 有 Jordan vs Argentina、Algeria vs Austria。",
+      "TxLINE World Cup schedule 快照在 2026-06-28 UTC 观察到 Jordan vs Argentina、Algeria vs Austria。",
     liveGate: "实时数据门槛",
     liveGateValue: "需要 Token",
     liveGateNote: "只有 TxLINE 鉴权后的比分、事件和赔率接口加载成功后，页面才会显示 Live。",
@@ -1122,7 +1142,7 @@ const zhPresetText: Record<ViewPresetId, Pick<ViewPreset, "label" | "description
   judge: {
     label: "评审模式",
     description: "适合黑客松评审，展示可重复回放章节和提交准备度。",
-    focus: ["今日看板", "可信中心", "演示章节", "安全边界"],
+    focus: ["数据源看板", "可信中心", "演示章节", "安全边界"],
   },
 };
 
@@ -1134,7 +1154,7 @@ const zhManualStepText: Record<string, Pick<ManualStep, "title" | "action" | "re
   },
   match: {
     title: "2. 选择观看路径",
-    action: "用今日看板确认赛程真实状态，或用评审章节进行可重复回放演示。",
+    action: "用数据源看板确认赛程快照，或用评审章节进行可重复回放演示。",
     reason: "无论当天有没有比赛，产品都能用，同时不会编造实时数据。",
   },
   pulse: {
@@ -1552,6 +1572,7 @@ export default function App() {
     { label: t.fallbackStatus, value: t.replayFallbackReady },
   ];
   const scheduleSeedItems = dataConsistencyState.today.filter((item) => item.fixtureId);
+  const matchdayItems = dataConsistencyState.today.slice(0, 5);
   const trustMetrics = [
     {
       label: trust.scheduleSeed,
@@ -1898,10 +1919,74 @@ export default function App() {
 
       {sourceStatus ? (
         <section className={`source-banner source-${source?.kind}`} aria-label="Data source status">
-          <strong>{sourceStatus.label}</strong>
-          <span>{sourceStatus.message}</span>
+          <div className="source-banner-main">
+            <strong>{sourceStatus.label}</strong>
+            <span>{sourceStatus.message}</span>
+          </div>
+          <div className="source-freshness" aria-label={t.freshness}>
+            <span>{t.freshness}</span>
+            <strong>{formatKickoff(dataConsistencyState.checkedAtIso, language)}</strong>
+            <small>{t.publicSeedSource}</small>
+          </div>
         </section>
       ) : null}
+
+      <section className="matchday-rail" aria-label={t.matchdayHub}>
+        <article className="matchday-current">
+          <p className="eyebrow">{t.matchdayHub}</p>
+          <h2>
+            {match.home.name} vs {match.away.name}
+          </h2>
+          <div className="matchday-current-status">
+            <span>{mode === "replay" ? t.nowPlaying : t.waitingForTxline}</span>
+            <small>
+              {t.checkedAt}: {formatKickoff(dataConsistencyState.checkedAtIso, language)}
+            </small>
+          </div>
+          <p>{t.sourceBoundary}</p>
+        </article>
+        <div className="matchday-list" aria-label={t.todaysMatches}>
+          {matchdayItems.map((item) => {
+            const isActiveReplay = item.id === replayMatchId;
+            const isAvailable = item.availability === "available";
+            const statusLabel = isAvailable ? t.replayAvailable : t.tokenRequiredShort;
+
+            if (!isAvailable) {
+              return (
+                <article className="matchday-item locked" key={item.id}>
+                  <span>{t.officialSeed}</span>
+                  <strong>
+                    {item.homeCode} vs {item.awayCode}
+                  </strong>
+                  <small>{formatKickoff(item.kickoffIso, language)}</small>
+                  <em>{statusLabel}</em>
+                </article>
+              );
+            }
+
+            return (
+              <button
+                aria-pressed={isActiveReplay}
+                className={`matchday-item ${isActiveReplay ? "active" : ""}`}
+                key={item.id}
+                onClick={() => {
+                  setReplayMatchId(item.id);
+                  switchMode("replay");
+                  revealSection(".fan-command-center", () => undefined);
+                }}
+                type="button"
+              >
+                <span>{statusLabel}</span>
+                <strong>
+                  {item.homeCode} vs {item.awayCode}
+                </strong>
+                <small>{item.stage}</small>
+                <em>{isActiveReplay ? t.nowPlaying : t.focusWatch}</em>
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
       <section className="match-ticker" aria-label="Match data ticker">
         <div className="ticker-track">
@@ -2062,6 +2147,21 @@ export default function App() {
               {t.scoreLinkedPick} / {t.localOnly}
             </small>
           </div>
+          <button
+            className="download-pick-button"
+            onClick={() =>
+              downloadPredictionCard(match, frame, {
+                awayScore: predictedAwayScore,
+                homeScore: predictedHomeScore,
+                outcome: predictedOutcome,
+                quickPick: selectedPrediction?.label ?? fanLean.label,
+                safetyLabel: `${t.predictionSafety}. ${t.noBetting}.`,
+              })
+            }
+            type="button"
+          >
+            {t.downloadPickCard}
+          </button>
         </article>
 
         <article className="quick-info-panel">

@@ -4,8 +4,8 @@
 
 - [ ] Deployed app opens on desktop.
 - [ ] Deployed app opens on mobile.
-- [ ] Today Board is visible.
-- [ ] Today Board shows official TxLINE schedule seed fixtures as Seed / Token Required.
+- [ ] Source Board is visible.
+- [ ] Source Board shows official TxLINE schedule snapshot fixtures as Seed / Token Required with a checked timestamp.
 - [ ] Daily Brief, Data Audit, and Live Readiness are visible.
 - [ ] Trust & Accuracy Center is visible.
 - [ ] Operation Manual is visible.
@@ -46,7 +46,7 @@
 ## Demo video
 
 - [ ] Under 5 minutes.
-- [ ] Shows Today Board and data consistency.
+- [ ] Shows Source Board, checked timestamp, and data consistency.
 - [ ] Shows Trust & Accuracy Center and explains schedule seed versus Live data.
 - [ ] Uses Judge Demo chapters.
 - [ ] Shows Match Intelligence.
@@ -64,4 +64,4 @@
 - [ ] Demo video URL included.
 - [ ] TxLINE endpoint usage note included.
 - [ ] API feedback included.
-- [ ] Submitted before 2026-07-19 23:59 UTC.
+- [ ] Live Superteam listing re-checked and submission completed before the deadline snapshot of 2026-07-19 23:59 UTC if unchanged.

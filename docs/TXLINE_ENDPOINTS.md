@@ -13,7 +13,7 @@ The official OpenAPI spec checked on 2026-06-28 reports:
 - Odds snapshot: `GET /api/odds/snapshot/{fixtureId}`
 - Auth headers for data endpoints: `Authorization: Bearer <guest JWT>` and `X-Api-Token: <API token>`
 
-The public Today Board includes official TxLINE World Cup Schedule seed fixtures observed on 2026-06-28 UTC:
+The public Source Board includes a TxLINE World Cup Schedule snapshot checked on 2026-06-28. The snapshot observed fixtures for 2026-06-28 UTC:
 
 - Fixture `17588325`: Jordan vs Argentina, 02:00 UTC.
 - Fixture `17588326`: Algeria vs Austria, 05:00 UTC.
@@ -48,7 +48,7 @@ The probe verifies guest JWT, fixture snapshot, score snapshot, and odds snapsho
 | Product need | Endpoint | Required fields | Internal target |
 |---|---|---|---|
 | Guest auth | `POST /auth/guest/start` | `token` | `Authorization: Bearer <guest JWT>` |
-| Match calendar / Today Board | `GET /api/fixtures/snapshot` | `FixtureId`, `Participant1`, `Participant2`, `Participant1IsHome`, `StartTime`, `Competition` | `MatchData` and schedule seed reconciliation |
+| Match calendar / Source Board | `GET /api/fixtures/snapshot` | `FixtureId`, `Participant1`, `Participant2`, `Participant1IsHome`, `StartTime`, `Competition` | `MatchData` and schedule snapshot reconciliation |
 | Live score | `GET /api/scores/snapshot/{fixtureId}` | home score, away score, match clock, stoppage, status | `PulseFrame` score and clock |
 | Match events | `GET /api/scores/snapshot/{fixtureId}` | `seq`, `ts`, `action`, `dataSoccer.Goal`, `YellowCard`, `RedCard`, player IDs, minute | `MatchEvent[]` |
 | Odds or market movement | `GET /api/odds/snapshot/{fixtureId}` | `PriceNames`, `Prices`, `Pct`, `Ts`, `SuperOddsType` | `MarketSnapshot[]` |
@@ -71,6 +71,7 @@ The optional Authorized Video Sync panel only accepts a rights-cleared `https://
 - Use `Replay` for fixed historical fixtures used in demos and judging.
 - Use `Seed` for static context such as teams, players, referee, standings, and schedule labels.
 - If no match is active today, show No Match Day / Seed state instead of filling the page with fake live data.
+- Treat schedule rows as snapshots unless authenticated live score/event/odds payloads are loaded and freshly checked.
 - If live API calls fail, keep Replay mode available and label the source clearly.
 
 ## Adapter contract

@@ -4,9 +4,9 @@ import type { DataConsistencyState } from "../types";
 export const dataConsistencyState: DataConsistencyState = {
   checkedAtIso: "2026-06-28T10:59:09+08:00",
   liveAvailability: "token-required",
-  sourceLabel: "TxLINE schedule seed + replay fixtures",
+  sourceLabel: "TxLINE schedule snapshot + replay fixtures",
   message:
-    "This build never invents live games. TxLINE's public World Cup schedule lists fixtures for today, so the app shows them as Seed / Token Required until authenticated live score, event, and odds feeds are configured.",
+    "This build never invents live games. The TxLINE World Cup schedule snapshot observed fixtures for 2026-06-28 UTC, so the app shows them as Seed / Token Required until authenticated live score, event, and odds feeds are configured.",
   rules: [
     "Live means pulled from authenticated TxLINE score, event, and odds endpoints.",
     "Delay means TxLINE Free Tier or delayed feed data, including the documented 60-second delay mode.",

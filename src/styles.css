@@ -78,48 +78,52 @@ button:hover {
   order: 6;
 }
 
-.story-strip {
+.matchday-rail {
   order: 7;
 }
 
-.control-deck {
+.story-strip {
   order: 8;
 }
 
-.dashboard-grid {
+.control-deck {
   order: 9;
 }
 
-.video-sync-panel {
+.dashboard-grid {
   order: 10;
 }
 
-.matchday-assistant {
+.video-sync-panel {
   order: 11;
 }
 
-.fixture-briefing {
+.matchday-assistant {
   order: 12;
 }
 
-.team-atlas-section {
+.fixture-briefing {
   order: 13;
 }
 
-.today-board {
+.team-atlas-section {
   order: 14;
 }
 
-.brief-grid {
+.today-board {
   order: 15;
 }
 
-.trust-center {
+.brief-grid {
   order: 16;
 }
 
-.judge-demo-layer {
+.trust-center {
   order: 17;
+}
+
+.judge-demo-layer {
+  order: 18;
 }
 
 .preset-fan .today-board,
@@ -473,7 +477,8 @@ h2 {
 }
 
 .source-banner {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 0.34fr);
   align-items: center;
   gap: 12px;
   margin: 16px 0 0;
@@ -484,9 +489,41 @@ h2 {
   color: #546669;
 }
 
-.source-banner strong {
-  flex: 0 0 auto;
+.source-banner-main {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+}
+
+.source-banner strong,
+.source-freshness strong {
   color: #172126;
+}
+
+.source-banner-main span {
+  min-width: 0;
+}
+
+.source-freshness {
+  display: grid;
+  justify-self: end;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid rgba(23, 33, 38, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.source-freshness span,
+.source-freshness small {
+  color: #64787b;
+  font-size: 0.76rem;
+  font-weight: 850;
+}
+
+.source-freshness strong {
+  font-size: 0.9rem;
 }
 
 .source-needs-token {
@@ -497,6 +534,117 @@ h2 {
 .source-error {
   border-color: #ef9aaa;
   background: #fff1f4;
+}
+
+.matchday-rail {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr);
+  gap: 10px;
+  margin: 10px 0 0;
+}
+
+.matchday-current,
+.matchday-item {
+  min-width: 0;
+  border: 1px solid #d8e0dc;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.matchday-current {
+  padding: 14px;
+}
+
+.matchday-current h2 {
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+
+.matchday-current-status {
+  display: grid;
+  gap: 7px;
+}
+
+.matchday-current-status span {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #e4f8ed;
+  color: #126337;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.matchday-current-status small,
+.matchday-current p {
+  color: #5d6f72;
+  line-height: 1.4;
+}
+
+.matchday-current p {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.matchday-list {
+  display: grid;
+  grid-auto-columns: minmax(188px, 0.34fr);
+  grid-auto-flow: column;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.matchday-item {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  min-height: 136px;
+  padding: 12px;
+  text-align: left;
+}
+
+.matchday-item.active {
+  border-color: #2ec47d;
+  box-shadow: inset 0 0 0 1px #2ec47d;
+}
+
+.matchday-item.locked {
+  background: #f7f2e4;
+}
+
+.matchday-item span,
+.matchday-item em {
+  justify-self: start;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #f3f6f5;
+  color: #657478;
+  font-size: 0.74rem;
+  font-style: normal;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.matchday-item.active span {
+  background: #e4f8ed;
+  color: #126337;
+}
+
+.matchday-item.locked em {
+  background: #fff4cf;
+  color: #6d5200;
+}
+
+.matchday-item strong {
+  color: #172126;
+  font-size: 1.05rem;
+}
+
+.matchday-item small {
+  color: #657478;
+  line-height: 1.35;
 }
 
 .match-ticker {
@@ -826,6 +974,21 @@ h2 {
 .prediction-readout small {
   color: #657478;
   font-weight: 850;
+}
+
+.download-pick-button {
+  width: 100%;
+  margin-top: 10px;
+  border-color: #172126;
+  background: #172126;
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.download-pick-button:hover {
+  background: #cf3246;
+  border-color: #cf3246;
+  color: #ffffff;
 }
 
 .quick-info-actions {
@@ -2329,6 +2492,7 @@ meter {
   }
 
   .match-hero,
+  .matchday-rail,
   .fan-command-center,
   .matchday-assistant,
   .settings-grid,
@@ -2373,6 +2537,48 @@ meter {
   .match-hero {
     gap: 16px;
     padding: 14px;
+  }
+
+  .matchday-current {
+    display: grid;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .matchday-current .eyebrow {
+    margin: 0;
+  }
+
+  .matchday-current h2 {
+    display: none;
+  }
+
+  .matchday-current p {
+    margin-top: 0;
+    font-size: 0.84rem;
+  }
+
+  .source-banner-main {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .source-freshness {
+    justify-self: stretch;
+  }
+
+  .matchday-list {
+    grid-auto-columns: minmax(148px, 0.55fr);
+  }
+
+  .matchday-item {
+    min-height: 96px;
+    padding: 10px;
+  }
+
+  .matchday-item small {
+    font-size: 0.78rem;
   }
 
   .status-ribbon {

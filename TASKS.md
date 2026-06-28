@@ -15,8 +15,8 @@ Updated: 2026-06-28
 - [x] Build market mood and odds movement panel
 - [x] Add settings panel with English / Chinese / Spanish / Portuguese language switch
 - [x] Add richer match hero, story strip, pulse arc, and judge-ready status panels
-- [x] Add Today Board with No Match Day / Token Required handling
-- [x] Add official TxLINE schedule seed fixtures for 2026-06-28 UTC
+- [x] Add Source Board with No Match Day / Token Required handling
+- [x] Add official TxLINE schedule snapshot fixtures checked on 2026-06-28
 - [x] Add explicit Live / Delay / Replay / Seed data state model
 - [x] Add Trust & Accuracy Center for data truth, token gate, replay truth, and Free Tier delay behavior
 - [x] Add visible TxLINE endpoint coverage table
@@ -38,6 +38,8 @@ Updated: 2026-06-28
 - [x] Compact the mobile match hero so the watch and score-pick surface appears earlier
 - [x] Add market UX benchmark scan in `docs/UX_BENCHMARKS.md`
 - [x] Add match focus navigation for Watch, Pick, Timeline, Mood, and Teams
+- [x] Add compact matchday hub with replay fixtures and official schedule seed cards
+- [x] Add downloadable local fan score-pick SVG card
 - [x] Add `docs/USER_MANUAL.md`
 - [x] Collapse secondary modules behind Settings so the main surface stays functional
 - [x] Add Authorized Video Sync panel with rights-cleared embed boundary
@@ -122,7 +124,7 @@ Updated: 2026-06-28
 - [ ] Confirm browser CORS behavior with real token
 - [ ] Add live API empty-state copy from real no-match-day response, if provided
 - [ ] Add endpoint feedback to submission draft after real token testing
-- [ ] Replace static Seed Today Board with real TxLINE calendar response when token and CORS are verified
+- [ ] Replace static Source Board schedule snapshot with real TxLINE calendar response when token and CORS are verified
 
 ## Submission checklist
 
@@ -136,4 +138,4 @@ Updated: 2026-06-28
 - [x] Fill final GitHub Pages URL in `docs/SUBMISSION_DRAFT.md`
 - [x] Fill GitHub URL in `docs/SUBMISSION_DRAFT.md`
 - [ ] Fill demo video URL in `docs/submission-draft.md`
-- [ ] Submit through Superteam Earn before 2026-07-19 23:59 UTC
+- [ ] Re-check the live Superteam listing, then submit before the deadline snapshot of 2026-07-19 23:59 UTC if unchanged

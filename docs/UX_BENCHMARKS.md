@@ -39,4 +39,6 @@ This note tracks market UX patterns used to sharpen World Cup Live Pulse for the
 - Kept Watch and Pick above analysis panels.
 - Routed Teams through a reveal button instead of showing team material by default.
 - Preserved Timeline and Mood as one-tap destinations.
+- Added a compact matchday hub for replay fixtures and official token-gated schedule seed matches.
+- Added a downloadable local fan pick card so score prediction becomes shareable without becoming a betting flow.
 - Updated demo and technical docs to explain local fan score pick safety.

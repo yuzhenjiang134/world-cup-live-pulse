@@ -13,11 +13,12 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Replay data mode is implemented.
 - Multiple replay scenarios are available for demo recording.
 - Live mode is wired to the official TxLINE HTTP endpoints through `src/lib/txlineAdapter.ts`.
-- Today Board and No Match Day / Token Required states are visible.
-- Today Board now includes official TxLINE schedule seed fixtures for 2026-06-28 UTC while keeping live score/event/odds data token-gated.
+- Source Board and No Match Day / Token Required states are visible.
+- Source Board includes a TxLINE schedule snapshot observed for 2026-06-28 UTC while keeping live score/event/odds data token-gated.
 - Fan Mode opens as a clean match pulse surface: score, latest beat, AI read, event feed, market mood, timeline, and local fan score pick.
 - Fan Mode includes a compact rolling match data ticker for score, clock, source state, next beat, market mood, and safety.
 - Fan Mode now includes a market-benchmark-inspired match focus nav: Watch, Pick, Timeline, Mood, and Teams.
+- Fan Mode adds a compact matchday hub so replay fixtures and official TxLINE schedule snapshot matches are visible without opening the full Source Board.
 - The main fan command area keeps watch-now context, score-linked prediction controls, source truth, and team / fixture detail buttons above secondary analysis.
 - Analyst Mode reveals fixture briefing, Source Board, Data Audit, Live Readiness, and Trust & Accuracy Center for data verification.
 - Judge Mode reveals operation guide, fixture briefing, Judge Demo chapters, and submission readiness for review or video recording.
@@ -26,7 +27,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Trust & Accuracy Center explains schedule seed, live token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
 - Match Intelligence shows phase summary, event stack, and player impact.
 - Language setting supports English, Chinese, Spanish, and Portuguese for a broader World Cup fan audience.
-- Match score card, local fan score pick, timeline, market mood, Match Center, team profiles, and AI commentary are visible in the local app.
+- Match score card, local fan score pick, downloadable fan pick card, timeline, market mood, Match Center, team profiles, and AI commentary are visible in the local app.
 - `docs/UX_BENCHMARKS.md` records market examples and the UX choices adopted or rejected for submission safety.
 - Data states are explicitly labeled as Live, Delay, Replay, or Seed.
 - TxLINE API token is not required for the public replay demo. Real TxLINE data can be tested locally with `.env.local`.
@@ -50,11 +51,13 @@ Use the built-in Judge Demo chapters for a clean review or video recording path:
 
 ## Data truth model
 
-- Official schedule seed: TxLINE World Cup Schedule lists Jordan vs Argentina and Algeria vs Austria on 2026-06-28 UTC; the app shows them as Seed / Token Required.
+- Official schedule snapshot: TxLINE World Cup Schedule was checked on 2026-06-28 and observed Jordan vs Argentina and Algeria vs Austria for 2026-06-28 UTC; the app shows them as Seed / Token Required.
 - Live: only shown after authenticated TxLINE scores, events, and odds are loaded.
 - Delay: reserved for TxLINE Free Tier or delayed feeds, including the documented 60-second delay mode.
 - Replay: deterministic historical scenarios for judging and video recording.
 - Seed: official schedule or static context that is useful to fans but is not a live feed.
+
+The checked timestamp shown in the app is part of the product. Before final submission, re-check Superteam, TxODDS, and TxLINE public pages and update any snapshot-only facts if they changed.
 
 ## Run locally
 

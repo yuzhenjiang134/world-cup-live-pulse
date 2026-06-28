@@ -55,7 +55,7 @@ const requiredText = [
   ["docs/USER_MANUAL.md", "npm run txline:probe"],
   ["docs/PUBLIC_RESEARCH_SUMMARY.md", "Authorized Video Sync"],
   ["docs/PUBLIC_RESEARCH_SUMMARY.md", "Demo video up to 5 minutes"],
-  ["docs/SUBMISSION_DRAFT.md", "official TxLINE schedule seed fixtures"],
+  ["docs/SUBMISSION_DRAFT.md", "TxLINE World Cup Schedule snapshot"],
   ["docs/SUBMISSION_DRAFT.md", "Consumer and Fan Experiences"],
   ["docs/DEMO_SCRIPT.md", "under 5 minutes"],
   ["docs/SUBMISSION_CHECKLIST.md", "Trust & Accuracy Center"],

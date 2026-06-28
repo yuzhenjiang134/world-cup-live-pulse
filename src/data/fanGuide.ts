@@ -247,7 +247,7 @@ export const manualSteps: ManualStep[] = [
   {
     id: "match",
     title: "2. Pick a match path",
-    action: "Use Today Board for schedule truth, or Judge Demo chapters for a repeatable replay.",
+    action: "Use Source Board for schedule snapshots, or Judge Demo chapters for a repeatable replay.",
     reason: "The product stays useful on match days and no-match days without inventing live data.",
   },
   {
@@ -287,6 +287,6 @@ export const viewPresets: ViewPreset[] = [
     id: "judge",
     label: "Judge Mode",
     description: "Best for hackathon review, repeatable demo chapters, and submission readiness.",
-    focus: ["Today Board", "Trust Center", "Demo chapters", "Safety boundary"],
+    focus: ["Source Board", "Trust Center", "Demo chapters", "Safety boundary"],
   },
 ];

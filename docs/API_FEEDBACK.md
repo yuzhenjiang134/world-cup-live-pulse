@@ -37,7 +37,7 @@ The current app uses:
 - `Replay` data for deterministic match playback.
 - `Seed` data for official schedule context and static context.
 - A visible `TxLINE token needed` state for Live mode.
-- Official TxLINE schedule seed fixtures in the Today Board when known.
+- Official TxLINE schedule snapshot fixtures in the Source Board when known.
 - A No Match Day rule when no official fixture is known.
 - A real local TxLINE adapter that requests `POST /auth/guest/start`, `GET /api/fixtures/snapshot`, `GET /api/scores/snapshot/{fixtureId}`, and `GET /api/odds/snapshot/{fixtureId}` when credentials are present.
 - Judge Demo chapters to make replay evaluation repeatable.
@@ -46,7 +46,7 @@ The current app uses:
 ## Current endpoint mapping in the product
 
 - `POST /auth/guest/start`: guest JWT bootstrap.
-- `GET /api/fixtures/snapshot`: schedule seed and Today Board.
+- `GET /api/fixtures/snapshot`: schedule snapshot and Source Board.
 - `GET /api/scores/snapshot/{fixtureId}`: live score clock and event mapping.
 - `GET /api/odds/snapshot/{fixtureId}`: market mood snapshots.
 - `GET /api/scores/stream`: future server-sent score updates.

@@ -42,24 +42,27 @@ The app separates four data states:
 
 This matters because World Cup matches are not played every day. The public build must never invent a live match. If there is no confirmed live fixture or the TxLINE token is missing, the UI shows Replay and Seed labels instead of pretending to be live.
 
-On 2026-06-28 UTC, the public Today Board includes official TxLINE World Cup Schedule seed fixtures for Jordan vs Argentina and Algeria vs Austria. They are shown as `Seed / Token Required` in the public build because GitHub Pages is not deployed with a private TxLINE token.
+The public Source Board includes a TxLINE World Cup Schedule snapshot checked on 2026-06-28. That snapshot observed Jordan vs Argentina and Algeria vs Austria for 2026-06-28 UTC. They are shown as `Seed / Token Required` in the public build because GitHub Pages is not deployed with a private TxLINE token.
+
+Snapshot-only facts must be re-checked before final submission. The app treats the checked timestamp as a user-facing product signal rather than hidden metadata.
 
 ## Current implementation
 
 - `src/data/replayMatch.ts`: two replay fixtures with score events, market snapshots, team profiles, key players, referee, kickoff time, and optional group table.
-- `src/data/matchCalendar.ts`: public Today Board state with official schedule seed fixtures and Token Required behavior.
+- `src/data/matchCalendar.ts`: public Source Board state with official schedule snapshot fixtures and Token Required behavior.
 - `src/lib/txlineAdapter.ts`: single integration boundary for replay fallback and authenticated TxLINE live mode.
 - `src/lib/pulse.ts`: deterministic pulse frame builder for score, latest event, commentary, pressure, and market mood.
-- `src/lib/shareCard.ts`: SVG export for a fan share card.
-- `src/App.tsx`: dashboard UI with Replay/Live mode, rolling match ticker, fan command center, local score-linked fan pick, details-on-demand reveal buttons, Today Board, Daily Brief, Data Audit, Live Readiness, endpoint status cards, Judge Demo chapters, Match Intelligence, Match Center, team profiles, group table, four-language settings, and safety copy.
+- `src/lib/shareCard.ts`: SVG export for match pulse share cards and local fan score-pick cards.
+- `src/App.tsx`: dashboard UI with Replay/Live mode, rolling match ticker, fan command center, local score-linked fan pick, details-on-demand reveal buttons, Source Board, Daily Brief, Data Audit, Live Readiness, endpoint status cards, Judge Demo chapters, Match Intelligence, Match Center, team profiles, group table, four-language settings, and safety copy.
 
 ## Product surfaces
 
-- Today Board: makes No Match Day and token-required states visible.
+- Source Board: makes No Match Day, checked timestamp, snapshot source, and token-required states visible.
 - Match data ticker: keeps score, clock, source state, next beat, market mood, and safety visible without adding another heavy panel.
 - Match focus nav: one-tap access to Watch, Pick, Timeline, Mood, and Teams, based on common live-score app navigation patterns.
+- Matchday hub: compact replay and schedule seed strip that distinguishes playable replay fixtures from token-gated official schedule seed matches.
 - Fan command center: keeps the watch-now read, AI commentary, recent event feed, local score pick, source status, and team / fixture detail entry points in the primary fan view.
-- Local score pick: score steppers and quick pick buttons update a local fan selection only; no wallet, persistence, odds execution, wager, or prediction-market mechanic is attached.
+- Local score pick: score steppers, quick pick buttons, and a downloadable SVG fan pick card update a local fan selection only; no wallet, persistence, odds execution, wager, or prediction-market mechanic is attached.
 - Trust & Accuracy Center: explains official schedule seed, live token gate, replay truth, Free Tier delay behavior, and scan-friendly endpoint coverage cards.
 - Judge Demo chapters: repeatable path for data integrity, goal swing, late volatility, and upset-context review.
 - Match Intelligence: phase summary, event stack, and player impact derived from replay events.
@@ -80,7 +83,7 @@ Live responses must include enough metadata to keep the UI honest: fixture date,
 Current mapped endpoint families:
 
 - `POST /auth/guest/start` for guest JWT bootstrap.
-- `GET /api/fixtures/snapshot` for schedule and Today Board.
+- `GET /api/fixtures/snapshot` for schedule snapshots and Source Board reconciliation.
 - `GET /api/scores/snapshot/{fixtureId}` for score clock and match events.
 - `GET /api/odds/snapshot/{fixtureId}` for market snapshots.
 - `GET /api/scores/stream` and `GET /api/odds/stream` remain future SSE streaming upgrades.
