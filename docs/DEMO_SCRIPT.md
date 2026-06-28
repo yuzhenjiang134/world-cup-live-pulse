@@ -8,7 +8,7 @@ Open the deployed GitHub Pages site.
 
 Say: World Cup Live Pulse is a fan-first match dashboard for the Consumer and Fan Experiences track. It explains score, match events, market mood, and momentum without becoming a betting or trading product.
 
-Show that the default Fan Mode opens directly on the match pulse, not on documentation.
+Show that the default Fan Mode opens directly on the match pulse, not on documentation. Point to the rolling match data ticker for score, clock, source state, next beat, market mood, and safety.
 
 ## 0:25-1:20 Data consistency
 
@@ -18,7 +18,7 @@ Show the Source Board and Trust & Accuracy Center.
 
 Say: The app does not invent live data. The Today Board uses official TxLINE schedule seed fixtures for Jordan vs Argentina and Algeria vs Austria, but it keeps them as Seed / Token Required until authenticated live score, event, and odds feeds are loaded. Replay stays available so judges can evaluate the match flow even if no live fixture is open during review.
 
-Point to Data Audit, Live Readiness, and endpoint coverage.
+Point to Data Audit, Live Readiness, and the endpoint status cards. Explain mapped, token-gated, and planned feeds in one sentence.
 
 Briefly show that Judge Mode opens the Operation Manual and Fixture Briefing modules, while Fan Mode can collapse them again.
 

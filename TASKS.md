@@ -29,6 +29,9 @@ Updated: 2026-06-28
 - [x] Add Country Team Atlas with team style, fan context, and watch notes
 - [x] Add settings controls for viewing preset and dashboard modules
 - [x] Make Fan / Analyst / Judge presets apply real module visibility and page focus
+- [x] Add rolling match data ticker for compact live-pulse scanning
+- [x] Convert TxLINE endpoint coverage from dense table to scan-friendly status cards
+- [x] Further declutter Fan Mode by moving analysis and submission panels behind Analyst / Judge presets
 - [x] Add `docs/USER_MANUAL.md`
 - [x] Collapse secondary modules behind Settings so the main surface stays functional
 - [x] Add Authorized Video Sync panel with rights-cleared embed boundary

@@ -1520,26 +1520,57 @@ export default function App() {
       endpoint: "POST /auth/guest/start",
       coverage: "Guest JWT auth bootstrap",
       status: trust.mapped,
+      state: "mapped",
     },
     {
       endpoint: "GET /api/fixtures/snapshot",
       coverage: "Fixture id, teams, start time, status",
       status: trust.mapped,
+      state: "mapped",
     },
     {
       endpoint: "GET /api/scores/snapshot/{fixtureId}",
       coverage: "Score clock, action events, score snapshots",
       status: trust.tokenGated,
+      state: "gated",
     },
     {
       endpoint: "GET /api/odds/snapshot/{fixtureId}",
       coverage: "1X2 odds snapshots, price names, percentages, market freshness",
       status: trust.tokenGated,
+      state: "gated",
     },
     {
       endpoint: "GET /api/scores/stream + /api/odds/stream",
       coverage: "Server-sent live score and odds updates",
       status: trust.planned,
+      state: "planned",
+    },
+  ];
+  const matchTickerItems = [
+    {
+      label: `${match.home.code} vs ${match.away.code}`,
+      value: `${frame.homeScore}-${frame.awayScore}`,
+    },
+    {
+      label: t.clock,
+      value: `${minute}' / ${t.pulse} ${fanTemperature}`,
+    },
+    {
+      label: t.source,
+      value: sourceStatus?.label ?? t.publicSeedSource,
+    },
+    {
+      label: t.nextBeat,
+      value: nextEvent ? `${nextEvent.minute}' ${nextEvent.title}` : t.replayLoop,
+    },
+    {
+      label: t.marketMood,
+      value: `${frame.market.sentiment}/100`,
+    },
+    {
+      label: t.safety,
+      value: t.noBetting,
     },
   ];
   const eventStats = buildEventStats(frame.activeEvents);
@@ -1746,6 +1777,17 @@ export default function App() {
           <span>{sourceStatus.message}</span>
         </section>
       ) : null}
+
+      <section className="match-ticker" aria-label="Match data ticker">
+        <div className="ticker-track">
+          {[...matchTickerItems, ...matchTickerItems].map((item, index) => (
+            <div className="ticker-item" key={`${item.label}-${index}`}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {showVideoPanel ? (
         <section className="video-sync-panel" aria-label={t.videoSyncTitle}>
@@ -2072,18 +2114,13 @@ export default function App() {
             <p className="eyebrow">TxLINE</p>
             <h2>{trust.endpointsTitle}</h2>
           </div>
-          <div className="endpoint-table" role="table">
-            <div role="row">
-              <strong role="columnheader">{trust.endpoint}</strong>
-              <strong role="columnheader">{trust.coverage}</strong>
-              <strong role="columnheader">{trust.status}</strong>
-            </div>
+          <div className="endpoint-card-grid" aria-label={trust.endpointsTitle}>
             {endpointCoverage.map((item) => (
-              <div key={item.endpoint} role="row">
+              <section className={`endpoint-card endpoint-${item.state}`} key={item.endpoint}>
+                <span>{item.status}</span>
                 <code>{item.endpoint}</code>
-                <span>{item.coverage}</span>
-                <em>{item.status}</em>
-              </div>
+                <p>{item.coverage}</p>
+              </section>
             ))}
           </div>
         </article>

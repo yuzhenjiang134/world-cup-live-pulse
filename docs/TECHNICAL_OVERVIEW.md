@@ -51,12 +51,13 @@ On 2026-06-28 UTC, the public Today Board includes official TxLINE World Cup Sch
 - `src/lib/txlineAdapter.ts`: single integration boundary for replay fallback and authenticated TxLINE live mode.
 - `src/lib/pulse.ts`: deterministic pulse frame builder for score, latest event, commentary, pressure, and market mood.
 - `src/lib/shareCard.ts`: SVG export for a fan share card.
-- `src/App.tsx`: dashboard UI with Replay/Live mode, Today Board, Daily Brief, Data Audit, Live Readiness, Judge Demo chapters, Match Intelligence, Match Center, team profiles, group table, four-language settings, and safety copy.
+- `src/App.tsx`: dashboard UI with Replay/Live mode, rolling match ticker, Today Board, Daily Brief, Data Audit, Live Readiness, endpoint status cards, Judge Demo chapters, Match Intelligence, Match Center, team profiles, group table, four-language settings, and safety copy.
 
 ## Product surfaces
 
 - Today Board: makes No Match Day and token-required states visible.
-- Trust & Accuracy Center: explains official schedule seed, live token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
+- Match data ticker: keeps score, clock, source state, next beat, market mood, and safety visible without adding another heavy panel.
+- Trust & Accuracy Center: explains official schedule seed, live token gate, replay truth, Free Tier delay behavior, and scan-friendly endpoint coverage cards.
 - Judge Demo chapters: repeatable path for data integrity, goal swing, late volatility, and upset-context review.
 - Match Intelligence: phase summary, event stack, and player impact derived from replay events.
 - Match Center: kickoff, referee, data status, qualification note, discipline, team profiles, key players, and group context.

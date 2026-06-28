@@ -104,7 +104,7 @@ To improve award chances, the project should keep moving toward:
 The safest winning posture is:
 
 ```text
-Functional fan dashboard + honest data states + real TxLINE adapter + replayable demo + clean submission package.
+Functional fan dashboard + compact live-pulse ticker + honest data states + real TxLINE adapter + replayable demo + clean submission package.
 ```
 
 ## Sources Checked
