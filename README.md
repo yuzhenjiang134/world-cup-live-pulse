@@ -12,7 +12,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 
 - Replay data mode is implemented.
 - Multiple replay scenarios are available for demo recording.
-- Live mode is present as a TxLINE adapter placeholder.
+- Live mode is wired to the official TxLINE HTTP endpoints through `src/lib/txlineAdapter.ts`.
 - Today Board and No Match Day / Token Required states are visible.
 - Today Board now includes official TxLINE schedule seed fixtures for 2026-06-28 UTC while keeping live score/event/odds data token-gated.
 - Daily Brief, Data Audit, Live Readiness, and Judge Demo chapters are implemented.
@@ -21,13 +21,13 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Language setting supports English, Chinese, Spanish, and Portuguese for a broader World Cup fan audience.
 - Match score card, timeline, market mood, Match Center, team profiles, and AI commentary are visible in the local app.
 - Data states are explicitly labeled as Live, Delay, Replay, or Seed.
-- TxLINE API token is not required for the first local demo.
+- TxLINE API token is not required for the public replay demo. Real TxLINE data can be tested locally with `.env.local`.
 
 ## Competition requirements tracked
 
 - Final submission needs a working deployed app, a public GitHub repo, a demo video under 5 minutes, brief technical docs, TxLINE endpoint notes, and API feedback.
 - The product must be functional, not a pitch deck, wireframe, or static mockup.
-- Final live competition readiness requires TxLINE data as a live input once official token and endpoint access are available.
+- Final live competition readiness requires a local TxLINE `X-Api-Token` and, optionally, a guest session JWT.
 - The public build must stay honest when no match is active: Replay and Seed data are labeled clearly and never presented as Live.
 - The product stays informational only and avoids betting, wagering, trading, prediction-market, wallet, custody, private-key, seed-phrase, verification-code, or token handling.
 
@@ -80,17 +80,32 @@ https://yuzhenjiang134.github.io/world-cup-live-pulse/
 
 The workflow builds with `DEPLOY_TARGET=github-pages`, which sets Vite's base path to `/world-cup-live-pulse/`.
 
-## Environment
+## TxLINE Local Data
 
 Copy `.env.example` to `.env.local` when a TxLINE token is available.
 
 ```bash
 VITE_APP_MODE=replay
-VITE_TXLINE_API_BASE=https://api.txline.example
-VITE_TXLINE_API_KEY=your_txline_api_key_here
+VITE_TXLINE_API_BASE=https://txline.txodds.com
+VITE_TXLINE_API_TOKEN=your_txline_x_api_token_here
+VITE_TXLINE_SESSION_JWT=
+VITE_TXLINE_FIXTURE_ID=17588325
+VITE_TXLINE_START_EPOCH_DAY=
+VITE_TXLINE_COMPETITION_ID=
+VITE_TXLINE_AS_OF_MS=
 ```
 
-Do not commit `.env`, `.env.local`, API tokens, wallet keys, or seed phrases.
+The adapter can request a guest JWT from `POST /auth/guest/start` when `VITE_TXLINE_SESSION_JWT` is empty. Data endpoints still require `X-Api-Token`.
+
+After `.env.local` is configured, run:
+
+```bash
+npm run txline:probe
+```
+
+Without a local token the probe safely skips. With a token it verifies guest JWT, fixture snapshot, score snapshot, and odds snapshot access without printing secrets.
+
+Do not commit `.env`, `.env.local`, API tokens, wallet keys, seed phrases, or verification codes. Do not put real tokens into GitHub Pages build settings unless the sponsor explicitly allows public browser exposure.
 
 ## Project structure
 
@@ -100,7 +115,7 @@ src/
   data/replayMatch.ts     Fixed replay match used for demos
   lib/pulse.ts            Match pulse and commentary logic
   lib/shareCard.ts        SVG share card generator
-  lib/txlineAdapter.ts    Future TxLINE API mapping boundary
+  lib/txlineAdapter.ts    TxLINE HTTP adapter and replay fallback boundary
   types.ts                Shared data types
 ```
 
@@ -123,8 +138,8 @@ src/
 
 ## Next implementation steps
 
-1. Replace the placeholder TxLINE adapter with the official endpoint mapping after the API token and docs are available.
-2. Add real live empty-state handling from TxLINE's match calendar endpoint.
-3. Record a short demo video using Replay mode.
-4. Fill final TxLINE endpoint usage notes and API feedback.
+1. Add a real TxLINE token locally and verify one fixture end to end.
+2. Capture sanitized TxLINE response samples for final docs and API feedback.
+3. Record a short demo video using Replay mode plus the Live token boundary or a local live run.
+4. Fill final TxLINE API feedback after real token testing.
 5. Submit the public URL, GitHub repo, and demo video on Superteam Earn.

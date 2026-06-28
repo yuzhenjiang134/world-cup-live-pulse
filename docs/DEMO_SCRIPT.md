@@ -61,7 +61,7 @@ Say: This is important for a global World Cup fan experience and for demo clarit
 
 Switch to Live mode.
 
-Say: Live mode is already routed through the TxLINE adapter. Without credentials it shows a token-needed state instead of pretending replay data is live. Once endpoints are available, the adapter maps TxLINE payloads into the same MatchData model.
+Say: Live mode is already routed through the TxLINE adapter. Without credentials it shows a token-needed state instead of pretending replay data is live. With a local token, the adapter calls TxLINE fixtures, score snapshots, and odds snapshots, then maps them into the same MatchData model.
 
 ## 4:15-4:50 Share and safety
 

@@ -37,7 +37,7 @@ This runs:
 
 World Cup Live Pulse is a fan-first match dashboard that makes live score changes, event momentum, odds movement, and AI-style commentary understandable for ordinary fans.
 
-It is designed to work in Replay mode for judges even when no live match is available, and to use TxLINE data through a clean adapter once official endpoint details are available.
+It is designed to work in Replay mode for judges even when no live match is available, and to use TxLINE data through a clean adapter when local credentials are configured.
 
 ## Safety boundary
 
@@ -59,6 +59,7 @@ Deployed URL: https://yuzhenjiang134.github.io/world-cup-live-pulse/
 GitHub URL: https://github.com/yuzhenjiang134/world-cup-live-pulse
 Demo video URL:
 TxLINE endpoints used:
-TxLINE feedback:
+POST /auth/guest/start; GET /api/fixtures/snapshot; GET /api/scores/snapshot/{fixtureId}; GET /api/odds/snapshot/{fixtureId}
+TxLINE feedback: see docs/API_FEEDBACK.md; update again after real token testing
 Submission date:
 ```

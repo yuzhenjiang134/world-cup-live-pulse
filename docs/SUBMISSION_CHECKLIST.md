@@ -13,6 +13,7 @@
 - [ ] Match Intelligence phase summary, event stack, and player impact render.
 - [ ] Replay mode works.
 - [ ] Live mode shows TxLINE token-needed state when credentials are absent.
+- [ ] Local Live mode can call TxLINE fixtures/scores/odds when `.env.local` has a safe token.
 - [ ] English / Chinese / Spanish / Portuguese setting works.
 - [ ] Share card preview renders.
 

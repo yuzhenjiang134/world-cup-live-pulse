@@ -32,7 +32,7 @@ Use Download SVG on a dramatic moment. Explain that this becomes a social/commun
 
 ## 5. Live mode
 
-Switch to Live. Explain that this is the TxLINE adapter boundary. Once the token and endpoint documentation are available, live data maps into the same internal match model used by Replay mode.
+Switch to Live. Explain that this is the TxLINE adapter boundary. The public build stays token-gated, while local `.env.local` credentials let the app call TxLINE fixtures, score snapshots, and odds snapshots and map them into the same internal match model used by Replay mode.
 
 ## 6. Safety boundary
 

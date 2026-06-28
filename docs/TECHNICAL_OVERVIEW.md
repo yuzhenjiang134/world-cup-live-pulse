@@ -15,7 +15,7 @@ TxLINE API or replay fixtures
 -> share card and demo video
 ```
 
-The UI reads one normalized `MatchData` model. Replay data and future live TxLINE data use the same adapter boundary so the product can be judged today and upgraded later without changing the dashboard surface.
+The UI reads one normalized `MatchData` model. Replay data and live TxLINE data use the same adapter boundary so the product can be judged today and tested locally with real credentials without changing the dashboard surface.
 
 ## Hackathon submission fit
 
@@ -35,20 +35,20 @@ The app separates four data states:
 
 | State | Meaning | Current use |
 |---|---|---|
-| Live | Data pulled from TxLINE with configured credentials and endpoint mapping | Reserved until token and docs are available |
+| Live | Data pulled from TxLINE with configured credentials and endpoint mapping | Implemented in the adapter; requires local token |
 | Delay | Live-like data that is not guaranteed to be real time | Reserved for delayed feeds |
 | Replay | Fixed historical replay data for judging and demo recording | Implemented |
 | Seed | Official schedule/context or static background data such as teams, players, referee, standings, and schedule labels | Implemented |
 
 This matters because World Cup matches are not played every day. The public build must never invent a live match. If there is no confirmed live fixture or the TxLINE token is missing, the UI shows Replay and Seed labels instead of pretending to be live.
 
-On 2026-06-28 UTC, the public Today Board includes official TxLINE World Cup Schedule seed fixtures for Jordan vs Argentina and Algeria vs Austria. They are shown as `Seed / Token Required` because the app has not loaded authenticated live scores, match events, or odds snapshots for those fixture IDs.
+On 2026-06-28 UTC, the public Today Board includes official TxLINE World Cup Schedule seed fixtures for Jordan vs Argentina and Algeria vs Austria. They are shown as `Seed / Token Required` in the public build because GitHub Pages is not deployed with a private TxLINE token.
 
 ## Current implementation
 
 - `src/data/replayMatch.ts`: two replay fixtures with score events, market snapshots, team profiles, key players, referee, kickoff time, and optional group table.
 - `src/data/matchCalendar.ts`: public Today Board state with official schedule seed fixtures and Token Required behavior.
-- `src/lib/txlineAdapter.ts`: single integration boundary for replay and future TxLINE live mode.
+- `src/lib/txlineAdapter.ts`: single integration boundary for replay fallback and authenticated TxLINE live mode.
 - `src/lib/pulse.ts`: deterministic pulse frame builder for score, latest event, commentary, pressure, and market mood.
 - `src/lib/shareCard.ts`: SVG export for a fan share card.
 - `src/App.tsx`: dashboard UI with Replay/Live mode, Today Board, Daily Brief, Data Audit, Live Readiness, Judge Demo chapters, Match Intelligence, Match Center, team profiles, group table, four-language settings, and safety copy.
@@ -64,7 +64,7 @@ On 2026-06-28 UTC, the public Today Board includes official TxLINE World Cup Sch
 
 ## TxLINE integration boundary
 
-When official TxLINE endpoint documentation is available, the adapter should map external responses into:
+The adapter maps external TxLINE responses into:
 
 - `MatchData`
 - `MatchEvent`
@@ -75,11 +75,13 @@ Live responses must include enough metadata to keep the UI honest: fixture date,
 
 Current mapped endpoint families:
 
-- `POST /api/session/guest` for guest auth bootstrap.
+- `POST /auth/guest/start` for guest JWT bootstrap.
 - `GET /api/fixtures/snapshot` for schedule and Today Board.
 - `GET /api/scores/snapshot/{fixtureId}` for score clock and match events.
-- API Reference > Odds snapshot endpoint for market snapshots; exact path to confirm after access.
-- `GET /api/scores/stream` for server-sent live score updates.
+- `GET /api/odds/snapshot/{fixtureId}` for market snapshots.
+- `GET /api/scores/stream` and `GET /api/odds/stream` remain future SSE streaming upgrades.
+
+The official OpenAPI spec requires `Authorization: Bearer <guest JWT>` and `X-Api-Token: <API token>` for the authenticated data endpoints. The public GitHub Pages build does not include these secrets; local testing uses `.env.local`.
 
 ## Safety boundary
 

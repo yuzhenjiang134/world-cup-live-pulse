@@ -23,6 +23,7 @@ export type MatchEventType =
   | "goal"
   | "yellow_card"
   | "red_card"
+  | "score_update"
   | "substitution"
   | "odds_shift"
   | "halftime"
@@ -107,21 +108,33 @@ export type DataSourceState =
       kind: "replay";
       label: string;
       message: string;
+      checkedAtIso?: string;
+      endpoint?: string;
+      fixtureId?: string;
     }
   | {
       kind: "live-ready";
       label: string;
       message: string;
+      checkedAtIso?: string;
+      endpoint?: string;
+      fixtureId?: string;
     }
   | {
       kind: "needs-token";
       label: string;
       message: string;
+      checkedAtIso?: string;
+      endpoint?: string;
+      fixtureId?: string;
     }
   | {
       kind: "error";
       label: string;
       message: string;
+      checkedAtIso?: string;
+      endpoint?: string;
+      fixtureId?: string;
     };
 
 export type MatchLoadResult = {

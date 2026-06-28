@@ -40,6 +40,13 @@ Updated: 2026-06-28
 - [x] Pause automatically when jumping to a key moment
 - [x] Add TxLINE adapter boundary
 - [x] Add clear Live-mode token-needed state
+- [x] Confirm official TxLINE OpenAPI endpoint paths
+- [x] Add real TxLINE HTTP client with guest JWT bootstrap
+- [x] Map `GET /api/fixtures/snapshot` into normalized match metadata
+- [x] Map `GET /api/scores/snapshot/{fixtureId}` into score and event data
+- [x] Map `GET /api/odds/snapshot/{fixtureId}` into market snapshots
+- [x] Add live API error fallback to Replay mode
+- [x] Add local `npm run txline:probe` command for real-token verification
 - [x] Add share card SVG preview and export
 - [x] Add README
 - [x] Add `.env.example`
@@ -74,7 +81,7 @@ Updated: 2026-06-28
 ## Blocked until user provides external inputs
 
 - [ ] TxLINE World Cup API token
-- [ ] TxLINE endpoint documentation
+- [x] TxLINE endpoint documentation
 - [ ] TxLINE / Solana hackathon access sign-up confirmation
 - [ ] Example TxLINE response payloads with secrets removed
 - [x] GitHub public repository target
@@ -84,18 +91,20 @@ Updated: 2026-06-28
 - [ ] Demo video hosting target
 - [ ] Clean Solana wallet for prize workflow only
 
-## Next implementation after TxLINE docs arrive
+## Next implementation after TxLINE token arrives
 
-- [ ] Map live match list endpoint into `MatchData`
-- [ ] Map live score endpoint into the score card
-- [ ] Map match events endpoint into `MatchEvent`
-- [ ] Map odds or market snapshots into `MarketSnapshot`
-- [ ] Add live API loading state
-- [ ] Add live API empty state
-- [ ] Add live API error fallback to Replay mode
-- [ ] Document exact TxLINE endpoints used
-- [ ] Add endpoint feedback to submission draft
-- [ ] Replace Seed Today Board with real TxLINE calendar response when docs arrive
+- [x] Map live match list endpoint into `MatchData`
+- [x] Map live score endpoint into the score card
+- [x] Map match events endpoint into `MatchEvent`
+- [x] Map odds or market snapshots into `MarketSnapshot`
+- [x] Add live API loading state
+- [x] Add live API error fallback to Replay mode
+- [x] Document exact TxLINE endpoints used
+- [ ] Verify real token works against one fixture locally
+- [ ] Confirm browser CORS behavior with real token
+- [ ] Add live API empty-state copy from real no-match-day response, if provided
+- [ ] Add endpoint feedback to submission draft after real token testing
+- [ ] Replace static Seed Today Board with real TxLINE calendar response when token and CORS are verified
 
 ## Submission checklist
 

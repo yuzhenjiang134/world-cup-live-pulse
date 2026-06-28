@@ -2,7 +2,7 @@
 
 ## Architecture
 
-World Cup Live Pulse uses a replay-first frontend architecture.
+World Cup Live Pulse uses a replay-first frontend architecture with a real TxLINE adapter for local authenticated data testing.
 
 ```text
 Replay JSON or TxLINE API
@@ -15,31 +15,32 @@ Replay JSON or TxLINE API
 
 ## Current data flow
 
-The current MVP uses `src/data/replayMatch.ts` as a fixed match fixture. This fixture is passed through the same `loadMatchData()` boundary that live TxLINE data will use later.
+The current MVP uses `src/data/replayMatch.ts` as fixed match fixtures for public judging. Those fixtures pass through the same `loadMatchData()` boundary that live TxLINE data uses when local credentials are configured.
 
 The UI never reads fixture fields directly. It works from normalized types in `src/types.ts`.
 
-## TxLINE integration plan
+## TxLINE integration
 
 `src/lib/txlineAdapter.ts` is the integration boundary.
 
-When the TxLINE API token and endpoint documentation are ready, the adapter should map external responses into:
+The adapter maps external responses into:
 
 - `MatchData`
 - `MatchEvent`
 - `MarketSnapshot`
 
-Planned live inputs:
+Implemented live inputs:
 
-- Match list
-- Score state
-- Match clock
-- Goals and disciplinary events
-- Odds or market movement snapshots
+- `POST /auth/guest/start` for guest JWT bootstrap
+- `GET /api/fixtures/snapshot` for fixture list
+- `GET /api/scores/snapshot/{fixtureId}` for score state, match clock, goals, cards, and substitutions where present
+- `GET /api/odds/snapshot/{fixtureId}` for market movement snapshots
+
+Authenticated data calls use `Authorization: Bearer <guest JWT>` and `X-Api-Token: <API token>`. The public GitHub Pages build does not include private tokens; real data testing belongs in local `.env.local`.
 
 ## Replay fallback
 
-Replay mode remains useful even after live API integration because judges may open the app when no live match is active. If live API calls fail, the app can keep a visible fallback instead of becoming blank.
+Replay mode remains useful even after live API integration because judges may open the app when no live match is active. If live API calls fail, the app keeps a visible error state and replay fallback instead of becoming blank or presenting replay data as live.
 
 ## Safety and compliance boundary
 

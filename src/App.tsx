@@ -132,7 +132,7 @@ const copy = {
     seedProfiles: "Teams, players, referee, standings",
     noLiveFixture: "No live fixture configured",
     replayFallbackReady: "Replay fallback ready",
-    endpointPending: "Waiting for official TxLINE endpoint docs",
+    endpointPending: "Waiting for local TxLINE token and access verification",
     matchIntelligence: "Match Intelligence",
     phaseSummary: "Phase summary",
     preMatch: "Pre-match",
@@ -292,7 +292,7 @@ const copy = {
     seedProfiles: "球队、球员、裁判、积分",
     noLiveFixture: "未配置实时赛程",
     replayFallbackReady: "回放兜底已就绪",
-    endpointPending: "等待官方 TxLINE endpoint 文档",
+    endpointPending: "等待本地 TxLINE token 与权限验证",
     matchIntelligence: "比赛智能层",
     phaseSummary: "阶段摘要",
     preMatch: "赛前",
@@ -453,7 +453,7 @@ const localizedCopy = {
     seedProfiles: "Equipos, jugadores, árbitro, tablas",
     noLiveFixture: "Sin fixture live configurado",
     replayFallbackReady: "Fallback replay listo",
-    endpointPending: "Esperando documentación oficial de endpoints TxLINE",
+    endpointPending: "Esperando token local TxLINE y verificación de acceso",
     matchIntelligence: "Inteligencia del partido",
     phaseSummary: "Resumen de fase",
     preMatch: "Prepartido",
@@ -613,7 +613,7 @@ const localizedCopy = {
     seedProfiles: "Times, jogadores, árbitro, tabelas",
     noLiveFixture: "Sem fixture live configurado",
     replayFallbackReady: "Fallback replay pronto",
-    endpointPending: "Aguardando documentação oficial dos endpoints TxLINE",
+    endpointPending: "Aguardando token local TxLINE e verificação de acesso",
     matchIntelligence: "Inteligência do jogo",
     phaseSummary: "Resumo de fase",
     preMatch: "Pré-jogo",
@@ -813,12 +813,21 @@ export default function App() {
     setLoadError(null);
     loadMatchData(mode, {
       apiBase: import.meta.env.VITE_TXLINE_API_BASE,
-      apiKey: import.meta.env.VITE_TXLINE_API_KEY,
+      apiToken: import.meta.env.VITE_TXLINE_API_TOKEN,
+      asOfMs: import.meta.env.VITE_TXLINE_AS_OF_MS,
+      competitionId: import.meta.env.VITE_TXLINE_COMPETITION_ID,
+      fixtureId: import.meta.env.VITE_TXLINE_FIXTURE_ID,
       replayMatchId,
+      sessionJwt: import.meta.env.VITE_TXLINE_SESSION_JWT,
+      startEpochDay: import.meta.env.VITE_TXLINE_START_EPOCH_DAY,
     })
       .then((result) => {
         setMatch(result.match);
         setSource(result.source);
+
+        if (mode === "live") {
+          setMinute(Math.max(1, result.match.events.at(-1)?.minute ?? 1));
+        }
       })
       .catch((error: unknown) => {
         setLoadError(error instanceof Error ? error.message : "Unknown data loading error");
@@ -965,8 +974,8 @@ export default function App() {
   ];
   const endpointCoverage = [
     {
-      endpoint: "POST /api/session/guest",
-      coverage: "Guest session auth",
+      endpoint: "POST /auth/guest/start",
+      coverage: "Guest JWT auth bootstrap",
       status: trust.mapped,
     },
     {
@@ -980,13 +989,13 @@ export default function App() {
       status: trust.tokenGated,
     },
     {
-      endpoint: "API Reference > Odds snapshot",
-      coverage: "1X2 odds snapshots and market freshness; exact path to confirm",
+      endpoint: "GET /api/odds/snapshot/{fixtureId}",
+      coverage: "1X2 odds snapshots, price names, percentages, market freshness",
       status: trust.tokenGated,
     },
     {
-      endpoint: "GET /api/scores/stream",
-      coverage: "Server-sent live score updates",
+      endpoint: "GET /api/scores/stream + /api/odds/stream",
+      coverage: "Server-sent live score and odds updates",
       status: trust.planned,
     },
   ];
@@ -1642,11 +1651,17 @@ function getSourceStatus(source: DataSourceState, language: Language) {
   }
 
   if (source.kind === "live-ready") {
-    return { label: t.sourceLiveReady, message: t.sourceLiveReadyMessage };
+    return {
+      label: source.label || t.sourceLiveReady,
+      message: source.message || t.sourceLiveReadyMessage,
+    };
   }
 
   if (source.kind === "needs-token") {
-    return { label: t.sourceNeedsToken, message: t.sourceNeedsTokenMessage };
+    return {
+      label: source.label || t.sourceNeedsToken,
+      message: source.message || t.sourceNeedsTokenMessage,
+    };
   }
 
   return { label: t.sourceError, message: source.message || t.sourceErrorMessage };

@@ -12,6 +12,7 @@
     "fixtures": "node scripts/validate-fixtures.mjs",
     "preflight": "node scripts/preflight.mjs",
     "security": "node scripts/security-scan.mjs",
+    "txline:probe": "node scripts/txline-probe.mjs",
     "validate": "npm run check && npm run fixtures && npm run preflight && npm run security && npm run build"
   },
   "dependencies": {

@@ -18,14 +18,14 @@ World Cup Live Pulse gives fans a single replay/live dashboard for following a m
 
 ## TxODDS / TxLINE usage
 
-The MVP currently runs in Replay mode with mock data so judges can evaluate the experience at any time. The `src/lib/txlineAdapter.ts` file is reserved for mapping TxLINE World Cup API responses into the app's internal match model once the API token and endpoint documentation are available.
+The public build runs in Replay + Seed mode so judges can evaluate the experience at any time without exposing private credentials. The `src/lib/txlineAdapter.ts` file now maps official TxLINE API responses into the app's internal match model when a local token is configured.
 
-Planned integration:
+Implemented local integration:
 
-- Live match list
-- Score updates
-- Key match events
-- Odds or market movement snapshots
+- Guest JWT bootstrap: `POST /auth/guest/start`
+- Live fixture list: `GET /api/fixtures/snapshot`
+- Score snapshots and key match events: `GET /api/scores/snapshot/{fixtureId}`
+- Odds or market movement snapshots: `GET /api/odds/snapshot/{fixtureId}`
 - API error fallback to replay mode
 
 ## Why this fits the fan experience track
@@ -41,7 +41,7 @@ Planned integration:
 2. Show the score card and mode switch.
 3. Press Play and let the match timeline advance.
 4. Pause on a goal event and show AI commentary plus market mood shift.
-5. Switch to Live mode and explain that it is the TxLINE adapter boundary.
+5. Switch to Live mode and explain the TxLINE token gate, or show a local authenticated fixture if a safe token is configured off-camera.
 6. Close with safety boundary: no betting, no wallet handling, no trading advice.
 
 ## Links to fill before submission

@@ -1,10 +1,17 @@
-# TxLINE Endpoints Usage Plan
+# TxLINE Endpoints Usage
 
 ## Current status
 
-The public build runs with Replay and Seed data. TxLINE API token and official endpoint documentation are not committed and are not required for the first judgeable demo.
+The public build runs with Replay and Seed data because no private TxLINE token is deployed to GitHub Pages. The local app can call the official TxLINE HTTP API through `src/lib/txlineAdapter.ts` when `.env.local` contains a valid `X-Api-Token`.
 
-For final hackathon submission, TxLINE must be used as a live input. The table below now maps the public TxLINE API reference paths into the app contract. Exact request headers, token handling, and response samples still need to be verified after access is configured locally.
+The official OpenAPI spec checked on 2026-06-28 reports:
+
+- Production server: `https://txline.txodds.com`
+- Guest JWT endpoint: `POST /auth/guest/start`
+- Fixtures snapshot: `GET /api/fixtures/snapshot`
+- Scores snapshot: `GET /api/scores/snapshot/{fixtureId}`
+- Odds snapshot: `GET /api/odds/snapshot/{fixtureId}`
+- Auth headers for data endpoints: `Authorization: Bearer <guest JWT>` and `X-Api-Token: <API token>`
 
 The public Today Board includes official TxLINE World Cup Schedule seed fixtures observed on 2026-06-28 UTC:
 
@@ -16,23 +23,36 @@ These are shown as `Seed / Token Required`, not `Live`, until authenticated scor
 Secrets must only be placed in a local `.env.local` file:
 
 ```bash
-VITE_TXLINE_API_BASE=
-VITE_TXLINE_API_KEY=
+VITE_TXLINE_API_BASE=https://txline.txodds.com
+VITE_TXLINE_API_TOKEN=your_txline_x_api_token_here
+VITE_TXLINE_SESSION_JWT=
+VITE_TXLINE_FIXTURE_ID=17588325
+VITE_TXLINE_START_EPOCH_DAY=
+VITE_TXLINE_COMPETITION_ID=
+VITE_TXLINE_AS_OF_MS=
 ```
 
 Do not commit `.env`, `.env.local`, real tokens, wallet keys, seed phrases, or verification codes.
 
-## Required endpoint mapping
+After local credentials are configured, run:
 
-| Product need | Expected endpoint | Required fields | Internal target |
+```bash
+npm run txline:probe
+```
+
+The probe verifies guest JWT, fixture snapshot, score snapshot, and odds snapshot access without printing token values. If no token is configured, it exits safely with a skip message.
+
+## Implemented endpoint mapping
+
+| Product need | Endpoint | Required fields | Internal target |
 |---|---|---|---|
-| Guest auth | `POST /api/session/guest` | guest session token or auth response metadata | local adapter auth bootstrap |
-| Match calendar / Today Board | `GET /api/fixtures/snapshot` | fixture id, teams, kickoff time, status, competition, venue | `TodayMatchCard[]` and `MatchData` |
+| Guest auth | `POST /auth/guest/start` | `token` | `Authorization: Bearer <guest JWT>` |
+| Match calendar / Today Board | `GET /api/fixtures/snapshot` | `FixtureId`, `Participant1`, `Participant2`, `Participant1IsHome`, `StartTime`, `Competition` | `MatchData` and schedule seed reconciliation |
 | Live score | `GET /api/scores/snapshot/{fixtureId}` | home score, away score, match clock, stoppage, status | `PulseFrame` score and clock |
-| Match events | `GET /api/scores/snapshot/{fixtureId}` | stable event/action id, minute, type, team, player, description | `MatchEvent[]` |
-| Odds or market movement | API Reference > Odds snapshot, exact path to confirm after access | timestamp or minute, home/draw/away values, freshness | `MarketSnapshot[]` |
-| Score updates | `GET /api/scores/stream` | fixture id, changed score/event fields, event timestamp | live update loop |
-| Odds updates | API Reference > Odds update stream, exact path to confirm after access | fixture id, changed odds fields, event timestamp | market mood updates |
+| Match events | `GET /api/scores/snapshot/{fixtureId}` | `seq`, `ts`, `action`, `dataSoccer.Goal`, `YellowCard`, `RedCard`, player IDs, minute | `MatchEvent[]` |
+| Odds or market movement | `GET /api/odds/snapshot/{fixtureId}` | `PriceNames`, `Prices`, `Pct`, `Ts`, `SuperOddsType` | `MarketSnapshot[]` |
+| Score updates | `GET /api/scores/stream` | fixture id, changed score/event fields, event timestamp | future SSE live update loop |
+| Odds updates | `GET /api/odds/stream` | fixture id, changed odds fields, event timestamp | future SSE market mood updates |
 | Team and player context | fixture and score payload metadata, or future context endpoint | team code, team name, colors, key players, roles | `Team` and `PlayerProfile` |
 | Standings or qualification context | fixture metadata, schedule context, or future context endpoint | group, played, points, goal difference, status | `GroupStanding[]` |
 | Highlight chapters | derived from score events and odds swings | event id, minute, type, label, shareable context | Judge Demo chapters and share cards |
@@ -48,7 +68,7 @@ Do not commit `.env`, `.env.local`, real tokens, wallet keys, seed phrases, or v
 
 ## Adapter contract
 
-`src/lib/txlineAdapter.ts` is the only place that should know about raw TxLINE payloads. The adapter should return:
+`src/lib/txlineAdapter.ts` is the only place that should know about raw TxLINE payloads. The adapter returns:
 
 ```ts
 type MatchLoadResult = {
@@ -57,22 +77,25 @@ type MatchLoadResult = {
 };
 ```
 
-The UI should stay payload-agnostic and display only normalized fields.
+The UI stays payload-agnostic and displays only normalized fields. If a live call fails, the adapter returns a visible `error` source state and a replay fallback so the product does not become blank or pretend replay data is live.
 
-## Questions for TxLINE docs
+## Remaining token-test questions
 
-- What is the official match calendar endpoint?
 - Does the API expose a no-match-day response?
 - How is data freshness represented?
 - Are odds snapshots historical, current only, or both?
 - Are event IDs stable across refreshes?
 - What are the rate limits and CORS requirements?
-- Which auth header or query parameter format is expected?
 - Does hackathon access require a Solana sign-up flow before API token issuance?
+- Does the free World Cup tier allow browser-side CORS demos, or should the final product use a small server proxy?
+- Are `Prices` always scaled by 1000 for decimal odds?
 
 ## Official docs checked
 
 - World Cup Schedule: `https://txline.txodds.com/documentation/scores/schedule`
 - Guest session auth: `https://txline.txodds.com/api-reference/authentication/start-a-new-guest-session`
+- OpenAPI spec: `https://txline.txodds.com/docs/docs.yaml`
 - Score snapshots: `https://txline.txodds.com/api-reference/scores/get-snapshots-for-each-action-in-the-latest-score-events-for-a-fixture`
 - Score SSE updates: `https://txline.txodds.com/api-reference/scores/get-a-real-time-server-sent-events-stream-of-scores-updates`
+- Odds snapshots: `https://txline.txodds.com/api-reference/odds/get-snapshots-of-the-latest-odds-for-a-fixture`
+- Odds SSE updates: `https://txline.txodds.com/api-reference/odds/get-a-real-time-server-sent-events-stream-of-odds-updates`

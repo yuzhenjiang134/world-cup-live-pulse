@@ -1,6 +1,6 @@
 # Implementation Checklist
 
-Updated: 2026-06-27
+Updated: 2026-06-28
 
 ## Prepared
 
@@ -12,8 +12,8 @@ Updated: 2026-06-27
 - AI-style one-line commentary generator
 - Odds and market mood panel
 - Replay controls
-- Live mode placeholder
-- TxLINE adapter boundary
+- Live mode with real TxLINE HTTP adapter
+- TxLINE adapter boundary for fixtures, scores, and odds
 - Live-mode token-needed state
 - Key moment jump controls
 - Replay speed controls
@@ -31,17 +31,17 @@ Updated: 2026-06-27
 
 ## Next build tasks
 
-1. Add TxLINE endpoint mapping after API token and docs are available.
-2. Add API error, loading, empty, and offline states.
-3. Add a share-card export for a dramatic event moment.
-4. Improve replay pacing controls for demo recording.
-5. Add a short technical write-up with endpoint names and data flow.
-6. Deploy the app and verify the public URL.
-7. Record a demo video under five minutes.
+1. Verify a real TxLINE token against one fixture locally.
+2. Capture sanitized response samples for final endpoint notes.
+3. Confirm browser CORS behavior for local and public demos.
+4. Add live empty-state copy from the real no-match-day response if provided.
+5. Record a demo video under five minutes.
 
 ## User inputs needed
 
-- TxLINE World Cup API token and endpoint documentation
+- TxLINE World Cup API token
+- TxLINE / Solana hackathon access confirmation
+- Sanitized example TxLINE response payloads
 - GitHub repo target
 - Superteam Earn account access for final submission
 - Telegram contact used by the hackathon

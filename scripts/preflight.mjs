@@ -29,6 +29,7 @@ const requiredFiles = [
   "src/data/matchCalendar.ts",
   "scripts/validate-fixtures.mjs",
   "scripts/security-scan.mjs",
+  "scripts/txline-probe.mjs",
 ];
 
 const forbiddenFiles = [".env", ".env.local"];
@@ -42,8 +43,10 @@ const requiredText = [
   ["docs/api-mapping-template.md", "Endpoint inventory"],
   ["docs/TECHNICAL_OVERVIEW.md", "Data consistency model"],
   ["docs/TECHNICAL_OVERVIEW.md", "Trust & Accuracy Center"],
-  ["docs/TXLINE_ENDPOINTS.md", "Required endpoint mapping"],
+  ["docs/TXLINE_ENDPOINTS.md", "Implemented endpoint mapping"],
   ["docs/TXLINE_ENDPOINTS.md", "GET /api/fixtures/snapshot"],
+  ["docs/TXLINE_ENDPOINTS.md", "POST /auth/guest/start"],
+  ["docs/TXLINE_ENDPOINTS.md", "X-Api-Token"],
   ["docs/API_FEEDBACK.md", "no-match-day"],
   ["docs/SUBMISSION_DRAFT.md", "official TxLINE schedule seed fixtures"],
   ["docs/SUBMISSION_DRAFT.md", "Consumer and Fan Experiences"],
@@ -52,7 +55,8 @@ const requiredText = [
   ["docs/SUBMISSION_CHECKLIST.md", "Final submission"],
   [".github/workflows/pages.yml", "Deploy GitHub Pages"],
   ["vite.config.ts", "github-pages"],
-  ["src/lib/txlineAdapter.ts", "Needs TxLINE token"],
+  ["src/lib/txlineAdapter.ts", "Needs TxLINE API token"],
+  ["src/lib/txlineAdapter.ts", "/api/scores/snapshot"],
   ["src/data/replayMatch.ts", "replayMatches"],
   ["src/data/matchCalendar.ts", "never invents live games"],
   ["src/App.tsx", "Trust & Accuracy"],
@@ -112,6 +116,12 @@ if (packageJson.scripts?.validate && packageJson.scripts?.fixtures && packageJso
   pass("package scripts include validate, fixtures, and security");
 } else {
   fail("package scripts must include validate, fixtures, and security");
+}
+
+if (packageJson.scripts?.["txline:probe"]) {
+  pass("package scripts include txline:probe");
+} else {
+  fail("package scripts must include txline:probe");
 }
 
 if (failed) {

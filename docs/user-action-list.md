@@ -14,11 +14,11 @@ This is the exact list of items the user needs to provide or complete. Do not sh
 
 ## Step 2: TxLINE API
 
-Give Codex only the safe integration materials:
+Endpoint docs are already mapped. Give Codex only the safe integration materials:
 
-- [ ] TxLINE endpoint documentation
-- [ ] Endpoint base URL
-- [ ] Which endpoints are allowed for this hackathon
+- [x] TxLINE endpoint documentation
+- [x] Endpoint base URL
+- [ ] Which endpoints are allowed for this hackathon token
 - [ ] Rate limit notes
 - [ ] Example response payloads with secrets removed
 
@@ -31,8 +31,10 @@ Keep private:
 When the token is ready, place it only in `.env.local`:
 
 ```bash
-VITE_TXLINE_API_KEY=your_real_token
-VITE_TXLINE_API_BASE=official_base_url
+VITE_TXLINE_API_BASE=https://txline.txodds.com
+VITE_TXLINE_API_TOKEN=your_real_x_api_token
+VITE_TXLINE_SESSION_JWT=
+VITE_TXLINE_FIXTURE_ID=17588325
 ```
 
 ## Step 3: GitHub

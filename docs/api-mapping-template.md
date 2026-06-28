@@ -1,12 +1,14 @@
 # TxLINE API Mapping Template
 
-Fill this file after the official endpoint documentation is available.
+Use this file to collect real response samples after a local TxLINE token is configured.
 
 ## Environment
 
 ```bash
 VITE_TXLINE_API_BASE=
-VITE_TXLINE_API_KEY=
+VITE_TXLINE_API_TOKEN=
+VITE_TXLINE_SESSION_JWT=
+VITE_TXLINE_FIXTURE_ID=
 ```
 
 Do not commit real values.
@@ -15,11 +17,12 @@ Do not commit real values.
 
 | Purpose | Method | Endpoint | Required fields | Internal target |
 |---|---|---|---|---|
-| Match list | GET | TBD | TBD | `MatchData[]` |
-| Match score | GET | TBD | TBD | `homeScore`, `awayScore`, `status` |
-| Match clock | GET | TBD | TBD | `minute`, `stoppage` |
-| Events | GET | TBD | TBD | `MatchEvent[]` |
-| Odds or market mood | GET | TBD | TBD | `MarketSnapshot[]` |
+| Guest auth | POST | `/auth/guest/start` | `token` | request auth bootstrap |
+| Match list | GET | `/api/fixtures/snapshot` | `FixtureId`, `Participant1`, `Participant2`, `StartTime`, `Participant1IsHome`, `Competition` | `MatchData` |
+| Match score | GET | `/api/scores/snapshot/{fixtureId}` | `scoreSoccer.Participant1.Total.Goals`, `scoreSoccer.Participant2.Total.Goals` | `homeScore`, `awayScore`, `status` |
+| Match clock | GET | `/api/scores/snapshot/{fixtureId}` | `dataSoccer.Minutes`, `ts`, `startTime` | `minute`, `stoppage` |
+| Events | GET | `/api/scores/snapshot/{fixtureId}` | `seq`, `action`, `dataSoccer.Goal`, `YellowCard`, `RedCard`, player IDs | `MatchEvent[]` |
+| Odds or market mood | GET | `/api/odds/snapshot/{fixtureId}` | `PriceNames`, `Prices`, `Pct`, `Ts` | `MarketSnapshot[]` |
 
 ## Internal model
 

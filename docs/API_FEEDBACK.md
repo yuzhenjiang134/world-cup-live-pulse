@@ -2,7 +2,7 @@
 
 ## Build-stage feedback
 
-World Cup Live Pulse is built replay-first because the public hackathon build needs to be judgeable even when no World Cup match is active. The app now also uses official TxLINE World Cup Schedule seed fixtures for today, while keeping live score/event/odds data token-gated. The most important API need is not only live data, but trustworthy status metadata that lets the product avoid pretending schedule seed or replay data is live.
+World Cup Live Pulse is built replay-first because the public hackathon build needs to be judgeable even when no World Cup match is active. The app now also has a real TxLINE HTTP adapter for fixtures, scores, and odds, while keeping private credentials local-only. The most important API need is not only live data, but trustworthy status metadata that lets the product avoid pretending schedule seed or replay data is live.
 
 ## What would improve the developer experience
 
@@ -32,27 +32,29 @@ For consumer fan experiences, the API is strongest when it can support explanati
 
 ## Current handling
 
-Until official token and endpoint docs are available, the app uses:
+The current app uses:
 
 - `Replay` data for deterministic match playback.
 - `Seed` data for official schedule context and static context.
 - A visible `TxLINE token needed` state for Live mode.
 - Official TxLINE schedule seed fixtures in the Today Board when known.
 - A No Match Day rule when no official fixture is known.
+- A real local TxLINE adapter that requests `POST /auth/guest/start`, `GET /api/fixtures/snapshot`, `GET /api/scores/snapshot/{fixtureId}`, and `GET /api/odds/snapshot/{fixtureId}` when credentials are present.
 - Judge Demo chapters to make replay evaluation repeatable.
 - English, Chinese, Spanish, and Portuguese UI labels for global fan testing.
 
 ## Current endpoint mapping in the product
 
-- `POST /api/session/guest`: planned auth bootstrap.
+- `POST /auth/guest/start`: guest JWT bootstrap.
 - `GET /api/fixtures/snapshot`: schedule seed and Today Board.
 - `GET /api/scores/snapshot/{fixtureId}`: live score clock and event mapping.
-- API Reference > Odds snapshot endpoint: market mood snapshots; exact path to confirm after access.
-- `GET /api/scores/stream`: server-sent score updates.
+- `GET /api/odds/snapshot/{fixtureId}`: market mood snapshots.
+- `GET /api/scores/stream`: future server-sent score updates.
+- `GET /api/odds/stream`: future server-sent odds updates.
 
 ## Final submission note
 
-This file should be updated again after real TxLINE endpoint testing. The final version should list:
+This file should be updated again after real token testing. The final version should list:
 
 - The exact endpoints used.
 - What worked well in the normalized schema.

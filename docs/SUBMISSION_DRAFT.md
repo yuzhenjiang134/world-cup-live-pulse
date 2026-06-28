@@ -25,7 +25,7 @@ World Cup Live Pulse gives fans one place to understand why a match feels differ
 The current build includes:
 
 - Replay mode with two World Cup scenarios.
-- Live mode placeholder wired through a TxLINE adapter boundary.
+- Live mode wired through a real TxLINE HTTP adapter for fixtures, scores, and odds.
 - Today Board with official TxLINE schedule seed fixtures and Token Required live handling.
 - Daily Brief, Data Audit, and Live Readiness panels.
 - Trust & Accuracy Center for schedule seed, token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
@@ -38,7 +38,7 @@ The current build includes:
 
 ## TxODDS / TxLINE usage
 
-The app is designed around the TxLINE integration boundary in `src/lib/txlineAdapter.ts`. The public build currently uses Replay and Seed data because a real TxLINE token has not been configured.
+The app is designed around the TxLINE integration boundary in `src/lib/txlineAdapter.ts`. The public build uses Replay and Seed data because a private TxLINE token is not deployed to GitHub Pages. Local builds can use `.env.local` to call the official TxLINE endpoints.
 
 The Today Board uses official TxLINE World Cup Schedule seed fixtures observed for 2026-06-28 UTC:
 
@@ -47,18 +47,18 @@ The Today Board uses official TxLINE World Cup Schedule seed fixtures observed f
 
 These schedule entries are shown as Seed / Token Required. They are not presented as Live until authenticated score, event, and odds feeds are loaded.
 
-Planned TxLINE endpoints:
+Implemented TxLINE endpoint mapping:
 
-- `POST /api/session/guest`
+- `POST /auth/guest/start`
 - `GET /api/fixtures/snapshot`
 - `GET /api/scores/snapshot/{fixtureId}`
-- API Reference > Odds snapshot endpoint, exact path to confirm after access
-- `GET /api/scores/stream`
-- Team, player, referee, and standings context
+- `GET /api/odds/snapshot/{fixtureId}`
+- `GET /api/scores/stream` and `GET /api/odds/stream` as future SSE upgrades
+- Team, player, referee, and standings context where available from fixtures, score events, seed data, or future context endpoints
 
 ## Data consistency note
 
-World Cup matches are not available every day. The app does not invent live games. If TxLINE credentials are missing, schedule entries remain Seed / Token Required, and the demo uses Replay fixtures for judgeable match flow.
+World Cup matches are not available every day. The app does not invent live games. If TxLINE credentials are missing or a live endpoint fails, schedule entries remain Seed / Token Required, and the demo uses Replay fixtures for judgeable match flow.
 
 ## Why it fits the track
 
@@ -77,5 +77,5 @@ World Cup matches are not available every day. The app does not invent live game
 5. Show Match Intelligence: phase summary, event stack, and player impact.
 6. Show Match Center: referee, kickoff, qualification, team profiles, discipline, and group table.
 7. Switch language across English, Chinese, Spanish, and Portuguese.
-8. Open Live mode and explain the TxLINE token-needed boundary.
+8. Open Live mode and explain the TxLINE token-needed boundary, or show a local authenticated TxLINE fixture if a safe token is configured off-camera.
 9. Export the share card and close with the safety boundary.
