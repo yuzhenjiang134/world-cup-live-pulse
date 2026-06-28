@@ -1,0 +1,627 @@
+:root {
+  color: #142024;
+  background: #edf2f4;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  min-height: 40px;
+  border: 1px solid #b9c4c9;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #142024;
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: #49616b;
+}
+
+.app-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 40px;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: #607177;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-size: clamp(2rem, 6vw, 4.8rem);
+  line-height: 0.95;
+}
+
+h2 {
+  margin-bottom: 0;
+  font-size: 1.15rem;
+}
+
+.mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  border: 1px solid #c5d1d6;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.mode-switch button {
+  min-width: 86px;
+  border: 0;
+  background: transparent;
+}
+
+.mode-switch .active {
+  background: #142024;
+  color: #ffffff;
+}
+
+.match-hero {
+  padding: 24px;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(85, 167, 216, 0.34), transparent 26%),
+    radial-gradient(circle at 86% 10%, rgba(207, 50, 70, 0.22), transparent 30%),
+    linear-gradient(135deg, #17313b, #0c1518 68%, #322b1d);
+  color: #ffffff;
+}
+
+.status-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.status-ribbon span {
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #dce8eb;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.status-ribbon .status-live {
+  background: rgba(46, 196, 125, 0.18);
+  color: #d9ffe9;
+}
+
+.status-ribbon .status-waiting {
+  background: rgba(255, 209, 102, 0.16);
+  color: #fff0c2;
+}
+
+.scoreline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: clamp(2.4rem, 8vw, 6.6rem);
+  line-height: 1;
+}
+
+.score span {
+  color: #b5c9cf;
+}
+
+.team-badge {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.team-badge:last-child {
+  text-align: right;
+}
+
+.team-badge span {
+  display: inline-grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.team-badge:last-child span {
+  justify-self: end;
+}
+
+.team-badge strong {
+  overflow-wrap: anywhere;
+  font-size: clamp(1rem, 2vw, 1.4rem);
+}
+
+.match-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+  color: #d4e1e5;
+}
+
+.match-meta span {
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.control-strip {
+  display: grid;
+  grid-template-columns: auto minmax(120px, 1fr) auto auto minmax(220px, auto);
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.source-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border: 1px solid #d7e0e4;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #53666d;
+}
+
+.source-banner strong {
+  flex: 0 0 auto;
+  color: #142024;
+}
+
+.source-needs-token {
+  border-color: #edd08a;
+  background: #fff9e8;
+}
+
+.source-error {
+  border-color: #ef9aaa;
+  background: #fff1f4;
+}
+
+.replay-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 0;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.replay-selector span {
+  flex: 0 0 auto;
+  color: #53666d;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.replay-selector button {
+  flex: 0 0 auto;
+  padding: 0 12px;
+}
+
+.replay-selector .active {
+  background: #142024;
+  color: #ffffff;
+}
+
+.loading-panel {
+  margin-top: 60px;
+}
+
+.loading-panel h1 {
+  margin-bottom: 12px;
+}
+
+.control-strip input {
+  width: 100%;
+  accent-color: #cf3246;
+}
+
+.speed-switch {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid #d7e0e4;
+  border-radius: 8px;
+}
+
+.speed-switch button {
+  min-height: 32px;
+  border: 0;
+  background: transparent;
+  font-size: 0.88rem;
+}
+
+.speed-switch .active {
+  background: #142024;
+  color: #ffffff;
+}
+
+.moment-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  overflow-x: auto;
+  padding: 4px 0 8px;
+}
+
+.moment-strip span {
+  flex: 0 0 auto;
+  color: #53666d;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.moment-strip button {
+  flex: 0 0 auto;
+  padding: 0 12px;
+  background: #ffffff;
+  white-space: nowrap;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 16px;
+}
+
+.panel {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #d7e0e4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.panel-heading {
+  margin-bottom: 16px;
+}
+
+.pulse-panel {
+  min-height: 420px;
+}
+
+.commentary {
+  margin-bottom: 18px;
+  font-size: clamp(1.45rem, 3vw, 2.55rem);
+  line-height: 1.08;
+  font-weight: 850;
+}
+
+.stadium-asset {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  border: 2px solid #d7e8df;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 50%, transparent 50%) 0 0 / 72px 100%,
+    linear-gradient(135deg, #27714c, #195235);
+}
+
+.field-line {
+  position: absolute;
+  border: 2px solid rgba(255, 255, 255, 0.72);
+}
+
+.field-line.center {
+  inset: 0 50% 0 auto;
+  width: 0;
+}
+
+.field-line.box {
+  top: 42px;
+  width: 86px;
+  height: 96px;
+}
+
+.field-line.left {
+  left: 0;
+  border-left: 0;
+}
+
+.field-line.right {
+  right: 0;
+  border-right: 0;
+}
+
+.pulse-dot {
+  position: absolute;
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.18);
+}
+
+.pulse-dot.home {
+  background: #ffd166;
+}
+
+.pulse-dot.away {
+  background: #ef476f;
+}
+
+.pressure-bars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pressure div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  color: #53666d;
+}
+
+meter {
+  width: 100%;
+  height: 10px;
+}
+
+.market-panel {
+  align-self: start;
+}
+
+.share-panel {
+  align-self: start;
+}
+
+.insight-panel {
+  align-self: start;
+}
+
+.insight-copy {
+  margin-bottom: 14px;
+  font-size: 1.32rem;
+  font-weight: 850;
+  line-height: 1.16;
+}
+
+.insight-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.metric-card {
+  min-width: 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f5f7f8;
+}
+
+.metric-card span {
+  display: block;
+  color: #607177;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.metric-card strong {
+  display: block;
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+  font-size: 1.02rem;
+}
+
+.share-panel img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1200 / 630;
+  border: 1px solid #d7e0e4;
+  border-radius: 8px;
+  background: #142024;
+  object-fit: cover;
+}
+
+.share-panel button {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.odds-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.odds-card {
+  padding: 14px;
+  border-radius: 8px;
+  background: #f5f7f8;
+}
+
+.odds-card span {
+  display: block;
+  color: #607177;
+  font-weight: 700;
+}
+
+.odds-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1.8rem;
+}
+
+.sentiment-track {
+  height: 14px;
+  margin: 18px 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e1e7ea;
+}
+
+.sentiment-track span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #55a7d8, #ffd166, #ef476f);
+}
+
+.small-copy,
+.next-event {
+  color: #607177;
+  line-height: 1.5;
+}
+
+.timeline-panel {
+  grid-column: 1 / -1;
+}
+
+.timeline-progress {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e1e7ea;
+}
+
+.timeline-progress span {
+  display: block;
+  height: 100%;
+  background: #cf3246;
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline li {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 10px;
+  min-height: 110px;
+  padding: 14px;
+  border: 1px solid #d7e0e4;
+  border-radius: 8px;
+  background: #f9fbfb;
+}
+
+.timeline li.latest {
+  border-color: #cf3246;
+  box-shadow: inset 0 0 0 1px #cf3246;
+}
+
+.timeline time {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #cf3246;
+}
+
+.timeline p {
+  margin: 6px 0 0;
+  color: #607177;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    width: min(100% - 20px, 1180px);
+    padding-top: 16px;
+  }
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .scoreline,
+  .dashboard-grid,
+  .pressure-bars,
+  .insight-metrics,
+  .control-strip,
+  .source-banner {
+    grid-template-columns: 1fr;
+  }
+
+  .source-banner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .speed-switch {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .score {
+    justify-content: center;
+  }
+
+  .team-badge,
+  .team-badge:last-child {
+    text-align: center;
+  }
+
+  .team-badge span,
+  .team-badge:last-child span {
+    justify-self: center;
+  }
+
+  .timeline {
+    grid-template-columns: 1fr;
+  }
+}

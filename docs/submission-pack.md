@@ -1,0 +1,64 @@
+# Submission Pack
+
+Use this as the final project packet index.
+
+## Public-facing materials
+
+- App: fill after deployment
+- GitHub: fill after repo creation
+- Demo video: fill after recording
+- Project title: World Cup Live Pulse
+- Track: Consumer and Fan Experiences
+
+## Core files
+
+- `README.md`
+- `TASKS.md`
+- `docs/submission-draft.md`
+- `docs/demo-script.md`
+- `docs/technical-writeup.md`
+- `docs/pre-submit-check.md`
+- `docs/user-action-list.md`
+
+## Validation commands
+
+```bash
+npm run validate
+```
+
+This runs:
+
+- TypeScript check
+- Replay fixture validation
+- Preflight file and safety checks
+- Production build
+
+## Product story
+
+World Cup Live Pulse is a fan-first match dashboard that makes live score changes, event momentum, odds movement, and AI-style commentary understandable for ordinary fans.
+
+It is designed to work in Replay mode for judges even when no live match is available, and to use TxLINE data through a clean adapter once official endpoint details are available.
+
+## Safety boundary
+
+The project is informational only.
+
+It does not:
+
+- Place bets
+- Recommend trades
+- Run a prediction market
+- Connect wallets
+- Store private keys
+- Custody user funds
+
+## Final blanks
+
+```text
+Deployed URL:
+GitHub URL:
+Demo video URL:
+TxLINE endpoints used:
+TxLINE feedback:
+Submission date:
+```
