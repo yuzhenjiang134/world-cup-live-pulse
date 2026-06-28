@@ -9,7 +9,7 @@ This is the exact list of items the user needs to provide or complete. Do not sh
 - [ ] Superteam Earn account
 - [ ] GitHub account
 - [ ] Telegram contact usable for hackathon communication
-- [ ] Deployment account, preferably Vercel
+- [x] Deployment target: GitHub Pages
 - [ ] Demo video hosting account or upload target
 
 ## Step 2: TxLINE API
@@ -50,10 +50,8 @@ world-cup-live-pulse
 
 ## Step 4: Deployment
 
-- [ ] Import GitHub repo into Vercel
-- [ ] Set build command: `npm run build`
-- [ ] Set output directory: `dist`
-- [ ] Add env vars only in the deployment dashboard, not in Git
+- [ ] Wait for GitHub Actions Pages deployment to finish
+- [ ] Open the GitHub Pages URL
 - [ ] Verify desktop URL
 - [ ] Verify mobile URL
 

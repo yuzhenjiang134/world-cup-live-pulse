@@ -9,6 +9,7 @@ const requiredFiles = [
   ".env.example",
   "vercel.json",
   ".github/workflows/ci.yml",
+  ".github/workflows/pages.yml",
   "docs/submission-draft.md",
   "docs/demo-script.md",
   "docs/technical-writeup.md",
@@ -31,6 +32,8 @@ const requiredText = [
   ["docs/user-action-list.md", "Step 2: TxLINE API"],
   ["docs/submission-pack.md", "World Cup Live Pulse"],
   ["docs/api-mapping-template.md", "Endpoint inventory"],
+  [".github/workflows/pages.yml", "Deploy GitHub Pages"],
+  ["vite.config.ts", "github-pages"],
   ["src/lib/txlineAdapter.ts", "Needs TxLINE token"],
   ["src/data/replayMatch.ts", "replayMatches"],
 ];

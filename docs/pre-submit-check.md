@@ -47,7 +47,7 @@ Prepare:
 
 - Project title
 - One-line pitch
-- Deployed URL
+- GitHub Pages URL
 - GitHub public repo URL
 - Demo video URL
 - Technical write-up

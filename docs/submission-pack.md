@@ -4,8 +4,8 @@ Use this as the final project packet index.
 
 ## Public-facing materials
 
-- App: fill after deployment
-- GitHub: fill after repo creation
+- App: https://yuzhenjiang134.github.io/world-cup-live-pulse/
+- GitHub: https://github.com/yuzhenjiang134/world-cup-live-pulse
 - Demo video: fill after recording
 - Project title: World Cup Live Pulse
 - Track: Consumer and Fan Experiences
@@ -55,8 +55,8 @@ It does not:
 ## Final blanks
 
 ```text
-Deployed URL:
-GitHub URL:
+Deployed URL: https://yuzhenjiang134.github.io/world-cup-live-pulse/
+GitHub URL: https://github.com/yuzhenjiang134/world-cup-live-pulse
 Demo video URL:
 TxLINE endpoints used:
 TxLINE feedback:

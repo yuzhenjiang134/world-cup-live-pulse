@@ -28,6 +28,7 @@ Updated: 2026-06-28
 - [x] Add implementation checklist
 - [x] Add Vercel deployment config
 - [x] Add GitHub Actions build check
+- [x] Add GitHub Pages deployment workflow
 - [x] Add local preflight script
 - [x] Add replay fixture validation script
 - [x] Add all-in-one validate command
@@ -45,7 +46,7 @@ Updated: 2026-06-28
 - [ ] TxLINE endpoint documentation
 - [ ] Example TxLINE response payloads with secrets removed
 - [ ] GitHub public repository target
-- [ ] Deployment account target such as Vercel or Render
+- [ ] GitHub Pages deployment check
 - [ ] Superteam Earn account access
 - [ ] Telegram contact for submission
 - [ ] Demo video hosting target
@@ -65,13 +66,13 @@ Updated: 2026-06-28
 
 ## Submission checklist
 
-- [ ] Deploy app
+- [ ] Deploy app on GitHub Pages
 - [ ] Verify deployed app works on desktop
 - [ ] Verify deployed app works on mobile
 - [ ] Make GitHub repo public
 - [ ] Confirm no `.env`, API token, private key, seed phrase, or verification code is committed
 - [ ] Record 3 to 5 minute demo video
-- [ ] Fill final deployed URL in `docs/submission-draft.md`
+- [ ] Fill final GitHub Pages URL in `docs/submission-draft.md`
 - [ ] Fill GitHub URL in `docs/submission-draft.md`
 - [ ] Fill demo video URL in `docs/submission-draft.md`
 - [ ] Submit through Superteam Earn before 2026-07-19 23:59 UTC

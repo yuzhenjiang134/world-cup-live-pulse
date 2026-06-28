@@ -35,6 +35,18 @@ npm run preflight
 npm run validate
 ```
 
+## Deploy
+
+GitHub Pages deployment is configured in `.github/workflows/pages.yml`.
+
+Expected public URL after the workflow succeeds:
+
+```text
+https://yuzhenjiang134.github.io/world-cup-live-pulse/
+```
+
+The workflow builds with `DEPLOY_TARGET=github-pages`, which sets Vite's base path to `/world-cup-live-pulse/`.
+
 ## Environment
 
 Copy `.env.example` to `.env.local` when a TxLINE token is available.
@@ -76,4 +88,4 @@ src/
 2. Add loading, empty, offline, and API error states.
 3. Add share-card export for a key replay moment.
 4. Record a short demo video using Replay mode.
-5. Deploy to Vercel or Render and submit the public URL plus GitHub repo.
+5. Deploy to GitHub Pages and submit the public URL plus GitHub repo.
