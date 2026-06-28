@@ -1,4 +1,6 @@
-import { replayMatches } from "../src/data/replayMatch.ts";
+import { readFile } from "node:fs/promises";
+import { Buffer } from "node:buffer";
+import ts from "typescript";
 
 let failed = false;
 
@@ -9,6 +11,38 @@ function fail(message) {
 
 function pass(message) {
   console.log(`PASS ${message}`);
+}
+
+async function loadReplayMatches() {
+  const source = await readFile(new URL("../src/data/replayMatch.ts", import.meta.url), "utf8");
+  const result = ts.transpileModule(source, {
+    compilerOptions: {
+      target: ts.ScriptTarget.ES2022,
+      module: ts.ModuleKind.ES2022,
+    },
+    fileName: "src/data/replayMatch.ts",
+    reportDiagnostics: true,
+  });
+
+  const errors = result.diagnostics?.filter(
+    (diagnostic) => diagnostic.category === ts.DiagnosticCategory.Error,
+  );
+  if (errors?.length) {
+    for (const diagnostic of errors) {
+      fail(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
+    }
+    return [];
+  }
+
+  const encoded = Buffer.from(result.outputText, "utf8").toString("base64");
+  const fixtureModule = await import(`data:text/javascript;base64,${encoded}`);
+  return fixtureModule.replayMatches;
+}
+
+const replayMatches = await loadReplayMatches();
+
+if (!Array.isArray(replayMatches)) {
+  fail("replayMatches must be exported as an array");
 }
 
 for (const match of replayMatches) {
