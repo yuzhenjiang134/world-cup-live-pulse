@@ -34,8 +34,8 @@ Always check the source banner before reading a match. It shows the data state, 
 
 ## Settings
 
-- Language: English, Chinese, Spanish, and Portuguese labels.
-- Viewing preset: Fan Mode keeps the main screen focused on the match, Analyst Mode reveals data-verification panels, and Judge Mode reveals the demo/review path.
+- Language: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic labels for the current fan regions represented in the demo.
+- Viewing preset: Fan Mode keeps the main screen focused on the match, Analyst Mode reveals data-verification panels, and Judge Mode reveals the demo chapters, judging-criteria score map, Path to 100 note, and review path.
 - Operation manual: show or hide the matchday guide.
 - Fixture briefing: show or hide fixture-specific data rules.
 - Country team atlas: show or hide team profiles and watch notes.

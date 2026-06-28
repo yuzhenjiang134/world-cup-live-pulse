@@ -20,26 +20,29 @@ const replayDurationMs = 46000;
 const maxMinute = 90;
 const replaySpeeds = [0.5, 1, 2, 4] as const;
 
-type Language = "en" | "zh" | "es" | "pt";
+type Language = "en" | "zh" | "es" | "pt" | "fr" | "de" | "ja" | "ar";
 type PredictionPick = "home" | "draw" | "away";
+type LanguageOption = { code: Language; label: string; region: string };
 
-const languageOptions: { code: Language; label: string }[] = [
-  { code: "en", label: "English" },
-  { code: "zh", label: "中文" },
-  { code: "es", label: "Español" },
-  { code: "pt", label: "Português" },
+const languageOptions: LanguageOption[] = [
+  { code: "en", label: "English", region: "Global" },
+  { code: "zh", label: "中文", region: "China / Global" },
+  { code: "es", label: "Español", region: "Argentina / Spain / LatAm" },
+  { code: "pt", label: "Português", region: "Brazil / Portugal" },
+  { code: "fr", label: "Français", region: "France / Francophone fans" },
+  { code: "de", label: "Deutsch", region: "Germany / Austria" },
+  { code: "ja", label: "日本語", region: "Japan" },
+  { code: "ar", label: "العربية", region: "Jordan / Algeria / MENA" },
 ];
 
-const displayLanguageOptions: { code: Language; label: string }[] = [
-  { code: "en", label: "English" },
-  { code: "zh", label: "中文" },
-  { code: "es", label: "Español" },
-  { code: "pt", label: "Português" },
-];
+const displayLanguageOptions = languageOptions;
 
 const copy = {
   en: {
     appEyebrow: "Superteam Earn x TxODDS / Consumer Fan Experience",
+    eventBuildStatus: "World Cup Hackathon build",
+    judgeableBuild: "Judgeable public build",
+    txlineLiveGated: "TxLINE Live token-gated",
     settings: "Settings",
     close: "Close",
     language: "Language",
@@ -425,6 +428,9 @@ type CopyShape = { [Key in keyof typeof copy.en]: string };
 
 const cleanZhCopy = {
   ...copy.en,
+  eventBuildStatus: "世界杯黑客松参赛版",
+  judgeableBuild: "公开版本可随时评审",
+  txlineLiveGated: "TxLINE Live 需要官方 token",
   appEyebrow: "Superteam Earn x TxODDS / 球迷体验赛道",
   settings: "设置",
   close: "关闭",
@@ -639,6 +645,9 @@ const localizedCopy = {
   es: {
     ...copy.en,
     appEyebrow: "MVP para Superteam Earn / TxODDS Hackathon",
+    eventBuildStatus: "Build World Cup Hackathon",
+    judgeableBuild: "Build pública evaluable",
+    txlineLiveGated: "TxLINE Live requiere token",
     settings: "Ajustes",
     close: "Cerrar",
     language: "Idioma",
@@ -795,10 +804,20 @@ const localizedCopy = {
     chapterGoalFocus: "Marcador y ánimo",
     chapterLateFocus: "Explicación de volatilidad",
     chapterUpsetFocus: "Tabla e impacto jugador",
+    settingsHelper: "Ajusta solo idioma, modo de revisión y módulos visibles.",
+    viewingPreset: "Preset de vista",
+    dashboardModules: "Módulos del panel",
+    operationManualToggle: "Manual de uso",
+    fixtureBriefingToggle: "Briefing del partido",
+    countryAtlasToggle: "Atlas de equipos",
+    videoPanelToggle: "Video autorizado",
   },
   pt: {
     ...copy.en,
     appEyebrow: "MVP para Superteam Earn / TxODDS Hackathon",
+    eventBuildStatus: "Build World Cup Hackathon",
+    judgeableBuild: "Build pública avaliável",
+    txlineLiveGated: "TxLINE Live exige token",
     settings: "Configurações",
     close: "Fechar",
     language: "Idioma",
@@ -955,6 +974,281 @@ const localizedCopy = {
     chapterGoalFocus: "Placar e humor",
     chapterLateFocus: "Explicação de volatilidade",
     chapterUpsetFocus: "Tabela e impacto jogador",
+    settingsHelper: "Ajuste apenas idioma, modo de revisão e módulos visíveis.",
+    viewingPreset: "Preset de visualização",
+    dashboardModules: "Módulos do painel",
+    operationManualToggle: "Manual de uso",
+    fixtureBriefingToggle: "Briefing do jogo",
+    countryAtlasToggle: "Atlas de times",
+    videoPanelToggle: "Vídeo autorizado",
+  },
+  fr: {
+    ...copy.en,
+    appEyebrow: "Superteam Earn x TxODDS / expérience supporters",
+    eventBuildStatus: "Build World Cup Hackathon",
+    judgeableBuild: "Build public évaluable",
+    txlineLiveGated: "TxLINE Live nécessite un token",
+    settings: "Réglages",
+    close: "Fermer",
+    language: "Langue",
+    replay: "Replay",
+    live: "Direct",
+    mockFixture: "Données replay",
+    txlineAdapter: "Adaptateur TxLINE",
+    waitingForTxline: "En attente du token TxLINE",
+    sourceReplay: "Replay prêt",
+    sourceNeedsToken: "Token TxLINE requis",
+    sourceReplayMessage: "Le replay utilise des données fixes pour rester jugeable sans accès live.",
+    sourceNeedsTokenMessage: "Ajoutez le token uniquement en local après validation officielle.",
+    todayBoard: "Tableau source",
+    checkedAt: "Source vérifiée",
+    publicSeedSource: "Snapshot calendrier + replays",
+    freshness: "Fraîcheur",
+    sourceBoundary: "Replay et Seed restent visibles jusqu'à l'authentification TxLINE live.",
+    play: "Lecture",
+    pause: "Pause",
+    reset: "Réinitialiser",
+    clock: "Temps",
+    pulse: "Pulse",
+    latestBeat: "Dernier fait",
+    nextBeat: "Prochain fait",
+    noBetting: "Pas de pari",
+    aiCommentary: "Commentaire IA",
+    marketMood: "Humeur du marché, pas un conseil",
+    fanCommand: "Vue supporter",
+    watchNow: "À regarder maintenant",
+    fanPrediction: "Pronostic score supporter",
+    predictionBody: "Choix local pour discuter du match, sans pari, wallet ou conseil de trading.",
+    predictionSafety: "Pronostic divertissement, pas conseil de pari",
+    yourPick: "Mon choix",
+    fanLean: "Tendance supporters",
+    liveFeed: "Flux d'événements",
+    waitingForKickoff: "En attente du coup d'envoi",
+    quickPick: "Choix rapide",
+    localOnly: "Local seulement",
+    scoreLinkedPick: "Choix lié au score",
+    focusNav: "Focus match",
+    focusWatch: "Regarder",
+    focusPick: "Choisir",
+    focusTimeline: "Timeline",
+    focusMood: "Mood",
+    focusTeams: "Équipes",
+    matchdayHub: "Hub matchday",
+    todaysMatches: "Snapshot calendrier",
+    nowPlaying: "En cours",
+    tokenRequiredShort: "Token requis",
+    replayAvailable: "Replay disponible",
+    officialSeed: "Seed officiel",
+    downloadPickCard: "Télécharger la carte",
+    controlsStatus: "Contrôles d'affichage",
+    settingsHelper: "Ajustez la langue, le mode de revue et les modules visibles.",
+    viewingPreset: "Mode d'affichage",
+    dashboardModules: "Modules du tableau",
+    operationManualToggle: "Mode d'emploi",
+    fixtureBriefingToggle: "Briefing match",
+    countryAtlasToggle: "Atlas des équipes",
+    videoPanelToggle: "Vidéo autorisée",
+  },
+  de: {
+    ...copy.en,
+    appEyebrow: "Superteam Earn x TxODDS / Fan Experience",
+    eventBuildStatus: "World Cup Hackathon Build",
+    judgeableBuild: "Öffentlich bewertbarer Build",
+    txlineLiveGated: "TxLINE Live braucht Token",
+    settings: "Einstellungen",
+    close: "Schließen",
+    language: "Sprache",
+    replay: "Replay",
+    live: "Live",
+    mockFixture: "Replay-Daten",
+    txlineAdapter: "TxLINE-Adapter",
+    waitingForTxline: "Warten auf TxLINE-Token",
+    sourceReplay: "Replay bereit",
+    sourceNeedsToken: "TxLINE-Token nötig",
+    sourceReplayMessage: "Replay nutzt feste Spieldaten, damit die Demo ohne Live-Zugang funktioniert.",
+    sourceNeedsTokenMessage: "Token nur lokal nach offizieller Freigabe eintragen.",
+    todayBoard: "Quellenboard",
+    checkedAt: "Quelle geprüft",
+    publicSeedSource: "Kalender-Snapshot + Replay-Spiele",
+    freshness: "Aktualität",
+    sourceBoundary: "Replay und Seed bleiben markiert, bis TxLINE-Live-Daten authentifiziert sind.",
+    play: "Start",
+    pause: "Pause",
+    reset: "Zurücksetzen",
+    clock: "Uhr",
+    pulse: "Puls",
+    latestBeat: "Letzter Moment",
+    nextBeat: "Nächster Moment",
+    noBetting: "Keine Wetten",
+    aiCommentary: "KI-Kommentar",
+    marketMood: "Marktstimmung, keine Beratung",
+    fanCommand: "Fan-Ansicht",
+    watchNow: "Jetzt wichtig",
+    fanPrediction: "Fan-Score-Tipp",
+    predictionBody: "Lokale Fan-Auswahl für Diskussionen, ohne Wette, Wallet oder Trading-Tipp.",
+    predictionSafety: "Unterhaltungstipp, keine Wettberatung",
+    yourPick: "Mein Tipp",
+    fanLean: "Fan-Tendenz",
+    liveFeed: "Ereignisfeed",
+    waitingForKickoff: "Warten auf Anpfiff",
+    quickPick: "Schnellwahl",
+    localOnly: "Nur lokal",
+    scoreLinkedPick: "Score-gekoppelt",
+    focusNav: "Match-Fokus",
+    focusWatch: "Schauen",
+    focusPick: "Tippen",
+    focusTimeline: "Timeline",
+    focusMood: "Stimmung",
+    focusTeams: "Teams",
+    matchdayHub: "Matchday-Hub",
+    todaysMatches: "Kalender-Snapshot",
+    nowPlaying: "Läuft",
+    tokenRequiredShort: "Token nötig",
+    replayAvailable: "Replay verfügbar",
+    officialSeed: "Offizieller Seed",
+    downloadPickCard: "Tippkarte laden",
+    controlsStatus: "Anzeige steuern",
+    settingsHelper: "Sprache, Review-Modus und sichtbare Module anpassen.",
+    viewingPreset: "Ansichtsmodus",
+    dashboardModules: "Dashboard-Module",
+    operationManualToggle: "Bedienhilfe",
+    fixtureBriefingToggle: "Spielbriefing",
+    countryAtlasToggle: "Team-Atlas",
+    videoPanelToggle: "Autorisierte Videos",
+  },
+  ja: {
+    ...copy.en,
+    appEyebrow: "Superteam Earn x TxODDS / ファン体験",
+    eventBuildStatus: "World Cup Hackathon版",
+    judgeableBuild: "公開審査ビルド",
+    txlineLiveGated: "TxLINE LiveはToken必要",
+    settings: "設定",
+    close: "閉じる",
+    language: "言語",
+    replay: "リプレイ",
+    live: "ライブ",
+    mockFixture: "リプレイデータ",
+    txlineAdapter: "TxLINEアダプター",
+    waitingForTxline: "TxLINE token待ち",
+    sourceReplay: "リプレイ準備完了",
+    sourceNeedsToken: "TxLINE tokenが必要",
+    sourceReplayMessage: "ライブ権限がなくても評価できるよう、固定データで再現します。",
+    sourceNeedsTokenMessage: "公式提供後、tokenはローカル環境だけに保存します。",
+    todayBoard: "ソースボード",
+    checkedAt: "確認時刻",
+    publicSeedSource: "日程スナップショット + リプレイ",
+    freshness: "鮮度",
+    sourceBoundary: "TxLINEライブ認証まで Replay / Seed と明示します。",
+    play: "再生",
+    pause: "停止",
+    reset: "リセット",
+    clock: "時計",
+    pulse: "パルス",
+    latestBeat: "最新ポイント",
+    nextBeat: "次のポイント",
+    noBetting: "賭けなし",
+    aiCommentary: "AI解説",
+    marketMood: "市場ムード、助言ではありません",
+    fanCommand: "観戦ビュー",
+    watchNow: "今見るべきこと",
+    fanPrediction: "ファンスコア予想",
+    predictionBody: "観戦会話用のローカル選択です。賭け、ウォレット、取引助言はありません。",
+    predictionSafety: "娯楽予想、賭け助言ではありません",
+    yourPick: "自分の予想",
+    fanLean: "ファン傾向",
+    liveFeed: "イベントフィード",
+    waitingForKickoff: "キックオフ待ち",
+    quickPick: "クイック選択",
+    localOnly: "ローカルのみ",
+    scoreLinkedPick: "スコア連動",
+    focusNav: "試合フォーカス",
+    focusWatch: "観戦",
+    focusPick: "予想",
+    focusTimeline: "タイムライン",
+    focusMood: "ムード",
+    focusTeams: "チーム",
+    matchdayHub: "試合日ハブ",
+    todaysMatches: "日程スナップショット",
+    nowPlaying: "視聴中",
+    tokenRequiredShort: "Token必要",
+    replayAvailable: "リプレイ可能",
+    officialSeed: "公式Seed",
+    downloadPickCard: "予想カード保存",
+    controlsStatus: "表示コントロール",
+    settingsHelper: "言語、レビュー表示、表示モジュールだけを調整します。",
+    viewingPreset: "表示プリセット",
+    dashboardModules: "ダッシュボードモジュール",
+    operationManualToggle: "操作ガイド",
+    fixtureBriefingToggle: "試合ブリーフ",
+    countryAtlasToggle: "チーム図鑑",
+    videoPanelToggle: "許可済み動画",
+  },
+  ar: {
+    ...copy.en,
+    appEyebrow: "Superteam Earn x TxODDS / تجربة المشجعين",
+    eventBuildStatus: "نسخة World Cup Hackathon",
+    judgeableBuild: "نسخة عامة قابلة للتحكيم",
+    txlineLiveGated: "TxLINE Live يتطلب رمزا",
+    settings: "الإعدادات",
+    close: "إغلاق",
+    language: "اللغة",
+    replay: "إعادة",
+    live: "مباشر",
+    mockFixture: "بيانات إعادة",
+    txlineAdapter: "موصل TxLINE",
+    waitingForTxline: "بانتظار رمز TxLINE",
+    sourceReplay: "الإعادة جاهزة",
+    sourceNeedsToken: "رمز TxLINE مطلوب",
+    sourceReplayMessage: "تستخدم الإعادة بيانات ثابتة كي تبقى التجربة قابلة للتحكيم بلا وصول مباشر.",
+    sourceNeedsTokenMessage: "ضع الرمز محليا فقط بعد توفيره من الجهة الرسمية.",
+    todayBoard: "لوحة المصدر",
+    checkedAt: "تم التحقق",
+    publicSeedSource: "لقطة جدول + مباريات إعادة",
+    freshness: "حداثة البيانات",
+    sourceBoundary: "تبقى Replay و Seed واضحة حتى تنجح مصادقة بيانات TxLINE المباشرة.",
+    play: "تشغيل",
+    pause: "إيقاف",
+    reset: "إعادة ضبط",
+    clock: "الوقت",
+    pulse: "النبض",
+    latestBeat: "آخر لحظة",
+    nextBeat: "اللحظة التالية",
+    noBetting: "بدون مراهنة",
+    aiCommentary: "تعليق ذكي",
+    marketMood: "مزاج السوق، ليس نصيحة",
+    fanCommand: "واجهة المشجع",
+    watchNow: "ما المهم الآن",
+    fanPrediction: "توقع نتيجة المشجع",
+    predictionBody: "اختيار محلي للنقاش فقط، بلا مراهنة أو محفظة أو نصيحة تداول.",
+    predictionSafety: "توقع ترفيهي، ليس نصيحة مراهنة",
+    yourPick: "اختياري",
+    fanLean: "ميل المشجعين",
+    liveFeed: "تدفق الأحداث",
+    waitingForKickoff: "بانتظار البداية",
+    quickPick: "اختيار سريع",
+    localOnly: "محلي فقط",
+    scoreLinkedPick: "مرتبط بالنتيجة",
+    focusNav: "تركيز المباراة",
+    focusWatch: "مشاهدة",
+    focusPick: "توقع",
+    focusTimeline: "الخط الزمني",
+    focusMood: "المزاج",
+    focusTeams: "الفرق",
+    matchdayHub: "مركز يوم المباراة",
+    todaysMatches: "لقطة الجدول",
+    nowPlaying: "قيد المشاهدة",
+    tokenRequiredShort: "رمز مطلوب",
+    replayAvailable: "إعادة متاحة",
+    officialSeed: "Seed رسمي",
+    downloadPickCard: "تنزيل بطاقة التوقع",
+    controlsStatus: "تحكم العرض",
+    settingsHelper: "عدّل اللغة ووضع المراجعة والوحدات المرئية فقط.",
+    viewingPreset: "نمط العرض",
+    dashboardModules: "وحدات اللوحة",
+    operationManualToggle: "دليل التشغيل",
+    fixtureBriefingToggle: "ملخص المباراة",
+    countryAtlasToggle: "أطلس الفرق",
+    videoPanelToggle: "فيديو مصرح",
   },
 } as const;
 
@@ -1076,6 +1370,116 @@ const trustCopy = {
     visibleFixtures: "Fixtures visiveis",
     source: "Fonte",
   },
+  fr: {
+    eyebrow: "Confiance & exactitude",
+    title: "Centre de vérité des données",
+    scheduleSeed: "Snapshot calendrier officiel",
+    scheduleValue: "2 matchs Seed",
+    scheduleNote:
+      "Le snapshot TxLINE World Cup a observé Jordan vs Argentina et Algeria vs Austria pour le 2026-06-28 UTC.",
+    liveGate: "Accès live",
+    liveGateValue: "Token requis",
+    liveGateNote: "Le Live apparaît seulement après chargement authentifié des scores, événements et odds TxLINE.",
+    replayTruth: "Vérité replay",
+    replayTruthValue: "Déterministe",
+    replayTruthNote: "Les replays sont des scénarios fixes pour jury et vidéo, jamais présentés comme live.",
+    freeTier: "Free Tier",
+    freeTierValue: "Live ou délai 60s",
+    freeTierNote:
+      "La documentation TxLINE décrit l'accès temps réel pour certains fixtures et un mode retardé de 60 secondes.",
+    endpointsTitle: "Couverture endpoints",
+    endpoint: "Endpoint",
+    coverage: "Couverture",
+    status: "Statut",
+    mapped: "Mappé",
+    tokenGated: "Token requis",
+    planned: "Prévu",
+    evidence: "Preuve",
+    visibleFixtures: "Matchs visibles",
+    source: "Source",
+  },
+  de: {
+    eyebrow: "Vertrauen & Genauigkeit",
+    title: "Daten-Wahrheitszentrum",
+    scheduleSeed: "Offizieller Kalender-Snapshot",
+    scheduleValue: "2 Seed-Spiele",
+    scheduleNote:
+      "Der TxLINE World Cup Snapshot sah Jordan vs Argentina und Algeria vs Austria für 2026-06-28 UTC.",
+    liveGate: "Live-Gate",
+    liveGateValue: "Token nötig",
+    liveGateNote: "Live erscheint erst nach authentifizierten TxLINE-Scores, Events und Odds.",
+    replayTruth: "Replay-Wahrheit",
+    replayTruthValue: "Deterministisch",
+    replayTruthNote: "Replay-Spiele sind feste Szenarien für Jury und Demo, nie als Live dargestellt.",
+    freeTier: "Free Tier",
+    freeTierValue: "Live oder 60s Verzögerung",
+    freeTierNote:
+      "Die TxLINE-Dokumentation beschreibt Echtzeit-Zugriff für freigegebene Fixtures und einen 60-Sekunden-Delay-Modus.",
+    endpointsTitle: "Endpoint-Abdeckung",
+    endpoint: "Endpoint",
+    coverage: "Abdeckung",
+    status: "Status",
+    mapped: "Gemappt",
+    tokenGated: "Token nötig",
+    planned: "Geplant",
+    evidence: "Nachweis",
+    visibleFixtures: "Sichtbare Spiele",
+    source: "Quelle",
+  },
+  ja: {
+    eyebrow: "信頼性と正確性",
+    title: "データ真実性センター",
+    scheduleSeed: "公式日程スナップショット",
+    scheduleValue: "2件のSeed試合",
+    scheduleNote:
+      "TxLINE World Cup snapshot は 2026-06-28 UTC の Jordan vs Argentina と Algeria vs Austria を確認しました。",
+    liveGate: "ライブゲート",
+    liveGateValue: "Token必要",
+    liveGateNote: "TxLINEのスコア、イベント、oddsが認証後に読み込まれるまでLiveは表示しません。",
+    replayTruth: "リプレイの真実性",
+    replayTruthValue: "固定再現",
+    replayTruthNote: "リプレイは審査と動画用の固定シナリオで、ライブとして表示しません。",
+    freeTier: "Free Tier",
+    freeTierValue: "Liveまたは60秒遅延",
+    freeTierNote: "TxLINE docs は解放済みfixtureのリアルタイムアクセスと60秒遅延モードを説明しています。",
+    endpointsTitle: "Endpoint範囲",
+    endpoint: "Endpoint",
+    coverage: "範囲",
+    status: "状態",
+    mapped: "対応済み",
+    tokenGated: "Token必要",
+    planned: "予定",
+    evidence: "根拠",
+    visibleFixtures: "表示試合",
+    source: "ソース",
+  },
+  ar: {
+    eyebrow: "الثقة والدقة",
+    title: "مركز حقيقة البيانات",
+    scheduleSeed: "لقطة جدول رسمية",
+    scheduleValue: "مباراتان Seed",
+    scheduleNote:
+      "لقطة TxLINE World Cup رصدت Jordan vs Argentina و Algeria vs Austria بتاريخ 2026-06-28 UTC.",
+    liveGate: "بوابة المباشر",
+    liveGateValue: "رمز مطلوب",
+    liveGateNote: "لا يظهر Live حتى يتم تحميل النتائج والأحداث والاحتمالات من TxLINE بمصادقة.",
+    replayTruth: "حقيقة الإعادة",
+    replayTruthValue: "ثابتة",
+    replayTruthNote: "الإعادة سيناريو ثابت للتحكيم والفيديو، ولا تعرض كبيانات مباشرة.",
+    freeTier: "Free Tier",
+    freeTierValue: "مباشر أو تأخير 60ث",
+    freeTierNote: "توثق TxLINE وصولا فوريا لبعض fixtures ووضع تأخير 60 ثانية لغيرها.",
+    endpointsTitle: "تغطية الواجهات",
+    endpoint: "Endpoint",
+    coverage: "التغطية",
+    status: "الحالة",
+    mapped: "مربوط",
+    tokenGated: "يتطلب رمزا",
+    planned: "مخطط",
+    evidence: "الدليل",
+    visibleFixtures: "المباريات المرئية",
+    source: "المصدر",
+  },
 } as const;
 
 const localizedTrustCopy = {
@@ -1120,12 +1524,407 @@ type DemoChapter = {
   focus: string;
 };
 
+type JudgeCriterion = {
+  id: string;
+  label: string;
+  score: number;
+  evidence: string;
+  proof: string;
+};
+
+const judgeCriteriaEn: JudgeCriterion[] = [
+  {
+    id: "fan-ux",
+    label: "Fan accessibility and UX",
+    score: 96,
+    evidence: "Match-first view, local score pick, multilingual settings, event timeline, team context on demand.",
+    proof: "A non-technical fan can open the page and immediately understand score, pulse, next beat, and safety boundary.",
+  },
+  {
+    id: "real-time",
+    label: "Real-time responsiveness",
+    score: 94,
+    evidence: "Replay loop updates score, events, market mood, pulse, commentary, and cards from the same model used by TxLINE.",
+    proof: "Live mode is token-gated, while Replay and Seed remain clearly labeled with source freshness.",
+  },
+  {
+    id: "originality",
+    label: "Originality and value creation",
+    score: 95,
+    evidence: "Pulse timeline, AI-style fan read, market mood context, and shareable fan pick card beyond a normal score site.",
+    proof: "The product turns raw sports data into a watch companion instead of repackaging fixtures.",
+  },
+  {
+    id: "commercial",
+    label: "Commercial and monetization path",
+    score: 91,
+    evidence: "Sponsor-safe fan dashboard, broadcaster/club companion, premium match alerts, and rights-cleared video sync path.",
+    proof: "No betting dependency; monetization can come from fan engagement, media integrations, and team/brand surfaces.",
+  },
+  {
+    id: "execution",
+    label: "Completeness and execution",
+    score: 97,
+    evidence: "Working app, GitHub Pages deployment, README, TxLINE docs, API feedback, demo script, checklist, validation pipeline.",
+    proof: "The public build is judgeable even after the submission deadline when live matches may not be active.",
+  },
+];
+
+const judgeCriteriaZh: JudgeCriterion[] = [
+  {
+    id: "fan-ux",
+    label: "粉丝可及性与用户体验",
+    score: 96,
+    evidence: "主屏直接看比赛、比分预测、本地分享卡、多语言设置、事件时间线和按需展开球队信息。",
+    proof: "非技术球迷打开后能立刻理解比分、脉冲、下一节点和安全边界。",
+  },
+  {
+    id: "real-time",
+    label: "实时响应",
+    score: 94,
+    evidence: "Replay 会同步更新比分、事件、市场情绪、脉冲、解说和卡片，并复用 TxLINE live 数据模型。",
+    proof: "Live 明确 token-gated，Replay / Seed 带来源和新鲜度，不伪装实时。",
+  },
+  {
+    id: "originality",
+    label: "原创性与价值创造",
+    score: 95,
+    evidence: "脉冲时间线、AI 球迷解读、市场情绪语境、可下载预测卡，不只是比分网站。",
+    proof: "把原始体育数据变成观赛陪伴产品，而不是重排赛程资料。",
+  },
+  {
+    id: "commercial",
+    label: "商业与变现路径",
+    score: 91,
+    evidence: "赞助安全的球迷看板、转播/球队伴随屏、高级提醒、授权视频同步路径。",
+    proof: "不依赖下注变现，可走媒体、球队、品牌互动和粉丝参与工具路线。",
+  },
+  {
+    id: "execution",
+    label: "完整性与执行",
+    score: 97,
+    evidence: "可运行网站、GitHub Pages、README、TxLINE 文档、API 反馈、demo 脚本、检查表、验证流水线。",
+    proof: "即使截止后没有实时比赛，公开版本仍可评审。",
+  },
+];
+
+const judgeCriteriaByLanguage: Record<Language, JudgeCriterion[]> = {
+  en: judgeCriteriaEn,
+  zh: judgeCriteriaZh,
+  es: [
+    {
+      id: "fan-ux",
+      label: "Accesibilidad y experiencia fan",
+      score: 96,
+      evidence: "Vista centrada en partido, pronóstico local, idiomas, timeline de eventos y contexto de equipos bajo demanda.",
+      proof: "Un fan no técnico entiende marcador, pulso, próximo momento y límite de seguridad al abrir la página.",
+    },
+    {
+      id: "real-time",
+      label: "Respuesta en tiempo real",
+      score: 94,
+      evidence: "Replay actualiza marcador, eventos, ánimo de mercado, pulso, comentario y tarjetas con el mismo modelo de TxLINE.",
+      proof: "Live queda bloqueado por token; Replay y Seed mantienen fuente y frescura visibles.",
+    },
+    {
+      id: "originality",
+      label: "Originalidad y valor",
+      score: 95,
+      evidence: "Pulse timeline, lectura AI, ánimo de mercado y tarjeta compartible van más allá de un marcador normal.",
+      proof: "Convierte datos deportivos en un compañero de partido, no solo en una lista de fixtures.",
+    },
+    {
+      id: "commercial",
+      label: "Ruta comercial",
+      score: 91,
+      evidence: "Dashboard seguro para sponsors, companion de clubes/medios, alertas premium y video autorizado.",
+      proof: "No depende de apuestas; puede monetizar engagement, medios, equipos y marcas.",
+    },
+    {
+      id: "execution",
+      label: "Completitud y ejecución",
+      score: 97,
+      evidence: "App funcional, Pages, README, docs TxLINE, feedback API, guion demo, checklist y validación.",
+      proof: "La build pública puede evaluarse aunque no haya partidos live durante la revisión.",
+    },
+  ],
+  pt: [
+    {
+      id: "fan-ux",
+      label: "Acessibilidade e UX do torcedor",
+      score: 96,
+      evidence: "Vista focada no jogo, palpite local, idiomas, timeline de eventos e contexto de times sob demanda.",
+      proof: "Um torcedor não técnico entende placar, pulso, próximo momento e limite de segurança rapidamente.",
+    },
+    {
+      id: "real-time",
+      label: "Resposta em tempo real",
+      score: 94,
+      evidence: "Replay atualiza placar, eventos, humor de mercado, pulso, comentário e cards com o modelo TxLINE.",
+      proof: "Live é token-gated; Replay e Seed ficam rotulados com fonte e frescor.",
+    },
+    {
+      id: "originality",
+      label: "Originalidade e valor",
+      score: 95,
+      evidence: "Timeline de pulso, leitura AI, contexto de mercado e card compartilhável além de um placar comum.",
+      proof: "Transforma dados esportivos em companion de partida, não apenas em fixtures.",
+    },
+    {
+      id: "commercial",
+      label: "Caminho comercial",
+      score: 91,
+      evidence: "Dashboard seguro para patrocinadores, companion para clubes/mídia, alertas premium e vídeo autorizado.",
+      proof: "Sem depender de apostas; monetização por engajamento, mídia, times e marcas.",
+    },
+    {
+      id: "execution",
+      label: "Completude e execução",
+      score: 97,
+      evidence: "App funcionando, Pages, README, docs TxLINE, feedback API, roteiro demo, checklist e validação.",
+      proof: "A build pública é avaliável mesmo sem partidas ao vivo no período de revisão.",
+    },
+  ],
+  fr: [
+    {
+      id: "fan-ux",
+      label: "Accessibilité et expérience fan",
+      score: 96,
+      evidence: "Vue match-first, pronostic local, langues, timeline d'événements et contexte d'équipes à la demande.",
+      proof: "Un fan non technique comprend score, pulse, prochain moment et limite de sécurité dès l'ouverture.",
+    },
+    {
+      id: "real-time",
+      label: "Réactivité temps réel",
+      score: 94,
+      evidence: "Replay met à jour score, événements, humeur de marché, pulse, commentaire et cartes avec le modèle TxLINE.",
+      proof: "Live reste protégé par token; Replay et Seed gardent source et fraîcheur visibles.",
+    },
+    {
+      id: "originality",
+      label: "Originalité et valeur",
+      score: 95,
+      evidence: "Pulse timeline, lecture AI, humeur de marché et carte partageable dépassent un simple score.",
+      proof: "Le produit transforme les données sportives en compagnon de match.",
+    },
+    {
+      id: "commercial",
+      label: "Voie commerciale",
+      score: 91,
+      evidence: "Dashboard sûr pour sponsors, companion média/club, alertes premium et vidéo autorisée.",
+      proof: "La monétisation peut venir de l'engagement fan, des médias, des clubs et des marques.",
+    },
+    {
+      id: "execution",
+      label: "Complétude et exécution",
+      score: 97,
+      evidence: "App, Pages, README, docs TxLINE, feedback API, script vidéo, checklist et pipeline de validation.",
+      proof: "La build publique reste jugeable même sans match live pendant la revue.",
+    },
+  ],
+  de: [
+    {
+      id: "fan-ux",
+      label: "Fan-Zugänglichkeit und UX",
+      score: 96,
+      evidence: "Match-zuerst Ansicht, lokaler Tipp, Sprachen, Ereignis-Timeline und Teamkontext auf Abruf.",
+      proof: "Ein nicht-technischer Fan versteht sofort Spielstand, Pulse, nächsten Moment und Sicherheitsgrenze.",
+    },
+    {
+      id: "real-time",
+      label: "Echtzeit-Reaktion",
+      score: 94,
+      evidence: "Replay aktualisiert Spielstand, Events, Marktstimmung, Pulse, Kommentar und Karten mit dem TxLINE-Modell.",
+      proof: "Live bleibt token-gated; Replay und Seed zeigen Quelle und Freshness klar an.",
+    },
+    {
+      id: "originality",
+      label: "Originalität und Wert",
+      score: 95,
+      evidence: "Pulse-Timeline, AI-Lesart, Marktstimmung und teilbare Tippkarte gehen über Livescore hinaus.",
+      proof: "Das Produkt macht Sportdaten zu einem Match-Companion statt zu einer Fixture-Liste.",
+    },
+    {
+      id: "commercial",
+      label: "Kommerzieller Pfad",
+      score: 91,
+      evidence: "Sponsor-sicheres Dashboard, Club/Media Companion, Premium Alerts und lizenzierter Video-Pfad.",
+      proof: "Monetarisierung braucht keine Wetten: Fan-Engagement, Medien, Teams und Marken sind möglich.",
+    },
+    {
+      id: "execution",
+      label: "Vollständigkeit und Umsetzung",
+      score: 97,
+      evidence: "Funktionierende App, Pages, README, TxLINE-Doku, API-Feedback, Demo-Skript, Checkliste und Validierung.",
+      proof: "Die öffentliche Build bleibt auch ohne Live-Spiel während der Review beurteilbar.",
+    },
+  ],
+  ja: [
+    {
+      id: "fan-ux",
+      label: "ファン向けの使いやすさ",
+      score: 96,
+      evidence: "試合中心の表示、ローカル予想、言語設定、イベントタイムライン、必要時のチーム情報を備える。",
+      proof: "技術に詳しくないファンでも、スコア、脈動、次の焦点、安全境界をすぐ理解できる。",
+    },
+    {
+      id: "real-time",
+      label: "リアルタイム応答",
+      score: 94,
+      evidence: "Replay は TxLINE と同じデータモデルでスコア、イベント、市場ムード、解説、カードを更新する。",
+      proof: "Live は token-gated、Replay と Seed はソースと鮮度を明示する。",
+    },
+    {
+      id: "originality",
+      label: "独自性と価値",
+      score: 95,
+      evidence: "Pulse timeline、AI 風の読み、マーケットムード、共有カードが通常のスコア表示を超える。",
+      proof: "生データを試合観戦の companion 体験に変換している。",
+    },
+    {
+      id: "commercial",
+      label: "商用化の道筋",
+      score: 91,
+      evidence: "スポンサー安全な看板、クラブ/メディア連携、プレミアム通知、権利処理済み動画同期を想定。",
+      proof: "賭けに依存せず、ファン参加、メディア、チーム、ブランド連携で展開できる。",
+    },
+    {
+      id: "execution",
+      label: "完成度と実行力",
+      score: 97,
+      evidence: "動くアプリ、Pages、README、TxLINE docs、API feedback、demo script、checklist、validation pipeline。",
+      proof: "審査時にライブ試合がなくても公開版を評価できる。",
+    },
+  ],
+  ar: [
+    {
+      id: "fan-ux",
+      label: "سهولة وصول المشجع وتجربته",
+      score: 96,
+      evidence: "واجهة تبدأ بالمباراة، توقع محلي، لغات، خط زمني للأحداث، ومعلومات الفرق عند الطلب.",
+      proof: "المشجع غير التقني يفهم النتيجة والنبض واللحظة التالية وحدود الأمان بسرعة.",
+    },
+    {
+      id: "real-time",
+      label: "الاستجابة الفورية",
+      score: 94,
+      evidence: "Replay يحدث النتيجة والأحداث ومزاج السوق والنبض والتعليق والبطاقات بنفس نموذج TxLINE.",
+      proof: "Live مقفل بالرمز، وReplay / Seed يعرضان المصدر وحداثة البيانات بوضوح.",
+    },
+    {
+      id: "originality",
+      label: "الأصالة وخلق القيمة",
+      score: 95,
+      evidence: "خط pulse، قراءة AI، سياق السوق، وبطاقة مشاركة تتجاوز موقع النتائج التقليدي.",
+      proof: "المنتج يحول البيانات الرياضية إلى رفيق مشاهدة للمباراة.",
+    },
+    {
+      id: "commercial",
+      label: "المسار التجاري",
+      score: 91,
+      evidence: "لوحة آمنة للرعاة، تجربة للأندية والإعلام، تنبيهات مميزة، ومسار فيديو مرخص.",
+      proof: "لا يعتمد على المراهنة؛ يمكن تحقيق القيمة من التفاعل والإعلام والفرق والعلامات.",
+    },
+    {
+      id: "execution",
+      label: "الاكتمال والتنفيذ",
+      score: 97,
+      evidence: "تطبيق عامل، Pages، README، توثيق TxLINE، ملاحظات API، نص demo، checklist، والتحقق.",
+      proof: "البناء العام قابل للتقييم حتى إذا لم تكن هناك مباراة مباشرة أثناء المراجعة.",
+    },
+  ],
+};
+
+const judgePanelTextByLanguage: Record<
+  Language,
+  { eyebrow: string; scoreLabel: string; blockerTitle: string; blockerIntro: string; blockers: string[] }
+> = {
+  en: {
+    eyebrow: "Judging criteria",
+    scoreLabel: "Honest self score",
+    blockerTitle: "Path to 100",
+    blockerIntro: "The product is judgeable now. A true 100/100 still needs external proof that cannot be faked in code.",
+    blockers: ["Official TxLINE token + live probe", "Final demo video under 5 minutes", "Final Superteam submission URL"],
+  },
+  zh: {
+    eyebrow: "评审标准",
+    scoreLabel: "真实自评分",
+    blockerTitle: "满分前置条件",
+    blockerIntro: "当前版本已经可评审。真正 100/100 还需要外部证明，不能在代码里假装完成。",
+    blockers: ["官方 TxLINE token 与实时接口探测", "5 分钟以内最终演示视频", "Superteam 最终提交链接"],
+  },
+  es: {
+    eyebrow: "Criterios de evaluación",
+    scoreLabel: "Autoevaluación honesta",
+    blockerTitle: "Camino a 100",
+    blockerIntro: "El producto ya es evaluable. El 100/100 real requiere pruebas externas que no se deben fingir.",
+    blockers: ["Token oficial TxLINE + prueba live", "Video demo final de menos de 5 minutos", "URL final de envío en Superteam"],
+  },
+  pt: {
+    eyebrow: "Critérios de avaliação",
+    scoreLabel: "Autoavaliação honesta",
+    blockerTitle: "Caminho para 100",
+    blockerIntro: "O produto já é avaliável. O 100/100 real exige provas externas que não devem ser simuladas.",
+    blockers: ["Token oficial TxLINE + teste live", "Vídeo demo final com menos de 5 minutos", "URL final de envio no Superteam"],
+  },
+  fr: {
+    eyebrow: "Critères d'évaluation",
+    scoreLabel: "Auto-score honnête",
+    blockerTitle: "Chemin vers 100",
+    blockerIntro: "Le produit est déjà jugeable. Le vrai 100/100 exige des preuves externes qu'il ne faut pas simuler.",
+    blockers: ["Token officiel TxLINE + probe live", "Vidéo demo finale sous 5 minutes", "URL finale de soumission Superteam"],
+  },
+  de: {
+    eyebrow: "Bewertungskriterien",
+    scoreLabel: "Ehrlicher Selbstscore",
+    blockerTitle: "Weg zu 100",
+    blockerIntro: "Das Produkt ist jetzt beurteilbar. Echte 100/100 brauchen externe Nachweise, die Code nicht vortäuschen darf.",
+    blockers: ["Offizieller TxLINE Token + Live-Probe", "Finales Demo-Video unter 5 Minuten", "Finale Superteam Submission URL"],
+  },
+  ja: {
+    eyebrow: "審査基準",
+    scoreLabel: "正直な自己評価",
+    blockerTitle: "100点への条件",
+    blockerIntro: "現在の製品は審査可能です。本当の 100/100 には、コードで偽装できない外部証拠が必要です。",
+    blockers: ["公式 TxLINE token と live probe", "5分以内の最終デモ動画", "Superteam の最終提出 URL"],
+  },
+  ar: {
+    eyebrow: "معايير التحكيم",
+    scoreLabel: "تقييم ذاتي صادق",
+    blockerTitle: "الطريق إلى 100",
+    blockerIntro: "المنتج قابل للتحكيم الآن. الدرجة الحقيقية 100/100 تحتاج أدلة خارجية لا يجوز تزويرها بالكود.",
+    blockers: ["رمز TxLINE رسمي + اختبار live", "فيديو demo نهائي أقل من 5 دقائق", "رابط التقديم النهائي في Superteam"],
+  },
+};
+
 function detectInitialLanguage(): Language {
-  if (typeof navigator !== "undefined" && navigator.language.toLowerCase().startsWith("zh")) {
-    return "zh";
+  if (typeof navigator === "undefined") {
+    return "en";
+  }
+
+  const browserLanguage = navigator.language.toLowerCase();
+  const matched = languageOptions.find((option) => browserLanguage.startsWith(option.code));
+
+  if (matched) {
+    return matched.code;
   }
 
   return "en";
+}
+
+function getHtmlLanguage(language: Language) {
+  const htmlLanguages: Record<Language, string> = {
+    ar: "ar",
+    de: "de-DE",
+    en: "en",
+    es: "es-ES",
+    fr: "fr-FR",
+    ja: "ja-JP",
+    pt: "pt-BR",
+    zh: "zh-CN",
+  };
+
+  return htmlLanguages[language];
 }
 
 const zhPresetText: Record<ViewPresetId, Pick<ViewPreset, "label" | "description" | "focus">> = {
@@ -1143,6 +1942,112 @@ const zhPresetText: Record<ViewPresetId, Pick<ViewPreset, "label" | "description
     label: "评审模式",
     description: "适合黑客松评审，展示可重复回放章节和提交准备度。",
     focus: ["数据源看板", "可信中心", "演示章节", "安全边界"],
+  },
+};
+
+const presetTextByLanguage: Partial<Record<Language, Record<ViewPresetId, Pick<ViewPreset, "label" | "description" | "focus">>>> = {
+  zh: zhPresetText,
+  es: {
+    fan: {
+      label: "Modo fan",
+      description: "Para ver el partido rápido: marcador, pulso, último momento y tarjeta para compartir.",
+      focus: ["Marcador", "Último latido", "Lectura AI", "Tarjeta"],
+    },
+    analyst: {
+      label: "Modo analista",
+      description: "Para revisar fuentes, frescura, lógica de eventos y cambios de mercado.",
+      focus: ["Auditoría", "Endpoints", "Mercado", "Eventos"],
+    },
+    judge: {
+      label: "Modo juez",
+      description: "Para evaluar el producto con capítulos repetibles, criterios y readiness.",
+      focus: ["Fuentes", "Criterios", "Demo", "Seguridad"],
+    },
+  },
+  pt: {
+    fan: {
+      label: "Modo torcedor",
+      description: "Para assistir ao jogo com placar, pulso, momento recente e card de compartilhamento.",
+      focus: ["Placar", "Último pulso", "Leitura AI", "Card"],
+    },
+    analyst: {
+      label: "Modo analista",
+      description: "Para checar fontes, frescor, lógica de eventos e movimentos de mercado.",
+      focus: ["Auditoria", "Endpoints", "Mercado", "Eventos"],
+    },
+    judge: {
+      label: "Modo jurado",
+      description: "Para avaliar o produto com capítulos repetíveis, critérios e prontidão.",
+      focus: ["Fontes", "Critérios", "Demo", "Segurança"],
+    },
+  },
+  fr: {
+    fan: {
+      label: "Mode fan",
+      description: "Pour suivre le match vite: score, pulse, dernier moment et carte partageable.",
+      focus: ["Score", "Dernier moment", "Lecture AI", "Carte"],
+    },
+    analyst: {
+      label: "Mode analyste",
+      description: "Pour vérifier sources, fraîcheur, logique d'événements et humeur de marché.",
+      focus: ["Audit", "Endpoints", "Marché", "Événements"],
+    },
+    judge: {
+      label: "Mode jury",
+      description: "Pour évaluer le produit avec chapitres rejouables, critères et readiness.",
+      focus: ["Sources", "Critères", "Demo", "Sécurité"],
+    },
+  },
+  de: {
+    fan: {
+      label: "Fan-Modus",
+      description: "Für schnelles Zuschauen: Spielstand, Pulse, letzter Moment und teilbare Karte.",
+      focus: ["Spielstand", "Letzter Beat", "AI-Lesart", "Karte"],
+    },
+    analyst: {
+      label: "Analyse-Modus",
+      description: "Für Quellen, Freshness, Eventlogik und Marktbewegungen.",
+      focus: ["Audit", "Endpoints", "Markt", "Events"],
+    },
+    judge: {
+      label: "Jury-Modus",
+      description: "Für Bewertung mit wiederholbaren Kapiteln, Kriterien und Readiness.",
+      focus: ["Quellen", "Kriterien", "Demo", "Sicherheit"],
+    },
+  },
+  ja: {
+    fan: {
+      label: "ファンモード",
+      description: "スコア、脈動、直近の焦点、共有カードをすばやく確認するモード。",
+      focus: ["スコア", "最新の焦点", "AI 読み", "カード"],
+    },
+    analyst: {
+      label: "分析モード",
+      description: "ソース、鮮度、イベントロジック、市場ムードを確認するモード。",
+      focus: ["監査", "Endpoints", "市場", "イベント"],
+    },
+    judge: {
+      label: "審査モード",
+      description: "再生可能な章、審査基準、提出準備を確認するモード。",
+      focus: ["ソース", "基準", "Demo", "安全"],
+    },
+  },
+  ar: {
+    fan: {
+      label: "وضع المشجع",
+      description: "لمتابعة النتيجة والنبض وآخر لحظة وبطاقة المشاركة بسرعة.",
+      focus: ["النتيجة", "آخر نبض", "قراءة AI", "بطاقة"],
+    },
+    analyst: {
+      label: "وضع المحلل",
+      description: "لفحص المصادر والحداثة ومنطق الأحداث وحركة السوق.",
+      focus: ["تدقيق", "Endpoints", "السوق", "الأحداث"],
+    },
+    judge: {
+      label: "وضع التحكيم",
+      description: "لتقييم المنتج عبر فصول replay ومعايير واضحة وجاهزية التقديم.",
+      focus: ["مصادر", "معايير", "Demo", "أمان"],
+    },
   },
 };
 
@@ -1335,7 +2240,7 @@ const zhTeamText: Record<string, Partial<Omit<TeamGuide, "code" | "colors">>> = 
 };
 
 function getPresetDisplay(preset: ViewPreset, language: Language) {
-  return language === "zh" ? zhPresetText[preset.id] : preset;
+  return presetTextByLanguage[language]?.[preset.id] ?? preset;
 }
 
 function getManualStepDisplay(step: ManualStep, language: Language): ManualStep {
@@ -1400,7 +2305,7 @@ export default function App() {
   const trust = localizedTrustCopy[language];
 
   useEffect(() => {
-    document.documentElement.lang = language === "zh" ? "zh-CN" : language;
+    document.documentElement.lang = getHtmlLanguage(language);
     document.documentElement.setAttribute("translate", "no");
     document.body.setAttribute("translate", "no");
   }, [language]);
@@ -1702,6 +2607,11 @@ export default function App() {
     { label: t.finalSubmission, value: t.todo, status: "todo" },
   ];
   const readyCount = readinessChecklist.filter((item) => item.status === "ready").length;
+  const judgeCriteria = judgeCriteriaByLanguage[language];
+  const judgePanelText = judgePanelTextByLanguage[language];
+  const judgeScore = Math.round(
+    judgeCriteria.reduce((total, criterion) => total + criterion.score, 0) / judgeCriteria.length,
+  );
   const currentPreset = viewPresets.find((preset) => preset.id === viewPreset) ?? viewPresets[0];
   const currentPresetDisplay = getPresetDisplay(currentPreset, language);
   const matchTeamCodes = new Set([match.home.code, match.away.code]);
@@ -1789,6 +2699,16 @@ export default function App() {
         </div>
       </header>
 
+      <section className="event-status-strip" aria-label="Hackathon review status">
+        <strong>{t.eventBuildStatus}</strong>
+        <span>{t.judgeableBuild}</span>
+        <span>{t.replayAvailable}</span>
+        <span>{t.txlineLiveGated}</span>
+        <time>
+          {t.checkedAt}: {formatKickoff(dataConsistencyState.checkedAtIso, language)}
+        </time>
+      </section>
+
       {settingsOpen ? (
         <>
           <button
@@ -1819,7 +2739,8 @@ export default function App() {
                       onClick={() => setLanguage(option.code)}
                       type="button"
                     >
-                      {option.label}
+                      <strong>{option.label}</strong>
+                      <span>{option.region}</span>
                     </button>
                   ))}
                 </div>
@@ -2593,6 +3514,33 @@ export default function App() {
             ))}
           </div>
         </article>
+        <article className="criteria-score-panel">
+          <div className="panel-heading">
+            <p className="eyebrow">{judgePanelText.eyebrow}</p>
+            <h2>
+              {judgePanelText.scoreLabel}: {judgeScore}/100
+            </h2>
+          </div>
+          <div className="criteria-grid">
+            {judgeCriteria.map((criterion) => (
+              <section key={criterion.id}>
+                <span>{criterion.score}/100</span>
+                <strong>{criterion.label}</strong>
+                <p>{criterion.evidence}</p>
+                <small>{criterion.proof}</small>
+              </section>
+            ))}
+          </div>
+          <div className="score-ceiling-note">
+            <strong>{judgePanelText.blockerTitle}</strong>
+            <p>{judgePanelText.blockerIntro}</p>
+            <ul>
+              {judgePanelText.blockers.map((blocker) => (
+                <li key={blocker}>{blocker}</li>
+              ))}
+            </ul>
+          </div>
+        </article>
       </section>
 
       <section className="story-strip" aria-label="Match story">
@@ -2991,7 +3939,7 @@ function getTodayCardDisplay(
   item: { id: string; label: string; stage: string },
   language: Language,
 ) {
-  const labels: Record<Language, Record<string, { label: string; stage: string }>> = {
+  const labels: Partial<Record<Language, Record<string, { label: string; stage: string }>>> = {
     en: {
       "txline-fixture-17588325": {
         label: "Official TxLINE schedule seed",
@@ -3058,7 +4006,7 @@ function getTodayCardDisplay(
     },
   };
 
-  return labels[language][item.id] ?? { label: item.label, stage: item.stage };
+  return labels[language]?.[item.id] ?? labels.en?.[item.id] ?? { label: item.label, stage: item.stage };
 }
 
 function buildEventStats(events: MatchEvent[]) {
@@ -3195,19 +4143,18 @@ function formatKickoff(kickoffIso: string | undefined, language: Language) {
 }
 
 function getDateLocale(language: Language) {
-  if (language === "zh") {
-    return "zh-CN";
-  }
+  const dateLocales: Record<Language, string> = {
+    ar: "ar-JO",
+    de: "de-DE",
+    en: "en-US",
+    es: "es-ES",
+    fr: "fr-FR",
+    ja: "ja-JP",
+    pt: "pt-BR",
+    zh: "zh-CN",
+  };
 
-  if (language === "es") {
-    return "es-ES";
-  }
-
-  if (language === "pt") {
-    return "pt-BR";
-  }
-
-  return "en-US";
+  return dateLocales[language];
 }
 
 function TeamBadge({ code, color, name }: { code: string; color: string; name: string }) {

@@ -62,6 +62,10 @@ button:hover {
   order: 2;
 }
 
+.event-status-strip {
+  order: 2;
+}
+
 .source-banner {
   order: 3;
 }
@@ -218,6 +222,50 @@ h2 {
   font-weight: 850;
 }
 
+.event-status-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  padding: 10px;
+  border: 1px solid #d7e0e4;
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(23, 33, 38, 0.96), rgba(23, 51, 59, 0.92)),
+    #172126;
+  box-shadow: 0 12px 28px rgba(23, 33, 38, 0.1);
+}
+
+.event-status-strip strong,
+.event-status-strip span,
+.event-status-strip time {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.event-status-strip strong {
+  background: #ffe8a3;
+  color: #172126;
+}
+
+.event-status-strip span {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.event-status-strip time {
+  margin-left: auto;
+  background: rgba(46, 196, 125, 0.16);
+  color: #dfffee;
+}
+
 .settings-scrim {
   position: fixed;
   inset: 0;
@@ -298,12 +346,46 @@ h2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
   gap: 6px;
+  max-height: 300px;
+  overflow-y: auto;
   padding: 5px;
   border: 1px solid #d8e0dc;
   border-radius: 10px;
 }
 
-.language-control button,
+.language-control button {
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  min-height: 54px;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 7px 8px;
+  white-space: normal;
+}
+
+.language-control button strong,
+.language-control button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.language-control button strong {
+  font-size: 0.9rem;
+}
+
+.language-control button span {
+  color: #657478;
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.language-control .active span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
 .preset-control button {
   min-height: 34px;
   min-width: 0;
@@ -1554,13 +1636,14 @@ h2 {
 
 .judge-demo-layer {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.72fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.58fr) minmax(300px, 0.9fr);
   gap: 12px;
   margin: 0 0 16px;
 }
 
 .demo-chapters-panel,
-.readiness-score-panel {
+.readiness-score-panel,
+.criteria-score-panel {
   min-width: 0;
   padding: 18px;
   border: 1px solid #d8e0dc;
@@ -1669,6 +1752,106 @@ h2 {
 .readiness-todo strong {
   background: #f2f4f3;
   color: #657478;
+}
+
+.criteria-score-panel {
+  background:
+    linear-gradient(135deg, rgba(255, 232, 163, 0.24), rgba(85, 167, 216, 0.12)),
+    #ffffff;
+}
+
+.criteria-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.criteria-grid section {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(23, 33, 38, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.criteria-grid span {
+  width: fit-content;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: #172126;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.criteria-grid strong {
+  color: #172126;
+  font-size: 0.92rem;
+}
+
+.criteria-grid p,
+.criteria-grid small {
+  color: #546669;
+  line-height: 1.38;
+}
+
+.criteria-grid p {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.criteria-grid small {
+  font-size: 0.76rem;
+}
+
+.score-ceiling-note {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(23, 33, 38, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 232, 163, 0.34);
+  color: #172126;
+}
+
+.score-ceiling-note strong {
+  font-size: 0.9rem;
+}
+
+.score-ceiling-note p {
+  margin: 0;
+  color: #546669;
+  font-size: 0.82rem;
+  line-height: 1.42;
+}
+
+.score-ceiling-note ul {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.score-ceiling-note li {
+  position: relative;
+  padding-left: 16px;
+  color: #2c3b40;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.score-ceiling-note li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.52em;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #d53652;
 }
 
 .trust-center {
@@ -2491,6 +2674,10 @@ meter {
     flex-direction: column;
   }
 
+  .event-status-strip time {
+    margin-left: 0;
+  }
+
   .match-hero,
   .matchday-rail,
   .fan-command-center,
@@ -2633,7 +2820,7 @@ meter {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .language-control span {
+  .language-control > span {
     grid-column: 1 / -1;
   }
 

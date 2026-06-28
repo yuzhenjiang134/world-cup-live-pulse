@@ -21,12 +21,12 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Fan Mode adds a compact matchday hub so replay fixtures and official TxLINE schedule snapshot matches are visible without opening the full Source Board.
 - The main fan command area keeps watch-now context, score-linked prediction controls, source truth, and team / fixture detail buttons above secondary analysis.
 - Analyst Mode reveals fixture briefing, Source Board, Data Audit, Live Readiness, and Trust & Accuracy Center for data verification.
-- Judge Mode reveals operation guide, fixture briefing, Judge Demo chapters, and submission readiness for review or video recording.
+- Judge Mode reveals operation guide, fixture briefing, Judge Demo chapters, multilingual judging-criteria mapping, submission readiness, and a Path to 100 note for the external items that cannot be faked in code.
 - TxLINE endpoint coverage is shown as status cards instead of a dense table, making mapped, token-gated, and planned feeds easier to scan.
 - Operation Manual, Fixture Briefing, Country Team Atlas, and Authorized Video Sync are optional modules in Settings so the main view stays focused on match pulse.
 - Trust & Accuracy Center explains schedule seed, live token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
 - Match Intelligence shows phase summary, event stack, and player impact.
-- Language setting supports English, Chinese, Spanish, and Portuguese for a broader World Cup fan audience.
+- Language setting supports English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic for the teams and fan regions currently represented in the demo.
 - Match score card, local fan score pick, downloadable fan pick card, timeline, market mood, Match Center, team profiles, and AI commentary are visible in the local app.
 - `docs/UX_BENCHMARKS.md` records market examples and the UX choices adopted or rejected for submission safety.
 - Data states are explicitly labeled as Live, Delay, Replay, or Seed.

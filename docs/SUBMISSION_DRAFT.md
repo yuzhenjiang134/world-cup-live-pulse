@@ -31,10 +31,11 @@ The current build includes:
 - Operation Manual, Fixture Briefing, and Country Team Atlas for first-time users.
 - Optional Authorized Video Sync panel for rights-cleared official video embeds.
 - Trust & Accuracy Center for schedule snapshot, token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
-- Judge Demo chapters for data integrity, goal swing, late volatility, and upset context.
+- Judge Demo chapters plus multilingual judging-criteria score map for data integrity, goal swing, late volatility, upset context, fan UX, real-time responsiveness, originality, monetization path, and execution.
+- Path to 100 note that names the remaining external proof items: official TxLINE token/live probe, final demo video, and final Superteam submission URL.
 - Match Intelligence with phase summary, event stack, and player impact.
 - Match Center with kickoff time, referee, qualification note, discipline events, team profiles, key players, and group table where relevant.
-- English, Chinese, Spanish, and Portuguese language setting.
+- English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic language setting.
 - Share card export.
 - Safety boundary copy: no betting, no trading advice, no wallets, no custody.
 

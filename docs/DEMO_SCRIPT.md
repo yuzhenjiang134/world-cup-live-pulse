@@ -26,7 +26,7 @@ Say: The app does not invent live data. The Source Board uses a TxLINE schedule 
 
 Point to Data Audit, Live Readiness, and the endpoint status cards. Explain mapped, token-gated, and planned feeds in one sentence.
 
-Briefly show that Judge Mode opens the Operation Manual and Fixture Briefing modules, while Fan Mode can collapse them again.
+Briefly show that Judge Mode opens the Operation Manual, Fixture Briefing, judging criteria, and Path to 100 note, while Fan Mode can collapse them again.
 
 Say: The page is designed for a first-time fan. It tells the user what is happening now, lets them make a safe local score pick, and makes source truth visible when they need it.
 
@@ -68,7 +68,7 @@ Use the upset-context chapter to show the Japan vs Germany group table.
 
 ## 3:20-3:55 Settings and optional modules
 
-Open Settings and switch between Fan Mode, Analyst Mode, and Judge Mode. Then switch between English, Chinese, Spanish, and Portuguese.
+Open Settings and switch between Fan Mode, Analyst Mode, and Judge Mode. Then show the eight-language selector: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic.
 
 Say: Presets keep the page useful for ordinary fans, data reviewers, and hackathon judges without cluttering the main match view. Language switching is important for a global World Cup fan experience and for demo clarity across audiences.
 

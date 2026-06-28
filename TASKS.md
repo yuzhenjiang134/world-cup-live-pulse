@@ -13,7 +13,7 @@ Updated: 2026-06-28
 - [x] Build event timeline
 - [x] Build AI-style one-line commentary
 - [x] Build market mood and odds movement panel
-- [x] Add settings panel with English / Chinese / Spanish / Portuguese language switch
+- [x] Add settings panel with English / Chinese / Spanish / Portuguese / French / German / Japanese / Arabic language switch
 - [x] Add richer match hero, story strip, pulse arc, and judge-ready status panels
 - [x] Add Source Board with No Match Day / Token Required handling
 - [x] Add official TxLINE schedule snapshot fixtures checked on 2026-06-28
@@ -46,10 +46,10 @@ Updated: 2026-06-28
 - [x] Add `docs/PUBLIC_RESEARCH_SUMMARY.md`
 - [x] Add player impact aggregation from replay events
 - [x] Add event stack counts for goals, cards, substitutions, and market swings
-- [x] Add Judge Demo Layer with clickable highlight chapters
+- [x] Add Judge Demo Layer with clickable highlight chapters and judging-criteria score map
 - [x] Add one-click jumps for data integrity, goal swing, late volatility, and upset context
 - [x] Add local submission readiness score panel
-- [x] Add World Cup fan-facing multilingual UI coverage for EN / ZH / ES / PT
+- [x] Add World Cup fan-facing multilingual UI coverage for EN / ZH / ES / PT / FR / DE / JA / AR
 - [x] Add kickoff time, referee, qualification note, and data status to Match Center
 - [x] Add team profiles and three key players per replay team
 - [x] Add discipline event panel for yellow and red cards
