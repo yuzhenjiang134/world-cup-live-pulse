@@ -8,6 +8,10 @@
 - [ ] Today Board shows official TxLINE schedule seed fixtures as Seed / Token Required.
 - [ ] Daily Brief, Data Audit, and Live Readiness are visible.
 - [ ] Trust & Accuracy Center is visible.
+- [ ] Operation Manual is visible.
+- [ ] Fixture Briefing is visible.
+- [ ] Country Team Atlas is visible.
+- [ ] Settings controls language, viewing preset, and module visibility.
 - [ ] Endpoint coverage table is visible.
 - [ ] Judge Demo chapter buttons work.
 - [ ] Match Intelligence phase summary, event stack, and player impact render.
@@ -34,6 +38,7 @@
 - [ ] `docs/TECHNICAL_OVERVIEW.md`
 - [ ] `docs/TXLINE_ENDPOINTS.md`
 - [ ] `docs/API_FEEDBACK.md`
+- [ ] `docs/USER_MANUAL.md`
 - [ ] `docs/SUBMISSION_DRAFT.md`
 - [ ] `docs/DEMO_SCRIPT.md`
 - [ ] `docs/SUBMISSION_CHECKLIST.md`

@@ -24,6 +24,11 @@ Updated: 2026-06-28
 - [x] Add Data Audit panel for mode, source, replay, and seed coverage
 - [x] Add Live Readiness panel for token, endpoints, calendar, and fallback state
 - [x] Add Match Intelligence phase summary
+- [x] Add Operation Manual for first-time users and judges
+- [x] Add Fixture Briefing with match-specific data rules
+- [x] Add Country Team Atlas with team style, fan context, and watch notes
+- [x] Add settings controls for viewing preset and dashboard modules
+- [x] Add `docs/USER_MANUAL.md`
 - [x] Add player impact aggregation from replay events
 - [x] Add event stack counts for goals, cards, substitutions, and market swings
 - [x] Add Judge Demo Layer with clickable highlight chapters

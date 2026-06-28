@@ -16,6 +16,10 @@ Say: The app does not invent live data. The Today Board uses official TxLINE sch
 
 Point to Data Audit, Live Readiness, and endpoint coverage.
 
+Open the Operation Manual and Fixture Briefing.
+
+Say: The page is designed for a first-time fan. It tells the user how to read the source state, how to pick a match path, and what data can or cannot be trusted as live.
+
 ## 1:20-2:20 Judge Demo chapters
 
 Use the Judge Demo chapter buttons.
@@ -39,6 +43,7 @@ Say: The built-in chapters make the demo repeatable for judges and video recordi
 
 Show:
 
+- Country Team Atlas
 - Phase summary
 - Event stack
 - Player impact

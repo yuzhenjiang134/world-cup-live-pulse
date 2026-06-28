@@ -1,4 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
+import {
+  manualSteps,
+  matchBriefings,
+  teamAtlas,
+  viewPresets,
+  type MatchBriefing,
+  type ManualStep,
+  type TeamGuide,
+  type ViewPreset,
+} from "./data/fanGuide";
 import { dataConsistencyState } from "./data/matchCalendar";
 import { replayMatches } from "./data/replayMatch";
 import { buildPulseFrame } from "./lib/pulse";
@@ -13,6 +23,13 @@ const replaySpeeds = [0.5, 1, 2, 4] as const;
 type Language = "en" | "zh" | "es" | "pt";
 
 const languageOptions: { code: Language; label: string }[] = [
+  { code: "en", label: "English" },
+  { code: "zh", label: "中文" },
+  { code: "es", label: "Español" },
+  { code: "pt", label: "Português" },
+];
+
+const displayLanguageOptions: { code: Language; label: string }[] = [
   { code: "en", label: "English" },
   { code: "zh", label: "中文" },
   { code: "es", label: "Español" },
@@ -180,6 +197,24 @@ const copy = {
     chapterGoalFocus: "Score and mood swing",
     chapterLateFocus: "Volatility explanation",
     chapterUpsetFocus: "Group table and player impact",
+    settingsHelper: "Tune the page for match watching, data review, or a hackathon judging walkthrough.",
+    viewingPreset: "Viewing preset",
+    dashboardModules: "Dashboard modules",
+    operationManualToggle: "Operation manual",
+    fixtureBriefingToggle: "Fixture briefing",
+    countryAtlasToggle: "Country team atlas",
+    operationManualEyebrow: "Operation Manual",
+    operationManualTitle: "How to read this dashboard on matchday",
+    operationManualBody:
+      "Start from source truth, then move through score, pulse, market mood, and share output. This keeps the product helpful for fans without turning it into a betting screen.",
+    fixtureBriefingEyebrow: "Match Intelligence",
+    fixtureBriefingTitle: "Fixture briefing and data rules",
+    countryAtlasEyebrow: "Country Team Atlas",
+    countryAtlasTitle: "Teams, styles, and fan context",
+    teamStyle: "Style",
+    fanRead: "Fan read",
+    watchFor: "Watch for",
+    dataNote: "Data note",
   },
   zh: {
     appEyebrow: "Superteam Earn / TxODDS 黑客松 MVP",
@@ -340,8 +375,177 @@ const copy = {
   },
 } as const;
 
+type CopyShape = { [Key in keyof typeof copy.en]: string };
+
+const cleanZhCopy = {
+  ...copy.en,
+  appEyebrow: "Superteam Earn / TxODDS 黑客松 MVP",
+  settings: "设置",
+  close: "关闭",
+  language: "语言",
+  english: "English",
+  chinese: "中文",
+  replay: "回放",
+  live: "实时",
+  mockFixture: "回放数据",
+  txlineAdapter: "TxLINE 接入层",
+  waitingForTxline: "等待 TxLINE token",
+  sourceReplay: "回放数据已就绪",
+  sourceLiveReady: "实时数据已接入",
+  sourceNeedsToken: "需要 TxLINE token",
+  sourceError: "数据源错误",
+  sourceReplayMessage: "回放模式使用固定比赛数据，评委可以随时完整体验。",
+  sourceLiveReadyMessage: "实时模式已通过 TxLINE adapter 加载。",
+  sourceNeedsTokenMessage: "请只在本地 .env.local 放入 TxLINE token，不要提交到仓库。",
+  sourceErrorMessage: "实时源不可用时，页面会明确显示错误并保留回放兜底。",
+  todayBoard: "今日看板",
+  dataConsistency: "数据一致性",
+  noMatchDayRule:
+    "页面不会伪造实时比赛。没有 token 或没有实时赛程时，只显示 Seed 或 Replay。",
+  checkedAt: "种子快照",
+  source: "来源",
+  publicSeedSource: "公开版：赛程种子 + 回放 fixture",
+  consistencyRules: "一致性规则",
+  replayScenario: "回放场景",
+  play: "播放",
+  pause: "暂停",
+  reset: "重置",
+  replayMinute: "回放分钟",
+  replaySpeed: "回放速度",
+  jumpToMoment: "跳到关键时刻",
+  clock: "比赛时间",
+  pulse: "情绪脉冲",
+  latestBeat: "最新节点",
+  nextBeat: "下一节点",
+  replayReady: "回放可演示",
+  pagesLive: "Pages 已上线",
+  noBetting: "不下注",
+  aiCommentary: "AI 解说",
+  oneLineRead: "一句话比赛解读",
+  pressure: "压力地图",
+  neutral: "中立",
+  marketMood: "市场情绪，不是建议",
+  oddsMovement: "赔率/情绪变化",
+  draw: "平局",
+  marketSafety:
+    "这里只把市场变化作为球迷上下文展示，不提供下注、交易建议、钱包或托管功能。",
+  pulseArc: "脉冲曲线",
+  matchMoodPath: "整场情绪路径",
+  low: "低点",
+  now: "当前",
+  high: "高点",
+  momentumInsight: "走势洞察",
+  whyMomentMatters: "这个时刻为什么重要",
+  swing: "摆动",
+  signal: "信号",
+  events: "事件",
+  submissionSnapshot: "提交状态",
+  judgeReadyPacket: "评委可读信息",
+  publicBuild: "公开部署",
+  liveData: "实时数据",
+  adapterGated: "接入层已隔离",
+  safety: "安全边界",
+  matchCenter: "比赛中心",
+  matchFacts: "比赛信息",
+  kickoff: "开球时间",
+  referee: "裁判",
+  dataStatus: "数据状态",
+  discipline: "红黄牌",
+  noCards: "暂无红黄牌",
+  qualification: "晋级语境",
+  groupTable: "小组积分",
+  teamProfiles: "球队资料",
+  coach: "主教练",
+  keyPlayers: "关键球员",
+  shareCard: "球迷分享卡",
+  exportPulse: "导出当前脉冲",
+  downloadSvg: "下载 SVG",
+  timeline: "比赛时间线",
+  keyEvents: "关键事件",
+  replayLoop: "回放将重新开始。",
+  matchLevel: "比分持平",
+  controlsStatus: "演示控制台",
+  dailyBrief: "每日简报",
+  fansNeedKnow: "球迷现在需要知道什么",
+  dailyBriefBody:
+    "公开版不携带私密 TxLINE token，因此保持可评审的 Replay + Seed 状态。",
+  dailyPointOne: "Replay 模式可以随时完整演示球迷体验。",
+  dailyPointTwo: "Seed 资料用于赛程、球队、球员、裁判和积分语境。",
+  dailyPointThree: "Live 模式已接官方端点，但需要本地 token 才能加载。",
+  dataAudit: "数据审计",
+  sourceLedger: "来源账本",
+  currentMode: "当前模式",
+  canonicalSource: "权威来源",
+  replayCoverage: "回放覆盖",
+  seedCoverage: "种子覆盖",
+  liveReadiness: "实时接入准备",
+  tokenStatus: "Token",
+  endpointStatus: "Endpoints",
+  calendarStatus: "赛程",
+  fallbackStatus: "兜底",
+  pending: "待补",
+  ready: "就绪",
+  gated: "已隔离",
+  replayFixtures: "2 个回放 fixture",
+  seedProfiles: "球队、球员、裁判、积分",
+  noLiveFixture: "未配置实时赛程",
+  replayFallbackReady: "回放兜底已就绪",
+  endpointPending: "等待本地 TxLINE token 与权限验证",
+  matchIntelligence: "比赛智能层",
+  phaseSummary: "阶段摘要",
+  preMatch: "赛前",
+  firstHalf: "上半场",
+  secondHalf: "下半场",
+  postMatch: "赛后",
+  playerImpact: "球员影响",
+  eventStack: "事件统计",
+  goals: "进球",
+  cards: "牌",
+  subs: "换人",
+  marketSwings: "市场波动",
+  involved: "参与",
+  noPlayerEvents: "暂无球员关联事件",
+  minutes: "分钟",
+  currentRead: "当前解读",
+  firstHalfSummary: "上半场建立情绪基线，之后换人和压力会改变整场脉冲。",
+  secondHalfSummary: "下半场最容易出现波动：进球、红黄牌和市场变化会重塑球迷叙事。",
+  postMatchSummary: "回放已完成，比分、上下文、市场情绪和安全边界都可供评审查看。",
+  preMatchSummary: "比赛从种子资料开始：球队、场地、裁判、开球时间和回放场景都清楚。",
+  judgeDemo: "评委演示",
+  demoChapters: "演示章节",
+  demoReadiness: "提交准备度",
+  readinessScore: "准备度",
+  runnableSite: "可运行网站",
+  publicRepo: "公开 GitHub 仓库",
+  replayDemo: "回放演示",
+  txlineDocs: "TxLINE 文档",
+  demoVideo: "演示视频",
+  finalSubmission: "最终提交",
+  draft: "草稿",
+  todo: "待做",
+  settingsHelper: "按球迷观看、数据复核或黑客松评审演示来调整页面。",
+  viewingPreset: "观看预设",
+  dashboardModules: "看板模块",
+  operationManualToggle: "操作手册",
+  fixtureBriefingToggle: "赛程说明",
+  countryAtlasToggle: "国家队资料",
+  operationManualEyebrow: "操作手册",
+  operationManualTitle: "比赛日如何阅读这个看板",
+  operationManualBody:
+    "先确认数据来源，再看比分、情绪脉冲、市场气氛和分享卡。这样对球迷有帮助，同时不会变成下注界面。",
+  fixtureBriefingEyebrow: "比赛情报",
+  fixtureBriefingTitle: "赛程说明与数据规则",
+  countryAtlasEyebrow: "国家队资料",
+  countryAtlasTitle: "球队、风格与球迷语境",
+  teamStyle: "打法风格",
+  fanRead: "球迷解读",
+  watchFor: "重点观察",
+  dataNote: "数据说明",
+} satisfies CopyShape;
+
 const localizedCopy = {
-  ...copy,
+  en: copy.en,
+  zh: cleanZhCopy,
   es: {
     ...copy.en,
     appEyebrow: "MVP para Superteam Earn / TxODDS Hackathon",
@@ -784,7 +988,39 @@ const trustCopy = {
   },
 } as const;
 
+const localizedTrustCopy = {
+  ...trustCopy,
+  zh: {
+    eyebrow: "可信度与准确性",
+    title: "数据真实性中心",
+    scheduleSeed: "官方赛程种子",
+    scheduleValue: "今日 2 场",
+    scheduleNote:
+      "TxLINE World Cup schedule 显示 2026-06-28 UTC 有 Jordan vs Argentina、Algeria vs Austria。",
+    liveGate: "实时数据门槛",
+    liveGateValue: "需要 Token",
+    liveGateNote: "只有 TxLINE 鉴权后的比分、事件和赔率接口加载成功后，页面才会显示 Live。",
+    replayTruth: "回放真实性",
+    replayTruthValue: "固定可复现",
+    replayTruthNote: "Replay 是用于评审和录屏的历史场景，不会伪装成实时比赛。",
+    freeTier: "Free Tier 行为",
+    freeTierValue: "实时或 60 秒延迟",
+    freeTierNote: "TxLINE 文档说明可解锁实时 fixture，其它 fixture 可用 60 秒延迟模式。",
+    endpointsTitle: "Endpoint 覆盖",
+    endpoint: "Endpoint",
+    coverage: "覆盖内容",
+    status: "状态",
+    mapped: "已映射",
+    tokenGated: "Token 锁定",
+    planned: "计划中",
+    evidence: "证据",
+    visibleFixtures: "可见赛程",
+    source: "来源",
+  },
+} as const;
+
 type CopyText = (typeof localizedCopy)[Language];
+type ViewPresetId = ViewPreset["id"];
 type DemoChapter = {
   id: string;
   matchId: string;
@@ -793,6 +1029,228 @@ type DemoChapter = {
   summary: string;
   focus: string;
 };
+
+const zhPresetText: Record<ViewPresetId, Pick<ViewPreset, "label" | "description" | "focus">> = {
+  fan: {
+    label: "球迷模式",
+    description: "适合普通球迷看比赛，快速理解比分、情绪和关键节点。",
+    focus: ["比分", "最新节点", "AI 解读", "分享卡"],
+  },
+  analyst: {
+    label: "分析模式",
+    description: "适合检查数据来源、赔率新鲜度和事件逻辑。",
+    focus: ["数据审计", "Endpoint 覆盖", "市场变化", "事件统计"],
+  },
+  judge: {
+    label: "评审模式",
+    description: "适合黑客松评审，展示可重复回放章节和提交准备度。",
+    focus: ["今日看板", "可信中心", "演示章节", "安全边界"],
+  },
+};
+
+const zhManualStepText: Record<string, Pick<ManualStep, "title" | "action" | "reason">> = {
+  source: {
+    title: "1. 先看数据来源",
+    action: "阅读比赛前，先确认黄色或绿色的数据来源提示条。",
+    reason: "球迷能立刻知道当前是 Replay、Seed、Live、Delay，还是 token-gated 状态。",
+  },
+  match: {
+    title: "2. 选择观看路径",
+    action: "用今日看板确认赛程真实状态，或用评审章节进行可重复回放演示。",
+    reason: "无论当天有没有比赛，产品都能用，同时不会编造实时数据。",
+  },
+  pulse: {
+    title: "3. 看情绪脉冲，不只看比分",
+    action: "把 AI 解说、最新节点、市场气氛、压力图和时间线一起看。",
+    reason: "普通球迷能用一句话理解为什么比赛此刻发生了变化。",
+  },
+  share: {
+    title: "4. 确认安全边界后再分享",
+    action: "导出球迷分享卡前，确认数据状态和不下注边界。",
+    reason: "看板适合社交传播，同时避免下注和交易建议。",
+  },
+  live: {
+    title: "5. 本地验证实时数据",
+    action: "拿到 token 后，只放进 .env.local，并运行 npm run txline:probe。",
+    reason: "真实 TxLINE 测试不能把 API token 泄漏到公开仓库或浏览器构建里。",
+  },
+};
+
+const zhMatchBriefingText: Record<string, Partial<Omit<MatchBriefing, "id">>> = {
+  "txline-fixture-17588325": {
+    title: "约旦 vs 阿根廷",
+    stage: "世界杯小组赛",
+    source: "TxLINE 赛程种子",
+    status: "实时比分、事件和赔率需要 token",
+    whatToWatch: [
+      "把这张卡当作赛程真实锚点，不要当作伪实时比赛。",
+      "拿到 token 后，fixture 17588325 是第一个实时探测目标。",
+      "只有比分和赔率载荷成功加载后，界面才应显示 Live。",
+    ],
+  },
+  "txline-fixture-17588326": {
+    title: "阿尔及利亚 vs 奥地利",
+    stage: "世界杯小组赛",
+    source: "TxLINE 赛程种子",
+    status: "实时比分、事件和赔率需要 token",
+    whatToWatch: [
+      "用它作为第二场 fixture，验证赛程一致性。",
+      "如果实时数据不可用，保持 Seed 标签可见。",
+      "叫它 Live 之前，比分新鲜度和赔率新鲜度都要对齐。",
+    ],
+  },
+  "wc-demo-arg-fra": {
+    title: "阿根廷 vs 法国",
+    kickoff: "回放 fixture",
+    stage: "决赛回放",
+    source: "Replay 数据",
+    status: "任何时间都可评审",
+    whatToWatch: ["第 23 分钟的进球摆动。", "第 80 和 81 分钟的尾声波动。", "市场气氛只做语境，不做下注建议。"],
+  },
+  "wc-demo-jpn-ger": {
+    title: "德国 vs 日本",
+    kickoff: "回放 fixture",
+    stage: "小组赛爆冷回放",
+    source: "Replay 数据",
+    status: "任何时间都可评审",
+    whatToWatch: ["用第 75 分钟展示爆冷走势。", "小组积分解释为什么这个球迷故事重要。", "球员影响展示替补和关键跑动。"],
+  },
+};
+
+const zhTeamText: Record<string, Partial<Omit<TeamGuide, "code" | "colors">>> = {
+  ARG: {
+    name: "阿根廷",
+    region: "南美洲",
+    status: "Replay + 赛程种子",
+    style: "控球、情绪节奏明显，左路转换很快。",
+    fanRead: "球迷会先看核心创造者，一次触球就可能改变整场气氛。",
+    watchFor: "点球压力、Messi 串联和尾声观众情绪摆动。",
+    dataNote: "当前为回放资料, TxLINE 鉴权成功后由实时比分和赔率覆盖。",
+  },
+  FRA: {
+    name: "法国",
+    region: "欧洲",
+    status: "Replay 种子",
+    style: "前场爆发强，直接压迫，尾声波动突然。",
+    fanRead: "比赛可能看似平稳，直到法国找到防线身后的空间。",
+    watchFor: "Mbappe 加速、追回窗口和市场气氛快速反转。",
+    dataNote: "用于可评审回放节点。",
+  },
+  GER: {
+    name: "德国",
+    region: "欧洲",
+    status: "Replay 种子",
+    style: "重视区域推进、射门量、中场控制和高控球压迫。",
+    fanRead: "德国的脉冲常常在比分变化前就因为压力而上升。",
+    watchFor: "点球时刻、二点球压力和换人后的防守空隙。",
+    dataNote: "回放种子包含小组积分语境，用于讲爆冷故事。",
+  },
+  JPN: {
+    name: "日本",
+    region: "亚洲",
+    status: "Replay 种子",
+    style: "防守紧凑、替补速度快，尾声转换锋利。",
+    fanRead: "日本的球迷叙事是先耐心等待，再快速情绪反转。",
+    watchFor: "替补影响、扳平窗口和弱势方走势。",
+    dataNote: "回放种子用于爆冷语境章节。",
+  },
+  JOR: {
+    name: "约旦",
+    region: "亚洲",
+    status: "TxLINE 赛程种子",
+    style: "结构化防线、快速释放和定位球压力。",
+    fanRead: "核心需求是清楚标注：实时源鉴权前只显示赛程种子。",
+    watchFor: "fixture 状态、开局防守形态，以及实时比分是否解锁。",
+    keyPlayers: ["等待接口阵容", "等待球队上下文", "等待首发名单"],
+    dataNote: "fixture 17588325 出现在 TxLINE 赛程种子中。",
+  },
+  ALG: {
+    name: "阿尔及利亚",
+    region: "非洲",
+    status: "TxLINE 赛程种子",
+    style: "边路推进、阶段性逼抢，情绪波动很明显。",
+    fanRead: "球迷需要马上知道这是赛程数据，比分到达后再进入实时状态。",
+    watchFor: "fixture 状态、进攻通道和已鉴权赔率可用性。",
+    keyPlayers: ["等待接口阵容", "等待球队上下文", "等待首发名单"],
+    dataNote: "fixture 17588326 出现在 TxLINE 赛程种子中。",
+  },
+  AUT: {
+    name: "奥地利",
+    region: "欧洲",
+    status: "TxLINE 赛程种子",
+    style: "紧凑逼抢、纵向传球和纪律性中场站位。",
+    fanRead: "奥地利资料卡要保持诚实：先显示赛程，token 可用后再显示实时细节。",
+    watchFor: "逼抢强度、比赛时钟新鲜度和市场快照时间。",
+    keyPlayers: ["等待接口阵容", "等待球队上下文", "等待首发名单"],
+    dataNote: "fixture 17588326 出现在 TxLINE 赛程种子中。",
+  },
+  USA: {
+    name: "美国",
+    region: "北美洲",
+    status: "东道主参考种子",
+    style: "转换速度、身体压迫和边路跑动。",
+    fanRead: "适合测试全球球迷、语言切换和主办国语境。",
+    watchFor: "年轻球员节点和高能量观众阶段。",
+    keyPlayers: ["东道主资料种子", "等待阵容", "等待首发"],
+    dataNote: "仅为参考资料, 实时使用取决于 TxLINE fixture。",
+  },
+  MEX: {
+    name: "墨西哥",
+    region: "北美洲",
+    status: "东道主参考种子",
+    style: "情绪强、边路进攻多，观众反馈很快。",
+    fanRead: "适合测试语言、社区和比赛日分享体验。",
+    watchFor: "定位球后的走势和观众带动的压力变化。",
+    keyPlayers: ["东道主资料种子", "等待阵容", "等待首发"],
+    dataNote: "仅为参考资料, 实时使用取决于 TxLINE fixture。",
+  },
+  BRA: {
+    name: "巴西",
+    region: "南美洲",
+    status: "球迷参考种子",
+    style: "个人灵感、快速小配合和高期待压力。",
+    fanRead: "适合测试进球前的脉冲上升。",
+    watchFor: "机会创造、边路突破和观众信心摆动。",
+    keyPlayers: ["参考种子", "等待阵容", "等待首发"],
+    dataNote: "仅为参考资料, 实时使用取决于 TxLINE fixture。",
+  },
+  ENG: {
+    name: "英格兰",
+    region: "欧洲",
+    status: "球迷参考种子",
+    style: "结构化进攻、定位球威胁和有节制的控制。",
+    fanRead: "适合解释压力，不夸大确定性。",
+    watchFor: "定位球、中场控制和尾声风险管理。",
+    keyPlayers: ["参考种子", "等待阵容", "等待首发"],
+    dataNote: "仅为参考资料, 实时使用取决于 TxLINE fixture。",
+  },
+  ESP: {
+    name: "西班牙",
+    region: "欧洲",
+    status: "球迷参考种子",
+    style: "控球、轮转，通过控制制造压力。",
+    fanRead: "适合测试看板能否解释安静的优势。",
+    watchFor: "区域占领、传球节奏和细微赔率变化。",
+    keyPlayers: ["参考种子", "等待阵容", "等待首发"],
+    dataNote: "仅为参考资料, 实时使用取决于 TxLINE fixture。",
+  },
+};
+
+function getPresetDisplay(preset: ViewPreset, language: Language) {
+  return language === "zh" ? zhPresetText[preset.id] : preset;
+}
+
+function getManualStepDisplay(step: ManualStep, language: Language): ManualStep {
+  return language === "zh" ? { ...step, ...zhManualStepText[step.id] } : step;
+}
+
+function getMatchBriefingDisplay(briefing: MatchBriefing, language: Language): MatchBriefing {
+  return language === "zh" ? { ...briefing, ...zhMatchBriefingText[briefing.id] } : briefing;
+}
+
+function getTeamDisplay(team: TeamGuide, language: Language): TeamGuide {
+  return language === "zh" ? { ...team, ...zhTeamText[team.code] } : team;
+}
 
 export default function App() {
   const [mode, setMode] = useState<MatchMode>("replay");
@@ -805,9 +1263,14 @@ export default function App() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [speed, setSpeed] = useState<(typeof replaySpeeds)[number]>(1);
   const [replayMatchId, setReplayMatchId] = useState(replayMatches[0].id);
+  const [viewPreset, setViewPreset] = useState<ViewPresetId>("fan");
+  const [showManual, setShowManual] = useState(true);
+  const [showMatchGuide, setShowMatchGuide] = useState(true);
+  const [showTeamAtlas, setShowTeamAtlas] = useState(true);
+  const [selectedTeamCode, setSelectedTeamCode] = useState("ARG");
 
   const t = localizedCopy[language];
-  const trust = trustCopy[language];
+  const trust = localizedTrustCopy[language];
 
   useEffect(() => {
     setLoadError(null);
@@ -1015,6 +1478,16 @@ export default function App() {
     { label: t.finalSubmission, value: t.todo, status: "todo" },
   ];
   const readyCount = readinessChecklist.filter((item) => item.status === "ready").length;
+  const currentPreset = viewPresets.find((preset) => preset.id === viewPreset) ?? viewPresets[0];
+  const currentPresetDisplay = getPresetDisplay(currentPreset, language);
+  const matchTeamCodes = new Set([match.home.code, match.away.code]);
+  const priorityTeamAtlas = [...teamAtlas].sort((first, second) => {
+    const firstActive = matchTeamCodes.has(first.code) ? 1 : 0;
+    const secondActive = matchTeamCodes.has(second.code) ? 1 : 0;
+    return secondActive - firstActive || first.name.localeCompare(second.name);
+  });
+  const selectedTeam = teamAtlas.find((team) => team.code === selectedTeamCode) ?? teamAtlas[0];
+  const selectedTeamDisplay = getTeamDisplay(selectedTeam, language);
 
   function openDemoChapter(chapter: DemoChapter) {
     switchMode("replay", { resetMinute: false });
@@ -1024,7 +1497,7 @@ export default function App() {
   }
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell preset-${viewPreset}`}>
       <header className="topbar">
         <div className="brand-block">
           <p className="eyebrow">{t.appEyebrow}</p>
@@ -1059,22 +1532,76 @@ export default function App() {
 
       {settingsOpen ? (
         <section className="settings-panel" aria-label={t.settings}>
-          <div>
-            <p className="eyebrow">{t.settings}</p>
-            <h2>{t.controlsStatus}</h2>
+          <div className="settings-heading">
+            <div>
+              <p className="eyebrow">{t.settings}</p>
+              <h2>{t.controlsStatus}</h2>
+            </div>
+            <p>{t.settingsHelper}</p>
           </div>
-          <div className="language-control" aria-label={t.language}>
-            <span>{t.language}</span>
-            {languageOptions.map((option) => (
-              <button
-                className={language === option.code ? "active" : ""}
-                key={option.code}
-                onClick={() => setLanguage(option.code)}
-                type="button"
-              >
-                {option.label}
-              </button>
-            ))}
+          <div className="settings-grid">
+            <section className="settings-card">
+              <span>{t.language}</span>
+              <div className="language-control" aria-label={t.language}>
+                {displayLanguageOptions.map((option) => (
+                  <button
+                    className={language === option.code ? "active" : ""}
+                    key={option.code}
+                    onClick={() => setLanguage(option.code)}
+                    type="button"
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </section>
+            <section className="settings-card">
+              <span>{t.viewingPreset}</span>
+              <div className="preset-control" aria-label={t.viewingPreset}>
+                {viewPresets.map((preset) => {
+                  const display = getPresetDisplay(preset, language);
+
+                  return (
+                    <button
+                      className={viewPreset === preset.id ? "active" : ""}
+                      key={preset.id}
+                      onClick={() => setViewPreset(preset.id)}
+                      type="button"
+                    >
+                      {display.label}
+                    </button>
+                  );
+                })}
+              </div>
+              <p>{currentPresetDisplay.description}</p>
+            </section>
+            <section className="settings-card">
+              <span>{t.dashboardModules}</span>
+              <label className="toggle-row">
+                <input
+                  checked={showManual}
+                  onChange={(event) => setShowManual(event.target.checked)}
+                  type="checkbox"
+                />
+                <strong>{t.operationManualToggle}</strong>
+              </label>
+              <label className="toggle-row">
+                <input
+                  checked={showMatchGuide}
+                  onChange={(event) => setShowMatchGuide(event.target.checked)}
+                  type="checkbox"
+                />
+                <strong>{t.fixtureBriefingToggle}</strong>
+              </label>
+              <label className="toggle-row">
+                <input
+                  checked={showTeamAtlas}
+                  onChange={(event) => setShowTeamAtlas(event.target.checked)}
+                  type="checkbox"
+                />
+                <strong>{t.countryAtlasToggle}</strong>
+              </label>
+            </section>
           </div>
         </section>
       ) : null}
@@ -1115,6 +1642,145 @@ export default function App() {
         <section className={`source-banner source-${source?.kind}`} aria-label="Data source status">
           <strong>{sourceStatus.label}</strong>
           <span>{sourceStatus.message}</span>
+        </section>
+      ) : null}
+
+      {showManual ? (
+        <section className="matchday-assistant" aria-label="Operation manual">
+          <article className="assistant-summary">
+            <p className="eyebrow">{t.operationManualEyebrow}</p>
+            <h2>{t.operationManualTitle}</h2>
+            <p>{t.operationManualBody}</p>
+            <div className="preset-focus">
+              <span>{currentPresetDisplay.label}</span>
+              {currentPresetDisplay.focus.map((item) => (
+                <strong key={item}>{item}</strong>
+              ))}
+            </div>
+          </article>
+          <div className="manual-steps">
+            {manualSteps.map((step) => {
+              const display = getManualStepDisplay(step, language);
+
+              return (
+                <section key={step.id}>
+                  <strong>{display.title}</strong>
+                  <p>{display.action}</p>
+                  <small>{display.reason}</small>
+                </section>
+              );
+            })}
+          </div>
+        </section>
+      ) : null}
+
+      {showMatchGuide ? (
+        <section className="fixture-briefing" aria-label="Fixture briefing">
+          <div className="section-heading">
+            <p className="eyebrow">{t.fixtureBriefingEyebrow}</p>
+            <h2>{t.fixtureBriefingTitle}</h2>
+          </div>
+          <div className="fixture-briefing-grid">
+            {matchBriefings.map((briefing) => {
+              const display = getMatchBriefingDisplay(briefing, language);
+
+              return (
+                <article className={briefing.id === replayMatchId ? "active" : ""} key={briefing.id}>
+                  <div>
+                    <span>{display.source}</span>
+                    <strong>{display.title}</strong>
+                    <small>
+                      {display.stage} / {display.kickoff}
+                    </small>
+                  </div>
+                  <em>{display.status}</em>
+                  <ul>
+                    {display.whatToWatch.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      ) : null}
+
+      {showTeamAtlas ? (
+        <section className="team-atlas-section" aria-label="Country team atlas">
+          <div className="section-heading">
+            <p className="eyebrow">{t.countryAtlasEyebrow}</p>
+            <h2>{t.countryAtlasTitle}</h2>
+          </div>
+          <div className="team-atlas-layout">
+            <div className="country-card-grid">
+              {priorityTeamAtlas.map((team) => {
+                const display = getTeamDisplay(team, language);
+
+                return (
+                  <button
+                    className={`${team.code === selectedTeam.code ? "active" : ""} ${
+                      matchTeamCodes.has(team.code) ? "match-team" : ""
+                    }`}
+                    key={team.code}
+                    onClick={() => setSelectedTeamCode(team.code)}
+                    type="button"
+                  >
+                    <span
+                      className="country-mark"
+                      style={{
+                        background: `linear-gradient(135deg, ${team.colors[0]} 0 50%, ${team.colors[1]} 50% 100%)`,
+                      }}
+                    >
+                      {team.code}
+                    </span>
+                    <strong>{display.name}</strong>
+                    <small>{display.status}</small>
+                  </button>
+                );
+              })}
+            </div>
+            <article className="selected-team-card">
+              <div className="team-card-heading">
+                <span
+                  className="country-mark large"
+                  style={{
+                    background: `linear-gradient(135deg, ${selectedTeam.colors[0]} 0 50%, ${selectedTeam.colors[1]} 50% 100%)`,
+                  }}
+                >
+                  {selectedTeam.code}
+                </span>
+                <div>
+                  <p className="eyebrow">{selectedTeamDisplay.region}</p>
+                  <h2>{selectedTeamDisplay.name}</h2>
+                  <span>{selectedTeamDisplay.status}</span>
+                </div>
+              </div>
+              <dl className="team-scout-grid">
+                <div>
+                  <dt>{t.teamStyle}</dt>
+                  <dd>{selectedTeamDisplay.style}</dd>
+                </div>
+                <div>
+                  <dt>{t.fanRead}</dt>
+                  <dd>{selectedTeamDisplay.fanRead}</dd>
+                </div>
+                <div>
+                  <dt>{t.watchFor}</dt>
+                  <dd>{selectedTeamDisplay.watchFor}</dd>
+                </div>
+                <div>
+                  <dt>{t.dataNote}</dt>
+                  <dd>{selectedTeamDisplay.dataNote}</dd>
+                </div>
+              </dl>
+              <div className="key-player-chips" aria-label="Key players">
+                {selectedTeamDisplay.keyPlayers.map((player) => (
+                  <span key={player}>{player}</span>
+                ))}
+              </div>
+            </article>
+          </div>
         </section>
       ) : null}
 

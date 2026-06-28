@@ -16,6 +16,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Today Board and No Match Day / Token Required states are visible.
 - Today Board now includes official TxLINE schedule seed fixtures for 2026-06-28 UTC while keeping live score/event/odds data token-gated.
 - Daily Brief, Data Audit, Live Readiness, and Judge Demo chapters are implemented.
+- Operation Manual, Fixture Briefing, and Country Team Atlas are implemented for first-time users and judges.
 - Trust & Accuracy Center explains schedule seed, live token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
 - Match Intelligence shows phase summary, event stack, and player impact.
 - Language setting supports English, Chinese, Spanish, and Portuguese for a broader World Cup fan audience.
@@ -125,6 +126,7 @@ src/
 - `docs/TECHNICAL_OVERVIEW.md`: architecture, data consistency, and safety boundary
 - `docs/TXLINE_ENDPOINTS.md`: TxLINE endpoint mapping plan
 - `docs/API_FEEDBACK.md`: API feedback for sponsor docs and live-data consistency
+- `docs/USER_MANUAL.md`: user-facing operation manual
 - `docs/SUBMISSION_DRAFT.md`: Superteam submission draft
 - `docs/DEMO_SCRIPT.md`: under-5-minute demo video script
 - `docs/SUBMISSION_CHECKLIST.md`: final submission checklist
@@ -140,6 +142,6 @@ src/
 
 1. Add a real TxLINE token locally and verify one fixture end to end.
 2. Capture sanitized TxLINE response samples for final docs and API feedback.
-3. Record a short demo video using Replay mode plus the Live token boundary or a local live run.
+3. Record a short demo video using Replay mode, Operation Manual, Country Team Atlas, and the Live token boundary.
 4. Fill final TxLINE API feedback after real token testing.
 5. Submit the public URL, GitHub repo, and demo video on Superteam Earn.

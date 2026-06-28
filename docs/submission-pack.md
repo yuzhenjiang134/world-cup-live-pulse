@@ -19,6 +19,7 @@ Use this as the final project packet index.
 - `docs/technical-writeup.md`
 - `docs/pre-submit-check.md`
 - `docs/user-action-list.md`
+- `docs/USER_MANUAL.md`
 
 ## Validation commands
 

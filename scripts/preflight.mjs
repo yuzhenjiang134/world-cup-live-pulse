@@ -20,6 +20,7 @@ const requiredFiles = [
   "docs/TECHNICAL_OVERVIEW.md",
   "docs/TXLINE_ENDPOINTS.md",
   "docs/API_FEEDBACK.md",
+  "docs/USER_MANUAL.md",
   "docs/SUBMISSION_DRAFT.md",
   "docs/DEMO_SCRIPT.md",
   "docs/SUBMISSION_CHECKLIST.md",
@@ -27,6 +28,7 @@ const requiredFiles = [
   "src/lib/shareCard.ts",
   "src/data/replayMatch.ts",
   "src/data/matchCalendar.ts",
+  "src/data/fanGuide.ts",
   "scripts/validate-fixtures.mjs",
   "scripts/security-scan.mjs",
   "scripts/txline-probe.mjs",
@@ -48,6 +50,8 @@ const requiredText = [
   ["docs/TXLINE_ENDPOINTS.md", "POST /auth/guest/start"],
   ["docs/TXLINE_ENDPOINTS.md", "X-Api-Token"],
   ["docs/API_FEEDBACK.md", "no-match-day"],
+  ["docs/USER_MANUAL.md", "Country Team Atlas"],
+  ["docs/USER_MANUAL.md", "npm run txline:probe"],
   ["docs/SUBMISSION_DRAFT.md", "official TxLINE schedule seed fixtures"],
   ["docs/SUBMISSION_DRAFT.md", "Consumer and Fan Experiences"],
   ["docs/DEMO_SCRIPT.md", "under 5 minutes"],
@@ -60,6 +64,8 @@ const requiredText = [
   ["src/data/replayMatch.ts", "replayMatches"],
   ["src/data/matchCalendar.ts", "never invents live games"],
   ["src/App.tsx", "Trust & Accuracy"],
+  ["src/App.tsx", "Country Team Atlas"],
+  ["src/data/fanGuide.ts", "teamAtlas"],
   ["scripts/security-scan.mjs", "Security scan complete"],
 ];
 

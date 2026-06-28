@@ -79,7 +79,7 @@ p {
 h1 {
   margin-bottom: 0;
   color: #11191c;
-  font-size: clamp(2.1rem, 6vw, 4.9rem);
+  font-size: 4.6rem;
   line-height: 0.94;
 }
 
@@ -111,6 +111,7 @@ h2 {
 
 .mode-switch .active,
 .language-control .active,
+.preset-control .active,
 .speed-switch .active,
 .replay-selector .active {
   background: #172126;
@@ -125,21 +126,55 @@ h2 {
 }
 
 .settings-panel {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(240px, 0.62fr) minmax(0, 1.38fr);
   gap: 16px;
   margin-bottom: 16px;
-  padding: 14px;
+  padding: 16px;
   border: 1px solid #d8e0dc;
   border-radius: 8px;
   background: #ffffff;
   box-shadow: 0 16px 32px rgba(23, 33, 38, 0.08);
 }
 
+.settings-heading p {
+  margin: 8px 0 0;
+  color: #546669;
+  line-height: 1.46;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.settings-card {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f3f6f5;
+}
+
+.settings-card > span {
+  color: #657478;
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.settings-card p {
+  margin: 0;
+  color: #546669;
+  line-height: 1.42;
+}
+
 .language-control {
   display: grid;
-  grid-template-columns: auto repeat(4, minmax(72px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
   gap: 6px;
   padding: 5px;
@@ -147,20 +182,41 @@ h2 {
   border-radius: 10px;
 }
 
-.language-control span {
-  padding: 0 8px;
-  color: #657478;
-  font-size: 0.82rem;
-  font-weight: 850;
-}
-
-.language-control button {
+.language-control button,
+.preset-control button {
   min-height: 34px;
   min-width: 0;
   border: 0;
   background: transparent;
   padding: 0 8px;
   white-space: nowrap;
+}
+
+.preset-control {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  padding: 5px;
+  border: 1px solid #d8e0dc;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.toggle-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #172126;
+}
+
+.toggle-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: #cf3246;
 }
 
 .match-hero {
@@ -171,11 +227,9 @@ h2 {
   overflow: hidden;
   border-radius: 8px;
   background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px) 0 0 / 72px 100%,
-    radial-gradient(circle at 15% 20%, rgba(85, 167, 216, 0.46), transparent 28%),
-    radial-gradient(circle at 88% 12%, rgba(239, 71, 111, 0.24), transparent 30%),
-    radial-gradient(circle at 68% 90%, rgba(255, 209, 102, 0.22), transparent 30%),
-    linear-gradient(135deg, #17333b, #0d1517 62%, #3f3321);
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 / 72px 100%,
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 34px),
+    linear-gradient(135deg, #17333b, #0d1517 58%, #463b25);
   color: #ffffff;
 }
 
@@ -238,7 +292,7 @@ h2 {
   align-items: center;
   gap: 14px;
   color: #ffffff;
-  font-size: clamp(2.6rem, 8vw, 7rem);
+  font-size: 6.2rem;
   line-height: 1;
 }
 
@@ -275,7 +329,7 @@ h2 {
 .team-badge strong {
   overflow-wrap: anywhere;
   color: #ffffff;
-  font-size: clamp(1rem, 2vw, 1.45rem);
+  font-size: 1.32rem;
 }
 
 .match-meta {
@@ -318,6 +372,276 @@ h2 {
 .source-error {
   border-color: #ef9aaa;
   background: #fff1f4;
+}
+
+.matchday-assistant,
+.fixture-briefing,
+.team-atlas-section {
+  margin: 16px 0;
+  padding: 18px;
+  border: 1px solid #d8e0dc;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 16px 32px rgba(23, 33, 38, 0.05);
+}
+
+.matchday-assistant {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+  gap: 14px;
+  background:
+    linear-gradient(135deg, rgba(255, 209, 102, 0.14), rgba(85, 167, 216, 0.08)),
+    #ffffff;
+}
+
+.assistant-summary h2,
+.section-heading h2 {
+  margin-bottom: 8px;
+  font-size: 1.44rem;
+}
+
+.assistant-summary p,
+.manual-steps p,
+.manual-steps small,
+.fixture-briefing li,
+.selected-team-card dd {
+  color: #546669;
+  line-height: 1.48;
+}
+
+.preset-focus {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.preset-focus span,
+.preset-focus strong {
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #425457;
+  font-size: 0.82rem;
+}
+
+.preset-focus span {
+  background: #172126;
+  color: #ffffff;
+}
+
+.manual-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.manual-steps section {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(216, 224, 220, 0.9);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.manual-steps strong,
+.fixture-briefing strong,
+.country-card-grid strong {
+  overflow-wrap: anywhere;
+}
+
+.manual-steps p {
+  margin: 8px 0;
+}
+
+.manual-steps small {
+  display: block;
+}
+
+.section-heading {
+  margin-bottom: 14px;
+}
+
+.fixture-briefing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fixture-briefing-grid article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #d8e0dc;
+  border-radius: 8px;
+  background: #f8faf9;
+}
+
+.fixture-briefing-grid article.active {
+  border-color: #cf3246;
+  box-shadow: inset 0 0 0 1px #cf3246;
+}
+
+.fixture-briefing-grid span,
+.fixture-briefing-grid small {
+  display: block;
+  color: #657478;
+}
+
+.fixture-briefing-grid span {
+  font-size: 0.76rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.fixture-briefing-grid strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 1.05rem;
+}
+
+.fixture-briefing-grid em {
+  justify-self: start;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #fff4cf;
+  color: #6d5200;
+  font-style: normal;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.fixture-briefing-grid ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.team-atlas-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(320px, 0.96fr);
+  gap: 12px;
+}
+
+.country-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.country-card-grid button {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: 8px;
+  min-height: 128px;
+  padding: 12px;
+  text-align: left;
+}
+
+.country-card-grid button.active {
+  border-color: #cf3246;
+  background: #fff7f4;
+  box-shadow: inset 0 0 0 1px #cf3246;
+}
+
+.country-card-grid button.match-team {
+  border-color: #55a7d8;
+}
+
+.country-card-grid small {
+  color: #657478;
+  line-height: 1.35;
+}
+
+.country-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 2px solid rgba(23, 33, 38, 0.12);
+  border-radius: 50%;
+  color: #172126;
+  font-size: 0.78rem;
+  font-weight: 950;
+  box-shadow: 0 10px 18px rgba(23, 33, 38, 0.12);
+}
+
+.country-mark.large {
+  width: 70px;
+  height: 70px;
+  font-size: 1rem;
+}
+
+.selected-team-card {
+  min-width: 0;
+  padding: 18px;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(23, 33, 38, 0.04), rgba(46, 196, 125, 0.08)),
+    #f3f6f5;
+}
+
+.team-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.team-card-heading h2 {
+  margin: 0 0 4px;
+  font-size: 1.7rem;
+}
+
+.team-card-heading span:not(.country-mark) {
+  color: #546669;
+  font-weight: 850;
+}
+
+.team-scout-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.team-scout-grid div {
+  min-width: 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.team-scout-grid dt {
+  color: #657478;
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.team-scout-grid dd {
+  margin: 7px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.key-player-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.key-player-chips span {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #172126;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 850;
 }
 
 .today-board {
@@ -887,7 +1211,7 @@ h2 {
 
 .commentary {
   margin-bottom: 18px;
-  font-size: clamp(1.42rem, 3vw, 2.5rem);
+  font-size: 2.2rem;
   line-height: 1.08;
   font-weight: 850;
 }
@@ -1435,11 +1759,19 @@ meter {
   }
 
   .match-hero,
+  .matchday-assistant,
+  .settings-panel,
+  .settings-grid,
   .today-board,
   .brief-grid,
   .trust-center,
   .judge-demo-layer,
   .story-strip,
+  .manual-steps,
+  .fixture-briefing-grid,
+  .team-atlas-layout,
+  .country-card-grid,
+  .team-scout-grid,
   .scoreline,
   .dashboard-grid,
   .pressure-bars,
@@ -1461,7 +1793,7 @@ meter {
   }
 
   h1 {
-    font-size: clamp(2.15rem, 10vw, 3.3rem);
+    font-size: 3.15rem;
     line-height: 0.98;
   }
 
@@ -1483,7 +1815,11 @@ meter {
   }
 
   .score {
-    font-size: clamp(2.8rem, 14vw, 4.3rem);
+    font-size: 3.8rem;
+  }
+
+  .commentary {
+    font-size: 1.62rem;
   }
 
   .team-badge span {

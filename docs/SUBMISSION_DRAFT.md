@@ -28,6 +28,7 @@ The current build includes:
 - Live mode wired through a real TxLINE HTTP adapter for fixtures, scores, and odds.
 - Today Board with official TxLINE schedule seed fixtures and Token Required live handling.
 - Daily Brief, Data Audit, and Live Readiness panels.
+- Operation Manual, Fixture Briefing, and Country Team Atlas for first-time users.
 - Trust & Accuracy Center for schedule seed, token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
 - Judge Demo chapters for data integrity, goal swing, late volatility, and upset context.
 - Match Intelligence with phase summary, event stack, and player impact.
@@ -74,8 +75,9 @@ World Cup matches are not available every day. The app does not invent live game
 2. Show the Today Board with official schedule seed fixtures and data status labels.
 3. Show the Trust & Accuracy Center and explain Seed / Replay / Live / Delay.
 4. Use the Judge Demo chapter buttons: Data integrity, Goal swing, Late volatility, and Upset context.
-5. Show Match Intelligence: phase summary, event stack, and player impact.
-6. Show Match Center: referee, kickoff, qualification, team profiles, discipline, and group table.
-7. Switch language across English, Chinese, Spanish, and Portuguese.
-8. Open Live mode and explain the TxLINE token-needed boundary, or show a local authenticated TxLINE fixture if a safe token is configured off-camera.
-9. Export the share card and close with the safety boundary.
+5. Show the Operation Manual, Fixture Briefing, and Country Team Atlas.
+6. Show Match Intelligence: phase summary, event stack, and player impact.
+7. Show Match Center: referee, kickoff, qualification, team profiles, discipline, and group table.
+8. Switch settings across language, viewing preset, and module visibility.
+9. Open Live mode and explain the TxLINE token-needed boundary, or show a local authenticated TxLINE fixture if a safe token is configured off-camera.
+10. Export the share card and close with the safety boundary.
