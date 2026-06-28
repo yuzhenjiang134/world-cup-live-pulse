@@ -5,7 +5,10 @@
 - [ ] Deployed app opens on desktop.
 - [ ] Deployed app opens on mobile.
 - [ ] Today Board is visible.
+- [ ] Today Board shows official TxLINE schedule seed fixtures as Seed / Token Required.
 - [ ] Daily Brief, Data Audit, and Live Readiness are visible.
+- [ ] Trust & Accuracy Center is visible.
+- [ ] Endpoint coverage table is visible.
 - [ ] Judge Demo chapter buttons work.
 - [ ] Match Intelligence phase summary, event stack, and player impact render.
 - [ ] Replay mode works.
@@ -38,6 +41,7 @@
 
 - [ ] Under 5 minutes.
 - [ ] Shows Today Board and data consistency.
+- [ ] Shows Trust & Accuracy Center and explains schedule seed versus Live data.
 - [ ] Uses Judge Demo chapters.
 - [ ] Shows Match Intelligence.
 - [ ] Shows Replay mode and key events.

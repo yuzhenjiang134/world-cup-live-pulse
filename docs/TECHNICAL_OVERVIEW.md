@@ -38,14 +38,16 @@ The app separates four data states:
 | Live | Data pulled from TxLINE with configured credentials and endpoint mapping | Reserved until token and docs are available |
 | Delay | Live-like data that is not guaranteed to be real time | Reserved for delayed feeds |
 | Replay | Fixed historical replay data for judging and demo recording | Implemented |
-| Seed | Static background data such as teams, players, referee, standings, and schedule labels | Implemented |
+| Seed | Official schedule/context or static background data such as teams, players, referee, standings, and schedule labels | Implemented |
 
 This matters because World Cup matches are not played every day. The public build must never invent a live match. If there is no confirmed live fixture or the TxLINE token is missing, the UI shows Replay and Seed labels instead of pretending to be live.
+
+On 2026-06-28 UTC, the public Today Board includes official TxLINE World Cup Schedule seed fixtures for Jordan vs Argentina and Algeria vs Austria. They are shown as `Seed / Token Required` because the app has not loaded authenticated live scores, match events, or odds snapshots for those fixture IDs.
 
 ## Current implementation
 
 - `src/data/replayMatch.ts`: two replay fixtures with score events, market snapshots, team profiles, key players, referee, kickoff time, and optional group table.
-- `src/data/matchCalendar.ts`: public Today Board state that explains No Match Day / Token Required behavior.
+- `src/data/matchCalendar.ts`: public Today Board state with official schedule seed fixtures and Token Required behavior.
 - `src/lib/txlineAdapter.ts`: single integration boundary for replay and future TxLINE live mode.
 - `src/lib/pulse.ts`: deterministic pulse frame builder for score, latest event, commentary, pressure, and market mood.
 - `src/lib/shareCard.ts`: SVG export for a fan share card.
@@ -54,6 +56,7 @@ This matters because World Cup matches are not played every day. The public buil
 ## Product surfaces
 
 - Today Board: makes No Match Day and token-required states visible.
+- Trust & Accuracy Center: explains official schedule seed, live token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
 - Judge Demo chapters: repeatable path for data integrity, goal swing, late volatility, and upset-context review.
 - Match Intelligence: phase summary, event stack, and player impact derived from replay events.
 - Match Center: kickoff, referee, data status, qualification note, discipline, team profiles, key players, and group context.
@@ -69,6 +72,14 @@ When official TxLINE endpoint documentation is available, the adapter should map
 - `DataSourceState`
 
 Live responses must include enough metadata to keep the UI honest: fixture date, match status, data freshness, event IDs, and whether the feed is live or delayed.
+
+Current mapped endpoint families:
+
+- `POST /api/session/guest` for guest auth bootstrap.
+- `GET /api/fixtures/snapshot` for schedule and Today Board.
+- `GET /api/scores/snapshot/{fixtureId}` for score clock and match events.
+- API Reference > Odds snapshot endpoint for market snapshots; exact path to confirm after access.
+- `GET /api/scores/stream` for server-sent live score updates.
 
 ## Safety boundary
 

@@ -16,7 +16,10 @@ Updated: 2026-06-28
 - [x] Add settings panel with English / Chinese / Spanish / Portuguese language switch
 - [x] Add richer match hero, story strip, pulse arc, and judge-ready status panels
 - [x] Add Today Board with No Match Day / Token Required handling
+- [x] Add official TxLINE schedule seed fixtures for 2026-06-28 UTC
 - [x] Add explicit Live / Delay / Replay / Seed data state model
+- [x] Add Trust & Accuracy Center for data truth, token gate, replay truth, and Free Tier delay behavior
+- [x] Add visible TxLINE endpoint coverage table
 - [x] Add Daily Brief for judge-friendly no-match-day explanation
 - [x] Add Data Audit panel for mode, source, replay, and seed coverage
 - [x] Add Live Readiness panel for token, endpoints, calendar, and fallback state
@@ -62,6 +65,7 @@ Updated: 2026-06-28
 - [x] Add formal `docs/SUBMISSION_DRAFT.md`
 - [x] Add formal `docs/DEMO_SCRIPT.md`
 - [x] Add formal `docs/SUBMISSION_CHECKLIST.md`
+- [x] Update submission docs with official schedule seed and mapped TxLINE endpoints
 - [x] Verify TypeScript check
 - [x] Verify production build
 - [x] Verify browser smoke test

@@ -664,6 +664,126 @@ const localizedCopy = {
   },
 } as const;
 
+const trustCopy = {
+  en: {
+    eyebrow: "Trust & Accuracy",
+    title: "Data truth center",
+    scheduleSeed: "Official schedule seed",
+    scheduleValue: "2 fixtures today",
+    scheduleNote:
+      "TxLINE World Cup schedule lists Jordan vs Argentina and Algeria vs Austria for 2026-06-28 UTC.",
+    liveGate: "Live gate",
+    liveGateValue: "Token required",
+    liveGateNote:
+      "The app will not show Live until authenticated scores, events, and odds are loaded from TxLINE.",
+    replayTruth: "Replay truth",
+    replayTruthValue: "Deterministic",
+    replayTruthNote:
+      "Replay fixtures are fixed historical scenarios for judging and demo recording, never presented as live.",
+    freeTier: "Free Tier behavior",
+    freeTierValue: "Live or 60s delay",
+    freeTierNote:
+      "TxLINE docs describe real-time access for unlocked fixtures and a 60-second delay mode for other fixtures.",
+    endpointsTitle: "Endpoint coverage",
+    endpoint: "Endpoint",
+    coverage: "Coverage",
+    status: "Status",
+    mapped: "Mapped",
+    tokenGated: "Token-gated",
+    planned: "Planned",
+    evidence: "Evidence",
+    visibleFixtures: "Visible fixtures",
+    source: "Source",
+  },
+  zh: {
+    eyebrow: "可信度与准确性",
+    title: "数据真实性中心",
+    scheduleSeed: "官方赛程种子",
+    scheduleValue: "今日 2 场",
+    scheduleNote:
+      "TxLINE World Cup schedule 显示 2026-06-28 UTC 有 Jordan vs Argentina、Algeria vs Austria。",
+    liveGate: "实时数据门槛",
+    liveGateValue: "需要 Token",
+    liveGateNote: "只有从 TxLINE 鉴权后的比分、事件、赔率接口加载成功后，页面才会显示 Live。",
+    replayTruth: "回放真实性",
+    replayTruthValue: "固定可复现",
+    replayTruthNote: "Replay 是用于评审和录屏的历史场景，不会伪装成实时比赛。",
+    freeTier: "Free Tier 行为",
+    freeTierValue: "实时或 60 秒延迟",
+    freeTierNote: "TxLINE 文档说明可解锁实时 fixture，其他 fixture 可用 60 秒延迟模式。",
+    endpointsTitle: "Endpoint 覆盖",
+    endpoint: "Endpoint",
+    coverage: "覆盖内容",
+    status: "状态",
+    mapped: "已映射",
+    tokenGated: "Token 锁定",
+    planned: "计划中",
+    evidence: "证据",
+    visibleFixtures: "可见赛程",
+    source: "来源",
+  },
+  es: {
+    eyebrow: "Confianza y exactitud",
+    title: "Centro de verdad de datos",
+    scheduleSeed: "Calendario oficial seed",
+    scheduleValue: "2 partidos hoy",
+    scheduleNote:
+      "El schedule World Cup de TxLINE lista Jordan vs Argentina y Algeria vs Austria para 2026-06-28 UTC.",
+    liveGate: "Puerta live",
+    liveGateValue: "Token requerido",
+    liveGateNote:
+      "La app no mostrara Live hasta cargar scores, eventos y odds autenticados desde TxLINE.",
+    replayTruth: "Verdad replay",
+    replayTruthValue: "Deterministico",
+    replayTruthNote:
+      "Replay usa escenarios historicos fijos para jueces y video demo; nunca se presenta como live.",
+    freeTier: "Free Tier",
+    freeTierValue: "Live o 60s delay",
+    freeTierNote:
+      "La documentacion TxLINE describe acceso real-time para fixtures desbloqueados y modo 60-second delay para otros.",
+    endpointsTitle: "Cobertura de endpoints",
+    endpoint: "Endpoint",
+    coverage: "Cobertura",
+    status: "Estado",
+    mapped: "Mapeado",
+    tokenGated: "Token",
+    planned: "Planeado",
+    evidence: "Evidencia",
+    visibleFixtures: "Fixtures visibles",
+    source: "Fuente",
+  },
+  pt: {
+    eyebrow: "Confianca e precisao",
+    title: "Centro de verdade dos dados",
+    scheduleSeed: "Calendario oficial seed",
+    scheduleValue: "2 jogos hoje",
+    scheduleNote:
+      "O schedule World Cup da TxLINE lista Jordan vs Argentina e Algeria vs Austria para 2026-06-28 UTC.",
+    liveGate: "Portao live",
+    liveGateValue: "Token necessario",
+    liveGateNote:
+      "O app nao mostra Live ate carregar scores, eventos e odds autenticados da TxLINE.",
+    replayTruth: "Verdade replay",
+    replayTruthValue: "Deterministico",
+    replayTruthNote:
+      "Replay usa cenarios historicos fixos para jurados e video demo; nunca e apresentado como live.",
+    freeTier: "Free Tier",
+    freeTierValue: "Live ou 60s delay",
+    freeTierNote:
+      "A documentacao TxLINE descreve acesso real-time para fixtures liberados e modo 60-second delay para outros.",
+    endpointsTitle: "Cobertura de endpoints",
+    endpoint: "Endpoint",
+    coverage: "Cobertura",
+    status: "Status",
+    mapped: "Mapeado",
+    tokenGated: "Token",
+    planned: "Planejado",
+    evidence: "Evidencia",
+    visibleFixtures: "Fixtures visiveis",
+    source: "Fonte",
+  },
+} as const;
+
 type CopyText = (typeof localizedCopy)[Language];
 type DemoChapter = {
   id: string;
@@ -687,6 +807,7 @@ export default function App() {
   const [replayMatchId, setReplayMatchId] = useState(replayMatches[0].id);
 
   const t = localizedCopy[language];
+  const trust = trustCopy[language];
 
   useEffect(() => {
     setLoadError(null);
@@ -815,9 +936,59 @@ export default function App() {
   ];
   const readinessItems = [
     { label: t.tokenStatus, value: source?.kind === "needs-token" ? t.pending : t.gated },
-    { label: t.endpointStatus, value: t.pending },
-    { label: t.calendarStatus, value: t.noLiveFixture },
+    { label: t.endpointStatus, value: trust.tokenGated },
+    { label: t.calendarStatus, value: trust.scheduleValue },
     { label: t.fallbackStatus, value: t.replayFallbackReady },
+  ];
+  const scheduleSeedItems = dataConsistencyState.today.filter((item) => item.fixtureId);
+  const trustMetrics = [
+    {
+      label: trust.scheduleSeed,
+      value: trust.scheduleValue,
+      note: trust.scheduleNote,
+    },
+    {
+      label: trust.liveGate,
+      value: trust.liveGateValue,
+      note: trust.liveGateNote,
+    },
+    {
+      label: trust.replayTruth,
+      value: trust.replayTruthValue,
+      note: trust.replayTruthNote,
+    },
+    {
+      label: trust.freeTier,
+      value: trust.freeTierValue,
+      note: trust.freeTierNote,
+    },
+  ];
+  const endpointCoverage = [
+    {
+      endpoint: "POST /api/session/guest",
+      coverage: "Guest session auth",
+      status: trust.mapped,
+    },
+    {
+      endpoint: "GET /api/fixtures/snapshot",
+      coverage: "Fixture id, teams, start time, status",
+      status: trust.mapped,
+    },
+    {
+      endpoint: "GET /api/scores/snapshot/{fixtureId}",
+      coverage: "Score clock, action events, score snapshots",
+      status: trust.tokenGated,
+    },
+    {
+      endpoint: "API Reference > Odds snapshot",
+      coverage: "1X2 odds snapshots and market freshness; exact path to confirm",
+      status: trust.tokenGated,
+    },
+    {
+      endpoint: "GET /api/scores/stream",
+      coverage: "Server-sent live score updates",
+      status: trust.planned,
+    },
   ];
   const eventStats = buildEventStats(frame.activeEvents);
   const playerImpact = buildPlayerImpact(frame.activeEvents);
@@ -983,6 +1154,8 @@ export default function App() {
                 <small>
                   {formatKickoff(item.kickoffIso, language)} / {item.dataStatus}
                 </small>
+                {item.coverage ? <small>{item.coverage}</small> : null}
+                {item.statusNote ? <small>{item.statusNote}</small> : null}
               </button>
             );
           })}
@@ -1025,6 +1198,58 @@ export default function App() {
               <div key={item.label}>
                 <span>{item.label}</span>
                 <strong>{item.value}</strong>
+              </div>
+            ))}
+          </div>
+        </article>
+      </section>
+
+      <section className="trust-center" aria-label={trust.title}>
+        <article className="trust-metrics-panel">
+          <div className="panel-heading">
+            <p className="eyebrow">{trust.eyebrow}</p>
+            <h2>{trust.title}</h2>
+          </div>
+          <div className="trust-metric-grid">
+            {trustMetrics.map((item) => (
+              <section key={item.label}>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <p>{item.note}</p>
+              </section>
+            ))}
+          </div>
+          <div className="fixture-ledger" aria-label={trust.visibleFixtures}>
+            <span>{trust.visibleFixtures}</span>
+            {scheduleSeedItems.map((item) => (
+              <div key={item.id}>
+                <strong>
+                  {item.homeCode} vs {item.awayCode}
+                </strong>
+                <small>
+                  #{item.fixtureId} / {formatKickoff(item.kickoffIso, language)} / {item.dataStatus}
+                </small>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article className="endpoint-panel">
+          <div className="panel-heading">
+            <p className="eyebrow">TxLINE</p>
+            <h2>{trust.endpointsTitle}</h2>
+          </div>
+          <div className="endpoint-table" role="table">
+            <div role="row">
+              <strong role="columnheader">{trust.endpoint}</strong>
+              <strong role="columnheader">{trust.coverage}</strong>
+              <strong role="columnheader">{trust.status}</strong>
+            </div>
+            {endpointCoverage.map((item) => (
+              <div key={item.endpoint} role="row">
+                <code>{item.endpoint}</code>
+                <span>{item.coverage}</span>
+                <em>{item.status}</em>
               </div>
             ))}
           </div>
@@ -1464,6 +1689,14 @@ function getTodayCardDisplay(
 ) {
   const labels: Record<Language, Record<string, { label: string; stage: string }>> = {
     en: {
+      "txline-fixture-17588325": {
+        label: "Official TxLINE schedule seed",
+        stage: "World Cup Group Stage / Token Required",
+      },
+      "txline-fixture-17588326": {
+        label: "Official TxLINE schedule seed",
+        stage: "World Cup Group Stage / Token Required",
+      },
       "calendar-live-status": {
         label: "No public TxLINE live fixture configured",
         stage: "No Match Day / Token Required",
@@ -1472,6 +1705,14 @@ function getTodayCardDisplay(
       "wc-demo-jpn-ger": { label: "Upset replay demo", stage: "Group stage replay" },
     },
     zh: {
+      "txline-fixture-17588325": {
+        label: "官方 TxLINE 赛程种子",
+        stage: "世界杯小组赛 / 需要 Token",
+      },
+      "txline-fixture-17588326": {
+        label: "官方 TxLINE 赛程种子",
+        stage: "世界杯小组赛 / 需要 Token",
+      },
       "calendar-live-status": {
         label: "未配置公开 TxLINE 实时赛程",
         stage: "无比赛日 / 需要 Token",
@@ -1480,6 +1721,14 @@ function getTodayCardDisplay(
       "wc-demo-jpn-ger": { label: "爆冷回放演示", stage: "小组赛回放" },
     },
     es: {
+      "txline-fixture-17588325": {
+        label: "Seed de calendario oficial TxLINE",
+        stage: "Fase de grupos / Token requerido",
+      },
+      "txline-fixture-17588326": {
+        label: "Seed de calendario oficial TxLINE",
+        stage: "Fase de grupos / Token requerido",
+      },
       "calendar-live-status": {
         label: "Sin fixture live público TxLINE configurado",
         stage: "Día sin partido / Token requerido",
@@ -1488,6 +1737,14 @@ function getTodayCardDisplay(
       "wc-demo-jpn-ger": { label: "Demo replay de sorpresa", stage: "Replay de fase de grupos" },
     },
     pt: {
+      "txline-fixture-17588325": {
+        label: "Seed de calendario oficial TxLINE",
+        stage: "Fase de grupos / Token necessario",
+      },
+      "txline-fixture-17588326": {
+        label: "Seed de calendario oficial TxLINE",
+        stage: "Fase de grupos / Token necessario",
+      },
       "calendar-live-status": {
         label: "Sem fixture live público TxLINE configurado",
         stage: "Dia sem jogo / Token necessário",

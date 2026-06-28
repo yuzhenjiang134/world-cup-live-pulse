@@ -8,13 +8,15 @@ Open the deployed GitHub Pages site.
 
 Say: World Cup Live Pulse is a fan-first match dashboard for the Consumer and Fan Experiences track. It explains score, match events, market mood, and momentum without becoming a betting or trading product.
 
-## 0:25-1:05 Data consistency
+## 0:25-1:20 Data consistency
 
-Show the Today Board.
+Show the Today Board and Trust & Accuracy Center.
 
-Say: World Cup matches are not played every day, so the app never invents live data. It separates Live, Delay, Replay, and Seed. This public demo is Replay plus Seed until official TxLINE token and endpoint docs are configured.
+Say: The app does not invent live data. The Today Board uses official TxLINE schedule seed fixtures for Jordan vs Argentina and Algeria vs Austria, but it keeps them as Seed / Token Required until authenticated live score, event, and odds feeds are loaded. Replay stays available so judges can evaluate the match flow even if no live fixture is open during review.
 
-## 1:05-2:10 Judge Demo chapters
+Point to Data Audit, Live Readiness, and endpoint coverage.
+
+## 1:20-2:20 Judge Demo chapters
 
 Use the Judge Demo chapter buttons.
 
@@ -33,7 +35,7 @@ Show:
 
 Say: The built-in chapters make the demo repeatable for judges and video recording.
 
-## 2:10-3:00 Match Intelligence and Match Center
+## 2:20-3:10 Match Intelligence and Match Center
 
 Show:
 
@@ -49,19 +51,19 @@ Show:
 
 Use the upset-context chapter to show the Japan vs Germany group table.
 
-## 3:00-3:35 Language setting
+## 3:10-3:40 Language setting
 
 Open Settings and switch between English, Chinese, Spanish, and Portuguese.
 
 Say: This is important for a global World Cup fan experience and for demo clarity across audiences.
 
-## 3:35-4:10 TxLINE boundary
+## 3:40-4:15 TxLINE boundary
 
 Switch to Live mode.
 
 Say: Live mode is already routed through the TxLINE adapter. Without credentials it shows a token-needed state instead of pretending replay data is live. Once endpoints are available, the adapter maps TxLINE payloads into the same MatchData model.
 
-## 4:10-4:45 Share and safety
+## 4:15-4:50 Share and safety
 
 Show the share card preview and export button.
 

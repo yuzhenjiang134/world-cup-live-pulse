@@ -14,7 +14,9 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Multiple replay scenarios are available for demo recording.
 - Live mode is present as a TxLINE adapter placeholder.
 - Today Board and No Match Day / Token Required states are visible.
+- Today Board now includes official TxLINE schedule seed fixtures for 2026-06-28 UTC while keeping live score/event/odds data token-gated.
 - Daily Brief, Data Audit, Live Readiness, and Judge Demo chapters are implemented.
+- Trust & Accuracy Center explains schedule seed, live token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
 - Match Intelligence shows phase summary, event stack, and player impact.
 - Language setting supports English, Chinese, Spanish, and Portuguese for a broader World Cup fan audience.
 - Match score card, timeline, market mood, Match Center, team profiles, and AI commentary are visible in the local app.
@@ -37,6 +39,14 @@ Use the built-in Judge Demo chapters for a clean review or video recording path:
 2. Goal swing: jumps to the Argentina vs France goal swing.
 3. Late volatility: jumps to the late France comeback window.
 4. Upset context: jumps to Japan vs Germany and shows group context plus player impact.
+
+## Data truth model
+
+- Official schedule seed: TxLINE World Cup Schedule lists Jordan vs Argentina and Algeria vs Austria on 2026-06-28 UTC; the app shows them as Seed / Token Required.
+- Live: only shown after authenticated TxLINE scores, events, and odds are loaded.
+- Delay: reserved for TxLINE Free Tier or delayed feeds, including the documented 60-second delay mode.
+- Replay: deterministic historical scenarios for judging and video recording.
+- Seed: official schedule or static context that is useful to fans but is not a live feed.
 
 ## Run locally
 

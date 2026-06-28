@@ -2,11 +2,12 @@
 
 ## Build-stage feedback
 
-World Cup Live Pulse is built replay-first because the public hackathon build needs to be judgeable even when no World Cup match is active. The most important API need is not only live data, but trustworthy status metadata that lets the product avoid pretending mock data is live.
+World Cup Live Pulse is built replay-first because the public hackathon build needs to be judgeable even when no World Cup match is active. The app now also uses official TxLINE World Cup Schedule seed fixtures for today, while keeping live score/event/odds data token-gated. The most important API need is not only live data, but trustworthy status metadata that lets the product avoid pretending schedule seed or replay data is live.
 
 ## What would improve the developer experience
 
 - A match calendar endpoint with explicit `no_live_match_today` or equivalent empty-state metadata.
+- A fixture access field that says whether a fixture is unlocked live, delayed, token-gated, or unavailable.
 - A clear freshness field for every score, event, and odds snapshot.
 - Stable event IDs so the UI can deduplicate goals, cards, substitutions, and market shifts.
 - Sample payloads for live, delayed, scheduled, finished, postponed, and no-match-day states.
@@ -34,11 +35,20 @@ For consumer fan experiences, the API is strongest when it can support explanati
 Until official token and endpoint docs are available, the app uses:
 
 - `Replay` data for deterministic match playback.
-- `Seed` data for static context.
+- `Seed` data for official schedule context and static context.
 - A visible `TxLINE token needed` state for Live mode.
-- A No Match Day rule in the Today Board.
+- Official TxLINE schedule seed fixtures in the Today Board when known.
+- A No Match Day rule when no official fixture is known.
 - Judge Demo chapters to make replay evaluation repeatable.
 - English, Chinese, Spanish, and Portuguese UI labels for global fan testing.
+
+## Current endpoint mapping in the product
+
+- `POST /api/session/guest`: planned auth bootstrap.
+- `GET /api/fixtures/snapshot`: schedule seed and Today Board.
+- `GET /api/scores/snapshot/{fixtureId}`: live score clock and event mapping.
+- API Reference > Odds snapshot endpoint: market mood snapshots; exact path to confirm after access.
+- `GET /api/scores/stream`: server-sent score updates.
 
 ## Final submission note
 

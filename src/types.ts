@@ -73,12 +73,16 @@ export type DataStatus = "Live" | "Delay" | "Replay" | "Seed";
 export type TodayMatchCard = {
   id: string;
   label: string;
+  fixtureId?: number;
   homeCode: string;
   awayCode: string;
   kickoffIso: string;
   stage: string;
   dataStatus: DataStatus;
   availability: "available" | "no-live-feed" | "upcoming";
+  sourceLabel?: string;
+  coverage?: string;
+  statusNote?: string;
 };
 
 export type DataConsistencyState = {
