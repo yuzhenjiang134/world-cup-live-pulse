@@ -46,10 +46,10 @@ Planned integration:
 
 ## Links to fill before submission
 
-- Deployed app:
-- GitHub repo:
+- Deployed app: https://yuzhenjiang134.github.io/world-cup-live-pulse/
+- GitHub repo: https://github.com/yuzhenjiang134/world-cup-live-pulse
 - Demo video:
-- Technical write-up:
+- Technical write-up: docs/technical-writeup.md
 - TxLINE endpoints used:
 
 ## User-owned items
