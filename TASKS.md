@@ -97,9 +97,9 @@ Updated: 2026-06-28
 
 - [x] Deploy app on GitHub Pages
 - [x] Verify deployed app works on desktop
-- [ ] Verify deployed app works on mobile
-- [ ] Make GitHub repo public
-- [ ] Confirm no `.env`, API token, private key, seed phrase, or verification code is committed
+- [x] Verify deployed app works on mobile
+- [x] Make GitHub repo public
+- [x] Confirm no `.env`, API token, private key, seed phrase, or verification code is committed
 - [x] Run local security scan
 - [ ] Record 3 to 5 minute demo video
 - [x] Fill final GitHub Pages URL in `docs/SUBMISSION_DRAFT.md`
