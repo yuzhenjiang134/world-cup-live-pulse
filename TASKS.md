@@ -36,6 +36,8 @@ Updated: 2026-06-28
 - [x] Make fan score prediction controls score-linked, local-only, and separated from betting or prediction-market behavior
 - [x] Move team and fixture details behind real on-page reveal buttons instead of showing secondary material by default
 - [x] Compact the mobile match hero so the watch and score-pick surface appears earlier
+- [x] Add market UX benchmark scan in `docs/UX_BENCHMARKS.md`
+- [x] Add match focus navigation for Watch, Pick, Timeline, Mood, and Teams
 - [x] Add `docs/USER_MANUAL.md`
 - [x] Collapse secondary modules behind Settings so the main surface stays functional
 - [x] Add Authorized Video Sync panel with rights-cleared embed boundary

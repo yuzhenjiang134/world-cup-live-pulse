@@ -17,6 +17,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Today Board now includes official TxLINE schedule seed fixtures for 2026-06-28 UTC while keeping live score/event/odds data token-gated.
 - Fan Mode opens as a clean match pulse surface: score, latest beat, AI read, event feed, market mood, timeline, and local fan score pick.
 - Fan Mode includes a compact rolling match data ticker for score, clock, source state, next beat, market mood, and safety.
+- Fan Mode now includes a market-benchmark-inspired match focus nav: Watch, Pick, Timeline, Mood, and Teams.
 - The main fan command area keeps watch-now context, score-linked prediction controls, source truth, and team / fixture detail buttons above secondary analysis.
 - Analyst Mode reveals fixture briefing, Source Board, Data Audit, Live Readiness, and Trust & Accuracy Center for data verification.
 - Judge Mode reveals operation guide, fixture briefing, Judge Demo chapters, and submission readiness for review or video recording.
@@ -26,6 +27,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Match Intelligence shows phase summary, event stack, and player impact.
 - Language setting supports English, Chinese, Spanish, and Portuguese for a broader World Cup fan audience.
 - Match score card, local fan score pick, timeline, market mood, Match Center, team profiles, and AI commentary are visible in the local app.
+- `docs/UX_BENCHMARKS.md` records market examples and the UX choices adopted or rejected for submission safety.
 - Data states are explicitly labeled as Live, Delay, Replay, or Seed.
 - TxLINE API token is not required for the public replay demo. Real TxLINE data can be tested locally with `.env.local`.
 

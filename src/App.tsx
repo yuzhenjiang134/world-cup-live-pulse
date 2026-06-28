@@ -245,6 +245,12 @@ const copy = {
     quickPick: "Quick pick",
     localOnly: "Local only",
     scoreLinkedPick: "Score-linked pick",
+    focusNav: "Match focus",
+    focusWatch: "Watch",
+    focusPick: "Pick",
+    focusTimeline: "Timeline",
+    focusMood: "Mood",
+    focusTeams: "Teams",
   },
   zh: {
     appEyebrow: "Superteam Earn / TxODDS 黑客松 MVP",
@@ -599,6 +605,12 @@ const cleanZhCopy = {
   quickPick: "快速选择",
   localOnly: "仅保存在本地",
   scoreLinkedPick: "比分联动选择",
+  focusNav: "比赛焦点",
+  focusWatch: "看比赛",
+  focusPick: "猜比分",
+  focusTimeline: "时间线",
+  focusMood: "走势",
+  focusTeams: "球队",
 } satisfies CopyShape;
 
 const localizedCopy = {
@@ -1901,6 +1913,32 @@ export default function App() {
           ))}
         </div>
       </section>
+
+      <nav className="match-focus-nav" aria-label={t.focusNav}>
+        <span>{t.focusNav}</span>
+        <button type="button" onClick={() => revealSection(".fan-command-center", () => undefined)}>
+          {t.focusWatch}
+        </button>
+        <button type="button" onClick={() => revealSection(".prediction-panel", () => undefined)}>
+          {t.focusPick}
+        </button>
+        <button type="button" onClick={() => revealSection(".timeline-panel", () => undefined)}>
+          {t.focusTimeline}
+        </button>
+        <button type="button" onClick={() => revealSection(".market-panel", () => undefined)}>
+          {t.focusMood}
+        </button>
+        <button
+          type="button"
+          onClick={() =>
+            revealSection(".team-atlas-section", () => {
+              setShowTeamAtlas(true);
+            })
+          }
+        >
+          {t.focusTeams}
+        </button>
+      </nav>
 
       <section className="fan-command-center" aria-label={t.fanCommand}>
         <article className="watch-now-panel">

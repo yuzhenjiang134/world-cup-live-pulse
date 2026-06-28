@@ -70,52 +70,56 @@ button:hover {
   order: 4;
 }
 
-.fan-command-center {
+.match-focus-nav {
   order: 5;
 }
 
-.story-strip {
+.fan-command-center {
   order: 6;
 }
 
-.control-deck {
+.story-strip {
   order: 7;
 }
 
-.dashboard-grid {
+.control-deck {
   order: 8;
 }
 
-.video-sync-panel {
+.dashboard-grid {
   order: 9;
 }
 
-.matchday-assistant {
+.video-sync-panel {
   order: 10;
 }
 
-.fixture-briefing {
+.matchday-assistant {
   order: 11;
 }
 
-.team-atlas-section {
+.fixture-briefing {
   order: 12;
 }
 
-.today-board {
+.team-atlas-section {
   order: 13;
 }
 
-.brief-grid {
+.today-board {
   order: 14;
 }
 
-.trust-center {
+.brief-grid {
   order: 15;
 }
 
-.judge-demo-layer {
+.trust-center {
   order: 16;
+}
+
+.judge-demo-layer {
+  order: 17;
 }
 
 .preset-fan .today-board,
@@ -545,6 +549,54 @@ h2 {
   to {
     transform: translateX(-50%);
   }
+}
+
+.match-focus-nav {
+  position: sticky;
+  top: 8px;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 10px 0 0;
+  padding: 8px;
+  border: 1px solid rgba(203, 214, 212, 0.94);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 14px 30px rgba(23, 33, 38, 0.08);
+}
+
+.match-focus-nav span {
+  flex: 0 0 auto;
+  color: #657478;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.match-focus-nav button {
+  flex: 0 0 auto;
+  min-height: 36px;
+  padding: 0 12px;
+  border-color: #d8e0dc;
+  background: #ffffff;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.match-focus-nav button:hover {
+  border-color: #cf3246;
+  background: #fff7f4;
+  color: #a72636;
+}
+
+.fan-command-center,
+.prediction-panel,
+.market-panel,
+.timeline-panel,
+.team-atlas-section {
+  scroll-margin-top: 78px;
 }
 
 .fan-command-center {

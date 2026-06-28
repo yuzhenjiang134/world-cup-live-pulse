@@ -8,11 +8,11 @@ Open the deployed GitHub Pages site.
 
 Say: World Cup Live Pulse is a fan-first match dashboard for the Consumer and Fan Experiences track. It explains score, match events, market mood, and momentum without becoming a betting or trading product.
 
-Show that the default Fan Mode opens directly on the match pulse, not on documentation. Point to the compact match hero, rolling ticker, watch-now panel, AI readout, and local fan score pick.
+Show that the default Fan Mode opens directly on the match pulse, not on documentation. Point to the compact match hero, rolling ticker, match focus nav, watch-now panel, AI readout, and local fan score pick.
 
 Use the score buttons to change the local fan score pick once, then use a quick pick button. Say: This is a local fan conversation feature only. It does not place bets, create a prediction market, connect wallets, or store secrets.
 
-Click the team cards and match details buttons only briefly to show that deeper information exists on demand.
+Use the focus nav once: jump to Timeline, Mood, and Teams. Show that the Teams button reveals the team atlas instead of being a decorative link.
 
 ## 0:45-1:35 Data consistency
 

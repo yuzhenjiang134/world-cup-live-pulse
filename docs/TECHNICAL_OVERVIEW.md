@@ -57,6 +57,7 @@ On 2026-06-28 UTC, the public Today Board includes official TxLINE World Cup Sch
 
 - Today Board: makes No Match Day and token-required states visible.
 - Match data ticker: keeps score, clock, source state, next beat, market mood, and safety visible without adding another heavy panel.
+- Match focus nav: one-tap access to Watch, Pick, Timeline, Mood, and Teams, based on common live-score app navigation patterns.
 - Fan command center: keeps the watch-now read, AI commentary, recent event feed, local score pick, source status, and team / fixture detail entry points in the primary fan view.
 - Local score pick: score steppers and quick pick buttons update a local fan selection only; no wallet, persistence, odds execution, wager, or prediction-market mechanic is attached.
 - Trust & Accuracy Center: explains official schedule seed, live token gate, replay truth, Free Tier delay behavior, and scan-friendly endpoint coverage cards.
