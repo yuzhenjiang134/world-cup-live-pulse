@@ -20,6 +20,7 @@ Use this as the final project packet index.
 - `docs/pre-submit-check.md`
 - `docs/user-action-list.md`
 - `docs/USER_MANUAL.md`
+- `docs/PUBLIC_RESEARCH_SUMMARY.md`
 
 ## Validation commands
 
@@ -39,6 +40,8 @@ This runs:
 World Cup Live Pulse is a fan-first match dashboard that makes live score changes, event momentum, odds movement, and AI-style commentary understandable for ordinary fans.
 
 It is designed to work in Replay mode for judges even when no live match is available, and to use TxLINE data through a clean adapter when local credentials are configured.
+
+The main page prioritizes the match pulse. Secondary material such as guides, fixture notes, country/team context, and authorized video status is opened through Settings so the product feels like a working fan dashboard first.
 
 ## Safety boundary
 

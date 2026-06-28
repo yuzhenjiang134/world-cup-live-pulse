@@ -29,6 +29,9 @@ Updated: 2026-06-28
 - [x] Add Country Team Atlas with team style, fan context, and watch notes
 - [x] Add settings controls for viewing preset and dashboard modules
 - [x] Add `docs/USER_MANUAL.md`
+- [x] Collapse secondary modules behind Settings so the main surface stays functional
+- [x] Add Authorized Video Sync panel with rights-cleared embed boundary
+- [x] Add `docs/PUBLIC_RESEARCH_SUMMARY.md`
 - [x] Add player impact aggregation from replay events
 - [x] Add event stack counts for goals, cards, substitutions, and market swings
 - [x] Add Judge Demo Layer with clickable highlight chapters

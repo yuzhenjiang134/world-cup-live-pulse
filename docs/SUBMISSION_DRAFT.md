@@ -29,6 +29,7 @@ The current build includes:
 - Today Board with official TxLINE schedule seed fixtures and Token Required live handling.
 - Daily Brief, Data Audit, and Live Readiness panels.
 - Operation Manual, Fixture Briefing, and Country Team Atlas for first-time users.
+- Optional Authorized Video Sync panel for rights-cleared official video embeds.
 - Trust & Accuracy Center for schedule seed, token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
 - Judge Demo chapters for data integrity, goal swing, late volatility, and upset context.
 - Match Intelligence with phase summary, event stack, and player impact.
@@ -57,6 +58,8 @@ Implemented TxLINE endpoint mapping:
 - `GET /api/scores/stream` and `GET /api/odds/stream` as future SSE upgrades
 - Team, player, referee, and standings context where available from fixtures, score events, seed data, or future context endpoints
 
+Video is handled separately from TxLINE data. The public build does not embed match video. If a rights-cleared official broadcaster, FIFA, YouTube Live, or other authorized embed URL is configured locally, the optional Authorized Video Sync panel can display it and align the viewing context with match clock or replay minute.
+
 ## Data consistency note
 
 World Cup matches are not available every day. The app does not invent live games. If TxLINE credentials are missing or a live endpoint fails, schedule entries remain Seed / Token Required, and the demo uses Replay fixtures for judgeable match flow.
@@ -75,7 +78,7 @@ World Cup matches are not available every day. The app does not invent live game
 2. Show the Today Board with official schedule seed fixtures and data status labels.
 3. Show the Trust & Accuracy Center and explain Seed / Replay / Live / Delay.
 4. Use the Judge Demo chapter buttons: Data integrity, Goal swing, Late volatility, and Upset context.
-5. Show the Operation Manual, Fixture Briefing, and Country Team Atlas.
+5. Open Settings to show optional modules only when needed: Operation Manual, Fixture Briefing, Country Team Atlas, and Authorized Video Sync status.
 6. Show Match Intelligence: phase summary, event stack, and player impact.
 7. Show Match Center: referee, kickoff, qualification, team profiles, discipline, and group table.
 8. Switch settings across language, viewing preset, and module visibility.

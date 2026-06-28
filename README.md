@@ -16,7 +16,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Today Board and No Match Day / Token Required states are visible.
 - Today Board now includes official TxLINE schedule seed fixtures for 2026-06-28 UTC while keeping live score/event/odds data token-gated.
 - Daily Brief, Data Audit, Live Readiness, and Judge Demo chapters are implemented.
-- Operation Manual, Fixture Briefing, and Country Team Atlas are implemented for first-time users and judges.
+- Operation Manual, Fixture Briefing, Country Team Atlas, and Authorized Video Sync are optional modules in Settings so the main view stays focused on match pulse.
 - Trust & Accuracy Center explains schedule seed, live token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
 - Match Intelligence shows phase summary, event stack, and player impact.
 - Language setting supports English, Chinese, Spanish, and Portuguese for a broader World Cup fan audience.
@@ -94,6 +94,7 @@ VITE_TXLINE_FIXTURE_ID=17588325
 VITE_TXLINE_START_EPOCH_DAY=
 VITE_TXLINE_COMPETITION_ID=
 VITE_TXLINE_AS_OF_MS=
+VITE_AUTHORIZED_VIDEO_EMBED_URL=
 ```
 
 The adapter can request a guest JWT from `POST /auth/guest/start` when `VITE_TXLINE_SESSION_JWT` is empty. Data endpoints still require `X-Api-Token`.
@@ -107,6 +108,8 @@ npm run txline:probe
 Without a local token the probe safely skips. With a token it verifies guest JWT, fixture snapshot, score snapshot, and odds snapshot access without printing secrets.
 
 Do not commit `.env`, `.env.local`, API tokens, wallet keys, seed phrases, or verification codes. Do not put real tokens into GitHub Pages build settings unless the sponsor explicitly allows public browser exposure.
+
+`VITE_AUTHORIZED_VIDEO_EMBED_URL` is optional and must only contain a rights-cleared `https://` embed URL from an official broadcaster, FIFA, YouTube Live, or another authorized provider. The public build does not scrape or embed unofficial match video.
 
 ## Project structure
 
@@ -142,6 +145,6 @@ src/
 
 1. Add a real TxLINE token locally and verify one fixture end to end.
 2. Capture sanitized TxLINE response samples for final docs and API feedback.
-3. Record a short demo video using Replay mode, Operation Manual, Country Team Atlas, and the Live token boundary.
+3. Record a short demo video using Replay mode, Settings optional modules, Authorized Video Sync status, and the Live token boundary.
 4. Fill final TxLINE API feedback after real token testing.
 5. Submit the public URL, GitHub repo, and demo video on Superteam Earn.

@@ -38,7 +38,7 @@ const displayLanguageOptions: { code: Language; label: string }[] = [
 
 const copy = {
   en: {
-    appEyebrow: "Superteam Earn / TxODDS hackathon MVP",
+    appEyebrow: "Superteam Earn x TxODDS / Consumer Fan Experience",
     settings: "Settings",
     close: "Close",
     language: "Language",
@@ -57,13 +57,13 @@ const copy = {
     sourceLiveReadyMessage: "Live mode is wired through the TxLINE adapter boundary.",
     sourceNeedsTokenMessage: "Add a local TxLINE token only after the sponsor provides docs.",
     sourceErrorMessage: "The app can fall back to replay mode while the live source is unavailable.",
-    todayBoard: "Today board",
+    todayBoard: "Source board",
     dataConsistency: "Data consistency",
     noMatchDayRule:
-      "No live match is invented. If TxLINE has no match today or credentials are not configured, the public build clearly marks Replay and Seed data.",
-    checkedAt: "Seed snapshot",
+      "The public build only uses verified states: Replay for demo scenarios, Seed for observed schedule/context, and Live only after authenticated TxLINE payloads load.",
+    checkedAt: "Source checked",
     source: "Source",
-    publicSeedSource: "Public build: seed schedule + replay fixtures",
+    publicSeedSource: "Observed schedule seed + replay fixtures",
     consistencyRules: "Consistency rules",
     replayScenario: "Replay scenario",
     play: "Play",
@@ -123,11 +123,11 @@ const copy = {
     keyEvents: "Key events",
     replayLoop: "Replay loop will restart.",
     matchLevel: "Score level",
-    controlsStatus: "Demo control room",
+    controlsStatus: "Display controls",
     dailyBrief: "Daily Brief",
     fansNeedKnow: "What fans need to know",
     dailyBriefBody:
-      "No confirmed live TxLINE fixture is configured for this public build, so the dashboard stays in a judgeable Replay + Seed state.",
+      "The public build is judgeable at any time. Replay drives the match flow, while schedule and team context stay labeled as Seed until authenticated TxLINE data is loaded.",
     dailyPointOne: "Replay mode demonstrates the complete fan experience at any time.",
     dailyPointTwo: "Seed context covers teams, players, referee, and standings where relevant.",
     dailyPointThree: "Live mode is visible but gated until official TxLINE credentials are configured.",
@@ -197,7 +197,7 @@ const copy = {
     chapterGoalFocus: "Score and mood swing",
     chapterLateFocus: "Volatility explanation",
     chapterUpsetFocus: "Group table and player impact",
-    settingsHelper: "Tune the page for match watching, data review, or a hackathon judging walkthrough.",
+    settingsHelper: "Adjust only language, review mode, and visible modules.",
     viewingPreset: "Viewing preset",
     dashboardModules: "Dashboard modules",
     operationManualToggle: "Operation manual",
@@ -215,6 +215,19 @@ const copy = {
     fanRead: "Fan read",
     watchFor: "Watch for",
     dataNote: "Data note",
+    videoPanelToggle: "Authorized video sync",
+    videoSyncEyebrow: "Video Layer",
+    videoSyncTitle: "Authorized match video sync",
+    videoSyncBody:
+      "The public build does not embed match video. It can show an official broadcaster, FIFA, or YouTube Live embed only when a rights-cleared URL is configured.",
+    noVideoSource: "No authorized video source configured",
+    videoProvider: "Provider",
+    videoStatus: "Status",
+    videoStatusValue: "Rights required",
+    videoClockSync: "Sync target",
+    videoClockSyncValue: "Match clock or replay minute",
+    videoRightsNote: "Rights note",
+    videoRightsNoteValue: "No scraping, no unofficial streams, no pirated video.",
   },
   zh: {
     appEyebrow: "Superteam Earn / TxODDS 黑客松 MVP",
@@ -379,7 +392,7 @@ type CopyShape = { [Key in keyof typeof copy.en]: string };
 
 const cleanZhCopy = {
   ...copy.en,
-  appEyebrow: "Superteam Earn / TxODDS 黑客松 MVP",
+  appEyebrow: "Superteam Earn x TxODDS / 球迷体验赛道",
   settings: "设置",
   close: "关闭",
   language: "语言",
@@ -398,13 +411,13 @@ const cleanZhCopy = {
   sourceLiveReadyMessage: "实时模式已通过 TxLINE adapter 加载。",
   sourceNeedsTokenMessage: "请只在本地 .env.local 放入 TxLINE token，不要提交到仓库。",
   sourceErrorMessage: "实时源不可用时，页面会明确显示错误并保留回放兜底。",
-  todayBoard: "今日看板",
+  todayBoard: "数据源看板",
   dataConsistency: "数据一致性",
   noMatchDayRule:
-    "页面不会伪造实时比赛。没有 token 或没有实时赛程时，只显示 Seed 或 Replay。",
-  checkedAt: "种子快照",
+    "公开版只使用可验证状态：Replay 用于演示回放，Seed 用于已观察到的赛程/背景资料，Live 只在 TxLINE 鉴权数据成功加载后出现。",
+  checkedAt: "来源核验时间",
   source: "来源",
-  publicSeedSource: "公开版：赛程种子 + 回放 fixture",
+  publicSeedSource: "赛程种子观察值 + 回放 fixture",
   consistencyRules: "一致性规则",
   replayScenario: "回放场景",
   play: "播放",
@@ -464,11 +477,11 @@ const cleanZhCopy = {
   keyEvents: "关键事件",
   replayLoop: "回放将重新开始。",
   matchLevel: "比分持平",
-  controlsStatus: "演示控制台",
+  controlsStatus: "显示控制",
   dailyBrief: "每日简报",
   fansNeedKnow: "球迷现在需要知道什么",
   dailyBriefBody:
-    "公开版不携带私密 TxLINE token，因此保持可评审的 Replay + Seed 状态。",
+    "公开版任何时间都可评审。Replay 负责比赛流程演示，赛程和球队背景保持 Seed 标签，直到 TxLINE 鉴权数据加载成功。",
   dailyPointOne: "Replay 模式可以随时完整演示球迷体验。",
   dailyPointTwo: "Seed 资料用于赛程、球队、球员、裁判和积分语境。",
   dailyPointThree: "Live 模式已接官方端点，但需要本地 token 才能加载。",
@@ -523,7 +536,7 @@ const cleanZhCopy = {
   finalSubmission: "最终提交",
   draft: "草稿",
   todo: "待做",
-  settingsHelper: "按球迷观看、数据复核或黑客松评审演示来调整页面。",
+  settingsHelper: "只调整语言、评审视图和可见模块。",
   viewingPreset: "观看预设",
   dashboardModules: "看板模块",
   operationManualToggle: "操作手册",
@@ -541,6 +554,19 @@ const cleanZhCopy = {
   fanRead: "球迷解读",
   watchFor: "重点观察",
   dataNote: "数据说明",
+  videoPanelToggle: "授权视频同步",
+  videoSyncEyebrow: "视频层",
+  videoSyncTitle: "授权比赛视频同步",
+  videoSyncBody:
+    "公开版不嵌入比赛视频。只有拿到官方转播方、FIFA 或 YouTube Live 等授权 embed URL 后，才会显示播放器。",
+  noVideoSource: "未配置授权视频源",
+  videoProvider: "视频来源",
+  videoStatus: "状态",
+  videoStatusValue: "需要授权",
+  videoClockSync: "同步目标",
+  videoClockSyncValue: "比赛时钟或回放分钟",
+  videoRightsNote: "版权边界",
+  videoRightsNoteValue: "不抓取、不盗播、不接入非官方视频流。",
 } satisfies CopyShape;
 
 const localizedCopy = {
@@ -1030,6 +1056,14 @@ type DemoChapter = {
   focus: string;
 };
 
+function detectInitialLanguage(): Language {
+  if (typeof navigator !== "undefined" && navigator.language.toLowerCase().startsWith("zh")) {
+    return "zh";
+  }
+
+  return "en";
+}
+
 const zhPresetText: Record<ViewPresetId, Pick<ViewPreset, "label" | "description" | "focus">> = {
   fan: {
     label: "球迷模式",
@@ -1252,9 +1286,22 @@ function getTeamDisplay(team: TeamGuide, language: Language): TeamGuide {
   return language === "zh" ? { ...team, ...zhTeamText[team.code] } : team;
 }
 
+function getSafeVideoEmbedUrl(rawUrl?: string) {
+  if (!rawUrl) {
+    return null;
+  }
+
+  try {
+    const url = new URL(rawUrl);
+    return url.protocol === "https:" ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function App() {
   const [mode, setMode] = useState<MatchMode>("replay");
-  const [language, setLanguage] = useState<Language>("en");
+  const [language, setLanguage] = useState<Language>(() => detectInitialLanguage());
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [minute, setMinute] = useState(1);
@@ -1264,13 +1311,20 @@ export default function App() {
   const [speed, setSpeed] = useState<(typeof replaySpeeds)[number]>(1);
   const [replayMatchId, setReplayMatchId] = useState(replayMatches[0].id);
   const [viewPreset, setViewPreset] = useState<ViewPresetId>("fan");
-  const [showManual, setShowManual] = useState(true);
-  const [showMatchGuide, setShowMatchGuide] = useState(true);
-  const [showTeamAtlas, setShowTeamAtlas] = useState(true);
+  const [showManual, setShowManual] = useState(false);
+  const [showMatchGuide, setShowMatchGuide] = useState(false);
+  const [showTeamAtlas, setShowTeamAtlas] = useState(false);
+  const [showVideoPanel, setShowVideoPanel] = useState(false);
   const [selectedTeamCode, setSelectedTeamCode] = useState("ARG");
 
   const t = localizedCopy[language];
   const trust = localizedTrustCopy[language];
+
+  useEffect(() => {
+    document.documentElement.lang = language === "zh" ? "zh-CN" : language;
+    document.documentElement.setAttribute("translate", "no");
+    document.body.setAttribute("translate", "no");
+  }, [language]);
 
   useEffect(() => {
     setLoadError(null);
@@ -1366,6 +1420,7 @@ export default function App() {
         ? match.home.name
         : match.away.name;
   const sourceStatus = source ? getSourceStatus(source, language) : null;
+  const videoEmbedUrl = getSafeVideoEmbedUrl(import.meta.env.VITE_AUTHORIZED_VIDEO_EMBED_URL);
   const visibleCards = frame.activeEvents.filter((event) =>
     ["yellow_card", "red_card"].includes(event.type),
   );
@@ -1497,7 +1552,7 @@ export default function App() {
   }
 
   return (
-    <main className={`app-shell preset-${viewPreset}`}>
+    <main className={`app-shell preset-${viewPreset}`} translate="no">
       <header className="topbar">
         <div className="brand-block">
           <p className="eyebrow">{t.appEyebrow}</p>
@@ -1531,85 +1586,104 @@ export default function App() {
       </header>
 
       {settingsOpen ? (
-        <section className="settings-panel" aria-label={t.settings}>
-          <div className="settings-heading">
-            <div>
-              <p className="eyebrow">{t.settings}</p>
-              <h2>{t.controlsStatus}</h2>
-            </div>
-            <p>{t.settingsHelper}</p>
-          </div>
-          <div className="settings-grid">
-            <section className="settings-card">
-              <span>{t.language}</span>
-              <div className="language-control" aria-label={t.language}>
-                {displayLanguageOptions.map((option) => (
-                  <button
-                    className={language === option.code ? "active" : ""}
-                    key={option.code}
-                    onClick={() => setLanguage(option.code)}
-                    type="button"
-                  >
-                    {option.label}
-                  </button>
-                ))}
+        <>
+          <button
+            aria-label={t.close}
+            className="settings-scrim"
+            onClick={() => setSettingsOpen(false)}
+            type="button"
+          />
+          <aside className="settings-drawer" aria-label={t.settings}>
+            <div className="settings-heading">
+              <div>
+                <p className="eyebrow">{t.settings}</p>
+                <h2>{t.controlsStatus}</h2>
               </div>
-            </section>
-            <section className="settings-card">
-              <span>{t.viewingPreset}</span>
-              <div className="preset-control" aria-label={t.viewingPreset}>
-                {viewPresets.map((preset) => {
-                  const display = getPresetDisplay(preset, language);
-
-                  return (
+              <button className="drawer-close" onClick={() => setSettingsOpen(false)} type="button">
+                {t.close}
+              </button>
+            </div>
+            <p className="settings-helper">{t.settingsHelper}</p>
+            <div className="settings-grid">
+              <section className="settings-card">
+                <span>{t.language}</span>
+                <div className="language-control" aria-label={t.language}>
+                  {displayLanguageOptions.map((option) => (
                     <button
-                      className={viewPreset === preset.id ? "active" : ""}
-                      key={preset.id}
-                      onClick={() => setViewPreset(preset.id)}
+                      className={language === option.code ? "active" : ""}
+                      key={option.code}
+                      onClick={() => setLanguage(option.code)}
                       type="button"
                     >
-                      {display.label}
+                      {option.label}
                     </button>
-                  );
-                })}
-              </div>
-              <p>{currentPresetDisplay.description}</p>
-            </section>
-            <section className="settings-card">
-              <span>{t.dashboardModules}</span>
-              <label className="toggle-row">
-                <input
-                  checked={showManual}
-                  onChange={(event) => setShowManual(event.target.checked)}
-                  type="checkbox"
-                />
-                <strong>{t.operationManualToggle}</strong>
-              </label>
-              <label className="toggle-row">
-                <input
-                  checked={showMatchGuide}
-                  onChange={(event) => setShowMatchGuide(event.target.checked)}
-                  type="checkbox"
-                />
-                <strong>{t.fixtureBriefingToggle}</strong>
-              </label>
-              <label className="toggle-row">
-                <input
-                  checked={showTeamAtlas}
-                  onChange={(event) => setShowTeamAtlas(event.target.checked)}
-                  type="checkbox"
-                />
-                <strong>{t.countryAtlasToggle}</strong>
-              </label>
-            </section>
-          </div>
-        </section>
+                  ))}
+                </div>
+              </section>
+              <section className="settings-card">
+                <span>{t.viewingPreset}</span>
+                <div className="preset-control" aria-label={t.viewingPreset}>
+                  {viewPresets.map((preset) => {
+                    const display = getPresetDisplay(preset, language);
+
+                    return (
+                      <button
+                        className={viewPreset === preset.id ? "active" : ""}
+                        key={preset.id}
+                        onClick={() => setViewPreset(preset.id)}
+                        type="button"
+                      >
+                        {display.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p>{currentPresetDisplay.description}</p>
+              </section>
+              <section className="settings-card">
+                <span>{t.dashboardModules}</span>
+                <label className="toggle-row">
+                  <input
+                    checked={showManual}
+                    onChange={(event) => setShowManual(event.target.checked)}
+                    type="checkbox"
+                  />
+                  <strong>{t.operationManualToggle}</strong>
+                </label>
+                <label className="toggle-row">
+                  <input
+                    checked={showMatchGuide}
+                    onChange={(event) => setShowMatchGuide(event.target.checked)}
+                    type="checkbox"
+                  />
+                  <strong>{t.fixtureBriefingToggle}</strong>
+                </label>
+                <label className="toggle-row">
+                  <input
+                    checked={showTeamAtlas}
+                    onChange={(event) => setShowTeamAtlas(event.target.checked)}
+                    type="checkbox"
+                  />
+                  <strong>{t.countryAtlasToggle}</strong>
+                </label>
+                <label className="toggle-row">
+                  <input
+                    checked={showVideoPanel}
+                    onChange={(event) => setShowVideoPanel(event.target.checked)}
+                    type="checkbox"
+                  />
+                  <strong>{t.videoPanelToggle}</strong>
+                </label>
+              </section>
+            </div>
+          </aside>
+        </>
       ) : null}
 
       <section className="match-hero" aria-label="Current match">
         <div className="hero-copy">
           <div className="status-ribbon">
-            <span className={source?.kind === "replay" ? "status-live" : "status-waiting"}>
+            <span className={source?.kind === "replay" ? "status-replay" : "status-waiting"}>
               {sourceStatus?.label ?? "Preparing source"}
             </span>
             <span>{mode === "replay" ? t.mockFixture : t.txlineAdapter}</span>
@@ -1642,6 +1716,49 @@ export default function App() {
         <section className={`source-banner source-${source?.kind}`} aria-label="Data source status">
           <strong>{sourceStatus.label}</strong>
           <span>{sourceStatus.message}</span>
+        </section>
+      ) : null}
+
+      {showVideoPanel ? (
+        <section className="video-sync-panel" aria-label={t.videoSyncTitle}>
+          <div className="section-heading">
+            <p className="eyebrow">{t.videoSyncEyebrow}</p>
+            <h2>{t.videoSyncTitle}</h2>
+          </div>
+          <div className="video-sync-layout">
+            {videoEmbedUrl ? (
+              <iframe
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                src={videoEmbedUrl}
+                title={t.videoSyncTitle}
+              />
+            ) : (
+              <div className="video-placeholder">
+                <strong>{t.noVideoSource}</strong>
+                <p>{t.videoSyncBody}</p>
+              </div>
+            )}
+            <dl className="video-facts">
+              <div>
+                <dt>{t.videoProvider}</dt>
+                <dd>{videoEmbedUrl ? new URL(videoEmbedUrl).hostname : t.noVideoSource}</dd>
+              </div>
+              <div>
+                <dt>{t.videoStatus}</dt>
+                <dd>{videoEmbedUrl ? t.ready : t.videoStatusValue}</dd>
+              </div>
+              <div>
+                <dt>{t.videoClockSync}</dt>
+                <dd>{t.videoClockSyncValue}</dd>
+              </div>
+              <div>
+                <dt>{t.videoRightsNote}</dt>
+                <dd>{t.videoRightsNoteValue}</dd>
+              </div>
+            </dl>
+          </div>
         </section>
       ) : null}
 
@@ -1807,20 +1924,8 @@ export default function App() {
           {dataConsistencyState.today.map((item) => {
             const display = getTodayCardDisplay(item, language);
 
-            return (
-              <button
-                className={item.id === replayMatchId ? "active" : ""}
-                disabled={item.availability !== "available"}
-                key={item.id}
-                onClick={() => {
-                  if (item.availability === "available") {
-                    setIsPlaying(false);
-                    setReplayMatchId(item.id);
-                    switchMode("replay");
-                  }
-                }}
-                type="button"
-              >
+            const cardContent = (
+              <>
                 <strong>
                   {item.homeCode} vs {item.awayCode}
                 </strong>
@@ -1831,6 +1936,29 @@ export default function App() {
                 </small>
                 {item.coverage ? <small>{item.coverage}</small> : null}
                 {item.statusNote ? <small>{item.statusNote}</small> : null}
+              </>
+            );
+
+            if (item.availability !== "available") {
+              return (
+                <article className="today-card unavailable" key={item.id}>
+                  {cardContent}
+                </article>
+              );
+            }
+
+            return (
+              <button
+                className={`today-card ${item.id === replayMatchId ? "active" : ""}`}
+                key={item.id}
+                onClick={() => {
+                  setIsPlaying(false);
+                  setReplayMatchId(item.id);
+                  switchMode("replay");
+                }}
+                type="button"
+              >
+                {cardContent}
               </button>
             );
           })}

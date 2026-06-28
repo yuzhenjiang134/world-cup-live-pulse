@@ -30,6 +30,7 @@ VITE_TXLINE_FIXTURE_ID=17588325
 VITE_TXLINE_START_EPOCH_DAY=
 VITE_TXLINE_COMPETITION_ID=
 VITE_TXLINE_AS_OF_MS=
+VITE_AUTHORIZED_VIDEO_EMBED_URL=
 ```
 
 Do not commit `.env`, `.env.local`, real tokens, wallet keys, seed phrases, or verification codes.
@@ -56,6 +57,12 @@ The probe verifies guest JWT, fixture snapshot, score snapshot, and odds snapsho
 | Team and player context | fixture and score payload metadata, or future context endpoint | team code, team name, colors, key players, roles | `Team` and `PlayerProfile` |
 | Standings or qualification context | fixture metadata, schedule context, or future context endpoint | group, played, points, goal difference, status | `GroupStanding[]` |
 | Highlight chapters | derived from score events and odds swings | event id, minute, type, label, shareable context | Judge Demo chapters and share cards |
+
+## Authorized video note
+
+TxLINE is used here as the match data layer for fixtures, scores, events, and odds. Match video rights are separate from TxLINE data access.
+
+The optional Authorized Video Sync panel only accepts a rights-cleared `https://` embed URL through `VITE_AUTHORIZED_VIDEO_EMBED_URL`. It is intended for official broadcaster, FIFA, YouTube Live, or other authorized embeds. The project does not scrape, mirror, or embed unofficial match streams.
 
 ## Data consistency rules
 

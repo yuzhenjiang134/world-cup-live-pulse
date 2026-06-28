@@ -10,13 +10,13 @@ Say: World Cup Live Pulse is a fan-first match dashboard for the Consumer and Fa
 
 ## 0:25-1:20 Data consistency
 
-Show the Today Board and Trust & Accuracy Center.
+Show the Source Board and Trust & Accuracy Center.
 
 Say: The app does not invent live data. The Today Board uses official TxLINE schedule seed fixtures for Jordan vs Argentina and Algeria vs Austria, but it keeps them as Seed / Token Required until authenticated live score, event, and odds feeds are loaded. Replay stays available so judges can evaluate the match flow even if no live fixture is open during review.
 
 Point to Data Audit, Live Readiness, and endpoint coverage.
 
-Open the Operation Manual and Fixture Briefing.
+Open Settings only if needed, then briefly show the optional Operation Manual and Fixture Briefing modules.
 
 Say: The page is designed for a first-time fan. It tells the user how to read the source state, how to pick a match path, and what data can or cannot be trusted as live.
 
@@ -56,19 +56,23 @@ Show:
 
 Use the upset-context chapter to show the Japan vs Germany group table.
 
-## 3:10-3:40 Language setting
+## 3:10-3:45 Settings and optional modules
 
 Open Settings and switch between English, Chinese, Spanish, and Portuguese.
 
 Say: This is important for a global World Cup fan experience and for demo clarity across audiences.
 
-## 3:40-4:15 TxLINE boundary
+Turn on Authorized Video Sync.
+
+Say: Match video rights are separate from TxLINE data. This panel only accepts a rights-cleared official embed URL, and the public build shows a rights-required state instead of using unofficial streams.
+
+## 3:45-4:20 TxLINE boundary
 
 Switch to Live mode.
 
 Say: Live mode is already routed through the TxLINE adapter. Without credentials it shows a token-needed state instead of pretending replay data is live. With a local token, the adapter calls TxLINE fixtures, score snapshots, and odds snapshots, then maps them into the same MatchData model.
 
-## 4:15-4:50 Share and safety
+## 4:20-4:50 Share and safety
 
 Show the share card preview and export button.
 

@@ -10,7 +10,7 @@ It is informational only. It does not place bets, give trading advice, connect w
 
 1. Open the public site.
 2. Check the source banner first.
-3. Use Today Board to see official schedule seed fixtures.
+3. Use Source Board to see replay fixtures and observed schedule seed fixtures.
 4. Use Judge Demo chapters when no live fixture is available.
 5. Read score, latest beat, AI commentary, pressure, market mood, and timeline together.
 6. Export the share card only after checking the data state.
@@ -33,6 +33,15 @@ The app must never invent live games. If credentials are missing, the public bui
 - Operation manual: show or hide the matchday guide.
 - Fixture briefing: show or hide fixture-specific data rules.
 - Country team atlas: show or hide team profiles and watch notes.
+- Authorized video sync: show or hide the rights-cleared video integration status.
+
+The main page keeps secondary material collapsed by default. Turn these modules on only when you need a judging walkthrough, data explanation, or a video-rights integration check.
+
+## Authorized Video Sync
+
+The app can display a video embed only when `VITE_AUTHORIZED_VIDEO_EMBED_URL` is configured with a rights-cleared `https://` source from an official broadcaster, FIFA, YouTube Live, or another authorized provider.
+
+The public build does not include match video, scrape streams, or embed unofficial sources. Without an authorized URL, the panel shows a clear rights-required state.
 
 ## Country Team Atlas
 
@@ -49,6 +58,7 @@ VITE_TXLINE_API_BASE=https://txline.txodds.com
 VITE_TXLINE_API_TOKEN=your_txline_x_api_token_here
 VITE_TXLINE_SESSION_JWT=
 VITE_TXLINE_FIXTURE_ID=17588325
+VITE_AUTHORIZED_VIDEO_EMBED_URL=
 ```
 
 Then run:
@@ -63,9 +73,9 @@ Do not commit `.env.local`, API tokens, private keys, seed phrases, verification
 
 ## Demo Flow
 
-1. Show Today Board and the source banner.
+1. Show Source Board and the source banner.
 2. Open Trust & Accuracy Center.
-3. Open Operation Manual and Fixture Briefing.
+3. Open Settings only when showing optional modules.
 4. Use Judge Demo chapters.
 5. Show Match Intelligence and Country Team Atlas.
 6. Switch to Live mode and explain token-gated data.
