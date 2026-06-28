@@ -32,6 +32,10 @@ Updated: 2026-06-28
 - [x] Add rolling match data ticker for compact live-pulse scanning
 - [x] Convert TxLINE endpoint coverage from dense table to scan-friendly status cards
 - [x] Further declutter Fan Mode by moving analysis and submission panels behind Analyst / Judge presets
+- [x] Add fan command center with watch-now context, AI readout, compact event feed, and local score pick
+- [x] Make fan score prediction controls score-linked, local-only, and separated from betting or prediction-market behavior
+- [x] Move team and fixture details behind real on-page reveal buttons instead of showing secondary material by default
+- [x] Compact the mobile match hero so the watch and score-pick surface appears earlier
 - [x] Add `docs/USER_MANUAL.md`
 - [x] Collapse secondary modules behind Settings so the main surface stays functional
 - [x] Add Authorized Video Sync panel with rights-cleared embed boundary

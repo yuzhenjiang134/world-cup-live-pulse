@@ -21,6 +21,7 @@ const maxMinute = 90;
 const replaySpeeds = [0.5, 1, 2, 4] as const;
 
 type Language = "en" | "zh" | "es" | "pt";
+type PredictionPick = "home" | "draw" | "away";
 
 const languageOptions: { code: Language; label: string }[] = [
   { code: "en", label: "English" },
@@ -228,6 +229,22 @@ const copy = {
     videoClockSyncValue: "Match clock or replay minute",
     videoRightsNote: "Rights note",
     videoRightsNoteValue: "No scraping, no unofficial streams, no pirated video.",
+    fanCommand: "Fan command",
+    watchNow: "Watch now",
+    fanPrediction: "Fan score pick",
+    predictionBody:
+      "A local matchday pick for conversation only. No betting, no wallet, no trading advice.",
+    predictionSafety: "Entertainment pick only",
+    yourPick: "Your pick",
+    fanLean: "Fan lean",
+    dataBacked: "Data-backed context",
+    openTeamInfo: "Open team cards",
+    openFixtureInfo: "Open match details",
+    liveFeed: "Match event feed",
+    waitingForKickoff: "Waiting for kickoff",
+    quickPick: "Quick pick",
+    localOnly: "Local only",
+    scoreLinkedPick: "Score-linked pick",
   },
   zh: {
     appEyebrow: "Superteam Earn / TxODDS 黑客松 MVP",
@@ -567,6 +584,21 @@ const cleanZhCopy = {
   videoClockSyncValue: "比赛时钟或回放分钟",
   videoRightsNote: "版权边界",
   videoRightsNoteValue: "不抓取、不盗播、不接入非官方视频流。",
+  fanCommand: "看球主视图",
+  watchNow: "现在看什么",
+  fanPrediction: "球迷比分预测",
+  predictionBody: "仅用于看球讨论的本地选择，不下注、不接钱包、不提供交易建议。",
+  predictionSafety: "娱乐预测，不是投注建议",
+  yourPick: "我的选择",
+  fanLean: "球迷倾向",
+  dataBacked: "数据上下文",
+  openTeamInfo: "打开球队/球员资料",
+  openFixtureInfo: "打开比赛详情",
+  liveFeed: "比赛事件流",
+  waitingForKickoff: "等待开球",
+  quickPick: "快速选择",
+  localOnly: "仅保存在本地",
+  scoreLinkedPick: "比分联动选择",
 } satisfies CopyShape;
 
 const localizedCopy = {
@@ -1299,6 +1331,18 @@ function getSafeVideoEmbedUrl(rawUrl?: string) {
   }
 }
 
+function clampScore(value: number) {
+  return Math.max(0, Math.min(9, value));
+}
+
+function getPredictionPickFromScore(homeScore: number, awayScore: number): PredictionPick {
+  if (homeScore === awayScore) {
+    return "draw";
+  }
+
+  return homeScore > awayScore ? "home" : "away";
+}
+
 export default function App() {
   const [mode, setMode] = useState<MatchMode>("replay");
   const [language, setLanguage] = useState<Language>(() => detectInitialLanguage());
@@ -1316,6 +1360,9 @@ export default function App() {
   const [showTeamAtlas, setShowTeamAtlas] = useState(false);
   const [showVideoPanel, setShowVideoPanel] = useState(false);
   const [selectedTeamCode, setSelectedTeamCode] = useState("ARG");
+  const [predictionPick, setPredictionPick] = useState<PredictionPick | null>(null);
+  const [predictedHomeScore, setPredictedHomeScore] = useState(1);
+  const [predictedAwayScore, setPredictedAwayScore] = useState(1);
 
   const t = localizedCopy[language];
   const trust = localizedTrustCopy[language];
@@ -1573,6 +1620,39 @@ export default function App() {
       value: t.noBetting,
     },
   ];
+  const predictionOptions = [
+    {
+      id: "home" as const,
+      label: match.home.name,
+      shortLabel: match.home.code,
+      value: frame.market.homeWin,
+    },
+    {
+      id: "draw" as const,
+      label: t.draw,
+      shortLabel: t.draw,
+      value: frame.market.draw,
+    },
+    {
+      id: "away" as const,
+      label: match.away.name,
+      shortLabel: match.away.code,
+      value: frame.market.awayWin,
+    },
+  ];
+  const fanLean = predictionOptions.reduce((leaderOption, option) =>
+    option.value > leaderOption.value ? option : leaderOption,
+  );
+  const scoreDerivedPick = getPredictionPickFromScore(predictedHomeScore, predictedAwayScore);
+  const activePredictionPick = predictionPick ?? scoreDerivedPick;
+  const selectedPrediction = predictionOptions.find((option) => option.id === activePredictionPick);
+  const predictedOutcome =
+    predictedHomeScore === predictedAwayScore
+      ? t.draw
+      : predictedHomeScore > predictedAwayScore
+        ? match.home.name
+        : match.away.name;
+  const recentPulseEvents = frame.activeEvents.slice(-4).reverse();
   const eventStats = buildEventStats(frame.activeEvents);
   const playerImpact = buildPlayerImpact(frame.activeEvents);
   const phaseSummary = buildPhaseSummary(minute, match, t);
@@ -1605,6 +1685,39 @@ export default function App() {
     setReplayMatchId(chapter.matchId);
     setIsPlaying(false);
     setMinute(chapter.minute);
+  }
+
+  function updatePredictedScore(nextHomeScore: number, nextAwayScore: number) {
+    const safeHomeScore = clampScore(nextHomeScore);
+    const safeAwayScore = clampScore(nextAwayScore);
+
+    setPredictedHomeScore(safeHomeScore);
+    setPredictedAwayScore(safeAwayScore);
+    setPredictionPick(getPredictionPickFromScore(safeHomeScore, safeAwayScore));
+  }
+
+  function choosePredictionPick(nextPick: PredictionPick) {
+    if (nextPick === "draw") {
+      const drawScore = Math.max(predictedHomeScore, predictedAwayScore);
+      updatePredictedScore(drawScore, drawScore);
+      return;
+    }
+
+    if (nextPick === "home") {
+      const nextAwayScore = predictedAwayScore === 9 ? 8 : predictedAwayScore;
+      updatePredictedScore(Math.max(predictedHomeScore, nextAwayScore + 1), nextAwayScore);
+      return;
+    }
+
+    const nextHomeScore = predictedHomeScore === 9 ? 8 : predictedHomeScore;
+    updatePredictedScore(nextHomeScore, Math.max(predictedAwayScore, nextHomeScore + 1));
+  }
+
+  function revealSection(sectionSelector: string, reveal: () => void) {
+    reveal();
+    window.requestAnimationFrame(() => {
+      document.querySelector(sectionSelector)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }
 
   return (
@@ -1787,6 +1900,179 @@ export default function App() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="fan-command-center" aria-label={t.fanCommand}>
+        <article className="watch-now-panel">
+          <div className="panel-heading">
+            <p className="eyebrow">{t.fanCommand}</p>
+            <h2>{t.watchNow}</h2>
+          </div>
+          <strong>{frame.latestEvent?.title ?? frame.insight.headline}</strong>
+          <p>{frame.latestEvent?.description ?? frame.insight.headline}</p>
+          <div className="ai-readout">
+            <span>{t.aiCommentary}</span>
+            <strong>{frame.commentary}</strong>
+          </div>
+          <div className="watch-now-grid">
+            <Metric label={t.clock} value={`${minute}'`} />
+            <Metric label={t.nextBeat} value={nextEvent ? `${nextEvent.minute}'` : t.replayLoop} />
+            <Metric label={t.pulse} value={`${fanTemperature}/100`} />
+          </div>
+          <div className="mini-event-feed" aria-label={t.liveFeed}>
+            <span>{t.liveFeed}</span>
+            {recentPulseEvents.length ? (
+              recentPulseEvents.map((event) => (
+                <button
+                  className={event.id === frame.latestEvent?.id ? "active" : ""}
+                  key={event.id}
+                  onClick={() => jumpToMoment(event.minute)}
+                  type="button"
+                >
+                  <strong>
+                    {event.minute}
+                    {event.stoppage ? `+${event.stoppage}` : ""}'
+                  </strong>
+                  <span>{event.title}</span>
+                </button>
+              ))
+            ) : (
+              <p>{t.waitingForKickoff}</p>
+            )}
+          </div>
+        </article>
+
+        <article className="prediction-panel">
+          <div className="panel-heading">
+            <p className="eyebrow">{t.predictionSafety}</p>
+            <h2>{t.fanPrediction}</h2>
+          </div>
+          <p>{t.predictionBody}</p>
+          <div className="score-pick-grid" aria-label={t.yourPick}>
+            <section>
+              <span>{match.home.code}</span>
+              <div className="score-stepper">
+                <button
+                  aria-label={`${match.home.code} -1`}
+                  onClick={() => updatePredictedScore(predictedHomeScore - 1, predictedAwayScore)}
+                  type="button"
+                >
+                  -
+                </button>
+                <strong>{predictedHomeScore}</strong>
+                <button
+                  aria-label={`${match.home.code} +1`}
+                  onClick={() => updatePredictedScore(predictedHomeScore + 1, predictedAwayScore)}
+                  type="button"
+                >
+                  +
+                </button>
+              </div>
+            </section>
+            <section>
+              <span>{match.away.code}</span>
+              <div className="score-stepper">
+                <button
+                  aria-label={`${match.away.code} -1`}
+                  onClick={() => updatePredictedScore(predictedHomeScore, predictedAwayScore - 1)}
+                  type="button"
+                >
+                  -
+                </button>
+                <strong>{predictedAwayScore}</strong>
+                <button
+                  aria-label={`${match.away.code} +1`}
+                  onClick={() => updatePredictedScore(predictedHomeScore, predictedAwayScore + 1)}
+                  type="button"
+                >
+                  +
+                </button>
+              </div>
+            </section>
+          </div>
+          <div className="prediction-options" aria-label={t.fanPrediction}>
+            {predictionOptions.map((option) => (
+              <button
+                aria-pressed={activePredictionPick === option.id}
+                className={activePredictionPick === option.id ? "active" : ""}
+                key={option.id}
+                onClick={() => choosePredictionPick(option.id)}
+                type="button"
+              >
+                <span>{option.shortLabel}</span>
+                <strong>{option.value}%</strong>
+              </button>
+            ))}
+          </div>
+          <div className="prediction-readout">
+            <span>
+              {t.yourPick}:{" "}
+              <strong>
+                {match.home.code} {predictedHomeScore}-{predictedAwayScore} {match.away.code} / {predictedOutcome}
+              </strong>
+            </span>
+            <span>
+              {t.quickPick}: <strong>{selectedPrediction?.label ?? fanLean.label}</strong>
+            </span>
+            <span>
+              {t.fanLean}:{" "}
+              <strong>
+                {fanLean.label} {fanLean.value}%
+              </strong>
+            </span>
+            <small>
+              {t.scoreLinkedPick} / {t.localOnly}
+            </small>
+          </div>
+        </article>
+
+        <article className="quick-info-panel">
+          <div className="panel-heading">
+            <p className="eyebrow">{t.dataBacked}</p>
+            <h2>{match.stage ?? match.competition}</h2>
+          </div>
+          <p>{match.qualificationNote ?? frame.insight.headline}</p>
+          {sourceStatus ? (
+            <div className="source-mini-ledger">
+              <span>{t.source}</span>
+              <strong>{sourceStatus.label}</strong>
+              <small>{sourceStatus.message}</small>
+            </div>
+          ) : null}
+          {playerImpact[0] ? (
+            <div className="featured-player">
+              <span>{t.playerImpact}</span>
+              <strong>
+                {playerImpact[0].name} / {playerImpact[0].team}
+              </strong>
+              <small>
+                {t.involved}: {playerImpact[0].events} / {t.minutes}: {playerImpact[0].minutes.join(", ")}
+              </small>
+            </div>
+          ) : null}
+          <div className="quick-info-actions">
+            <button
+              type="button"
+              onClick={() =>
+                revealSection(".team-atlas-section", () => {
+                  setShowTeamAtlas(true);
+                })
+              }
+            >
+              {t.openTeamInfo}
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                revealSection(".fixture-briefing", () => {
+                  setShowMatchGuide(true);
+                })
+              }
+            >
+              {t.openFixtureInfo}
+            </button>
+          </div>
+        </article>
       </section>
 
       {showVideoPanel ? (

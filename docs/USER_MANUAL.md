@@ -10,10 +10,12 @@ It is informational only. It does not place bets, give trading advice, connect w
 
 1. Open the public site.
 2. Check the source banner first.
-3. Read score, latest beat, AI commentary, pressure, market mood, and timeline together.
-4. Use replay controls or key moments to move through the match.
-5. Open Settings and switch to Analyst Mode for source verification, or Judge Mode for demo chapters.
-6. Export the share card only after checking the data state.
+3. Read score, latest beat, AI commentary, event feed, market mood, and timeline together.
+4. Use the local fan score pick to choose a conversation scoreline. This stays local and is not a bet.
+5. Open team cards or match details only when you want deeper context.
+6. Use replay controls or key moments to move through the match.
+7. Open Settings and switch to Analyst Mode for source verification, or Judge Mode for demo chapters.
+8. Export the share card only after checking the data state.
 
 ## Data States
 
@@ -36,6 +38,12 @@ The app must never invent live games. If credentials are missing, the public bui
 - Authorized video sync: show or hide the rights-cleared video integration status.
 
 The main page keeps secondary material collapsed by default. Presets apply sensible module visibility automatically, and the module switches let you override that layout when needed.
+
+## Fan Score Pick
+
+The score pick controls are local UI only. The score steppers and quick pick buttons help fans discuss a match outcome while watching the pulse, but they do not submit a wager, connect a wallet, store a prediction, or create a prediction market.
+
+The pick is intentionally shown beside source status and market mood context so users can compare their read with the current match pulse without treating the percentages as financial advice.
 
 ## Authorized Video Sync
 
@@ -75,9 +83,10 @@ Do not commit `.env.local`, API tokens, private keys, seed phrases, verification
 
 1. Show Source Board and the source banner.
 2. Open Trust & Accuracy Center.
-3. Open Settings only when showing optional modules.
-4. Use Judge Demo chapters.
-5. Show Match Intelligence and Country Team Atlas.
-6. Switch to Live mode and explain token-gated data.
-7. Export the share card.
-8. Close with the safety boundary.
+3. Show the local fan score pick and the watch-now event feed.
+4. Open Settings only when showing optional modules.
+5. Use Judge Demo chapters.
+6. Show Match Intelligence and Country Team Atlas.
+7. Switch to Live mode and explain token-gated data.
+8. Export the share card.
+9. Close with the safety boundary.

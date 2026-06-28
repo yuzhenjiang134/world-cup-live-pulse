@@ -8,9 +8,13 @@ Open the deployed GitHub Pages site.
 
 Say: World Cup Live Pulse is a fan-first match dashboard for the Consumer and Fan Experiences track. It explains score, match events, market mood, and momentum without becoming a betting or trading product.
 
-Show that the default Fan Mode opens directly on the match pulse, not on documentation. Point to the rolling match data ticker for score, clock, source state, next beat, market mood, and safety.
+Show that the default Fan Mode opens directly on the match pulse, not on documentation. Point to the compact match hero, rolling ticker, watch-now panel, AI readout, and local fan score pick.
 
-## 0:25-1:20 Data consistency
+Use the score buttons to change the local fan score pick once, then use a quick pick button. Say: This is a local fan conversation feature only. It does not place bets, create a prediction market, connect wallets, or store secrets.
+
+Click the team cards and match details buttons only briefly to show that deeper information exists on demand.
+
+## 0:45-1:35 Data consistency
 
 Open Settings and switch to Judge Mode.
 
@@ -22,9 +26,9 @@ Point to Data Audit, Live Readiness, and the endpoint status cards. Explain mapp
 
 Briefly show that Judge Mode opens the Operation Manual and Fixture Briefing modules, while Fan Mode can collapse them again.
 
-Say: The page is designed for a first-time fan. It tells the user how to read the source state, how to pick a match path, and what data can or cannot be trusted as live.
+Say: The page is designed for a first-time fan. It tells the user what is happening now, lets them make a safe local score pick, and makes source truth visible when they need it.
 
-## 1:20-2:20 Judge Demo chapters
+## 1:35-2:35 Judge Demo chapters
 
 Use the Judge Demo chapter buttons.
 
@@ -43,7 +47,7 @@ Show:
 
 Say: The built-in chapters make the demo repeatable for judges and video recording.
 
-## 2:20-3:10 Match Intelligence and Match Center
+## 2:35-3:20 Match Intelligence and Match Center
 
 Show:
 
@@ -60,7 +64,7 @@ Show:
 
 Use the upset-context chapter to show the Japan vs Germany group table.
 
-## 3:10-3:45 Settings and optional modules
+## 3:20-3:55 Settings and optional modules
 
 Open Settings and switch between Fan Mode, Analyst Mode, and Judge Mode. Then switch between English, Chinese, Spanish, and Portuguese.
 
@@ -70,15 +74,15 @@ Turn on Authorized Video Sync.
 
 Say: Match video rights are separate from TxLINE data. This panel only accepts a rights-cleared official embed URL, and the public build shows a rights-required state instead of using unofficial streams.
 
-## 3:45-4:20 TxLINE boundary
+## 3:55-4:30 TxLINE boundary
 
 Switch to Live mode.
 
 Say: Live mode is already routed through the TxLINE adapter. Without credentials it shows a token-needed state instead of pretending replay data is live. With a local token, the adapter calls TxLINE fixtures, score snapshots, and odds snapshots, then maps them into the same MatchData model.
 
-## 4:20-4:50 Share and safety
+## 4:30-4:55 Share and safety
 
-Show the share card preview and export button.
+Switch to Analyst or Judge Mode, then show the share card preview and export button.
 
 Close with: The product is informational only. It does not place bets, recommend trades, operate prediction markets, handle wallets, or store secrets.
 
