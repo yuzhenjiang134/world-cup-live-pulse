@@ -1,9 +1,21 @@
 export type MatchMode = "live" | "replay";
 
+export type PlayerProfile = {
+  name: string;
+  position: string;
+  role: string;
+  note: string;
+};
+
 export type Team = {
   code: string;
   name: string;
   color: string;
+  group?: string;
+  coach?: string;
+  record?: string;
+  profile?: string;
+  keyPlayers?: PlayerProfile[];
 };
 
 export type MatchEventType =
@@ -43,11 +55,47 @@ export type MatchData = {
   competition: string;
   venue: string;
   status: "scheduled" | "live" | "finished";
+  stage?: string;
+  kickoffIso?: string;
+  referee?: string;
+  dataStatus?: DataStatus;
+  qualificationNote?: string;
   home: Team;
   away: Team;
   kickoffLabel: string;
   events: MatchEvent[];
   market: MarketSnapshot[];
+  groupTable?: GroupStanding[];
+};
+
+export type DataStatus = "Live" | "Delay" | "Replay" | "Seed";
+
+export type TodayMatchCard = {
+  id: string;
+  label: string;
+  homeCode: string;
+  awayCode: string;
+  kickoffIso: string;
+  stage: string;
+  dataStatus: DataStatus;
+  availability: "available" | "no-live-feed" | "upcoming";
+};
+
+export type DataConsistencyState = {
+  checkedAtIso: string;
+  liveAvailability: "live-match-available" | "no-live-match" | "token-required";
+  sourceLabel: string;
+  message: string;
+  rules: string[];
+  today: TodayMatchCard[];
+};
+
+export type GroupStanding = {
+  teamCode: string;
+  played: number;
+  points: number;
+  goalDiff: number;
+  status: string;
 };
 
 export type DataSourceState =

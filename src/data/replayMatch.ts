@@ -4,17 +4,70 @@ export const replayMatch: MatchData = {
   id: "wc-demo-arg-fra",
   competition: "World Cup Knockout Replay",
   venue: "Lusail Iconic Stadium",
-  status: "live",
+  status: "finished",
+  stage: "Final replay",
+  kickoffIso: "2022-12-18T15:00:00.000Z",
+  referee: "Szymon Marciniak",
+  dataStatus: "Replay",
+  qualificationNote: "Knockout replay: winner lifts the trophy, penalties omitted from this short demo loop.",
   kickoffLabel: "Replay demo",
   home: {
     code: "ARG",
     name: "Argentina",
     color: "#55a7d8",
+    coach: "Lionel Scaloni",
+    group: "Group C seed",
+    record: "High-possession transitions, Messi as the emotional hub.",
+    profile: "Compact midfield, quick counters, and a fan base that reacts sharply to every Messi touch.",
+    keyPlayers: [
+      {
+        name: "Lionel Messi",
+        position: "Forward",
+        role: "Creator / penalty taker",
+        note: "Turns quiet possession into immediate fan energy.",
+      },
+      {
+        name: "Angel Di Maria",
+        position: "Winger",
+        role: "Transition runner",
+        note: "Creates the wide threat that changes Argentina's pulse.",
+      },
+      {
+        name: "Emiliano Martinez",
+        position: "Goalkeeper",
+        role: "Late-match stabilizer",
+        note: "Keeps the replay emotionally alive when France surges.",
+      },
+    ],
   },
   away: {
     code: "FRA",
     name: "France",
     color: "#233f8f",
+    coach: "Didier Deschamps",
+    group: "Group D seed",
+    record: "Explosive forwards, late pressure, and fast market swings.",
+    profile: "France can look flat for long spells, then flip the whole match with two direct attacks.",
+    keyPlayers: [
+      {
+        name: "Kylian Mbappe",
+        position: "Forward",
+        role: "Momentum breaker",
+        note: "One touch can reset the scoreboard and the crowd mood.",
+      },
+      {
+        name: "Antoine Griezmann",
+        position: "Midfielder",
+        role: "Link player",
+        note: "Connects pressure phases and keeps France from breaking apart.",
+      },
+      {
+        name: "Adrien Rabiot",
+        position: "Midfielder",
+        role: "Ball winner",
+        note: "His yellow-card moment becomes a visible discipline signal.",
+      },
+    ],
   },
   events: [
     {
@@ -148,17 +201,71 @@ export const upsetReplayMatch: MatchData = {
   id: "wc-demo-jpn-ger",
   competition: "World Cup Group Stage Replay",
   venue: "Khalifa International Stadium",
-  status: "live",
+  status: "finished",
+  stage: "Group stage replay",
+  kickoffIso: "2022-11-23T13:00:00.000Z",
+  referee: "Ivan Barton",
+  dataStatus: "Replay",
+  qualificationNote:
+    "Group-stage upset replay: Japan's late win changes the qualification picture and market mood.",
   kickoffLabel: "Upset replay demo",
   home: {
     code: "GER",
     name: "Germany",
     color: "#1f2933",
+    coach: "Hansi Flick",
+    group: "Group E",
+    record: "Territory, shot volume, and pressure before the scoreboard moves.",
+    profile: "Germany controls long phases but becomes vulnerable when the game opens up.",
+    keyPlayers: [
+      {
+        name: "Ilkay Gundogan",
+        position: "Midfielder",
+        role: "Penalty taker",
+        note: "Turns German control into a scoreboard lead.",
+      },
+      {
+        name: "Joshua Kimmich",
+        position: "Midfielder",
+        role: "Tempo setter",
+        note: "Defines Germany's territorial control in the first half.",
+      },
+      {
+        name: "Jamal Musiala",
+        position: "Attacker",
+        role: "Carry threat",
+        note: "Adds the individual spark that keeps German pressure high.",
+      },
+    ],
   },
   away: {
     code: "JPN",
     name: "Japan",
     color: "#d62839",
+    coach: "Hajime Moriyasu",
+    group: "Group E",
+    record: "Compact block, fast substitutions, and late match volatility.",
+    profile: "Japan waits for the match to stretch, then attacks with direct runners from the bench.",
+    keyPlayers: [
+      {
+        name: "Ritsu Doan",
+        position: "Forward",
+        role: "Impact substitute",
+        note: "Equalizes and turns the upset pulse visible.",
+      },
+      {
+        name: "Takuma Asano",
+        position: "Forward",
+        role: "Late runner",
+        note: "Finishes the decisive transition from a difficult angle.",
+      },
+      {
+        name: "Daichi Kamada",
+        position: "Midfielder",
+        role: "Connector",
+        note: "Helps Japan survive pressure before the late surge.",
+      },
+    ],
   },
   events: [
     {
@@ -272,6 +379,12 @@ export const upsetReplayMatch: MatchData = {
     { minute: 75, homeWin: 2.45, draw: 2.8, awayWin: 3.4, sentiment: 49 },
     { minute: 83, homeWin: 8.5, draw: 4.4, awayWin: 1.42, sentiment: 31 },
     { minute: 90, homeWin: 14.0, draw: 7.0, awayWin: 1.18, sentiment: 28 },
+  ],
+  groupTable: [
+    { teamCode: "JPN", played: 3, points: 6, goalDiff: 1, status: "Top seed path" },
+    { teamCode: "ESP", played: 3, points: 4, goalDiff: 6, status: "Qualified" },
+    { teamCode: "GER", played: 3, points: 4, goalDiff: 1, status: "Eliminated" },
+    { teamCode: "CRC", played: 3, points: 3, goalDiff: -8, status: "Eliminated" },
   ],
 };
 

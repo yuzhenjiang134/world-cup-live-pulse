@@ -13,6 +13,24 @@ Updated: 2026-06-28
 - [x] Build event timeline
 - [x] Build AI-style one-line commentary
 - [x] Build market mood and odds movement panel
+- [x] Add settings panel with English / Chinese / Spanish / Portuguese language switch
+- [x] Add richer match hero, story strip, pulse arc, and judge-ready status panels
+- [x] Add Today Board with No Match Day / Token Required handling
+- [x] Add explicit Live / Delay / Replay / Seed data state model
+- [x] Add Daily Brief for judge-friendly no-match-day explanation
+- [x] Add Data Audit panel for mode, source, replay, and seed coverage
+- [x] Add Live Readiness panel for token, endpoints, calendar, and fallback state
+- [x] Add Match Intelligence phase summary
+- [x] Add player impact aggregation from replay events
+- [x] Add event stack counts for goals, cards, substitutions, and market swings
+- [x] Add Judge Demo Layer with clickable highlight chapters
+- [x] Add one-click jumps for data integrity, goal swing, late volatility, and upset context
+- [x] Add local submission readiness score panel
+- [x] Add World Cup fan-facing multilingual UI coverage for EN / ZH / ES / PT
+- [x] Add kickoff time, referee, qualification note, and data status to Match Center
+- [x] Add team profiles and three key players per replay team
+- [x] Add discipline event panel for yellow and red cards
+- [x] Add group table for the Japan vs Germany group-stage replay
 - [x] Add Replay / Live mode switch
 - [x] Add replay controls and speed controls
 - [x] Add key moment jump controls
@@ -29,12 +47,21 @@ Updated: 2026-06-28
 - [x] Add Vercel deployment config
 - [x] Add GitHub Actions build check
 - [x] Add GitHub Pages deployment workflow
+- [x] Enable GitHub Pages source as GitHub Actions
+- [x] Verify deployed GitHub Pages URL
 - [x] Add local preflight script
 - [x] Add replay fixture validation script
+- [x] Add repository security scan for tokens, private keys, seed phrases, env files, logs, and UI screenshots
 - [x] Add all-in-one validate command
 - [x] Add user action list
 - [x] Add submission packet index
 - [x] Add API mapping template
+- [x] Add formal `docs/TECHNICAL_OVERVIEW.md`
+- [x] Add formal `docs/TXLINE_ENDPOINTS.md`
+- [x] Add formal `docs/API_FEEDBACK.md`
+- [x] Add formal `docs/SUBMISSION_DRAFT.md`
+- [x] Add formal `docs/DEMO_SCRIPT.md`
+- [x] Add formal `docs/SUBMISSION_CHECKLIST.md`
 - [x] Verify TypeScript check
 - [x] Verify production build
 - [x] Verify browser smoke test
@@ -44,9 +71,10 @@ Updated: 2026-06-28
 
 - [ ] TxLINE World Cup API token
 - [ ] TxLINE endpoint documentation
+- [ ] TxLINE / Solana hackathon access sign-up confirmation
 - [ ] Example TxLINE response payloads with secrets removed
-- [ ] GitHub public repository target
-- [ ] GitHub Pages deployment check
+- [x] GitHub public repository target
+- [x] GitHub Pages deployment check
 - [ ] Superteam Earn account access
 - [ ] Telegram contact for submission
 - [ ] Demo video hosting target
@@ -63,16 +91,18 @@ Updated: 2026-06-28
 - [ ] Add live API error fallback to Replay mode
 - [ ] Document exact TxLINE endpoints used
 - [ ] Add endpoint feedback to submission draft
+- [ ] Replace Seed Today Board with real TxLINE calendar response when docs arrive
 
 ## Submission checklist
 
-- [ ] Deploy app on GitHub Pages
-- [ ] Verify deployed app works on desktop
+- [x] Deploy app on GitHub Pages
+- [x] Verify deployed app works on desktop
 - [ ] Verify deployed app works on mobile
 - [ ] Make GitHub repo public
 - [ ] Confirm no `.env`, API token, private key, seed phrase, or verification code is committed
+- [x] Run local security scan
 - [ ] Record 3 to 5 minute demo video
-- [ ] Fill final GitHub Pages URL in `docs/submission-draft.md`
-- [ ] Fill GitHub URL in `docs/submission-draft.md`
+- [x] Fill final GitHub Pages URL in `docs/SUBMISSION_DRAFT.md`
+- [x] Fill GitHub URL in `docs/SUBMISSION_DRAFT.md`
 - [ ] Fill demo video URL in `docs/submission-draft.md`
 - [ ] Submit through Superteam Earn before 2026-07-19 23:59 UTC

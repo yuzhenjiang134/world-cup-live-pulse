@@ -11,7 +11,8 @@
     "check": "tsc --noEmit",
     "fixtures": "node scripts/validate-fixtures.mjs",
     "preflight": "node scripts/preflight.mjs",
-    "validate": "npm run check && npm run fixtures && npm run preflight && npm run build"
+    "security": "node scripts/security-scan.mjs",
+    "validate": "npm run check && npm run fixtures && npm run preflight && npm run security && npm run build"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.3.4",
