@@ -1385,6 +1385,31 @@ export default function App() {
     }
   }
 
+  function applyViewPreset(nextPreset: ViewPresetId) {
+    setViewPreset(nextPreset);
+
+    if (nextPreset === "fan") {
+      setShowManual(false);
+      setShowMatchGuide(false);
+      setShowTeamAtlas(false);
+      setShowVideoPanel(false);
+      return;
+    }
+
+    if (nextPreset === "analyst") {
+      setShowManual(false);
+      setShowMatchGuide(true);
+      setShowTeamAtlas(false);
+      setShowVideoPanel(false);
+      return;
+    }
+
+    setShowManual(true);
+    setShowMatchGuide(true);
+    setShowTeamAtlas(false);
+    setShowVideoPanel(false);
+  }
+
   if (!match || !frame) {
     return (
       <main className="app-shell">
@@ -1561,6 +1586,7 @@ export default function App() {
         <div className="top-actions">
           <div className="mode-switch" aria-label="Dashboard mode">
             <button
+              aria-pressed={mode === "replay"}
               className={mode === "replay" ? "active" : ""}
               onClick={() => switchMode("replay")}
               type="button"
@@ -1568,6 +1594,7 @@ export default function App() {
               {t.replay}
             </button>
             <button
+              aria-pressed={mode === "live"}
               className={mode === "live" ? "active" : ""}
               onClick={() => switchMode("live")}
               type="button"
@@ -1628,9 +1655,10 @@ export default function App() {
 
                     return (
                       <button
+                        aria-pressed={viewPreset === preset.id}
                         className={viewPreset === preset.id ? "active" : ""}
                         key={preset.id}
-                        onClick={() => setViewPreset(preset.id)}
+                        onClick={() => applyViewPreset(preset.id)}
                         type="button"
                       >
                         {display.label}
@@ -1836,6 +1864,7 @@ export default function App() {
 
                 return (
                   <button
+                    aria-pressed={team.code === selectedTeam.code}
                     className={`${team.code === selectedTeam.code ? "active" : ""} ${
                       matchTeamCodes.has(team.code) ? "match-team" : ""
                     }`}
@@ -1949,6 +1978,7 @@ export default function App() {
 
             return (
               <button
+                aria-pressed={item.id === replayMatchId}
                 className={`today-card ${item.id === replayMatchId ? "active" : ""}`}
                 key={item.id}
                 onClick={() => {
@@ -2068,6 +2098,7 @@ export default function App() {
           <div className="chapter-grid">
             {demoChapters.map((chapter) => (
               <button
+                aria-pressed={selectedDemoChapter?.id === chapter.id}
                 className={selectedDemoChapter?.id === chapter.id ? "active" : ""}
                 key={chapter.id}
                 onClick={() => openDemoChapter(chapter)}
@@ -2126,6 +2157,7 @@ export default function App() {
           <span>{t.replayScenario}</span>
           {replayMatches.map((candidate) => (
             <button
+              aria-pressed={candidate.id === replayMatchId}
               className={candidate.id === replayMatchId ? "active" : ""}
               key={candidate.id}
               onClick={() => {
@@ -2141,7 +2173,7 @@ export default function App() {
         </div>
 
         <section className="control-strip" aria-label="Replay controls">
-          <button type="button" onClick={() => setIsPlaying((value) => !value)}>
+          <button aria-pressed={isPlaying} type="button" onClick={() => setIsPlaying((value) => !value)}>
             {isPlaying ? t.pause : t.play}
           </button>
           <input
@@ -2159,6 +2191,7 @@ export default function App() {
           <div className="speed-switch" aria-label={t.replaySpeed}>
             {replaySpeeds.map((option) => (
               <button
+                aria-pressed={speed === option}
                 className={speed === option ? "active" : ""}
                 key={option}
                 onClick={() => setSpeed(option)}
@@ -2264,6 +2297,7 @@ export default function App() {
             {match.market.map((snapshot, index) => (
               <button
                 aria-label={`${snapshot.minute}' ${snapshot.sentiment}`}
+                aria-pressed={index === currentMarketIndex}
                 className={index === currentMarketIndex ? "active" : ""}
                 key={`${match.id}-${snapshot.minute}`}
                 onClick={() => jumpToMoment(snapshot.minute)}

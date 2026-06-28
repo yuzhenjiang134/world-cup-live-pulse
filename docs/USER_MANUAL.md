@@ -10,9 +10,9 @@ It is informational only. It does not place bets, give trading advice, connect w
 
 1. Open the public site.
 2. Check the source banner first.
-3. Use Source Board to see replay fixtures and observed schedule seed fixtures.
-4. Use Judge Demo chapters when no live fixture is available.
-5. Read score, latest beat, AI commentary, pressure, market mood, and timeline together.
+3. Read score, latest beat, AI commentary, pressure, market mood, and timeline together.
+4. Use replay controls or key moments to move through the match.
+5. Open Settings and switch to Analyst Mode for source verification, or Judge Mode for demo chapters.
 6. Export the share card only after checking the data state.
 
 ## Data States
@@ -29,13 +29,13 @@ The app must never invent live games. If credentials are missing, the public bui
 ## Settings
 
 - Language: English, Chinese, Spanish, and Portuguese labels.
-- Viewing preset: Fan Mode, Analyst Mode, or Judge Mode.
+- Viewing preset: Fan Mode keeps the main screen focused on the match, Analyst Mode reveals data-verification panels, and Judge Mode reveals the demo/review path.
 - Operation manual: show or hide the matchday guide.
 - Fixture briefing: show or hide fixture-specific data rules.
 - Country team atlas: show or hide team profiles and watch notes.
 - Authorized video sync: show or hide the rights-cleared video integration status.
 
-The main page keeps secondary material collapsed by default. Turn these modules on only when you need a judging walkthrough, data explanation, or a video-rights integration check.
+The main page keeps secondary material collapsed by default. Presets apply sensible module visibility automatically, and the module switches let you override that layout when needed.
 
 ## Authorized Video Sync
 

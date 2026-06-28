@@ -28,6 +28,7 @@ Updated: 2026-06-28
 - [x] Add Fixture Briefing with match-specific data rules
 - [x] Add Country Team Atlas with team style, fan context, and watch notes
 - [x] Add settings controls for viewing preset and dashboard modules
+- [x] Make Fan / Analyst / Judge presets apply real module visibility and page focus
 - [x] Add `docs/USER_MANUAL.md`
 - [x] Collapse secondary modules behind Settings so the main surface stays functional
 - [x] Add Authorized Video Sync panel with rights-cleared embed boundary

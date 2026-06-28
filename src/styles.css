@@ -44,9 +44,75 @@ button:hover {
 }
 
 .app-shell {
+  display: flex;
+  flex-direction: column;
   width: min(1220px, calc(100% - 32px));
   margin: 0 auto;
   padding: 18px 0 42px;
+}
+
+.topbar {
+  order: 1;
+}
+
+.match-hero {
+  order: 2;
+}
+
+.source-banner {
+  order: 3;
+}
+
+.story-strip {
+  order: 4;
+}
+
+.control-deck {
+  order: 5;
+}
+
+.dashboard-grid {
+  order: 6;
+}
+
+.video-sync-panel {
+  order: 7;
+}
+
+.matchday-assistant {
+  order: 8;
+}
+
+.fixture-briefing {
+  order: 9;
+}
+
+.team-atlas-section {
+  order: 10;
+}
+
+.today-board {
+  order: 11;
+}
+
+.brief-grid {
+  order: 12;
+}
+
+.trust-center {
+  order: 13;
+}
+
+.judge-demo-layer {
+  order: 14;
+}
+
+.preset-fan .today-board,
+.preset-fan .brief-grid,
+.preset-fan .trust-center,
+.preset-fan .judge-demo-layer,
+.preset-analyst .judge-demo-layer {
+  display: none;
 }
 
 .topbar {

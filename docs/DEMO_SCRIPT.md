@@ -8,7 +8,11 @@ Open the deployed GitHub Pages site.
 
 Say: World Cup Live Pulse is a fan-first match dashboard for the Consumer and Fan Experiences track. It explains score, match events, market mood, and momentum without becoming a betting or trading product.
 
+Show that the default Fan Mode opens directly on the match pulse, not on documentation.
+
 ## 0:25-1:20 Data consistency
+
+Open Settings and switch to Judge Mode.
 
 Show the Source Board and Trust & Accuracy Center.
 
@@ -16,7 +20,7 @@ Say: The app does not invent live data. The Today Board uses official TxLINE sch
 
 Point to Data Audit, Live Readiness, and endpoint coverage.
 
-Open Settings only if needed, then briefly show the optional Operation Manual and Fixture Briefing modules.
+Briefly show that Judge Mode opens the Operation Manual and Fixture Briefing modules, while Fan Mode can collapse them again.
 
 Say: The page is designed for a first-time fan. It tells the user how to read the source state, how to pick a match path, and what data can or cannot be trusted as live.
 
@@ -58,9 +62,9 @@ Use the upset-context chapter to show the Japan vs Germany group table.
 
 ## 3:10-3:45 Settings and optional modules
 
-Open Settings and switch between English, Chinese, Spanish, and Portuguese.
+Open Settings and switch between Fan Mode, Analyst Mode, and Judge Mode. Then switch between English, Chinese, Spanish, and Portuguese.
 
-Say: This is important for a global World Cup fan experience and for demo clarity across audiences.
+Say: Presets keep the page useful for ordinary fans, data reviewers, and hackathon judges without cluttering the main match view. Language switching is important for a global World Cup fan experience and for demo clarity across audiences.
 
 Turn on Authorized Video Sync.
 

@@ -15,7 +15,9 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Live mode is wired to the official TxLINE HTTP endpoints through `src/lib/txlineAdapter.ts`.
 - Today Board and No Match Day / Token Required states are visible.
 - Today Board now includes official TxLINE schedule seed fixtures for 2026-06-28 UTC while keeping live score/event/odds data token-gated.
-- Daily Brief, Data Audit, Live Readiness, and Judge Demo chapters are implemented.
+- Fan Mode opens as a clean match pulse surface: score, latest beat, controls, AI read, market mood, timeline, and share card.
+- Analyst Mode reveals fixture briefing, Source Board, Data Audit, Live Readiness, and Trust & Accuracy Center for data verification.
+- Judge Mode reveals operation guide, fixture briefing, Judge Demo chapters, and submission readiness for review or video recording.
 - Operation Manual, Fixture Briefing, Country Team Atlas, and Authorized Video Sync are optional modules in Settings so the main view stays focused on match pulse.
 - Trust & Accuracy Center explains schedule seed, live token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
 - Match Intelligence shows phase summary, event stack, and player impact.
