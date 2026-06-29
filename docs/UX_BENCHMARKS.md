@@ -1,6 +1,6 @@
 # UX Benchmarks
 
-Updated: 2026-06-28
+Updated: 2026-06-29
 
 This note tracks market UX patterns used to sharpen World Cup Live Pulse for the Consumer and Fan Experiences track.
 
@@ -42,3 +42,13 @@ This note tracks market UX patterns used to sharpen World Cup Live Pulse for the
 - Added a compact matchday hub for replay fixtures and official token-gated schedule seed matches.
 - Added a downloadable local fan pick card so score prediction becomes shareable without becoming a betting flow.
 - Updated demo and technical docs to explain local fan score pick safety.
+
+## 2026-06-29 five-iteration upgrade scan
+
+| Iteration | Dimension | Market reference | Upgrade applied |
+| --- | --- | --- | --- |
+| 1 | Match-first action path | FotMob keeps match, predictor, lineup, and football tools close to the live match experience. | Added first-screen Watch / Pick / Timeline actions directly inside the match hero. |
+| 2 | Data accuracy and source trust | Sofascore and Flashscore make live score state, match details, statistics, and refresh confidence central to the product. | Added a compact source trust strip for current mode, data status, and canonical source. |
+| 3 | Judge/demo comprehension | Hackathon review depends on a short demo video and a clear proof path, not only a nice page. | Added demo cues for Replay demo, data consistency, no betting, and SVG export before chapter controls. |
+| 4 | Mobile and accessibility | WCAG 2.2 and mature sports apps require touch-friendly controls and responsive text behavior. | Hardened hero actions for mobile tap size, wrapping, and long-language text safety. |
+| 5 | Submission readiness | Superteam/TxODDS judging rewards a complete, executable product with clear user value. | Updated the checklist to match the eight-language product state and keep final submission evidence accurate. |

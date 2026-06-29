@@ -18,7 +18,7 @@
 - [ ] Replay mode works.
 - [ ] Live mode shows TxLINE token-needed state when credentials are absent.
 - [ ] Local Live mode can call TxLINE fixtures/scores/odds when `.env.local` has a safe token.
-- [ ] English / Chinese / Spanish / Portuguese setting works.
+- [ ] Eight-language setting works: English, Chinese, Spanish, Portuguese, French, German, Japanese, Arabic.
 - [ ] Share card preview renders.
 
 ## Repository
@@ -52,7 +52,7 @@
 - [ ] Shows Match Intelligence.
 - [ ] Shows Replay mode and key events.
 - [ ] Shows Match Center.
-- [ ] Shows four-language setting.
+- [ ] Shows eight-language setting.
 - [ ] Shows Live mode token-needed boundary.
 - [ ] Does not show secrets or wallet recovery material.
 

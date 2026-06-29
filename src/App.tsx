@@ -2830,6 +2830,17 @@ export default function App() {
             <span>{match.venue}</span>
             <span>{mode === "live" ? t.waitingForTxline : match.kickoffLabel}</span>
           </div>
+          <div className="hero-actions" aria-label={t.focusNav}>
+            <button type="button" onClick={() => revealSection(".fan-command-center", () => undefined)}>
+              {t.focusWatch}
+            </button>
+            <button type="button" onClick={() => revealSection(".prediction-panel", () => undefined)}>
+              {t.focusPick}
+            </button>
+            <button type="button" onClick={() => revealSection(".timeline-panel", () => undefined)}>
+              {t.focusTimeline}
+            </button>
+          </div>
         </div>
         <div className="hero-panel">
           <Metric label={t.clock} value={`${minute}'`} />
@@ -2848,6 +2859,20 @@ export default function App() {
             <span>{t.freshness}</span>
             <strong>{formatKickoff(dataConsistencyState.checkedAtIso, language)}</strong>
             <small>{t.publicSeedSource}</small>
+          </div>
+          <div className="source-trust-strip" aria-label={t.dataConsistency}>
+            <span>
+              <strong>{t.currentMode}</strong>
+              {mode === "replay" ? t.replay : t.live}
+            </span>
+            <span>
+              <strong>{t.dataStatus}</strong>
+              {match.dataStatus ?? (source?.kind === "replay" ? t.replay : t.pending)}
+            </span>
+            <span>
+              <strong>{t.source}</strong>
+              {source?.kind === "live-ready" ? t.txlineAdapter : t.publicSeedSource}
+            </span>
           </div>
         </section>
       ) : null}
@@ -3476,6 +3501,12 @@ export default function App() {
           <div className="panel-heading">
             <p className="eyebrow">{t.judgeDemo}</p>
             <h2>{t.demoChapters}</h2>
+          </div>
+          <div className="demo-cue-strip" aria-label={t.demoReadiness}>
+            <span>{t.replayDemo}</span>
+            <span>{t.dataConsistency}</span>
+            <span>{t.noBetting}</span>
+            <span>{t.downloadSvg}</span>
           </div>
           <div className="chapter-grid">
             {demoChapters.map((chapter) => (
