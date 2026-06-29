@@ -42,6 +42,7 @@ This note tracks market UX patterns used to sharpen World Cup Live Pulse for the
 - Added a compact matchday hub for replay fixtures and official token-gated schedule seed matches.
 - Added a downloadable local fan pick card so score prediction becomes shareable without becoming a betting flow.
 - Updated demo and technical docs to explain local fan score pick safety.
+- Added a source trust strip, live signal summary, and visual prediction bars so the first product path behaves more like a mature match center.
 
 ## 2026-06-29 five-iteration upgrade scan
 
@@ -52,3 +53,12 @@ This note tracks market UX patterns used to sharpen World Cup Live Pulse for the
 | 3 | Judge/demo comprehension | Hackathon review depends on a short demo video and a clear proof path, not only a nice page. | Added demo cues for Replay demo, data consistency, no betting, and SVG export before chapter controls. |
 | 4 | Mobile and accessibility | WCAG 2.2 and mature sports apps require touch-friendly controls and responsive text behavior. | Hardened hero actions for mobile tap size, wrapping, and long-language text safety. |
 | 5 | Submission readiness | Superteam/TxODDS judging rewards a complete, executable product with clear user value. | Updated the checklist to match the eight-language product state and keep final submission evidence accurate. |
+
+## 2026-06-29 deeper market and organizer QA scan
+
+| Round | Reference | Quality gap found | Upgrade applied |
+| --- | --- | --- | --- |
+| 1 | FotMob / OneFootball style match-first surfaces | Watch view needed stronger "what matters now" signal density without adding a new panel. | Added a live signal strip for current read, goals, cards, and market swings inside Watch Now. |
+| 2 | Sofascore / Flashscore stat-forward match pages | Decimal market prices were at risk of being read as direct percentages. | Converted quick-pick display to implied-probability bars while keeping market prices visible and no-betting copy intact. |
+| 3 | LiveScore / ESPN-style match centers | Data trust had to stay near the score, not buried in audit panels. | Added freshness as a first-class source trust chip beside mode, data status, and source. |
+| 4 | TxODDS/Superteam judging requirements | Submission docs must prove a functional product, API boundary, demo path, and feedback loop. | Synchronized README, technical overview, UX benchmarks, and API feedback with the live product state. |

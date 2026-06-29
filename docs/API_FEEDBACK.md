@@ -41,7 +41,7 @@ The current app uses:
 - A No Match Day rule when no official fixture is known.
 - A real local TxLINE adapter that requests `POST /auth/guest/start`, `GET /api/fixtures/snapshot`, `GET /api/scores/snapshot/{fixtureId}`, and `GET /api/odds/snapshot/{fixtureId}` when credentials are present.
 - Judge Demo chapters to make replay evaluation repeatable.
-- English, Chinese, Spanish, and Portuguese UI labels for global fan testing.
+- English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic UI labels for global fan testing.
 
 ## Current endpoint mapping in the product
 

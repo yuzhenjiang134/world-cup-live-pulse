@@ -15,11 +15,11 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Live mode is wired to the official TxLINE HTTP endpoints through `src/lib/txlineAdapter.ts`.
 - Source Board and No Match Day / Token Required states are visible.
 - Source Board includes a TxLINE schedule snapshot observed for 2026-06-28 UTC while keeping live score/event/odds data token-gated.
-- Fan Mode opens as a clean match pulse surface: score, latest beat, AI read, event feed, market mood, timeline, and local fan score pick.
+- Fan Mode opens as a clean match pulse surface: score, source trust, latest beat, AI read, live signal summary, event feed, market mood, timeline, and local fan score pick.
 - Fan Mode includes a compact rolling match data ticker for score, clock, source state, next beat, market mood, and safety.
 - Fan Mode now includes a market-benchmark-inspired match focus nav: Watch, Pick, Timeline, Mood, and Teams.
 - Fan Mode adds a compact matchday hub so replay fixtures and official TxLINE schedule snapshot matches are visible without opening the full Source Board.
-- The main fan command area keeps watch-now context, score-linked prediction controls, source truth, and team / fixture detail buttons above secondary analysis.
+- The main fan command area keeps watch-now context, signal stats, score-linked prediction controls, implied-probability bars, source truth, and team / fixture detail buttons above secondary analysis.
 - Analyst Mode reveals fixture briefing, Source Board, Data Audit, Live Readiness, and Trust & Accuracy Center for data verification.
 - Judge Mode reveals operation guide, fixture briefing, Judge Demo chapters, multilingual judging-criteria mapping, submission readiness, and a Path to 100 note for the external items that cannot be faked in code.
 - TxLINE endpoint coverage is shown as status cards instead of a dense table, making mapped, token-gated, and planned feeds easier to scan.

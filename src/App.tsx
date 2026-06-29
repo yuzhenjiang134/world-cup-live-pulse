@@ -2558,28 +2558,35 @@ export default function App() {
       value: t.noBetting,
     },
   ];
+  const impliedHome = 1 / frame.market.homeWin;
+  const impliedDraw = 1 / frame.market.draw;
+  const impliedAway = 1 / frame.market.awayWin;
+  const impliedTotal = impliedHome + impliedDraw + impliedAway;
   const predictionOptions = [
     {
       id: "home" as const,
       label: match.home.name,
       shortLabel: match.home.code,
-      value: frame.market.homeWin,
+      implied: Math.round((impliedHome / impliedTotal) * 100),
+      price: frame.market.homeWin,
     },
     {
       id: "draw" as const,
       label: t.draw,
       shortLabel: t.draw,
-      value: frame.market.draw,
+      implied: Math.round((impliedDraw / impliedTotal) * 100),
+      price: frame.market.draw,
     },
     {
       id: "away" as const,
       label: match.away.name,
       shortLabel: match.away.code,
-      value: frame.market.awayWin,
+      implied: Math.round((impliedAway / impliedTotal) * 100),
+      price: frame.market.awayWin,
     },
   ];
   const fanLean = predictionOptions.reduce((leaderOption, option) =>
-    option.value > leaderOption.value ? option : leaderOption,
+    option.implied > leaderOption.implied ? option : leaderOption,
   );
   const scoreDerivedPick = getPredictionPickFromScore(predictedHomeScore, predictedAwayScore);
   const activePredictionPick = predictionPick ?? scoreDerivedPick;
@@ -2590,8 +2597,14 @@ export default function App() {
       : predictedHomeScore > predictedAwayScore
         ? match.home.name
         : match.away.name;
-  const recentPulseEvents = frame.activeEvents.slice(-4).reverse();
   const eventStats = buildEventStats(frame.activeEvents);
+  const fanSignalItems = [
+    { label: t.currentRead, value: frame.insight.headline },
+    { label: t.goals, value: String(eventStats.goals) },
+    { label: t.cards, value: String(eventStats.cards) },
+    { label: t.marketSwings, value: String(eventStats.marketSwings) },
+  ];
+  const recentPulseEvents = frame.activeEvents.slice(-4).reverse();
   const playerImpact = buildPlayerImpact(frame.activeEvents);
   const phaseSummary = buildPhaseSummary(minute, match, t);
   const demoChapters = buildDemoChapters(t);
@@ -2873,6 +2886,10 @@ export default function App() {
               <strong>{t.source}</strong>
               {source?.kind === "live-ready" ? t.txlineAdapter : t.publicSeedSource}
             </span>
+            <span>
+              <strong>{t.freshness}</strong>
+              {formatKickoff(dataConsistencyState.checkedAtIso, language)}
+            </span>
           </div>
         </section>
       ) : null}
@@ -2983,6 +3000,14 @@ export default function App() {
             <span>{t.aiCommentary}</span>
             <strong>{frame.commentary}</strong>
           </div>
+          <div className="fan-signal-strip" aria-label={t.currentRead}>
+            {fanSignalItems.map((item) => (
+              <span key={item.label}>
+                <small>{item.label}</small>
+                <strong>{item.value}</strong>
+              </span>
+            ))}
+          </div>
           <div className="watch-now-grid">
             <Metric label={t.clock} value={`${minute}'`} />
             <Metric label={t.nextBeat} value={nextEvent ? `${nextEvent.minute}'` : t.replayLoop} />
@@ -3069,7 +3094,9 @@ export default function App() {
                 type="button"
               >
                 <span>{option.shortLabel}</span>
-                <strong>{option.value}%</strong>
+                <strong>{option.implied}%</strong>
+                <small>x{option.price.toFixed(2)}</small>
+                <em style={{ width: `${option.implied}%` }} />
               </button>
             ))}
           </div>
@@ -3086,7 +3113,7 @@ export default function App() {
             <span>
               {t.fanLean}:{" "}
               <strong>
-                {fanLean.label} {fanLean.value}%
+                {fanLean.label} {fanLean.implied}%
               </strong>
             </span>
             <small>

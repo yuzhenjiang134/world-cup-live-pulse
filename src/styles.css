@@ -643,7 +643,7 @@ h2 {
 
 .source-trust-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -992,6 +992,42 @@ h2 {
   line-height: 1.35;
 }
 
+.fan-signal-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(66px, 0.5fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.fan-signal-strip span {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.fan-signal-strip small {
+  overflow: hidden;
+  color: #b9d6dc;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.fan-signal-strip strong {
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .watch-now-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(110px, 1fr));
@@ -1105,11 +1141,20 @@ h2 {
 }
 
 .prediction-options button {
+  position: relative;
   display: grid;
   gap: 6px;
   min-height: 78px;
   padding: 12px;
+  overflow: hidden;
   text-align: left;
+}
+
+.prediction-options button > span,
+.prediction-options button > strong,
+.prediction-options button > small {
+  position: relative;
+  z-index: 1;
 }
 
 .prediction-options button.active {
@@ -1127,6 +1172,22 @@ h2 {
 
 .prediction-options strong {
   font-size: 1.35rem;
+}
+
+.prediction-options small {
+  color: #657478;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.prediction-options em {
+  position: absolute;
+  right: auto;
+  bottom: 0;
+  left: 0;
+  height: 5px;
+  border-radius: 0 999px 999px 0;
+  background: linear-gradient(90deg, #cf3246, #ffd166);
 }
 
 .prediction-readout {

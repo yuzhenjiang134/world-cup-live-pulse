@@ -53,7 +53,7 @@ Snapshot-only facts must be re-checked before final submission. The app treats t
 - `src/lib/txlineAdapter.ts`: single integration boundary for replay fallback and authenticated TxLINE live mode.
 - `src/lib/pulse.ts`: deterministic pulse frame builder for score, latest event, commentary, pressure, and market mood.
 - `src/lib/shareCard.ts`: SVG export for match pulse share cards and local fan score-pick cards.
-- `src/App.tsx`: dashboard UI with Replay/Live mode, rolling match ticker, fan command center, local score-linked fan pick, details-on-demand reveal buttons, Source Board, Daily Brief, Data Audit, Live Readiness, endpoint status cards, Judge Demo chapters, multilingual judging-criteria score map, Path to 100 note, Match Intelligence, Match Center, team profiles, group table, eight-language settings, and safety copy.
+- `src/App.tsx`: dashboard UI with Replay/Live mode, source trust strip, rolling match ticker, fan command center, live signal summary, visual local score-pick controls, details-on-demand reveal buttons, Source Board, Daily Brief, Data Audit, Live Readiness, endpoint status cards, Judge Demo chapters, multilingual judging-criteria score map, Path to 100 note, Match Intelligence, Match Center, team profiles, group table, eight-language settings, and safety copy.
 
 ## Product surfaces
 
@@ -61,8 +61,9 @@ Snapshot-only facts must be re-checked before final submission. The app treats t
 - Match data ticker: keeps score, clock, source state, next beat, market mood, and safety visible without adding another heavy panel.
 - Match focus nav: one-tap access to Watch, Pick, Timeline, Mood, and Teams, based on common live-score app navigation patterns.
 - Matchday hub: compact replay and schedule seed strip that distinguishes playable replay fixtures from token-gated official schedule seed matches.
-- Fan command center: keeps the watch-now read, AI commentary, recent event feed, local score pick, source status, and team / fixture detail entry points in the primary fan view.
-- Local score pick: score steppers, quick pick buttons, and a downloadable SVG fan pick card update a local fan selection only; no wallet, persistence, odds execution, wager, or prediction-market mechanic is attached.
+- Source trust strip: shows current mode, data status, canonical source, and freshness near the match hero so Replay, Seed, and Live are never confused.
+- Fan command center: keeps the watch-now read, AI commentary, live signal summary, recent event feed, local score pick, source status, and team / fixture detail entry points in the primary fan view.
+- Local score pick: score steppers, visual implied-probability bars derived from decimal odds, visible market prices, and a downloadable SVG fan pick card update a local fan selection only; no wallet, persistence, odds execution, wager, or prediction-market mechanic is attached.
 - Trust & Accuracy Center: explains official schedule seed, live token gate, replay truth, Free Tier delay behavior, and scan-friendly endpoint coverage cards.
 - Judge Demo chapters and criteria score map: repeatable path for data integrity, goal swing, late volatility, upset-context review, explicit evidence against the five judging criteria, and the external proof still required for a true 100/100 submission.
 - Match Intelligence: phase summary, event stack, and player impact derived from replay events.
