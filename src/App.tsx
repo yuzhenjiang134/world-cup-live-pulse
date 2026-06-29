@@ -1004,6 +1004,16 @@ const localizedCopy = {
     checkedAt: "Source vérifiée",
     publicSeedSource: "Snapshot calendrier + replays",
     freshness: "Fraîcheur",
+    source: "Source",
+    currentMode: "Mode actuel",
+    canonicalSource: "Source canonique",
+    replayCoverage: "Couverture replay",
+    seedCoverage: "Contexte seed",
+    liveReadiness: "Préparation live",
+    tokenStatus: "Token",
+    endpointStatus: "Endpoints",
+    calendarStatus: "Calendrier",
+    fallbackStatus: "Secours",
     sourceBoundary: "Replay et Seed restent visibles jusqu'à l'authentification TxLINE live.",
     play: "Lecture",
     pause: "Pause",
@@ -1048,6 +1058,63 @@ const localizedCopy = {
     fixtureBriefingToggle: "Briefing match",
     countryAtlasToggle: "Atlas des équipes",
     videoPanelToggle: "Vidéo autorisée",
+    draw: "Nul",
+    oneLineRead: "Lecture du match",
+    pressure: "Carte de pression",
+    neutral: "Neutre",
+    oddsMovement: "Mouvement des cotes",
+    pulseArc: "Arc du pulse",
+    matchMoodPath: "Trajectoire émotionnelle",
+    low: "Bas",
+    now: "Maintenant",
+    high: "Haut",
+    momentumInsight: "Lecture du momentum",
+    whyMomentMatters: "Pourquoi ce moment compte",
+    swing: "Bascule",
+    signal: "Signal",
+    events: "Événements",
+    matchCenter: "Centre du match",
+    matchFacts: "Infos match",
+    kickoff: "Coup d'envoi",
+    referee: "Arbitre",
+    dataStatus: "État des données",
+    discipline: "Discipline",
+    noCards: "Aucun carton",
+    qualification: "Contexte",
+    groupTable: "Classement",
+    teamProfiles: "Profils équipes",
+    coach: "Sélectionneur",
+    keyPlayers: "Joueurs clés",
+    shareCard: "Carte supporter",
+    exportPulse: "Exporter le pulse",
+    downloadSvg: "Télécharger SVG",
+    timeline: "Timeline du match",
+    keyEvents: "Événements clés",
+    replayLoop: "Le replay redémarrera.",
+    matchLevel: "Score égal",
+    dataBacked: "Contexte données",
+    openTeamInfo: "Ouvrir les équipes",
+    openFixtureInfo: "Ouvrir les détails",
+    matchIntelligence: "Intelligence match",
+    phaseSummary: "Résumé de phase",
+    preMatch: "Avant-match",
+    firstHalf: "Première mi-temps",
+    secondHalf: "Deuxième mi-temps",
+    postMatch: "Après-match",
+    playerImpact: "Impact joueur",
+    eventStack: "Pile d'événements",
+    goals: "Buts",
+    cards: "Cartons",
+    subs: "Changements",
+    marketSwings: "Basculements marché",
+    involved: "Impliqué",
+    noPlayerEvents: "Aucun événement joueur",
+    minutes: "Minutes",
+    currentRead: "Lecture actuelle",
+    firstHalfSummary: "La première mi-temps pose la base émotionnelle avant les changements et la pression tardive.",
+    secondHalfSummary: "La deuxième mi-temps concentre la volatilité : buts, cartons et mouvements de marché changent l'histoire.",
+    postMatchSummary: "Le replay est complet avec score, contexte, humeur de marché et limites de sécurité.",
+    preMatchSummary: "Le contexte est prêt : équipes, stade, arbitre, coup d'envoi et scénario replay.",
   },
   de: {
     ...copy.en,
@@ -1071,6 +1138,16 @@ const localizedCopy = {
     checkedAt: "Quelle geprüft",
     publicSeedSource: "Kalender-Snapshot + Replay-Spiele",
     freshness: "Aktualität",
+    source: "Quelle",
+    currentMode: "Aktueller Modus",
+    canonicalSource: "Kanonische Quelle",
+    replayCoverage: "Replay-Abdeckung",
+    seedCoverage: "Seed-Abdeckung",
+    liveReadiness: "Live-Bereitschaft",
+    tokenStatus: "Token",
+    endpointStatus: "Endpunkte",
+    calendarStatus: "Kalender",
+    fallbackStatus: "Fallback",
     sourceBoundary: "Replay und Seed bleiben markiert, bis TxLINE-Live-Daten authentifiziert sind.",
     play: "Start",
     pause: "Pause",
@@ -1115,6 +1192,63 @@ const localizedCopy = {
     fixtureBriefingToggle: "Spielbriefing",
     countryAtlasToggle: "Team-Atlas",
     videoPanelToggle: "Autorisierte Videos",
+    draw: "Unentschieden",
+    oneLineRead: "Kurzlesung",
+    pressure: "Druckkarte",
+    neutral: "Neutral",
+    oddsMovement: "Quotenbewegung",
+    pulseArc: "Pulsbogen",
+    matchMoodPath: "Stimmungsverlauf",
+    low: "Tief",
+    now: "Jetzt",
+    high: "Hoch",
+    momentumInsight: "Momentum-Lesung",
+    whyMomentMatters: "Warum der Moment zählt",
+    swing: "Swing",
+    signal: "Signal",
+    events: "Ereignisse",
+    matchCenter: "Matchcenter",
+    matchFacts: "Spieldaten",
+    kickoff: "Anpfiff",
+    referee: "Schiedsrichter",
+    dataStatus: "Datenstatus",
+    discipline: "Disziplin",
+    noCards: "Noch keine Karten",
+    qualification: "Kontext",
+    groupTable: "Tabelle",
+    teamProfiles: "Teamprofile",
+    coach: "Trainer",
+    keyPlayers: "Schlüsselspieler",
+    shareCard: "Fankarte",
+    exportPulse: "Puls exportieren",
+    downloadSvg: "SVG laden",
+    timeline: "Match-Timeline",
+    keyEvents: "Schlüsselereignisse",
+    replayLoop: "Replay startet neu.",
+    matchLevel: "Ausgeglichen",
+    dataBacked: "Datenkontext",
+    openTeamInfo: "Teams öffnen",
+    openFixtureInfo: "Details öffnen",
+    matchIntelligence: "Match-Intelligence",
+    phaseSummary: "Phasenbild",
+    preMatch: "Vor dem Spiel",
+    firstHalf: "Erste Halbzeit",
+    secondHalf: "Zweite Halbzeit",
+    postMatch: "Nach dem Spiel",
+    playerImpact: "Spielerwirkung",
+    eventStack: "Ereignisstapel",
+    goals: "Tore",
+    cards: "Karten",
+    subs: "Wechsel",
+    marketSwings: "Marktschwünge",
+    involved: "Beteiligt",
+    noPlayerEvents: "Noch kein Spielerereignis",
+    minutes: "Minuten",
+    currentRead: "Aktuelle Lesung",
+    firstHalfSummary: "Die erste Halbzeit setzt den emotionalen Rahmen vor Wechseln und spätem Druck.",
+    secondHalfSummary: "In der zweiten Halbzeit zählt Volatilität: Tore, Karten und Marktbewegungen verändern die Story.",
+    postMatchSummary: "Das Replay ist vollständig, mit Score, Kontext, Marktstimmung und Sicherheitsgrenze.",
+    preMatchSummary: "Der Kontext ist bereit: Teams, Stadion, Schiedsrichter, Anpfiff und Replay-Szenario.",
   },
   ja: {
     ...copy.en,
@@ -1138,6 +1272,16 @@ const localizedCopy = {
     checkedAt: "確認時刻",
     publicSeedSource: "日程スナップショット + リプレイ",
     freshness: "鮮度",
+    source: "ソース",
+    currentMode: "現在モード",
+    canonicalSource: "正規ソース",
+    replayCoverage: "リプレイ範囲",
+    seedCoverage: "シード範囲",
+    liveReadiness: "ライブ準備",
+    tokenStatus: "Token",
+    endpointStatus: "エンドポイント",
+    calendarStatus: "カレンダー",
+    fallbackStatus: "フォールバック",
     sourceBoundary: "TxLINEライブ認証まで Replay / Seed と明示します。",
     play: "再生",
     pause: "停止",
@@ -1182,6 +1326,63 @@ const localizedCopy = {
     fixtureBriefingToggle: "試合ブリーフ",
     countryAtlasToggle: "チーム図鑑",
     videoPanelToggle: "許可済み動画",
+    draw: "引き分け",
+    oneLineRead: "試合の一言解説",
+    pressure: "圧力マップ",
+    neutral: "中立",
+    oddsMovement: "オッズ変化",
+    pulseArc: "パルス曲線",
+    matchMoodPath: "感情の流れ",
+    low: "低",
+    now: "現在",
+    high: "高",
+    momentumInsight: "勢いの分析",
+    whyMomentMatters: "この瞬間が重要な理由",
+    swing: "変化",
+    signal: "シグナル",
+    events: "イベント",
+    matchCenter: "試合センター",
+    matchFacts: "試合情報",
+    kickoff: "キックオフ",
+    referee: "審判",
+    dataStatus: "データ状態",
+    discipline: "カード状況",
+    noCards: "カードなし",
+    qualification: "文脈",
+    groupTable: "グループ表",
+    teamProfiles: "チーム情報",
+    coach: "監督",
+    keyPlayers: "注目選手",
+    shareCard: "共有カード",
+    exportPulse: "パルスを書き出す",
+    downloadSvg: "SVG保存",
+    timeline: "試合タイムライン",
+    keyEvents: "重要イベント",
+    replayLoop: "リプレイは再開できます。",
+    matchLevel: "同点",
+    dataBacked: "データ文脈",
+    openTeamInfo: "チーム情報を開く",
+    openFixtureInfo: "試合詳細を開く",
+    matchIntelligence: "試合インテリジェンス",
+    phaseSummary: "フェーズ要約",
+    preMatch: "試合前",
+    firstHalf: "前半",
+    secondHalf: "後半",
+    postMatch: "試合後",
+    playerImpact: "選手インパクト",
+    eventStack: "イベント集計",
+    goals: "ゴール",
+    cards: "カード",
+    subs: "交代",
+    marketSwings: "市場変化",
+    involved: "関与",
+    noPlayerEvents: "選手イベントなし",
+    minutes: "分",
+    currentRead: "現在の読み",
+    firstHalfSummary: "前半は、交代や終盤の圧力が変化する前の感情ベースを作ります。",
+    secondHalfSummary: "後半は変動が重要です。ゴール、カード、市場変化がストーリーを変えます。",
+    postMatchSummary: "リプレイは完了し、スコア、文脈、市場ムード、安全境界を保持しています。",
+    preMatchSummary: "チーム、会場、審判、キックオフ、リプレイ文脈がそろっています。",
   },
   ar: {
     ...copy.en,
@@ -1205,6 +1406,16 @@ const localizedCopy = {
     checkedAt: "تم التحقق",
     publicSeedSource: "لقطة جدول + مباريات إعادة",
     freshness: "حداثة البيانات",
+    source: "المصدر",
+    currentMode: "الوضع الحالي",
+    canonicalSource: "المصدر المعتمد",
+    replayCoverage: "تغطية الإعادة",
+    seedCoverage: "تغطية البيانات الأولية",
+    liveReadiness: "جاهزية المباشر",
+    tokenStatus: "الرمز",
+    endpointStatus: "النقاط",
+    calendarStatus: "الجدول",
+    fallbackStatus: "البديل",
     sourceBoundary: "تبقى Replay و Seed واضحة حتى تنجح مصادقة بيانات TxLINE المباشرة.",
     play: "تشغيل",
     pause: "إيقاف",
@@ -1249,6 +1460,63 @@ const localizedCopy = {
     fixtureBriefingToggle: "ملخص المباراة",
     countryAtlasToggle: "أطلس الفرق",
     videoPanelToggle: "فيديو مصرح",
+    draw: "تعادل",
+    oneLineRead: "قراءة قصيرة",
+    pressure: "خريطة الضغط",
+    neutral: "محايد",
+    oddsMovement: "حركة الأسعار",
+    pulseArc: "منحنى النبض",
+    matchMoodPath: "مسار المزاج",
+    low: "منخفض",
+    now: "الآن",
+    high: "مرتفع",
+    momentumInsight: "قراءة الزخم",
+    whyMomentMatters: "لماذا هذه اللحظة مهمة",
+    swing: "تحول",
+    signal: "إشارة",
+    events: "أحداث",
+    matchCenter: "مركز المباراة",
+    matchFacts: "معلومات المباراة",
+    kickoff: "البداية",
+    referee: "الحكم",
+    dataStatus: "حالة البيانات",
+    discipline: "البطاقات",
+    noCards: "لا بطاقات",
+    qualification: "السياق",
+    groupTable: "جدول المجموعة",
+    teamProfiles: "ملفات الفرق",
+    coach: "المدرب",
+    keyPlayers: "لاعبون مهمون",
+    shareCard: "بطاقة مشاركة",
+    exportPulse: "تصدير النبض",
+    downloadSvg: "تنزيل SVG",
+    timeline: "خط المباراة",
+    keyEvents: "أحداث مهمة",
+    replayLoop: "ستبدأ الإعادة من جديد.",
+    matchLevel: "النتيجة متعادلة",
+    dataBacked: "سياق البيانات",
+    openTeamInfo: "فتح معلومات الفرق",
+    openFixtureInfo: "فتح تفاصيل المباراة",
+    matchIntelligence: "ذكاء المباراة",
+    phaseSummary: "ملخص المرحلة",
+    preMatch: "قبل المباراة",
+    firstHalf: "الشوط الأول",
+    secondHalf: "الشوط الثاني",
+    postMatch: "بعد المباراة",
+    playerImpact: "تأثير اللاعب",
+    eventStack: "ملخص الأحداث",
+    goals: "أهداف",
+    cards: "بطاقات",
+    subs: "تبديلات",
+    marketSwings: "تحولات السوق",
+    involved: "مشارك",
+    noPlayerEvents: "لا أحداث مرتبطة بلاعب",
+    minutes: "دقائق",
+    currentRead: "القراءة الحالية",
+    firstHalfSummary: "الشوط الأول يبني خط الشعور قبل التبديلات والضغط المتأخر.",
+    secondHalfSummary: "في الشوط الثاني تهم التقلبات: الأهداف والبطاقات وحركة السوق تغير القصة.",
+    postMatchSummary: "اكتملت الإعادة مع النتيجة والسياق ومزاج السوق وحدود السلامة.",
+    preMatchSummary: "السياق جاهز: الفرق والملعب والحكم والبداية وسيناريو الإعادة.",
   },
 } as const;
 
@@ -1515,6 +1783,20 @@ const localizedTrustCopy = {
 
 type CopyText = (typeof localizedCopy)[Language];
 type ViewPresetId = ViewPreset["id"];
+type AiPanelText = {
+  lab: string;
+  prediction: string;
+  evaluation: string;
+  commentary: string;
+  confidenceLow: string;
+  confidenceMedium: string;
+  confidenceHigh: string;
+  volatilityLow: string;
+  volatilityMedium: string;
+  volatilityHigh: string;
+  localModelNote: string;
+  noAdvice: string;
+};
 type DemoChapter = {
   id: string;
   matchId: string;
@@ -1522,6 +1804,121 @@ type DemoChapter = {
   label: string;
   summary: string;
   focus: string;
+};
+
+const aiPanelCopy: Record<Language, AiPanelText> = {
+  en: {
+    lab: "AI Match Lab",
+    prediction: "AI prediction",
+    evaluation: "AI evaluation",
+    commentary: "AI commentary",
+    confidenceLow: "Low confidence",
+    confidenceMedium: "Medium confidence",
+    confidenceHigh: "High confidence",
+    volatilityLow: "Calm match",
+    volatilityMedium: "Live tension",
+    volatilityHigh: "High volatility",
+    localModelNote: "Local rule engine from score, events, and market mood.",
+    noAdvice: "Informational only. No betting or trading advice.",
+  },
+  zh: {
+    lab: "AI 比赛实验室",
+    prediction: "AI 预测",
+    evaluation: "AI 测评",
+    commentary: "AI 解说",
+    confidenceLow: "低置信度",
+    confidenceMedium: "中等置信度",
+    confidenceHigh: "高置信度",
+    volatilityLow: "比赛较平稳",
+    volatilityMedium: "现场有张力",
+    volatilityHigh: "高波动比赛",
+    localModelNote: "本地规则引擎，基于比分、事件和市场情绪生成。",
+    noAdvice: "仅供观赛理解，不是下注或交易建议。",
+  },
+  es: {
+    lab: "Laboratorio AI",
+    prediction: "Predicción AI",
+    evaluation: "Evaluación AI",
+    commentary: "Comentario AI",
+    confidenceLow: "Confianza baja",
+    confidenceMedium: "Confianza media",
+    confidenceHigh: "Confianza alta",
+    volatilityLow: "Partido estable",
+    volatilityMedium: "Tensión en vivo",
+    volatilityHigh: "Alta volatilidad",
+    localModelNote: "Motor local basado en marcador, eventos y ánimo de mercado.",
+    noAdvice: "Solo informativo. No es consejo de apuestas ni trading.",
+  },
+  pt: {
+    lab: "Laboratório AI",
+    prediction: "Previsão AI",
+    evaluation: "Avaliação AI",
+    commentary: "Comentário AI",
+    confidenceLow: "Baixa confiança",
+    confidenceMedium: "Confiança média",
+    confidenceHigh: "Alta confiança",
+    volatilityLow: "Jogo calmo",
+    volatilityMedium: "Tensão ao vivo",
+    volatilityHigh: "Alta volatilidade",
+    localModelNote: "Motor local baseado em placar, eventos e humor de mercado.",
+    noAdvice: "Apenas informativo. Não é conselho de aposta ou trading.",
+  },
+  fr: {
+    lab: "Labo IA",
+    prediction: "Prédiction IA",
+    evaluation: "Évaluation IA",
+    commentary: "Commentaire IA",
+    confidenceLow: "Confiance faible",
+    confidenceMedium: "Confiance moyenne",
+    confidenceHigh: "Confiance forte",
+    volatilityLow: "Match calme",
+    volatilityMedium: "Tension en direct",
+    volatilityHigh: "Forte volatilité",
+    localModelNote: "Moteur local basé sur score, événements et humeur de marché.",
+    noAdvice: "Informatif uniquement. Pas de conseil de pari ou trading.",
+  },
+  de: {
+    lab: "KI-Matchlabor",
+    prediction: "KI-Prognose",
+    evaluation: "KI-Bewertung",
+    commentary: "KI-Kommentar",
+    confidenceLow: "Niedrige Sicherheit",
+    confidenceMedium: "Mittlere Sicherheit",
+    confidenceHigh: "Hohe Sicherheit",
+    volatilityLow: "Ruhiges Spiel",
+    volatilityMedium: "Live-Spannung",
+    volatilityHigh: "Hohe Volatilität",
+    localModelNote: "Lokale Regelengine aus Spielstand, Ereignissen und Marktstimmung.",
+    noAdvice: "Nur Information. Keine Wett- oder Tradingberatung.",
+  },
+  ja: {
+    lab: "AI マッチラボ",
+    prediction: "AI 予測",
+    evaluation: "AI 評価",
+    commentary: "AI 解説",
+    confidenceLow: "低い確信度",
+    confidenceMedium: "中程度の確信度",
+    confidenceHigh: "高い確信度",
+    volatilityLow: "落ち着いた試合",
+    volatilityMedium: "ライブ緊張感",
+    volatilityHigh: "高い変動",
+    localModelNote: "スコア、イベント、市場ムードから作るローカルルールエンジン。",
+    noAdvice: "情報表示のみ。賭けや取引助言ではありません。",
+  },
+  ar: {
+    lab: "مختبر الذكاء",
+    prediction: "توقع AI",
+    evaluation: "تقييم AI",
+    commentary: "تعليق AI",
+    confidenceLow: "ثقة منخفضة",
+    confidenceMedium: "ثقة متوسطة",
+    confidenceHigh: "ثقة عالية",
+    volatilityLow: "مباراة هادئة",
+    volatilityMedium: "توتر مباشر",
+    volatilityHigh: "تقلب عال",
+    localModelNote: "محرك محلي من النتيجة والأحداث ومزاج السوق.",
+    noAdvice: "معلومات فقط. ليست نصيحة مراهنة أو تداول.",
+  },
 };
 
 type JudgeCriterion = {
@@ -2255,6 +2652,270 @@ function getTeamDisplay(team: TeamGuide, language: Language): TeamGuide {
   return language === "zh" ? { ...team, ...zhTeamText[team.code] } : team;
 }
 
+const teamNameText: Record<Language, Record<string, string>> = {
+  en: {},
+  zh: {
+    ARG: "阿根廷",
+    FRA: "法国",
+    GER: "德国",
+    JPN: "日本",
+    JOR: "约旦",
+    ALG: "阿尔及利亚",
+    AUT: "奥地利",
+    USA: "美国",
+    MEX: "墨西哥",
+    BRA: "巴西",
+    ENG: "英格兰",
+    ESP: "西班牙",
+  },
+  es: {
+    ARG: "Argentina",
+    FRA: "Francia",
+    GER: "Alemania",
+    JPN: "Japon",
+    JOR: "Jordania",
+    ALG: "Argelia",
+    AUT: "Austria",
+    USA: "Estados Unidos",
+    MEX: "Mexico",
+    BRA: "Brasil",
+    ENG: "Inglaterra",
+    ESP: "Espana",
+  },
+  pt: {
+    ARG: "Argentina",
+    FRA: "Franca",
+    GER: "Alemanha",
+    JPN: "Japao",
+    JOR: "Jordania",
+    ALG: "Argelia",
+    AUT: "Austria",
+    USA: "Estados Unidos",
+    MEX: "Mexico",
+    BRA: "Brasil",
+    ENG: "Inglaterra",
+    ESP: "Espanha",
+  },
+  fr: {
+    ARG: "Argentine",
+    FRA: "France",
+    GER: "Allemagne",
+    JPN: "Japon",
+    JOR: "Jordanie",
+    ALG: "Algerie",
+    AUT: "Autriche",
+    USA: "Etats-Unis",
+    MEX: "Mexique",
+    BRA: "Bresil",
+    ENG: "Angleterre",
+    ESP: "Espagne",
+  },
+  de: {
+    ARG: "Argentinien",
+    FRA: "Frankreich",
+    GER: "Deutschland",
+    JPN: "Japan",
+    JOR: "Jordanien",
+    ALG: "Algerien",
+    AUT: "Osterreich",
+    USA: "Vereinigte Staaten",
+    MEX: "Mexiko",
+    BRA: "Brasilien",
+    ENG: "England",
+    ESP: "Spanien",
+  },
+  ja: {
+    ARG: "アルゼンチン",
+    FRA: "フランス",
+    GER: "ドイツ",
+    JPN: "日本",
+    JOR: "ヨルダン",
+    ALG: "アルジェリア",
+    AUT: "オーストリア",
+    USA: "アメリカ",
+    MEX: "メキシコ",
+    BRA: "ブラジル",
+    ENG: "イングランド",
+    ESP: "スペイン",
+  },
+  ar: {
+    ARG: "الأرجنتين",
+    FRA: "فرنسا",
+    GER: "ألمانيا",
+    JPN: "اليابان",
+    JOR: "الأردن",
+    ALG: "الجزائر",
+    AUT: "النمسا",
+    USA: "الولايات المتحدة",
+    MEX: "المكسيك",
+    BRA: "البرازيل",
+    ENG: "إنجلترا",
+    ESP: "إسبانيا",
+  },
+};
+
+function getTeamName(code: string, fallback: string, language: Language) {
+  return teamNameText[language]?.[code] ?? fallback;
+}
+
+type MatchDisplayText = {
+  competition: string;
+  stage: string;
+  venue: string;
+  qualification: string;
+};
+
+const matchDisplayText: Record<Language, Record<string, MatchDisplayText>> = {
+  en: {},
+  zh: {
+    "wc-demo-arg-fra": {
+      competition: "世界杯淘汰赛回放",
+      stage: "决赛回放",
+      venue: "卢塞尔标志性体育场",
+      qualification: "淘汰赛回放：胜者捧杯，本短演示省略点球大战。",
+    },
+    "wc-demo-jpn-ger": {
+      competition: "世界杯小组赛回放",
+      stage: "小组赛回放",
+      venue: "哈利法国际体育场",
+      qualification: "小组赛爆冷回放：日本的晚段逆转改变出线叙事和市场情绪。",
+    },
+  },
+  es: {
+    "wc-demo-arg-fra": {
+      competition: "Replay de eliminatoria mundialista",
+      stage: "Replay de la final",
+      venue: "Estadio Iconico de Lusail",
+      qualification: "Replay de eliminatoria: el ganador levanta el trofeo; los penales se omiten en este bucle demo.",
+    },
+    "wc-demo-jpn-ger": {
+      competition: "Replay de fase de grupos mundialista",
+      stage: "Replay de grupos",
+      venue: "Estadio Internacional Khalifa",
+      qualification: "Replay de sorpresa: la remontada tardia de Japon cambia la historia de clasificacion.",
+    },
+  },
+  pt: {
+    "wc-demo-arg-fra": {
+      competition: "Replay de mata-mata da Copa",
+      stage: "Replay da final",
+      venue: "Estadio Iconico de Lusail",
+      qualification: "Replay de mata-mata: o vencedor levanta a taca; penaltis ficam fora deste loop curto.",
+    },
+    "wc-demo-jpn-ger": {
+      competition: "Replay da fase de grupos da Copa",
+      stage: "Replay de grupos",
+      venue: "Estadio Internacional Khalifa",
+      qualification: "Replay de zebra: a virada tardia do Japao muda a leitura de classificacao.",
+    },
+  },
+  fr: {
+    "wc-demo-arg-fra": {
+      competition: "Replay a elimination de Coupe du monde",
+      stage: "Replay de finale",
+      venue: "Stade iconique de Lusail",
+      qualification: "Replay a elimination: le vainqueur souleve le trophee; les tirs au but sont omis dans cette demo courte.",
+    },
+    "wc-demo-jpn-ger": {
+      competition: "Replay de phase de groupes",
+      stage: "Replay de groupe",
+      venue: "Stade international Khalifa",
+      qualification: "Replay de surprise: la victoire tardive du Japon change le contexte de qualification.",
+    },
+  },
+  de: {
+    "wc-demo-arg-fra": {
+      competition: "WM-K.-o.-Replay",
+      stage: "Final-Replay",
+      venue: "Lusail Iconic Stadium",
+      qualification: "K.-o.-Replay: Der Sieger holt den Pokal; Elfmeterschiessen ist in dieser kurzen Demo ausgelassen.",
+    },
+    "wc-demo-jpn-ger": {
+      competition: "WM-Gruppenphasen-Replay",
+      stage: "Gruppen-Replay",
+      venue: "Khalifa International Stadium",
+      qualification: "Upset-Replay: Japans spaeter Sieg veraendert die Qualifikationslage.",
+    },
+  },
+  ja: {
+    "wc-demo-arg-fra": {
+      competition: "ワールドカップ決勝トーナメント リプレイ",
+      stage: "決勝リプレイ",
+      venue: "ルサイル・アイコニック・スタジアム",
+      qualification: "決勝トーナメントのリプレイ。短いデモではPK戦を省略しています。",
+    },
+    "wc-demo-jpn-ger": {
+      competition: "ワールドカップ グループステージ リプレイ",
+      stage: "グループステージ リプレイ",
+      venue: "ハリーファ国際スタジアム",
+      qualification: "番狂わせのリプレイ。日本の終盤逆転が突破状況と市場ムードを変えます。",
+    },
+  },
+  ar: {
+    "wc-demo-arg-fra": {
+      competition: "إعادة لمباراة إقصائية في كأس العالم",
+      stage: "إعادة النهائي",
+      venue: "استاد لوسيل",
+      qualification: "إعادة إقصائية: الفائز يرفع الكأس، وركلات الترجيح خارج هذا العرض القصير.",
+    },
+    "wc-demo-jpn-ger": {
+      competition: "إعادة من دور المجموعات",
+      stage: "إعادة دور المجموعات",
+      venue: "استاد خليفة الدولي",
+      qualification: "إعادة لمفاجأة: فوز اليابان المتأخر يغير سياق التأهل ومزاج السوق.",
+    },
+  },
+};
+
+function getMatchDisplay(match: MatchData, language: Language): MatchDisplayText {
+  const translated = matchDisplayText[language]?.[match.id];
+
+  if (translated) {
+    return translated;
+  }
+
+  return {
+    competition: match.competition,
+    stage: match.stage ?? match.competition,
+    venue: match.venue,
+    qualification: match.qualificationNote ?? match.stage ?? match.competition,
+  };
+}
+
+type DataStatusValue = NonNullable<MatchData["dataStatus"]>;
+
+const dataStatusText: Record<Language, Record<DataStatusValue, string>> = {
+  en: { Live: "Live", Delay: "Delay", Replay: "Replay", Seed: "Seed" },
+  zh: { Live: "实时", Delay: "延迟", Replay: "回放", Seed: "种子" },
+  es: { Live: "En vivo", Delay: "Con retraso", Replay: "Replay", Seed: "Seed" },
+  pt: { Live: "Ao vivo", Delay: "Com atraso", Replay: "Replay", Seed: "Seed" },
+  fr: { Live: "Direct", Delay: "Decale", Replay: "Replay", Seed: "Seed" },
+  de: { Live: "Live", Delay: "Verzoegert", Replay: "Replay", Seed: "Seed" },
+  ja: { Live: "ライブ", Delay: "遅延", Replay: "リプレイ", Seed: "シード" },
+  ar: { Live: "مباشر", Delay: "متأخر", Replay: "إعادة", Seed: "بيانات أولية" },
+};
+
+function getDataStatusLabel(status: DataStatusValue, language: Language) {
+  return dataStatusText[language][status];
+}
+
+const swingSignalText: Record<Language, Record<"major" | "clear" | "subtle" | "stable", string>> = {
+  en: { major: "Major swing", clear: "Clear swing", subtle: "Subtle movement", stable: "Stable" },
+  zh: { major: "大幅摆动", clear: "明显摆动", subtle: "轻微变化", stable: "稳定" },
+  es: { major: "Gran giro", clear: "Giro claro", subtle: "Movimiento leve", stable: "Estable" },
+  pt: { major: "Grande virada", clear: "Virada clara", subtle: "Movimento leve", stable: "Estavel" },
+  fr: { major: "Grand basculement", clear: "Bascule nette", subtle: "Mouvement leger", stable: "Stable" },
+  de: { major: "Grosser Swing", clear: "Klarer Swing", subtle: "Leichte Bewegung", stable: "Stabil" },
+  ja: { major: "大きな変化", clear: "明確な変化", subtle: "小さな動き", stable: "安定" },
+  ar: { major: "تحول كبير", clear: "تحول واضح", subtle: "حركة خفيفة", stable: "مستقر" },
+};
+
+function getSwingSignalLabel(swing: number, language: Language) {
+  const absoluteSwing = Math.abs(swing);
+  const level = absoluteSwing >= 18 ? "major" : absoluteSwing >= 8 ? "clear" : absoluteSwing >= 3 ? "subtle" : "stable";
+  return swingSignalText[language][level];
+}
+
 function getSafeVideoEmbedUrl(rawUrl?: string) {
   if (!rawUrl) {
     return null;
@@ -2303,6 +2964,7 @@ export default function App() {
 
   const t = localizedCopy[language];
   const trust = localizedTrustCopy[language];
+  const aiText = aiPanelCopy[language];
 
   useEffect(() => {
     document.documentElement.lang = getHtmlLanguage(language);
@@ -2422,17 +3084,27 @@ export default function App() {
     99,
     Math.max(1, Math.round(frame.market.sentiment + Math.abs(frame.insight.swing) * 1.4)),
   );
+  const homeTeamName = getTeamName(match.home.code, match.home.name, language);
+  const awayTeamName = getTeamName(match.away.code, match.away.name, language);
+  const matchDisplay = getMatchDisplay(match, language);
   const leader =
     frame.homeScore === frame.awayScore
       ? t.matchLevel
       : frame.homeScore > frame.awayScore
-        ? match.home.name
-        : match.away.name;
+        ? homeTeamName
+        : awayTeamName;
   const sourceStatus = source ? getSourceStatus(source, language) : null;
   const videoEmbedUrl = getSafeVideoEmbedUrl(import.meta.env.VITE_AUTHORIZED_VIDEO_EMBED_URL);
   const visibleCards = frame.activeEvents.filter((event) =>
     ["yellow_card", "red_card"].includes(event.type),
   );
+  const latestEventDisplay = frame.latestEvent ? formatEventDisplay(frame.latestEvent, match, language) : null;
+  const nextEventDisplay = nextEvent ? formatEventDisplay(nextEvent, match, language) : null;
+  const localizedCommentary = buildLocalizedCommentary(match, frame, language);
+  const localizedInsight = buildLocalizedInsight(match, frame, language);
+  const dataStatusLabel = getDataStatusLabel(match.dataStatus ?? (source?.kind === "replay" ? "Replay" : "Seed"), language);
+  const nextBeatSummary = nextEvent && nextEventDisplay ? `${nextEvent.minute}' ${nextEventDisplay.title}` : t.replayLoop;
+  const swingSignalLabel = getSwingSignalLabel(frame.insight.swing, language);
   const kickoffLabel = formatKickoff(match.kickoffIso, language);
   const sharePreview = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
     buildShareCardSvg(match, frame),
@@ -2547,7 +3219,7 @@ export default function App() {
     },
     {
       label: t.nextBeat,
-      value: nextEvent ? `${nextEvent.minute}' ${nextEvent.title}` : t.replayLoop,
+      value: nextBeatSummary,
     },
     {
       label: t.marketMood,
@@ -2565,7 +3237,7 @@ export default function App() {
   const predictionOptions = [
     {
       id: "home" as const,
-      label: match.home.name,
+      label: homeTeamName,
       shortLabel: match.home.code,
       implied: Math.round((impliedHome / impliedTotal) * 100),
       price: frame.market.homeWin,
@@ -2579,7 +3251,7 @@ export default function App() {
     },
     {
       id: "away" as const,
-      label: match.away.name,
+      label: awayTeamName,
       shortLabel: match.away.code,
       implied: Math.round((impliedAway / impliedTotal) * 100),
       price: frame.market.awayWin,
@@ -2595,18 +3267,62 @@ export default function App() {
     predictedHomeScore === predictedAwayScore
       ? t.draw
       : predictedHomeScore > predictedAwayScore
-        ? match.home.name
-        : match.away.name;
+        ? homeTeamName
+        : awayTeamName;
   const eventStats = buildEventStats(frame.activeEvents);
+  const sortedImplied = [...predictionOptions].sort((first, second) => second.implied - first.implied);
+  const confidenceGap = (sortedImplied[0]?.implied ?? 0) - (sortedImplied[1]?.implied ?? 0);
+  const aiConfidence =
+    confidenceGap >= 22
+      ? aiText.confidenceHigh
+      : confidenceGap >= 10
+        ? aiText.confidenceMedium
+        : aiText.confidenceLow;
+  const volatilityScore = Math.min(
+    99,
+    Math.max(
+      1,
+      Math.round(
+        Math.abs(frame.insight.swing) * 2 +
+          eventStats.goals * 18 +
+          eventStats.cards * 8 +
+          eventStats.marketSwings * 10 +
+          frame.activeEvents.length * 2,
+      ),
+    ),
+  );
+  const aiVolatility =
+    volatilityScore >= 70
+      ? aiText.volatilityHigh
+      : volatilityScore >= 34
+        ? aiText.volatilityMedium
+        : aiText.volatilityLow;
+  const aiPunditCards = [
+    {
+      label: aiText.prediction,
+      value: `${fanLean.label} ${fanLean.implied}%`,
+      note: `${aiConfidence}. ${aiText.localModelNote}`,
+    },
+    {
+      label: aiText.evaluation,
+      value: `${aiVolatility} ${volatilityScore}/100`,
+      note: aiText.noAdvice,
+    },
+    {
+      label: aiText.commentary,
+      value: localizedCommentary,
+      note: latestEventDisplay?.title ?? localizedInsight,
+    },
+  ].filter((item) => item.value.trim().length > 0);
   const fanSignalItems = [
-    { label: t.currentRead, value: frame.insight.headline },
+    { label: t.currentRead, value: localizedInsight },
     { label: t.goals, value: String(eventStats.goals) },
     { label: t.cards, value: String(eventStats.cards) },
     { label: t.marketSwings, value: String(eventStats.marketSwings) },
   ];
   const recentPulseEvents = frame.activeEvents.slice(-4).reverse();
   const playerImpact = buildPlayerImpact(frame.activeEvents);
-  const phaseSummary = buildPhaseSummary(minute, match, t);
+  const phaseSummary = buildPhaseSummary(minute, match, t, matchDisplay, homeTeamName, awayTeamName);
   const demoChapters = buildDemoChapters(t);
   const selectedDemoChapter = demoChapters.find(
     (chapter) => chapter.matchId === replayMatchId && Math.abs(chapter.minute - minute) <= 2,
@@ -2823,25 +3539,25 @@ export default function App() {
         <div className="hero-copy">
           <div className="status-ribbon">
             <span className={source?.kind === "replay" ? "status-replay" : "status-waiting"}>
-              {sourceStatus?.label ?? "Preparing source"}
+              {sourceStatus?.label ?? t.publicSeedSource}
             </span>
             <span>{mode === "replay" ? t.mockFixture : t.txlineAdapter}</span>
-            <span>{match.dataStatus ?? "Replay"}</span>
+            <span>{dataStatusLabel}</span>
             <span>{leader}</span>
           </div>
           <div className="scoreline">
-            <TeamBadge name={match.home.name} code={match.home.code} color={match.home.color} />
+            <TeamBadge name={homeTeamName} code={match.home.code} color={match.home.color} />
             <div className="score">
               <strong>{frame.homeScore}</strong>
               <span>-</span>
               <strong>{frame.awayScore}</strong>
             </div>
-            <TeamBadge name={match.away.name} code={match.away.code} color={match.away.color} />
+            <TeamBadge name={awayTeamName} code={match.away.code} color={match.away.color} />
           </div>
           <div className="match-meta">
-            <span>{match.competition}</span>
-            <span>{match.venue}</span>
-            <span>{mode === "live" ? t.waitingForTxline : match.kickoffLabel}</span>
+            <span>{matchDisplay.competition}</span>
+            <span>{matchDisplay.venue}</span>
+            <span>{mode === "live" ? t.waitingForTxline : kickoffLabel}</span>
           </div>
           <div className="hero-actions" aria-label={t.focusNav}>
             <button type="button" onClick={() => revealSection(".fan-command-center", () => undefined)}>
@@ -2858,7 +3574,7 @@ export default function App() {
         <div className="hero-panel">
           <Metric label={t.clock} value={`${minute}'`} />
           <Metric label={t.pulse} value={`${fanTemperature}/100`} />
-          <Metric label={t.latestBeat} value={frame.latestEvent?.title ?? "Kickoff"} />
+          <Metric label={t.latestBeat} value={latestEventDisplay?.title ?? t.waitingForKickoff} />
         </div>
       </section>
 
@@ -2880,7 +3596,7 @@ export default function App() {
             </span>
             <span>
               <strong>{t.dataStatus}</strong>
-              {match.dataStatus ?? (source?.kind === "replay" ? t.replay : t.pending)}
+              {dataStatusLabel}
             </span>
             <span>
               <strong>{t.source}</strong>
@@ -2898,7 +3614,7 @@ export default function App() {
         <article className="matchday-current">
           <p className="eyebrow">{t.matchdayHub}</p>
           <h2>
-            {match.home.name} vs {match.away.name}
+            {homeTeamName} vs {awayTeamName}
           </h2>
           <div className="matchday-current-status">
             <span>{mode === "replay" ? t.nowPlaying : t.waitingForTxline}</span>
@@ -2913,6 +3629,7 @@ export default function App() {
             const isActiveReplay = item.id === replayMatchId;
             const isAvailable = item.availability === "available";
             const statusLabel = isAvailable ? t.replayAvailable : t.tokenRequiredShort;
+            const display = getTodayCardDisplay(item, language);
 
             if (!isAvailable) {
               return (
@@ -2943,7 +3660,7 @@ export default function App() {
                 <strong>
                   {item.homeCode} vs {item.awayCode}
                 </strong>
-                <small>{item.stage}</small>
+                <small>{display.stage}</small>
                 <em>{isActiveReplay ? t.nowPlaying : t.focusWatch}</em>
               </button>
             );
@@ -2994,12 +3711,23 @@ export default function App() {
             <p className="eyebrow">{t.fanCommand}</p>
             <h2>{t.watchNow}</h2>
           </div>
-          <strong>{frame.latestEvent?.title ?? frame.insight.headline}</strong>
-          <p>{frame.latestEvent?.description ?? frame.insight.headline}</p>
+          <strong>{latestEventDisplay?.title ?? localizedInsight}</strong>
+          {latestEventDisplay?.description ? <p>{latestEventDisplay.description}</p> : null}
           <div className="ai-readout">
             <span>{t.aiCommentary}</span>
-            <strong>{frame.commentary}</strong>
+            <strong>{localizedCommentary}</strong>
           </div>
+          {aiPunditCards.length ? (
+            <div className="ai-lab-strip" aria-label={aiText.lab}>
+              {aiPunditCards.map((item) => (
+                <span key={item.label}>
+                  <small>{item.label}</small>
+                  <strong>{item.value}</strong>
+                  <em>{item.note}</em>
+                </span>
+              ))}
+            </div>
+          ) : null}
           <div className="fan-signal-strip" aria-label={t.currentRead}>
             {fanSignalItems.map((item) => (
               <span key={item.label}>
@@ -3016,20 +3744,23 @@ export default function App() {
           <div className="mini-event-feed" aria-label={t.liveFeed}>
             <span>{t.liveFeed}</span>
             {recentPulseEvents.length ? (
-              recentPulseEvents.map((event) => (
-                <button
-                  className={event.id === frame.latestEvent?.id ? "active" : ""}
-                  key={event.id}
-                  onClick={() => jumpToMoment(event.minute)}
-                  type="button"
-                >
-                  <strong>
-                    {event.minute}
-                    {event.stoppage ? `+${event.stoppage}` : ""}'
-                  </strong>
-                  <span>{event.title}</span>
-                </button>
-              ))
+              recentPulseEvents.map((event) => {
+                const display = formatEventDisplay(event, match, language);
+                return (
+                  <button
+                    className={event.id === frame.latestEvent?.id ? "active" : ""}
+                    key={event.id}
+                    onClick={() => jumpToMoment(event.minute)}
+                    type="button"
+                  >
+                    <strong>
+                      {event.minute}
+                      {event.stoppage ? `+${event.stoppage}` : ""}'
+                    </strong>
+                    <span>{display.title}</span>
+                  </button>
+                );
+              })
             ) : (
               <p>{t.waitingForKickoff}</p>
             )}
@@ -3140,9 +3871,9 @@ export default function App() {
         <article className="quick-info-panel">
           <div className="panel-heading">
             <p className="eyebrow">{t.dataBacked}</p>
-            <h2>{match.stage ?? match.competition}</h2>
+            <h2>{matchDisplay.stage ?? matchDisplay.competition}</h2>
           </div>
-          <p>{match.qualificationNote ?? frame.insight.headline}</p>
+          <p>{language === "en" && match.qualificationNote ? match.qualificationNote : localizedInsight}</p>
           {sourceStatus ? (
             <div className="source-mini-ledger">
               <span>{t.source}</span>
@@ -3604,13 +4335,13 @@ export default function App() {
       <section className="story-strip" aria-label="Match story">
         <article>
           <span>{t.latestBeat}</span>
-          <strong>{frame.latestEvent?.title ?? "Kickoff"}</strong>
-          <p>{frame.latestEvent?.description ?? match.kickoffLabel}</p>
+          <strong>{latestEventDisplay?.title ?? t.waitingForKickoff}</strong>
+          {latestEventDisplay?.description ? <p>{latestEventDisplay.description}</p> : null}
         </article>
         <article>
           <span>{t.nextBeat}</span>
-          <strong>{nextEvent ? `${nextEvent.minute}' ${nextEvent.title}` : t.replayLoop}</strong>
-          <p>{frame.insight.headline}</p>
+          <strong>{nextBeatSummary}</strong>
+          <p>{localizedInsight}</p>
         </article>
         <article>
           <span>{t.safety}</span>
@@ -3674,7 +4405,7 @@ export default function App() {
           <span>{t.jumpToMoment}</span>
           {keyMoments.map((event) => (
             <button key={event.id} onClick={() => jumpToMoment(event.minute)} type="button">
-              {event.minute}' {event.title}
+              {event.minute}' {formatEventDisplay(event, match, language).title}
             </button>
           ))}
         </section>
@@ -3686,7 +4417,7 @@ export default function App() {
             <p className="eyebrow">{t.aiCommentary}</p>
             <h2>{t.oneLineRead}</h2>
           </div>
-          <p className="commentary">{frame.commentary}</p>
+          <p className="commentary">{localizedCommentary}</p>
           <div className="stadium-asset" aria-label={t.pressure}>
             <div className="field-line center" />
             <div className="field-line circle" />
@@ -3728,17 +4459,19 @@ export default function App() {
               <dt>{t.kickoff}</dt>
               <dd>{kickoffLabel}</dd>
             </div>
-            <div>
-              <dt>{t.referee}</dt>
-              <dd>{match.referee ?? "TBD"}</dd>
-            </div>
+            {match.referee ? (
+              <div>
+                <dt>{t.referee}</dt>
+                <dd>{match.referee}</dd>
+              </div>
+            ) : null}
             <div>
               <dt>{t.dataStatus}</dt>
-              <dd>{match.dataStatus ?? "Replay"}</dd>
+              <dd>{dataStatusLabel}</dd>
             </div>
             <div>
               <dt>{t.qualification}</dt>
-              <dd>{match.qualificationNote ?? match.stage ?? match.competition}</dd>
+              <dd>{matchDisplay.qualification}</dd>
             </div>
           </dl>
           <div className="discipline-list">
@@ -3746,7 +4479,7 @@ export default function App() {
             {visibleCards.length ? (
               visibleCards.map((event) => (
                 <span key={event.id}>
-                  {event.minute}' {event.player ?? event.team} - {event.title}
+                  {event.minute}' {event.player ?? event.team} - {formatEventDisplay(event, match, language).title}
                 </span>
               ))
             ) : (
@@ -3787,17 +4520,17 @@ export default function App() {
             <p className="eyebrow">{t.momentumInsight}</p>
             <h2>{t.whyMomentMatters}</h2>
           </div>
-          <p className="insight-copy">{frame.insight.headline}</p>
+          <p className="insight-copy">{localizedInsight}</p>
           <div className="insight-metrics">
             <Metric
               label={t.swing}
               value={`${frame.insight.swing > 0 ? "+" : ""}${frame.insight.swing}`}
             />
-            <Metric label={t.signal} value={frame.insight.swingLabel} />
+            <Metric label={t.signal} value={swingSignalLabel} />
             <Metric label={t.events} value={String(frame.insight.eventCount)} />
           </div>
           <p className="small-copy">
-            {t.nextBeat}: {frame.insight.nextBeat}
+            {t.nextBeat}: {nextBeatSummary}
           </p>
         </article>
 
@@ -3919,15 +4652,15 @@ export default function App() {
                   {event.stoppage ? `+${event.stoppage}` : ""}'
                 </time>
                 <div>
-                  <strong>{event.title}</strong>
-                  <p>{event.description}</p>
+                  <strong>{formatEventDisplay(event, match, language).title}</strong>
+                  <p>{formatEventDisplay(event, match, language).description}</p>
                 </div>
               </li>
             ))}
           </ol>
           {nextEvent ? (
             <p className="next-event">
-              {t.nextBeat}: {nextEvent.minute}'
+              {t.nextBeat}: {nextEvent.minute}' {nextEventDisplay?.title}
             </p>
           ) : (
             <p className="next-event">{t.replayLoop}</p>
@@ -3987,6 +4720,42 @@ function getConsistencyRules(language: Language) {
       "Delay significa dados tipo live sem garantia de tempo real.",
       "Replay significa dados históricos fixos para avaliação e vídeo demo.",
       "Seed significa contexto estático como times, jogadores, árbitros e tabelas.",
+    ];
+  }
+
+  if (language === "fr") {
+    return [
+      "Live signifie uniquement des données chargées depuis TxLINE avec token et endpoints configurés.",
+      "Delay signifie un flux proche du live, sans garantie de temps réel.",
+      "Replay signifie des données historiques fixes pour l'évaluation et la vidéo demo.",
+      "Seed signifie du contexte statique comme équipes, joueurs, arbitres et classements.",
+    ];
+  }
+
+  if (language === "de") {
+    return [
+      "Live bedeutet nur Daten aus TxLINE mit konfiguriertem Token und Endpoints.",
+      "Delay bedeutet live-ähnliche Daten ohne Echtzeitgarantie.",
+      "Replay bedeutet feste historische Daten für Bewertung und Demo-Video.",
+      "Seed bedeutet statischer Kontext wie Teams, Spieler, Schiedsrichter und Tabellen.",
+    ];
+  }
+
+  if (language === "ja") {
+    return [
+      "Live は TxLINE の認証済み endpoint から読み込んだデータだけを指します。",
+      "Delay はリアルタイム保証のない live 風データを指します。",
+      "Replay は審査とデモ動画用の固定履歴データです。",
+      "Seed はチーム、選手、審判、順位などの静的コンテキストです。",
+    ];
+  }
+
+  if (language === "ar") {
+    return [
+      "Live يعني فقط بيانات محملة من TxLINE بعد ضبط الرمز والواجهات.",
+      "Delay يعني بيانات قريبة من المباشر دون ضمان لحظي.",
+      "Replay يعني بيانات تاريخية ثابتة للتقييم وفيديو العرض.",
+      "Seed يعني سياقاً ثابتاً مثل الفرق واللاعبين والحكام والجداول.",
     ];
   }
 
@@ -4062,9 +4831,263 @@ function getTodayCardDisplay(
       "wc-demo-arg-fra": { label: "Demo replay", stage: "Replay da final" },
       "wc-demo-jpn-ger": { label: "Demo replay de zebra", stage: "Replay da fase de grupos" },
     },
+    fr: {
+      "txline-fixture-17588325": {
+        label: "Seed calendrier officiel TxLINE",
+        stage: "Phase de groupes / Token requis",
+      },
+      "txline-fixture-17588326": {
+        label: "Seed calendrier officiel TxLINE",
+        stage: "Phase de groupes / Token requis",
+      },
+      "calendar-live-status": {
+        label: "Aucun match live TxLINE public configuré",
+        stage: "Jour sans match / Token requis",
+      },
+      "wc-demo-arg-fra": { label: "Demo replay", stage: "Replay de finale" },
+      "wc-demo-jpn-ger": { label: "Demo replay surprise", stage: "Replay de groupe" },
+    },
+    de: {
+      "txline-fixture-17588325": {
+        label: "Offizieller TxLINE-Spielplan-Seed",
+        stage: "WM-Gruppenphase / Token erforderlich",
+      },
+      "txline-fixture-17588326": {
+        label: "Offizieller TxLINE-Spielplan-Seed",
+        stage: "WM-Gruppenphase / Token erforderlich",
+      },
+      "calendar-live-status": {
+        label: "Kein öffentliches TxLINE-Live-Spiel konfiguriert",
+        stage: "Kein Spieltag / Token erforderlich",
+      },
+      "wc-demo-arg-fra": { label: "Replay-Demo", stage: "Final-Replay" },
+      "wc-demo-jpn-ger": { label: "Überraschungs-Replay", stage: "Gruppen-Replay" },
+    },
+    ja: {
+      "txline-fixture-17588325": {
+        label: "公式 TxLINE 日程 Seed",
+        stage: "ワールドカップ group stage / Token 必要",
+      },
+      "txline-fixture-17588326": {
+        label: "公式 TxLINE 日程 Seed",
+        stage: "ワールドカップ group stage / Token 必要",
+      },
+      "calendar-live-status": {
+        label: "公開 TxLINE live fixture 未設定",
+        stage: "試合なし / Token 必要",
+      },
+      "wc-demo-arg-fra": { label: "Replay デモ", stage: "決勝 replay" },
+      "wc-demo-jpn-ger": { label: "Upset replay デモ", stage: "グループ replay" },
+    },
+    ar: {
+      "txline-fixture-17588325": {
+        label: "Seed رسمي لجدول TxLINE",
+        stage: "مرحلة المجموعات / الرمز مطلوب",
+      },
+      "txline-fixture-17588326": {
+        label: "Seed رسمي لجدول TxLINE",
+        stage: "مرحلة المجموعات / الرمز مطلوب",
+      },
+      "calendar-live-status": {
+        label: "لا توجد مباراة TxLINE مباشرة عامة",
+        stage: "يوم بلا مباراة / الرمز مطلوب",
+      },
+      "wc-demo-arg-fra": { label: "عرض Replay", stage: "Replay النهائي" },
+      "wc-demo-jpn-ger": { label: "عرض Upset replay", stage: "Replay المجموعات" },
+    },
   };
 
   return labels[language]?.[item.id] ?? labels.en?.[item.id] ?? { label: item.label, stage: item.stage };
+}
+
+function formatEventDisplay(event: MatchEvent, match: MatchData, language: Language) {
+  const team = event.team ?? "";
+  const player = event.player ?? team;
+  const score = `${match.home.code} ${event.homeScore}-${event.awayScore} ${match.away.code}`;
+  const pulse = `${event.marketPulse}/100`;
+
+  const copyByLanguage: Record<Language, Record<MatchEvent["type"], { title: string; description: string }>> = {
+    en: {
+      kickoff: { title: "Kickoff", description: `The replay starts from verified source data. Pulse ${pulse}.` },
+      goal: { title: `Goal ${team}`, description: `${player} changes the score to ${score}. Pulse ${pulse}.` },
+      yellow_card: { title: "Yellow card", description: `Discipline changes the rhythm. Score ${score}.` },
+      red_card: { title: "Red card", description: `A red card changes match risk immediately. Score ${score}.` },
+      score_update: { title: "Score update", description: `The scoreboard is now ${score}.` },
+      substitution: { title: "Substitution", description: `Fresh legs change the next phase. Score ${score}.` },
+      odds_shift: { title: "Market mood shift", description: `Market mood moves to ${pulse} before the scoreboard changes.` },
+      halftime: { title: "Halftime", description: `Halftime snapshot: ${score}.` },
+      fulltime: { title: "Full time", description: `Replay complete with score, events, and safety boundary intact. ${score}.` },
+    },
+    zh: {
+      kickoff: { title: "开球", description: `回放从已核验的数据状态开始。脉冲 ${pulse}。` },
+      goal: { title: `${team} 进球`, description: `${player} 改写比分为 ${score}。脉冲 ${pulse}。` },
+      yellow_card: { title: "黄牌", description: `纪律事件改变比赛节奏。比分 ${score}。` },
+      red_card: { title: "红牌", description: `红牌立刻改变比赛风险。比分 ${score}。` },
+      score_update: { title: "比分更新", description: `当前比分为 ${score}。` },
+      substitution: { title: "换人", description: `新鲜力量进入，下一阶段节奏可能变化。比分 ${score}。` },
+      odds_shift: { title: "市场情绪变化", description: `比分变化前，市场情绪移动到 ${pulse}。` },
+      halftime: { title: "半场", description: `半场快照：${score}。` },
+      fulltime: { title: "全场结束", description: `回放完成，比分、事件和安全边界都保持清楚。${score}。` },
+    },
+    es: {
+      kickoff: { title: "Inicio", description: `El replay empieza desde datos verificados. Pulso ${pulse}.` },
+      goal: { title: `Gol ${team}`, description: `${player} cambia el marcador a ${score}. Pulso ${pulse}.` },
+      yellow_card: { title: "Tarjeta amarilla", description: `La disciplina cambia el ritmo. Marcador ${score}.` },
+      red_card: { title: "Tarjeta roja", description: `La roja cambia el riesgo del partido. Marcador ${score}.` },
+      score_update: { title: "Marcador actualizado", description: `El marcador ahora es ${score}.` },
+      substitution: { title: "Cambio", description: `Piernas frescas cambian la siguiente fase. Marcador ${score}.` },
+      odds_shift: { title: "Cambio de ánimo", description: `El ánimo de mercado llega a ${pulse} antes del cambio en el marcador.` },
+      halftime: { title: "Descanso", description: `Foto del descanso: ${score}.` },
+      fulltime: { title: "Final", description: `Replay completo con marcador, eventos y límites de seguridad claros. ${score}.` },
+    },
+    pt: {
+      kickoff: { title: "Início", description: `O replay começa com dados verificados. Pulso ${pulse}.` },
+      goal: { title: `Gol ${team}`, description: `${player} muda o placar para ${score}. Pulso ${pulse}.` },
+      yellow_card: { title: "Cartão amarelo", description: `A disciplina muda o ritmo. Placar ${score}.` },
+      red_card: { title: "Cartão vermelho", description: `O vermelho muda o risco do jogo. Placar ${score}.` },
+      score_update: { title: "Placar atualizado", description: `O placar agora é ${score}.` },
+      substitution: { title: "Substituição", description: `Novas pernas mudam a próxima fase. Placar ${score}.` },
+      odds_shift: { title: "Mudança de humor", description: `O humor de mercado chega a ${pulse} antes do placar mudar.` },
+      halftime: { title: "Intervalo", description: `Retrato do intervalo: ${score}.` },
+      fulltime: { title: "Fim de jogo", description: `Replay completo com placar, eventos e segurança claros. ${score}.` },
+    },
+    fr: {
+      kickoff: { title: "Coup d'envoi", description: `Le replay commence depuis des données vérifiées. Pulse ${pulse}.` },
+      goal: { title: `But ${team}`, description: `${player} change le score à ${score}. Pulse ${pulse}.` },
+      yellow_card: { title: "Carton jaune", description: `La discipline change le rythme. Score ${score}.` },
+      red_card: { title: "Carton rouge", description: `Le rouge change immédiatement le risque. Score ${score}.` },
+      score_update: { title: "Score mis à jour", description: `Le score est maintenant ${score}.` },
+      substitution: { title: "Remplacement", description: `Des jambes fraîches changent la phase suivante. Score ${score}.` },
+      odds_shift: { title: "Humeur du marché", description: `L'humeur du marché monte à ${pulse} avant le score.` },
+      halftime: { title: "Mi-temps", description: `Instant mi-temps : ${score}.` },
+      fulltime: { title: "Fin du match", description: `Replay complet avec score, événements et limite de sécurité. ${score}.` },
+    },
+    de: {
+      kickoff: { title: "Anpfiff", description: `Das Replay startet aus geprüften Daten. Puls ${pulse}.` },
+      goal: { title: `Tor ${team}`, description: `${player} stellt auf ${score}. Puls ${pulse}.` },
+      yellow_card: { title: "Gelbe Karte", description: `Disziplin verändert den Rhythmus. Stand ${score}.` },
+      red_card: { title: "Rote Karte", description: `Rot verändert sofort das Spielrisiko. Stand ${score}.` },
+      score_update: { title: "Spielstand", description: `Der Spielstand ist jetzt ${score}.` },
+      substitution: { title: "Wechsel", description: `Frische Kräfte verändern die nächste Phase. Stand ${score}.` },
+      odds_shift: { title: "Marktstimmung", description: `Die Marktstimmung bewegt sich auf ${pulse}, bevor der Stand kippt.` },
+      halftime: { title: "Halbzeit", description: `Halbzeitbild: ${score}.` },
+      fulltime: { title: "Abpfiff", description: `Replay komplett mit Stand, Ereignissen und Sicherheitsgrenze. ${score}.` },
+    },
+    ja: {
+      kickoff: { title: "キックオフ", description: `検証済みデータからリプレイ開始。パルス ${pulse}。` },
+      goal: { title: `${team} ゴール`, description: `${player} がスコアを ${score} に変更。パルス ${pulse}。` },
+      yellow_card: { title: "イエローカード", description: `カードで試合のリズムが変化。スコア ${score}。` },
+      red_card: { title: "レッドカード", description: `退場で試合リスクが一気に変化。スコア ${score}。` },
+      score_update: { title: "スコア更新", description: `現在のスコアは ${score}。` },
+      substitution: { title: "交代", description: `新しい選手が次の流れを変える。スコア ${score}。` },
+      odds_shift: { title: "市場ムード変化", description: `スコア変化前に市場ムードが ${pulse} へ移動。` },
+      halftime: { title: "ハーフタイム", description: `前半終了時点：${score}。` },
+      fulltime: { title: "試合終了", description: `スコア、イベント、安全境界を保ったままリプレイ完了。${score}。` },
+    },
+    ar: {
+      kickoff: { title: "البداية", description: `يبدأ replay من بيانات موثقة. النبض ${pulse}.` },
+      goal: { title: `هدف ${team}`, description: `${player} يغير النتيجة إلى ${score}. النبض ${pulse}.` },
+      yellow_card: { title: "بطاقة صفراء", description: `الانضباط يغير الإيقاع. النتيجة ${score}.` },
+      red_card: { title: "بطاقة حمراء", description: `البطاقة الحمراء تغير خطر المباراة فوراً. النتيجة ${score}.` },
+      score_update: { title: "تحديث النتيجة", description: `النتيجة الآن ${score}.` },
+      substitution: { title: "تبديل", description: `لاعبون جدد يغيرون المرحلة التالية. النتيجة ${score}.` },
+      odds_shift: { title: "تغير مزاج السوق", description: `مزاج السوق يصل إلى ${pulse} قبل تغير النتيجة.` },
+      halftime: { title: "نهاية الشوط", description: `لقطة الشوط: ${score}.` },
+      fulltime: { title: "النهاية", description: `اكتمل replay مع نتيجة وأحداث وحدود أمان واضحة. ${score}.` },
+    },
+  };
+
+  return copyByLanguage[language][event.type];
+}
+
+function buildLocalizedCommentary(
+  match: MatchData,
+  frame: ReturnType<typeof buildPulseFrame>,
+  language: Language,
+) {
+  if (!frame.latestEvent) {
+    const waiting: Record<Language, string> = {
+      en: `${match.home.code} and ${match.away.code} are waiting for the first pulse moment.`,
+      zh: `${match.home.code} 与 ${match.away.code} 正在等待第一个脉冲节点。`,
+      es: `${match.home.code} y ${match.away.code} esperan el primer momento de pulso.`,
+      pt: `${match.home.code} e ${match.away.code} aguardam o primeiro momento de pulso.`,
+      fr: `${match.home.code} et ${match.away.code} attendent le premier moment fort.`,
+      de: `${match.home.code} und ${match.away.code} warten auf den ersten Puls-Moment.`,
+      ja: `${match.home.code} と ${match.away.code} は最初のパルスを待っています。`,
+      ar: `${match.home.code} و ${match.away.code} ينتظران أول لحظة نبض.`,
+    };
+    return waiting[language];
+  }
+
+  return formatEventDisplay(frame.latestEvent, match, language).description;
+}
+
+function buildLocalizedInsight(
+  match: MatchData,
+  frame: ReturnType<typeof buildPulseFrame>,
+  language: Language,
+) {
+  const leader =
+    frame.homeScore === frame.awayScore
+      ? null
+      : frame.homeScore > frame.awayScore
+        ? match.home.code
+        : match.away.code;
+  const pulse = `${frame.market.sentiment}/100`;
+
+  if (!frame.latestEvent) {
+    const waiting: Record<Language, string> = {
+      en: "The match is waiting for its first meaningful pulse.",
+      zh: "比赛正在等待第一个真正有意义的脉冲节点。",
+      es: "El partido espera su primer pulso importante.",
+      pt: "O jogo espera seu primeiro pulso importante.",
+      fr: "Le match attend son premier vrai signal.",
+      de: "Das Spiel wartet auf den ersten echten Puls.",
+      ja: "試合は最初の重要なパルスを待っています。",
+      ar: "المباراة تنتظر أول نبض مهم.",
+    };
+    return waiting[language];
+  }
+
+  if (frame.latestEvent.type === "goal" && leader) {
+    const text: Record<Language, string> = {
+      en: `${leader} controls the emotional center right now.`,
+      zh: `${leader} 现在掌握比赛情绪中心。`,
+      es: `${leader} controla ahora el centro emocional.`,
+      pt: `${leader} controla agora o centro emocional.`,
+      fr: `${leader} contrôle maintenant le centre émotionnel.`,
+      de: `${leader} kontrolliert gerade das emotionale Zentrum.`,
+      ja: `${leader} が今の感情の中心を握っています。`,
+      ar: `${leader} يسيطر الآن على مركز الشعور في المباراة.`,
+    };
+    return text[language];
+  }
+
+  if (frame.latestEvent.type === "goal") {
+    const text: Record<Language, string> = {
+      en: "The score is level, but the energy has reset.",
+      zh: "比分回到均势，但现场能量已经重置。",
+      es: "El marcador está igualado, pero la energía se reinicia.",
+      pt: "O placar está empatado, mas a energia reiniciou.",
+      fr: "Le score est à égalité, mais l'énergie est relancée.",
+      de: "Der Stand ist ausgeglichen, aber die Energie ist neu gesetzt.",
+      ja: "スコアは並びましたが、流れはリセットされました。",
+      ar: "النتيجة متعادلة، لكن طاقة المباراة أعيد ضبطها.",
+    };
+    return text[language];
+  }
+
+  const text: Record<Language, string> = {
+    en: `Pulse is ${pulse}; the next useful signal is the event stream, not a betting action.`,
+    zh: `当前脉冲 ${pulse}；下一步看事件流，而不是下注动作。`,
+    es: `El pulso está en ${pulse}; la señal útil está en los eventos, no en una apuesta.`,
+    pt: `O pulso está em ${pulse}; o sinal útil está nos eventos, não em aposta.`,
+    fr: `Le pulse est à ${pulse}; le signal utile vient des événements, pas d'un pari.`,
+    de: `Der Puls liegt bei ${pulse}; das Nutzsignal ist der Ereignisstrom, keine Wette.`,
+    ja: `パルスは ${pulse}。見るべきなのはイベントで、賭けではありません。`,
+    ar: `النبض ${pulse}؛ الإشارة المفيدة هي الأحداث، لا المراهنة.`,
+  };
+  return text[language];
 }
 
 function buildEventStats(events: MatchEvent[]) {
@@ -4120,7 +5143,14 @@ function buildPlayerImpact(events: MatchEvent[]) {
     .slice(0, 5);
 }
 
-function buildPhaseSummary(minute: number, match: MatchData, labels: CopyText) {
+function buildPhaseSummary(
+  minute: number,
+  match: MatchData,
+  labels: CopyText,
+  display: MatchDisplayText,
+  homeTeamName: string,
+  awayTeamName: string,
+) {
   if (minute >= 90) {
     return {
       phase: labels.postMatch,
@@ -4132,7 +5162,7 @@ function buildPhaseSummary(minute: number, match: MatchData, labels: CopyText) {
   if (minute > 45) {
     return {
       phase: labels.secondHalf,
-      headline: `${labels.currentRead}: ${match.stage ?? match.competition}`,
+      headline: `${labels.currentRead}: ${display.stage}`,
       body: labels.secondHalfSummary,
     };
   }
@@ -4140,14 +5170,14 @@ function buildPhaseSummary(minute: number, match: MatchData, labels: CopyText) {
   if (minute > 1) {
     return {
       phase: labels.firstHalf,
-      headline: `${labels.currentRead}: ${match.home.code} vs ${match.away.code}`,
+      headline: `${labels.currentRead}: ${homeTeamName} vs ${awayTeamName}`,
       body: labels.firstHalfSummary,
     };
   }
 
   return {
     phase: labels.preMatch,
-    headline: `${match.home.name} vs ${match.away.name}`,
+    headline: `${homeTeamName} vs ${awayTeamName}`,
     body: labels.preMatchSummary,
   };
 }

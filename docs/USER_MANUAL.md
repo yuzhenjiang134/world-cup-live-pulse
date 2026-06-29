@@ -2,7 +2,7 @@
 
 ## Purpose
 
-World Cup Live Pulse is a fan-facing dashboard. It helps ordinary fans understand a match through score, key events, market mood, commentary, source status, and replay chapters.
+World Cup Live Pulse is a fan-facing dashboard. It helps ordinary fans understand a match through score, key events, market mood, local AI prediction / evaluation / commentary, source status, and replay chapters.
 
 It is informational only. It does not place bets, give trading advice, connect wallets, or handle secrets.
 
@@ -10,7 +10,7 @@ It is informational only. It does not place bets, give trading advice, connect w
 
 1. Open the public site.
 2. Check the source banner first.
-3. Read score, latest beat, AI commentary, event feed, market mood, and timeline together.
+3. Read score, latest beat, AI prediction, AI evaluation, AI commentary, event feed, market mood, and timeline together.
 4. Use the local fan score pick to choose a conversation scoreline. This stays local and is not a bet.
 5. Download the fan pick card if you want a shareable local SVG.
 6. Open team cards or match details only when you want deeper context.
@@ -34,7 +34,7 @@ Always check the source banner before reading a match. It shows the data state, 
 
 ## Settings
 
-- Language: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic labels for the current fan regions represented in the demo.
+- Language: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic labels for the current fan regions represented in the demo. Dynamic event titles, event descriptions, AI reads, source rules, and control labels switch together.
 - Viewing preset: Fan Mode keeps the main screen focused on the match, Analyst Mode reveals data-verification panels, and Judge Mode reveals the demo chapters, judging-criteria score map, Path to 100 note, and review path.
 - Operation manual: show or hide the matchday guide.
 - Fixture briefing: show or hide fixture-specific data rules.
@@ -50,6 +50,12 @@ The score pick controls are local UI only. The score steppers and quick pick but
 The pick is intentionally shown beside source status and market mood context so users can compare their read with the current match pulse without treating the percentages as financial advice.
 
 The fan pick card download is generated entirely in the browser as an SVG. It is a local share artifact, not a submitted prediction and not a stored account record.
+
+## AI Match Lab
+
+The AI Match Lab is an informational local rule engine. It converts score, event type, market mood, cards, goals, and timeline volatility into three fan-facing reads: AI prediction, AI evaluation, and AI commentary.
+
+It is not a gambling model, trading signal, stored forecast, or prediction market. If a live TxLINE feed is unavailable, the AI reads are generated from the clearly labeled Replay or Seed state only.
 
 ## Matchday Hub
 

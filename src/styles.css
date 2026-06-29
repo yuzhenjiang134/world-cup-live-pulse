@@ -657,12 +657,15 @@ h2 {
   background: #f3f7f5;
   color: #33464a;
   font-weight: 850;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .source-trust-strip strong {
   color: #657478;
   font-size: 0.72rem;
   letter-spacing: 0;
+  overflow-wrap: anywhere;
   text-transform: uppercase;
 }
 
@@ -992,6 +995,50 @@ h2 {
   line-height: 1.35;
 }
 
+.ai-lab-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.ai-lab-strip span {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.ai-lab-strip small {
+  overflow: hidden;
+  color: #b9d6dc;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ai-lab-strip strong {
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 0.92rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ai-lab-strip em {
+  color: #dbe7ea;
+  font-size: 0.72rem;
+  font-style: normal;
+  line-height: 1.35;
+}
+
 .fan-signal-strip {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(66px, 0.5fr));
@@ -1058,7 +1105,7 @@ h2 {
 
 .mini-event-feed button {
   display: grid;
-  grid-template-columns: 52px minmax(0, 1fr);
+  grid-template-columns: 58px minmax(0, 1fr);
   gap: 10px;
   align-items: center;
   min-height: 46px;
@@ -1077,6 +1124,7 @@ h2 {
 .mini-event-feed button strong {
   color: #ffe8a3;
   font-size: 0.98rem;
+  white-space: nowrap;
 }
 
 .mini-event-feed button span {
@@ -2868,6 +2916,7 @@ meter {
   .pressure-bars,
   .insight-metrics,
   .arc-stats,
+  .ai-lab-strip,
   .event-stack,
   .watch-now-grid,
   .quick-info-panel,
