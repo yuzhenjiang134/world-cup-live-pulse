@@ -269,7 +269,7 @@ async function runScenario({ withWallet }) {
 }
 
 const noWallet = await runScenario({ withWallet: false });
-if (noWallet.host !== "Secure" || noWallet.wallet !== "No wallet" || noWallet.instruction !== "Not prepared" || noWallet.network !== "Ready") {
+if (noWallet.host !== "安全" || noWallet.wallet !== "未检测到钱包" || noWallet.instruction !== "未准备" || noWallet.network !== "就绪") {
   throw new Error(`No-wallet scenario failed: ${JSON.stringify(noWallet, null, 2)}`);
 }
 
@@ -281,7 +281,8 @@ if (
   walletFlow.calls.sign !== 1 ||
   walletFlow.calls.simulate !== 1 ||
   walletFlow.calls.send !== 1 ||
-  walletFlow.calls.confirm !== 1
+  walletFlow.calls.confirm !== 1 ||
+  !walletFlow.instruction.startsWith("已准备:")
 ) {
   throw new Error(`Wallet scenario failed: ${JSON.stringify(walletFlow, null, 2)}`);
 }

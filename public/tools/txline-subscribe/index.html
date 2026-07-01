@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TxLINE Free Tier Subscribe Helper</title>
+    <title>TxLINE 免费套餐订阅助手</title>
     <style>
       :root {
         color-scheme: light;
@@ -233,97 +233,95 @@
   </head>
   <body>
     <main>
-      <p><strong>World Cup Live Pulse</strong> / TxLINE official free-tier subscribe helper</p>
-      <h1>Subscribe First, Then Activate</h1>
+      <p><strong>World Cup Live Pulse</strong> / TxLINE 官方免费套餐订阅助手</p>
+      <h1>先完成链上订阅，再激活 API</h1>
       <p>
-        This page performs the missing official step before API activation: it asks your browser
-        wallet to send TxLINE's on-chain <code>subscribe</code> instruction, waits for the
-        transaction signature, and then sends you to the safe activation helper.
+        这个页面只做一件事：让浏览器钱包发送 TxLINE 官方 <code>subscribe</code>
+        链上指令，拿到交易签名 txSig 后，再进入安全激活助手申请 API token。
       </p>
 
       <section class="panel warning">
-        <h2>Wallet safety boundary</h2>
+        <h2>钱包安全边界</h2>
         <p>
-          This helper never asks for a private key or seed phrase. It only requests a normal wallet
-          transaction approval. Review the wallet popup carefully: the program id, network, and free
-          tier service level must match the TxLINE docs.
+          本工具永远不会要求私钥或助记词，只会请求一次普通钱包交易确认。批准前请核对：
+          网络、TxLINE program id、免费套餐 service level 必须与官方文档一致。
         </p>
       </section>
 
       <section class="panel">
-        <h2>Official references</h2>
+        <h2>官方参考资料</h2>
         <p>
-          TxLINE documents that API access requires a free-tier on-chain subscription first. Keep the
-          same network for Solana RPC, TxLINE program id, guest JWT, and activation endpoint.
+          TxLINE 文档说明：API 访问前需要先完成免费层级的链上订阅。Solana RPC、
+          TxLINE program id、guest JWT 和激活端点必须使用同一个网络。
         </p>
         <div class="links">
-          <a href="https://txline.txodds.com/documentation/worldcup" target="_blank" rel="noreferrer">TxLINE World Cup Free Tier</a>
-          <a href="https://txline.txodds.com/documentation/programs/addresses" target="_blank" rel="noreferrer">Program addresses</a>
-          <a href="../txline-activation/">Activation helper</a>
+          <a href="https://txline.txodds.com/documentation/worldcup" target="_blank" rel="noreferrer">TxLINE 世界杯免费套餐</a>
+          <a href="https://txline.txodds.com/documentation/programs/addresses" target="_blank" rel="noreferrer">Program 地址</a>
+          <a href="../txline-activation/">API 激活助手</a>
         </div>
         <div class="compact-grid">
-          <div class="metric"><span>Host</span><strong id="hostMetric">Checking...</strong></div>
-          <div class="metric"><span>Wallet</span><strong id="walletMetric">Not checked</strong></div>
-          <div class="metric"><span>Instruction</span><strong id="idlMetric">Not prepared</strong></div>
-          <div class="metric"><span>Balance</span><strong id="balanceMetric">Not checked</strong></div>
+          <div class="metric"><span>页面安全</span><strong id="hostMetric">检查中...</strong></div>
+          <div class="metric"><span>钱包</span><strong id="walletMetric">未检查</strong></div>
+          <div class="metric"><span>TxLINE 指令</span><strong id="idlMetric">未准备</strong></div>
+          <div class="metric"><span>SOL 余额</span><strong id="balanceMetric">未检查</strong></div>
         </div>
       </section>
 
       <div class="shell">
         <section class="panel">
-          <h2>Subscribe inputs</h2>
+          <h2>订阅输入</h2>
           <div class="field">
-            <label for="network">Network</label>
+            <label for="network">网络</label>
             <select id="network">
-              <option value="mainnet">Mainnet / real TxLINE host</option>
-              <option value="devnet">Devnet / TxLINE dev host</option>
+              <option value="mainnet">Mainnet / 真实 TxLINE 主机</option>
+              <option value="devnet">Devnet / TxLINE 开发主机</option>
             </select>
-            <p class="hint">Use one network end to end. A devnet txSig cannot activate on mainnet.</p>
+            <p class="hint">全流程必须使用同一个网络。devnet txSig 不能在 mainnet 激活。</p>
           </div>
 
           <div class="field">
-            <label for="serviceLevel">Free service level</label>
+            <label for="serviceLevel">免费服务等级</label>
             <select id="serviceLevel">
-              <option value="1">1 / World Cup + International Friendlies, 60-second delay</option>
-              <option value="12">12 / World Cup + International Friendlies, real-time mainnet</option>
+              <option value="1">1 / 世界杯 + 国际友谊赛，延迟 60 秒</option>
+              <option value="12">12 / 世界杯 + 国际友谊赛，mainnet 实时</option>
             </select>
-            <p class="hint">TxLINE docs state mainnet supports 1 and 12; devnet documents level 1.</p>
+            <p class="hint">TxLINE 文档显示 mainnet 支持 1 和 12；devnet 文档列出 Level 1。</p>
           </div>
 
           <div class="field">
-            <label for="durationWeeks">Duration weeks</label>
+            <label for="durationWeeks">持续周数</label>
             <input id="durationWeeks" inputmode="numeric" value="4" />
-            <p class="hint">Official example uses 4 weeks. Subscriptions are in 4-week multiples.</p>
+            <p class="hint">官方示例是 4 周。订阅周期按 4 周为单位。</p>
           </div>
 
           <div class="field">
             <label for="rpcUrl">Solana RPC URL</label>
             <input id="rpcUrl" autocomplete="off" />
-            <p class="hint">Public RPC is enough for testing but may rate-limit. Do not paste wallet secrets here.</p>
+            <p class="hint">公共 RPC 可用于测试，但可能限流。这里不要粘贴任何钱包秘密。</p>
           </div>
 
           <div class="actions">
-            <button id="preflight" class="secondary">Preflight</button>
-            <button id="wallet" class="secondary">Connect wallet</button>
-            <button id="loadIdl" class="secondary">Prepare instruction</button>
-            <button id="subscribe">Subscribe free tier</button>
+            <button id="preflight" class="secondary">预检查</button>
+            <button id="wallet" class="secondary">连接钱包</button>
+            <button id="loadIdl" class="secondary">准备指令</button>
+            <button id="subscribe">订阅免费套餐</button>
           </div>
         </section>
 
         <section class="panel">
-          <h2>Status</h2>
+          <h2>现状</h2>
           <div class="steps">
-            <div class="step"><strong>Network</strong><span id="networkStatus">Not checked</span></div>
-            <div class="step"><strong>Wallet</strong><span id="walletStatus">Not connected</span></div>
-            <div class="step"><strong>TxLINE Instruction</strong><span id="programStatus">Not prepared</span></div>
-            <div class="step"><strong>Subscription txSig</strong><span id="txStatus">Not submitted</span></div>
+            <div class="step"><strong>网络</strong><span id="networkStatus">未检查</span></div>
+            <div class="step"><strong>钱包</strong><span id="walletStatus">未连接</span></div>
+            <div class="step"><strong>TxLINE 指令</strong><span id="programStatus">未准备</span></div>
+            <div class="step"><strong>订阅 txSig</strong><span id="txStatus">未提交</span></div>
           </div>
-          <h2 style="margin-top: 16px">Result</h2>
-          <pre id="result">Ready.</pre>
+          <h2 style="margin-top: 16px">结果</h2>
+          <pre id="result">准备就绪。</pre>
           <div class="actions">
-            <button id="copyTx" class="secondary" disabled>Copy txSig</button>
-            <button id="openActivation" class="secondary" disabled>Open activation helper</button>
-            <button id="copyDiagnostics" class="secondary">Copy safe diagnostics</button>
+            <button id="copyTx" class="secondary" disabled>复制 txSig</button>
+            <button id="openActivation" class="secondary" disabled>打开激活助手</button>
+            <button id="copyDiagnostics" class="secondary">复制安全诊断</button>
           </div>
         </section>
       </div>
@@ -388,11 +386,11 @@
       }
 
       function providerLabel(provider) {
-        if (!provider) return "No wallet";
+        if (!provider) return "未检测到钱包";
         if (provider.isPhantom) return "Phantom";
         if (provider.isBackpack) return "Backpack";
         if (provider.isSolflare) return "Solflare";
-        return "Solana wallet";
+        return "Solana 钱包";
       }
 
       function walletErrorMessage(error) {
@@ -404,13 +402,19 @@
           message
         };
         if (code === 4001 || /reject|denied|declined|cancel/i.test(message)) {
-          return "Transaction was rejected in the wallet popup. Only approve if the network and TxLINE program id look right.";
+          return "钱包弹窗里拒绝了交易。如果网络和 TxLINE program id 正确，请重新点击订阅并在钱包里批准。";
         }
         if (/insufficient|balance|funds/i.test(message)) {
-          return "The wallet does not have enough SOL for the network fee. Free tier has no TxL payment, but Solana still needs a tiny SOL fee.";
+          return "钱包 SOL 不足。免费套餐不需要支付 TxL，但 Solana 仍需要少量 SOL 作为网络手续费。";
         }
         if (/blockhash|expired/i.test(message)) {
-          return "The transaction blockhash expired. Try Subscribe again.";
+          return "交易 blockhash 过期了。请重新点击订阅免费套餐。";
+        }
+        if (/simulation failed|simulate/i.test(message)) {
+          return `${message}\n\n下一步：复制这里的 Logs，核对 service level、program id、RPC 网络是否与 TxLINE 官方文档一致。`;
+        }
+        if (/429|rate|timeout|fetch|network/i.test(message)) {
+          return `${message}\n\n下一步：公共 RPC 可能限流。可以换一个 HTTPS mainnet RPC，或稍等 1 分钟后重试。`;
         }
         return message;
       }
@@ -430,16 +434,16 @@
         const warnings = [];
 
         if (!current.serviceLevels.includes(serviceLevel)) {
-          warnings.push(`Service level ${serviceLevel} is not documented for ${$("network").value}.`);
+          warnings.push(`Service level ${serviceLevel} 未在 ${$("network").value} 文档中列出。`);
         }
         if (!Number.isInteger(durationWeeks) || durationWeeks <= 0 || durationWeeks % 4 !== 0) {
-          issues.push("Duration weeks must be a positive 4-week multiple.");
+          issues.push("持续周数必须是正数，并且是 4 周的倍数。");
         }
         if (!$("rpcUrl").value.trim().startsWith("https://")) {
-          issues.push("RPC URL must be HTTPS.");
+          issues.push("RPC URL 必须是 HTTPS。");
         }
         if (location.protocol !== "https:" && location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
-          warnings.push("Wallet extensions usually require HTTPS or localhost.");
+          warnings.push("钱包扩展通常要求 HTTPS 或 localhost。");
         }
 
         const summary = {
@@ -455,11 +459,11 @@
         };
 
         if (issues.length) {
-          setStatus("networkStatus", `${issues.length} issue(s)`, "bad");
+          setStatus("networkStatus", `${issues.length} 个问题`, "bad");
         } else if (warnings.length) {
-          setStatus("networkStatus", `${warnings.length} warning(s)`, "warn");
+          setStatus("networkStatus", `${warnings.length} 个提醒`, "warn");
         } else {
-          setStatus("networkStatus", "Ready", "ok");
+          setStatus("networkStatus", "就绪", "ok");
         }
 
         if (strict && issues.length) {
@@ -470,20 +474,20 @@
 
       function refreshMetrics() {
         const secure = location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1";
-        setMetric("hostMetric", secure ? "Secure" : "Use HTTPS", secure ? "ok" : "warn");
+        setMetric("hostMetric", secure ? "安全" : "需要 HTTPS", secure ? "ok" : "warn");
 
         const provider = solanaProvider();
-        setMetric("walletMetric", provider ? providerLabel(provider) : "No wallet", provider ? "ok" : "bad");
-        setMetric("idlMetric", state.idl ? "Prepared" : "Not prepared", state.idl ? "ok" : "");
+        setMetric("walletMetric", provider ? providerLabel(provider) : "未检测到钱包", provider ? "ok" : "bad");
+        setMetric("idlMetric", state.idl ? "已准备" : "未准备", state.idl ? "ok" : "");
         if (!state.walletPublicKey) {
-          setMetric("balanceMetric", "Not checked");
+          setMetric("balanceMetric", "未检查");
         }
       }
 
       async function ensureWalletConnected() {
         const provider = solanaProvider();
         if (!provider) {
-          throw new Error("No Solana browser wallet found. Install Phantom, unlock it, and refresh this page.");
+          throw new Error("没有检测到 Solana 浏览器钱包。请安装 Phantom，解锁钱包，然后刷新页面。");
         }
         if (!provider.publicKey) {
           const result = await provider.connect();
@@ -492,11 +496,11 @@
           state.walletPublicKey = provider.publicKey.toBase58?.() || String(provider.publicKey);
         }
         if (!provider.signTransaction) {
-          throw new Error("Wallet does not expose signTransaction. Use Phantom desktop extension first.");
+          throw new Error("当前钱包没有 signTransaction 能力。请优先使用 Phantom 桌面浏览器扩展。");
         }
         state.provider = provider;
         setStatus("walletStatus", state.walletPublicKey, "ok");
-        setMetric("walletMetric", `${providerLabel(provider)} connected`, "ok");
+        setMetric("walletMetric", `${providerLabel(provider)} 已连接`, "ok");
         return provider;
       }
 
@@ -542,7 +546,7 @@
 
       async function loadLibraries() {
         if (state.libs) return state.libs;
-        log("Loading Solana libraries from CDN...");
+        log("正在从 CDN 加载 Solana 库...");
         const web3 = await import("https://esm.sh/@solana/web3.js@1.98.2?bundle");
         const spl = await import("https://esm.sh/@solana/spl-token@0.4.13?bundle");
         state.libs = { web3, spl };
@@ -639,8 +643,8 @@
         const plan = await prepareSubscribeInstruction();
         state.idl = { manualSubscribeInstruction: true };
         state.program = null;
-        setStatus("programStatus", `Prepared ${plan.programId.toBase58()}`, "ok");
-        setMetric("idlMetric", "Prepared", "ok");
+        setStatus("programStatus", `已准备: ${plan.programId.toBase58()}`, "ok");
+        setMetric("idlMetric", "已准备", "ok");
         log({
           ok: true,
           mode: "manual official IDL instruction",
@@ -656,7 +660,7 @@
             tokenTreasuryVault: plan.tokenTreasuryVault.toBase58(),
             tokenTreasuryPda: plan.tokenTreasuryPda.toBase58()
           },
-          next: "Click Subscribe free tier. Your wallet will show a transaction for this instruction."
+          next: "下一步点击“订阅免费套餐”。钱包会弹出这条 TxLINE 指令的交易确认。"
         });
         return plan;
       }
@@ -679,7 +683,7 @@
           serviceLevel: plan.serviceLevel,
           durationWeeks: plan.durationWeeks,
           user: plan.user.toBase58(),
-          next: "Wallet approval required. Reject if anything looks unexpected."
+          next: "需要在钱包弹窗中批准。若 program id 或网络不符合预期，请拒绝。"
         });
 
         const signedTransaction = await provider.signTransaction(transaction);
@@ -714,7 +718,7 @@
           ok: true,
           txSig,
           network: $("network").value,
-          next: "Copy txSig or open the activation helper. Use the same network there."
+          next: "复制 txSig，或打开激活助手。激活时必须使用同一个网络。"
         });
       }
 
@@ -727,8 +731,8 @@
         setDefaults();
         refreshMetrics();
         validateInputs({ strict: false });
-        setStatus("programStatus", "Not prepared");
-        setStatus("txStatus", "Not submitted");
+        setStatus("programStatus", "未准备");
+        setStatus("txStatus", "未提交");
       });
 
       $("serviceLevel").addEventListener("change", () => validateInputs({ strict: false }));
@@ -749,8 +753,8 @@
                   connected: Boolean(provider.publicKey),
                   canSignTransaction: Boolean(provider.signTransaction)
                 }
-              : "not detected",
-            next: "Connect wallet, prepare the instruction, then subscribe."
+              : "未检测到钱包",
+            next: "下一步：连接钱包、准备指令，然后订阅免费套餐。"
           });
         } catch (error) {
           log(walletErrorMessage(error));
@@ -769,7 +773,7 @@
             publicKey: state.walletPublicKey
           });
         } catch (error) {
-          setStatus("walletStatus", "Connection failed", "bad");
+          setStatus("walletStatus", "连接失败", "bad");
           log(walletErrorMessage(error));
         }
       });
@@ -778,8 +782,8 @@
         try {
           await loadProgram();
         } catch (error) {
-          setStatus("programStatus", "Instruction prepare failed", "bad");
-          setMetric("idlMetric", "Failed", "bad");
+          setStatus("programStatus", "指令准备失败", "bad");
+          setMetric("idlMetric", "失败", "bad");
           log(walletErrorMessage(error));
         }
       });
@@ -788,19 +792,19 @@
         try {
           await subscribeFreeTier();
         } catch (error) {
-          setStatus("txStatus", "Subscribe failed", "bad");
+          setStatus("txStatus", "订阅失败", "bad");
           log(walletErrorMessage(error));
         }
       });
 
       $("copyTx").addEventListener("click", async () => {
         await navigator.clipboard.writeText(state.txSig);
-        log("txSig copied. Use it in the activation helper with the same network.");
+        log("txSig 已复制。请在激活助手中使用同一个网络。");
       });
 
       $("openActivation").addEventListener("click", () => {
         if (!state.txSig) {
-          log("No txSig yet. Subscribe first.");
+          log("还没有 txSig。请先完成订阅。");
           return;
         }
         location.href = activationUrl();
@@ -812,7 +816,7 @@
         log({
           copied: true,
           safeDiagnostics: diagnostics,
-          note: "This diagnostic omits private keys, seed phrases, full JWTs, and API tokens."
+          note: "这份诊断不包含私钥、助记词、完整 JWT 或 API token。"
         });
       });
 
