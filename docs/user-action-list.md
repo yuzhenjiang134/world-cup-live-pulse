@@ -20,6 +20,9 @@ Endpoint docs are already mapped. Give Codex only the safe integration materials
 - [x] Endpoint base URL
 - [ ] Which endpoints are allowed for this hackathon token
 - [ ] Rate limit notes
+- [ ] Whether browser CORS is allowed or a server-side proxy is required
+- [ ] Whether the hackathon token is issued directly or activated through Solana sign-up / wallet signature
+- [ ] Whether each World Cup fixture is real-time or 60-second delayed on the free tier
 - [ ] Example response payloads with secrets removed
 
 Keep private:
@@ -32,10 +35,13 @@ When the token is ready, place it only in `.env.local`:
 
 ```bash
 VITE_TXLINE_API_BASE=https://txline.txodds.com
+VITE_TXLINE_PROXY_BASE=
 VITE_TXLINE_API_TOKEN=your_real_x_api_token
 VITE_TXLINE_SESSION_JWT=
 VITE_TXLINE_FIXTURE_ID=17588325
 ```
+
+For public GitHub Pages Live mode, do not put `VITE_TXLINE_API_TOKEN` into the deployed frontend. Put the real token in a secure proxy environment as `TXLINE_API_TOKEN`, then set only `VITE_TXLINE_PROXY_BASE` in the frontend build.
 
 ## Step 3: GitHub
 

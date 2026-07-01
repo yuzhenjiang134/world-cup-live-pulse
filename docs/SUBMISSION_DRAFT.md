@@ -59,6 +59,12 @@ Implemented TxLINE endpoint mapping:
 - `GET /api/scores/stream` and `GET /api/odds/stream` as future SSE upgrades
 - Team, player, referee, and standings context where available from fixtures, score events, seed data, or future context endpoints
 
+Live deployment note:
+
+- The public GitHub Pages build does not ship a private TxLINE token.
+- Local verification uses `.env.local` and `npm run txline:probe`.
+- Public Live mode is designed to use `VITE_TXLINE_PROXY_BASE`, where a secure proxy stores `TXLINE_API_TOKEN` server-side and forwards only the allowlisted fixture, score, and odds endpoints.
+
 Video is handled separately from TxLINE data. The public build does not embed match video. If a rights-cleared official broadcaster, FIFA, YouTube Live, or other authorized embed URL is configured locally, the optional Authorized Video Sync panel can display it and align the viewing context with match clock or replay minute.
 
 ## Data consistency note

@@ -23,6 +23,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Analyst Mode reveals fixture briefing, Source Board, Data Audit, Live Readiness, and Trust & Accuracy Center for data verification.
 - Judge Mode reveals operation guide, fixture briefing, Judge Demo chapters, multilingual judging-criteria mapping, submission readiness, and a Path to 100 note for the external items that cannot be faked in code.
 - TxLINE endpoint coverage is shown as status cards instead of a dense table, making mapped, token-gated, and planned feeds easier to scan.
+- API Access Plan is visible in Analyst / Judge view so reviewers can see local token mode, secure proxy mode, token blockers, and replay fallback without reading source code.
 - Operation Manual, Fixture Briefing, Country Team Atlas, and Authorized Video Sync are optional modules in Settings so the main view stays focused on match pulse.
 - Trust & Accuracy Center explains schedule seed, live token gate, replay truth, Free Tier delay behavior, and endpoint coverage.
 - Match Intelligence shows phase summary, event stack, and player impact.
@@ -32,6 +33,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 - `docs/UX_BENCHMARKS.md` records market examples and the UX choices adopted or rejected for submission safety.
 - Data states are explicitly labeled as Live, Delay, Replay, or Seed.
 - TxLINE API token is not required for the public replay demo. Real TxLINE data can be tested locally with `.env.local`.
+- GitHub Pages cannot safely store a private TxLINE token. Online Live mode should use `VITE_TXLINE_PROXY_BASE` pointing to a secure proxy such as `examples/txline-proxy-worker.mjs`.
 
 ## Competition requirements tracked
 
@@ -99,6 +101,7 @@ Copy `.env.example` to `.env.local` when a TxLINE token is available.
 ```bash
 VITE_APP_MODE=replay
 VITE_TXLINE_API_BASE=https://txline.txodds.com
+VITE_TXLINE_PROXY_BASE=
 VITE_TXLINE_API_TOKEN=your_txline_x_api_token_here
 VITE_TXLINE_SESSION_JWT=
 VITE_TXLINE_FIXTURE_ID=17588325
@@ -109,6 +112,14 @@ VITE_AUTHORIZED_VIDEO_EMBED_URL=
 ```
 
 The adapter can request a guest JWT from `POST /auth/guest/start` when `VITE_TXLINE_SESSION_JWT` is empty. Data endpoints still require `X-Api-Token`.
+
+For public Live mode, keep the real token on a server-side proxy and set:
+
+```bash
+VITE_TXLINE_PROXY_BASE=https://your-secure-proxy.example.com
+```
+
+The proxy must expose the same safe paths used by the app: `/api/fixtures/snapshot`, `/api/scores/snapshot/{fixtureId}`, and `/api/odds/snapshot/{fixtureId}`.
 
 After `.env.local` is configured, run:
 
@@ -139,6 +150,7 @@ src/
 - `TASKS.md`: current task list and blocked external inputs
 - `docs/TECHNICAL_OVERVIEW.md`: architecture, data consistency, and safety boundary
 - `docs/TXLINE_ENDPOINTS.md`: TxLINE endpoint mapping plan
+- `docs/API_ACCESS_PLAN.md`: local token and secure proxy plan for real TxLINE data
 - `docs/API_FEEDBACK.md`: API feedback for sponsor docs and live-data consistency
 - `docs/USER_MANUAL.md`: user-facing operation manual
 - `docs/SUBMISSION_DRAFT.md`: Superteam submission draft

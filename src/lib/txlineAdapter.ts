@@ -12,6 +12,7 @@ type TxlineAdapterOptions = {
   asOfMs?: string;
   competitionId?: string;
   fixtureId?: string;
+  proxyBase?: string;
   replayMatchId?: string;
   sessionJwt?: string;
   startEpochDay?: string;
@@ -172,7 +173,12 @@ export async function loadMatchData(
 
   const apiToken = cleanSecret(options.apiToken ?? options.apiKey);
   const apiBase = normalizeApiBase(options.apiBase);
+  const proxyBase = normalizeProxyBase(options.proxyBase);
   const fixtureId = resolveFixtureId(options.fixtureId);
+
+  if (proxyBase) {
+    return loadViaProxy(proxyBase, replayMatch, checkedAtIso, fixtureId, options);
+  }
 
   if (!apiToken) {
     return buildNeedsTokenResult(replayMatch, checkedAtIso, fixtureId);
@@ -254,6 +260,82 @@ export async function loadMatchData(
   }
 }
 
+async function loadViaProxy(
+  proxyBase: string,
+  replayMatch: MatchData,
+  checkedAtIso: string,
+  fixtureId: number | undefined,
+  options: TxlineAdapterOptions,
+): Promise<MatchLoadResult> {
+  try {
+    const fixtureQuery = {
+      startEpochDay: parseOptionalInteger(options.startEpochDay),
+      competitionId: parseOptionalInteger(options.competitionId),
+    };
+    const fixtures = toArray<TxlineFixture>(
+      await requestProxyJson(proxyBase, "/api/fixtures/snapshot", fixtureQuery),
+    );
+    const selectedFixture = selectFixture(fixtures, fixtureId);
+    const liveFixtureId = selectedFixture?.FixtureId ?? fixtureId;
+
+    if (!liveFixtureId) {
+      throw new Error(
+        "No fixture id is configured and the TxLINE proxy fixture snapshot did not contain a selectable fixture.",
+      );
+    }
+
+    const scorePath = `/api/scores/snapshot/${liveFixtureId}`;
+    const oddsPath = `/api/odds/snapshot/${liveFixtureId}`;
+    const snapshotQuery = { asOf: parseOptionalInteger(options.asOfMs) };
+    const [scoreResult, oddsResult] = await Promise.allSettled([
+      requestProxyJson(proxyBase, scorePath, snapshotQuery),
+      requestProxyJson(proxyBase, oddsPath, snapshotQuery),
+    ]);
+    const scores = scoreResult.status === "fulfilled" ? toArray<TxlineScore>(scoreResult.value) : [];
+    const odds = oddsResult.status === "fulfilled" ? toArray<TxlineOdds>(oddsResult.value) : [];
+    const match = normalizeTxlineMatch({
+      fixture: selectedFixture,
+      fixtureId: liveFixtureId,
+      odds,
+      replayMatch,
+      scores,
+    });
+    const livePayloadCount = scores.length + odds.length;
+    const partialErrors = [
+      scoreResult.status === "rejected" ? toSafeErrorMessage(scoreResult.reason) : "",
+      oddsResult.status === "rejected" ? toSafeErrorMessage(oddsResult.reason) : "",
+    ].filter(Boolean);
+
+    return {
+      match,
+      source: {
+        kind: "live-ready",
+        label: livePayloadCount ? "TxLINE proxy data loaded" : "TxLINE proxy fixture loaded",
+        message: buildLiveReadyMessage(liveFixtureId, scores.length, odds.length, partialErrors),
+        checkedAtIso,
+        endpoint: livePayloadCount ? `${scorePath} + ${oddsPath}` : "/api/fixtures/snapshot",
+        fixtureId: String(liveFixtureId),
+      },
+    };
+  } catch (error) {
+    return {
+      match: {
+        ...replayMatch,
+        kickoffLabel: "Replay fallback",
+        dataStatus: "Replay",
+      },
+      source: {
+        kind: "error",
+        label: "TxLINE proxy unavailable",
+        message: `${toSafeErrorMessage(error)} Replay fallback is active so the demo remains judgeable.`,
+        checkedAtIso,
+        endpoint: "VITE_TXLINE_PROXY_BASE",
+        fixtureId: fixtureId ? String(fixtureId) : undefined,
+      },
+    };
+  }
+}
+
 function buildNeedsTokenResult(
   replayMatch: MatchData,
   checkedAtIso: string,
@@ -312,6 +394,38 @@ async function requestJson(
       headers: {
         Accept: "application/json",
         ...(headers ?? {}),
+      },
+      signal: controller.signal,
+    });
+    const text = await response.text();
+
+    if (!response.ok) {
+      throw new TxlineHttpError(response.status, endpoint, truncate(text, 220));
+    }
+
+    if (!text) {
+      return null;
+    }
+
+    return parseMaybeJson(text);
+  } finally {
+    globalThis.clearTimeout(timeout);
+  }
+}
+
+async function requestProxyJson(
+  proxyBase: string,
+  endpoint: string,
+  query?: Record<string, number | undefined>,
+): Promise<unknown> {
+  const controller = new AbortController();
+  const timeout = globalThis.setTimeout(() => controller.abort(), requestTimeoutMs);
+
+  try {
+    const url = buildProxyUrl(proxyBase, endpoint, query);
+    const response = await fetch(url, {
+      headers: {
+        Accept: "application/json",
       },
       signal: controller.signal,
     });
@@ -883,8 +997,42 @@ function normalizeApiBase(apiBase: string | undefined) {
   return (cleaned ?? defaultApiBase).replace(/\/+$/, "");
 }
 
+function normalizeProxyBase(proxyBase: string | undefined) {
+  const cleaned = cleanSecret(proxyBase);
+
+  if (!cleaned) {
+    return undefined;
+  }
+
+  try {
+    const url = new URL(cleaned);
+
+    if (url.protocol === "https:" || url.hostname === "localhost" || url.hostname === "127.0.0.1") {
+      return cleaned.replace(/\/+$/, "");
+    }
+  } catch {
+    return undefined;
+  }
+
+  return undefined;
+}
+
 function buildUrl(apiBase: string, endpoint: string, query?: Record<string, number | undefined>) {
   const url = new URL(endpoint, `${apiBase}/`);
+
+  for (const [key, value] of Object.entries(query ?? {})) {
+    if (typeof value === "number" && Number.isFinite(value)) {
+      url.searchParams.set(key, String(value));
+    }
+  }
+
+  return url;
+}
+
+function buildProxyUrl(proxyBase: string, endpoint: string, query?: Record<string, number | undefined>) {
+  const base = proxyBase.replace(/\/+$/, "");
+  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  const url = new URL(`${base}${path}`);
 
   for (const [key, value] of Object.entries(query ?? {})) {
     if (typeof value === "number" && Number.isFinite(value)) {

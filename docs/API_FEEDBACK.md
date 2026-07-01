@@ -6,6 +6,7 @@ World Cup Live Pulse is built replay-first because the public hackathon build ne
 
 ## What would improve the developer experience
 
+- A self-serve hackathon token path that does not require guessing whether teams should use Solana activation, direct support, or a sponsor-issued `X-Api-Token`.
 - A match calendar endpoint with explicit `no_live_match_today` or equivalent empty-state metadata.
 - A fixture access field that says whether a fixture is unlocked live, delayed, token-gated, or unavailable.
 - A clear freshness field for every score, event, and odds snapshot.
@@ -13,6 +14,7 @@ World Cup Live Pulse is built replay-first because the public hackathon build ne
 - Sample payloads for live, delayed, scheduled, finished, postponed, and no-match-day states.
 - A documented odds meaning model so the product can label market movement correctly and avoid betting-advice language.
 - CORS guidance for browser demos.
+- A recommended secure-proxy pattern for static deployments such as GitHub Pages.
 - Rate limits and recommended polling interval.
 - Standard error codes for token missing, token expired, rate limit, match not found, and no active fixture.
 
@@ -40,8 +42,20 @@ The current app uses:
 - Official TxLINE schedule snapshot fixtures in the Source Board when known.
 - A No Match Day rule when no official fixture is known.
 - A real local TxLINE adapter that requests `POST /auth/guest/start`, `GET /api/fixtures/snapshot`, `GET /api/scores/snapshot/{fixtureId}`, and `GET /api/odds/snapshot/{fixtureId}` when credentials are present.
+- Optional public Live proxy support through `VITE_TXLINE_PROXY_BASE`, so GitHub Pages can call a token-holding proxy instead of exposing credentials in the frontend bundle.
 - Judge Demo chapters to make replay evaluation repeatable.
 - English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic UI labels for global fan testing.
+
+## Public implementation patterns observed
+
+On 2026-07-01, public GitHub research found TxLINE-related projects using several patterns:
+
+- Server-side API routes or proxies that store `TXLINE_API_KEY` / `TXLINE_API_TOKEN` in encrypted environment variables.
+- Browser `EventSource` connected to a same-origin `/api/...` route, with the server forwarding TxLINE SSE streams.
+- Demo or mock fallback when the key is absent.
+- Local activation scripts that request guest JWT, activate a token, and verify fixture access without committing secrets.
+
+The safest pattern for this project is the same: GitHub Pages remains a static replay / seed app, and real public Live mode uses a separate token-holding proxy.
 
 ## Current endpoint mapping in the product
 

@@ -75,10 +75,18 @@ When a valid TxLINE fixture is loaded, live fixture data should override seed co
 
 ## Local TxLINE Verification
 
+Analyst Mode and Judge Mode show an API Access Plan panel:
+
+- Implemented now: adapter, endpoint mapping, local probe, and replay fallback are present.
+- Official token gate: Live data still needs official TxLINE access.
+- Online proxy mode: public Live should use a secure proxy, not a token inside the GitHub Pages bundle.
+- Judgeable fallback: Replay / Seed remains usable and labeled when no live match or token exists.
+
 Only put credentials in `.env.local`:
 
 ```bash
 VITE_TXLINE_API_BASE=https://txline.txodds.com
+VITE_TXLINE_PROXY_BASE=
 VITE_TXLINE_API_TOKEN=your_txline_x_api_token_here
 VITE_TXLINE_SESSION_JWT=
 VITE_TXLINE_FIXTURE_ID=17588325

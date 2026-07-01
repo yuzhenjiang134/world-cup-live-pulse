@@ -19,6 +19,7 @@ Confirm these files do not exist in the public repo:
 - `.env`
 - `.env.local`
 - Any file containing an API token
+- Any deployed GitHub Pages build configured with `VITE_TXLINE_API_TOKEN`
 - Any wallet private key
 - Any seed phrase
 - Any verification code

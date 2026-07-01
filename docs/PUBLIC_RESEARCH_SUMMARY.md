@@ -107,6 +107,25 @@ The safest winning posture is:
 Functional fan dashboard + compact live-pulse ticker + honest data states + real TxLINE adapter + replayable demo + clean submission package.
 ```
 
+## GitHub Case Review
+
+Updated: 2026-07-01
+
+Public GitHub search found several TxLINE / TxODDS hackathon-style repositories, including `sports-workbench`, `txline-arena`, `matchmind`, and `Pitchside`. They are not the same Consumer and Fan Experiences product, but they expose useful implementation patterns:
+
+- Token handling: stronger projects keep `TXLINE_API_KEY` / `TXLINE_API_TOKEN` in server-side environment variables, not browser bundles.
+- Public live UX: the browser connects to a same-origin API route or proxy; the proxy attaches `Authorization: Bearer <guest JWT>` and `X-Api-Token`.
+- Streaming: stronger projects use SSE routes for scores or odds and handle unavailable upstreams with visible fallback states.
+- Submission docs: strong entries list exact TxLINE endpoints, demo-video flow, API friction, and final setup steps.
+- Risk to avoid: projects in trading / settlement tracks often expose wallet or prediction-market flows. World Cup Live Pulse should not copy that because the chosen track is Consumer and Fan Experiences and the product safety boundary is informational fan context only.
+
+Applied decision for this repo:
+
+- Keep GitHub Pages Replay / Seed by default.
+- Add optional `VITE_TXLINE_PROXY_BASE` for real online Live mode.
+- Keep direct `VITE_TXLINE_API_TOKEN` only for local verification.
+- Show the API Access Plan directly in Analyst / Judge view.
+
 ## Sources Checked
 
 - Saved Superteam / TxODDS track brief pasted into the project thread.
@@ -114,3 +133,4 @@ Functional fan dashboard + compact live-pulse ticker + honest data states + real
 - TxLINE World Cup schedule docs: https://txline.txodds.com/documentation/scores/schedule
 - TxLINE guest auth docs: https://txline.txodds.com/api-reference/authentication/start-a-new-guest-session
 - TxLINE OpenAPI spec reference: https://txline.txodds.com/docs/docs.yaml
+- GitHub public repository search for TxLINE / TxODDS patterns on 2026-07-01.

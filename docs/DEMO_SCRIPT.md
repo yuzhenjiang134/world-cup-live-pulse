@@ -24,7 +24,7 @@ Show the Source Board and Trust & Accuracy Center.
 
 Say: The app does not invent live data. The Source Board uses a TxLINE schedule snapshot observed for 2026-06-28 UTC, including Jordan vs Argentina and Algeria vs Austria, but it keeps them as Seed / Token Required until authenticated live score, event, and odds feeds are loaded. Replay stays available so judges can evaluate the match flow even if no live fixture is open during review.
 
-Point to Data Audit, Live Readiness, and the endpoint status cards. Explain mapped, token-gated, and planned feeds in one sentence.
+Point to Data Audit, Live Readiness, API Access Plan, and the endpoint status cards. Explain mapped, token-gated, secure-proxy, and planned feeds in one sentence.
 
 Briefly show that Judge Mode opens the Operation Manual, Fixture Briefing, judging criteria, and Path to 100 note, while Fan Mode can collapse them again.
 

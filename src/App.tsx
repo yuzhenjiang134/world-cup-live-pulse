@@ -157,6 +157,24 @@ const copy = {
     noLiveFixture: "No live fixture configured",
     replayFallbackReady: "Replay fallback ready",
     endpointPending: "Waiting for local TxLINE token and access verification",
+    apiAccessPlan: "API access plan",
+    apiAccessTitle: "Live data path",
+    apiAccessImplemented: "Implemented now",
+    apiAccessImplementedNote:
+      "Fixtures, score snapshots, odds snapshots, replay fallback, and the local probe are already wired.",
+    apiAccessTokenBlocked: "Official token gate",
+    apiAccessTokenBlockedNote:
+      "Authenticated Live still needs the official X-Api-Token and guest JWT flow confirmed by TxODDS.",
+    apiAccessProxyStatus: "Online proxy mode",
+    apiAccessProxyConfigured: "Proxy configured. Browser traffic can stay token-free.",
+    apiAccessProxyMissing: "Not configured. GitHub Pages stays Replay/Seed until a secure proxy is deployed.",
+    apiAccessReviewFallback: "Judgeable fallback",
+    apiAccessReviewFallbackNote:
+      "Replay and Seed remain visible, labeled, and usable when no live match or token is available.",
+    apiAccessAskOfficial: "Ask TxODDS for",
+    apiAccessQuestionToken: "Hackathon X-Api-Token or activation route",
+    apiAccessQuestionCors: "CORS policy and whether browser demos are allowed",
+    apiAccessQuestionLimits: "Rate limits, fixture access, delay level, and SSE rules",
     matchIntelligence: "Match Intelligence",
     phaseSummary: "Phase summary",
     preMatch: "Pre-match",
@@ -546,6 +564,21 @@ const cleanZhCopy = {
   noLiveFixture: "未配置实时赛程",
   replayFallbackReady: "回放兜底已就绪",
   endpointPending: "等待本地 TxLINE token 与权限验证",
+  apiAccessPlan: "API 接入方案",
+  apiAccessTitle: "实时数据路径",
+  apiAccessImplemented: "已经完成",
+  apiAccessImplementedNote: "赛程、比分快照、赔率快照、回放兜底和本地探针已经接好。",
+  apiAccessTokenBlocked: "官方 token 门槛",
+  apiAccessTokenBlockedNote: "鉴权 Live 仍需 TxODDS 确认官方 X-Api-Token 与 guest JWT 流程。",
+  apiAccessProxyStatus: "线上代理模式",
+  apiAccessProxyConfigured: "已配置代理，浏览器流量不暴露 token。",
+  apiAccessProxyMissing: "未配置代理。GitHub Pages 在安全代理部署前保持 Replay/Seed。",
+  apiAccessReviewFallback: "评审兜底",
+  apiAccessReviewFallbackNote: "没有实时比赛或 token 时，Replay 与 Seed 仍可见、可用且有明确标签。",
+  apiAccessAskOfficial: "向 TxODDS 确认",
+  apiAccessQuestionToken: "Hackathon X-Api-Token 或激活路径",
+  apiAccessQuestionCors: "CORS 策略以及是否允许浏览器演示",
+  apiAccessQuestionLimits: "速率限制、fixture 权限、延迟等级和 SSE 规则",
   matchIntelligence: "比赛智能层",
   phaseSummary: "阶段摘要",
   preMatch: "赛前",
@@ -757,6 +790,24 @@ const localizedCopy = {
     noLiveFixture: "Sin fixture live configurado",
     replayFallbackReady: "Fallback replay listo",
     endpointPending: "Esperando token local TxLINE y verificación de acceso",
+    apiAccessPlan: "Plan de acceso API",
+    apiAccessTitle: "Ruta de datos en vivo",
+    apiAccessImplemented: "Implementado ahora",
+    apiAccessImplementedNote:
+      "Fixtures, snapshots de marcador, snapshots de cuotas, fallback replay y probe local ya están conectados.",
+    apiAccessTokenBlocked: "Puerta de token oficial",
+    apiAccessTokenBlockedNote:
+      "Live autenticado aún necesita que TxODDS confirme el X-Api-Token oficial y el flujo guest JWT.",
+    apiAccessProxyStatus: "Modo proxy online",
+    apiAccessProxyConfigured: "Proxy configurado. El navegador puede seguir sin token.",
+    apiAccessProxyMissing: "Sin proxy. GitHub Pages queda en Replay/Seed hasta desplegar un proxy seguro.",
+    apiAccessReviewFallback: "Fallback evaluable",
+    apiAccessReviewFallbackNote:
+      "Replay y Seed siguen visibles, etiquetados y utilizables sin partido live o token.",
+    apiAccessAskOfficial: "Pedir a TxODDS",
+    apiAccessQuestionToken: "X-Api-Token del hackathon o ruta de activación",
+    apiAccessQuestionCors: "Política CORS y si permiten demos en navegador",
+    apiAccessQuestionLimits: "Rate limits, acceso a fixtures, nivel de delay y reglas SSE",
     matchIntelligence: "Inteligencia del partido",
     phaseSummary: "Resumen de fase",
     preMatch: "Prepartido",
@@ -927,6 +978,24 @@ const localizedCopy = {
     noLiveFixture: "Sem fixture live configurado",
     replayFallbackReady: "Fallback replay pronto",
     endpointPending: "Aguardando token local TxLINE e verificação de acesso",
+    apiAccessPlan: "Plano de acesso API",
+    apiAccessTitle: "Caminho dos dados ao vivo",
+    apiAccessImplemented: "Implementado agora",
+    apiAccessImplementedNote:
+      "Fixtures, snapshots de placar, snapshots de odds, fallback replay e probe local já estão conectados.",
+    apiAccessTokenBlocked: "Porta do token oficial",
+    apiAccessTokenBlockedNote:
+      "Live autenticado ainda precisa da confirmação da TxODDS sobre X-Api-Token oficial e fluxo guest JWT.",
+    apiAccessProxyStatus: "Modo proxy online",
+    apiAccessProxyConfigured: "Proxy configurado. O navegador pode continuar sem token.",
+    apiAccessProxyMissing: "Sem proxy. GitHub Pages fica em Replay/Seed até um proxy seguro ser implantado.",
+    apiAccessReviewFallback: "Fallback avaliável",
+    apiAccessReviewFallbackNote:
+      "Replay e Seed continuam visíveis, rotulados e utilizáveis sem jogo live ou token.",
+    apiAccessAskOfficial: "Pedir à TxODDS",
+    apiAccessQuestionToken: "X-Api-Token do hackathon ou rota de ativação",
+    apiAccessQuestionCors: "Política CORS e se demos no navegador são permitidas",
+    apiAccessQuestionLimits: "Rate limits, acesso a fixtures, nível de delay e regras SSE",
     matchIntelligence: "Inteligência do jogo",
     phaseSummary: "Resumo de fase",
     preMatch: "Pré-jogo",
@@ -1015,6 +1084,25 @@ const localizedCopy = {
     calendarStatus: "Calendrier",
     fallbackStatus: "Secours",
     sourceBoundary: "Replay et Seed restent visibles jusqu'à l'authentification TxLINE live.",
+    endpointPending: "En attente du token TxLINE local et de la vérification d'accès",
+    apiAccessPlan: "Plan d'accès API",
+    apiAccessTitle: "Chemin des données live",
+    apiAccessImplemented: "Déjà implémenté",
+    apiAccessImplementedNote:
+      "Fixtures, snapshots score, snapshots cotes, fallback replay et probe local sont déjà câblés.",
+    apiAccessTokenBlocked: "Accès token officiel",
+    apiAccessTokenBlockedNote:
+      "Le Live authentifié attend encore la confirmation TxODDS du X-Api-Token officiel et du flux guest JWT.",
+    apiAccessProxyStatus: "Mode proxy en ligne",
+    apiAccessProxyConfigured: "Proxy configuré. Le navigateur reste sans token.",
+    apiAccessProxyMissing: "Proxy absent. GitHub Pages reste en Replay/Seed jusqu'au déploiement d'un proxy sûr.",
+    apiAccessReviewFallback: "Fallback évaluable",
+    apiAccessReviewFallbackNote:
+      "Replay et Seed restent visibles, étiquetés et utilisables sans match live ou token.",
+    apiAccessAskOfficial: "Demander à TxODDS",
+    apiAccessQuestionToken: "X-Api-Token hackathon ou chemin d'activation",
+    apiAccessQuestionCors: "Politique CORS et autorisation des demos navigateur",
+    apiAccessQuestionLimits: "Rate limits, accès fixture, niveau de délai et règles SSE",
     play: "Lecture",
     pause: "Pause",
     reset: "Réinitialiser",
@@ -1149,6 +1237,25 @@ const localizedCopy = {
     calendarStatus: "Kalender",
     fallbackStatus: "Fallback",
     sourceBoundary: "Replay und Seed bleiben markiert, bis TxLINE-Live-Daten authentifiziert sind.",
+    endpointPending: "Warten auf lokalen TxLINE-Token und Zugriffsprüfung",
+    apiAccessPlan: "API-Zugriffsplan",
+    apiAccessTitle: "Live-Datenpfad",
+    apiAccessImplemented: "Bereits implementiert",
+    apiAccessImplementedNote:
+      "Fixtures, Score-Snapshots, Odds-Snapshots, Replay-Fallback und lokaler Probe sind verdrahtet.",
+    apiAccessTokenBlocked: "Offizielles Token-Gate",
+    apiAccessTokenBlockedNote:
+      "Authentifiziertes Live braucht noch TxODDS-Bestätigung für X-Api-Token und Guest-JWT-Flow.",
+    apiAccessProxyStatus: "Online-Proxy-Modus",
+    apiAccessProxyConfigured: "Proxy konfiguriert. Browser-Traffic bleibt tokenfrei.",
+    apiAccessProxyMissing: "Kein Proxy. GitHub Pages bleibt Replay/Seed bis ein sicherer Proxy läuft.",
+    apiAccessReviewFallback: "Bewertbarer Fallback",
+    apiAccessReviewFallbackNote:
+      "Replay und Seed bleiben sichtbar, markiert und nutzbar, wenn kein Live-Spiel oder Token vorhanden ist.",
+    apiAccessAskOfficial: "Bei TxODDS anfragen",
+    apiAccessQuestionToken: "Hackathon X-Api-Token oder Aktivierungspfad",
+    apiAccessQuestionCors: "CORS-Regeln und ob Browser-Demos erlaubt sind",
+    apiAccessQuestionLimits: "Rate Limits, Fixture-Zugriff, Verzögerung und SSE-Regeln",
     play: "Start",
     pause: "Pause",
     reset: "Zurücksetzen",
@@ -1283,6 +1390,25 @@ const localizedCopy = {
     calendarStatus: "カレンダー",
     fallbackStatus: "フォールバック",
     sourceBoundary: "TxLINEライブ認証まで Replay / Seed と明示します。",
+    endpointPending: "ローカル TxLINE token とアクセス確認待ち",
+    apiAccessPlan: "API接続プラン",
+    apiAccessTitle: "ライブデータ経路",
+    apiAccessImplemented: "実装済み",
+    apiAccessImplementedNote:
+      "Fixture、スコアスナップショット、オッズスナップショット、リプレイFallback、ローカルProbeは接続済みです。",
+    apiAccessTokenBlocked: "公式tokenゲート",
+    apiAccessTokenBlockedNote:
+      "認証Liveには TxODDS による公式 X-Api-Token と guest JWT フローの確認が必要です。",
+    apiAccessProxyStatus: "オンラインProxyモード",
+    apiAccessProxyConfigured: "Proxy設定済み。ブラウザはtokenなしで通信できます。",
+    apiAccessProxyMissing: "Proxy未設定。安全なProxyを配備するまで GitHub Pages は Replay/Seed です。",
+    apiAccessReviewFallback: "審査用Fallback",
+    apiAccessReviewFallbackNote:
+      "ライブ試合やtokenがなくても、Replay と Seed は表示、ラベル付け、利用可能です。",
+    apiAccessAskOfficial: "TxODDSに確認",
+    apiAccessQuestionToken: "Hackathon X-Api-Token または有効化手順",
+    apiAccessQuestionCors: "CORS方針とブラウザデモ可否",
+    apiAccessQuestionLimits: "Rate limit、fixture権限、遅延レベル、SSEルール",
     play: "再生",
     pause: "停止",
     reset: "リセット",
@@ -1417,6 +1543,25 @@ const localizedCopy = {
     calendarStatus: "الجدول",
     fallbackStatus: "البديل",
     sourceBoundary: "تبقى Replay و Seed واضحة حتى تنجح مصادقة بيانات TxLINE المباشرة.",
+    endpointPending: "بانتظار رمز TxLINE المحلي والتحقق من الوصول",
+    apiAccessPlan: "خطة الوصول إلى API",
+    apiAccessTitle: "مسار البيانات المباشرة",
+    apiAccessImplemented: "منفذ الآن",
+    apiAccessImplementedNote:
+      "تم ربط fixtures ولقطات النتيجة ولقطات odds وبديل replay والفحص المحلي.",
+    apiAccessTokenBlocked: "بوابة الرمز الرسمي",
+    apiAccessTokenBlockedNote:
+      "البث المباشر المصدق يحتاج تأكيد TxODDS لمسار X-Api-Token الرسمي و guest JWT.",
+    apiAccessProxyStatus: "وضع البروكسي online",
+    apiAccessProxyConfigured: "تم ضبط البروكسي. المتصفح يبقى بلا token.",
+    apiAccessProxyMissing: "لا يوجد بروكسي. GitHub Pages يبقى Replay/Seed حتى نشر بروكسي آمن.",
+    apiAccessReviewFallback: "بديل قابل للتحكيم",
+    apiAccessReviewFallbackNote:
+      "Replay و Seed تبقى ظاهرة وموسومة وقابلة للاستخدام بدون مباراة live أو token.",
+    apiAccessAskOfficial: "اسأل TxODDS عن",
+    apiAccessQuestionToken: "Hackathon X-Api-Token أو مسار التفعيل",
+    apiAccessQuestionCors: "سياسة CORS وهل يسمح بعروض المتصفح",
+    apiAccessQuestionLimits: "حدود الطلبات، صلاحية fixtures، مستوى التأخير، وقواعد SSE",
     play: "تشغيل",
     pause: "إيقاف",
     reset: "إعادة ضبط",
@@ -2965,6 +3110,7 @@ export default function App() {
   const t = localizedCopy[language];
   const trust = localizedTrustCopy[language];
   const aiText = aiPanelCopy[language];
+  const proxyBaseConfigured = Boolean((import.meta.env.VITE_TXLINE_PROXY_BASE ?? "").trim());
 
   useEffect(() => {
     document.documentElement.lang = getHtmlLanguage(language);
@@ -2980,6 +3126,7 @@ export default function App() {
       asOfMs: import.meta.env.VITE_TXLINE_AS_OF_MS,
       competitionId: import.meta.env.VITE_TXLINE_COMPETITION_ID,
       fixtureId: import.meta.env.VITE_TXLINE_FIXTURE_ID,
+      proxyBase: import.meta.env.VITE_TXLINE_PROXY_BASE,
       replayMatchId,
       sessionJwt: import.meta.env.VITE_TXLINE_SESSION_JWT,
       startEpochDay: import.meta.env.VITE_TXLINE_START_EPOCH_DAY,
@@ -3148,6 +3295,33 @@ export default function App() {
     { label: t.calendarStatus, value: trust.scheduleValue },
     { label: t.fallbackStatus, value: t.replayFallbackReady },
   ];
+  const apiAccessItems = [
+    {
+      label: t.apiAccessImplemented,
+      value: "Adapter + probe",
+      note: t.apiAccessImplementedNote,
+    },
+    {
+      label: t.apiAccessTokenBlocked,
+      value: source?.kind === "live-ready" ? t.ready : t.pending,
+      note: t.apiAccessTokenBlockedNote,
+    },
+    {
+      label: t.apiAccessProxyStatus,
+      value: proxyBaseConfigured ? t.ready : t.pending,
+      note: proxyBaseConfigured ? t.apiAccessProxyConfigured : t.apiAccessProxyMissing,
+    },
+    {
+      label: t.apiAccessReviewFallback,
+      value: t.replayFallbackReady,
+      note: t.apiAccessReviewFallbackNote,
+    },
+  ];
+  const officialAccessQuestions = [
+    t.apiAccessQuestionToken,
+    t.apiAccessQuestionCors,
+    t.apiAccessQuestionLimits,
+  ];
   const scheduleSeedItems = dataConsistencyState.today.filter((item) => item.fixtureId);
   const matchdayItems = dataConsistencyState.today.slice(0, 5);
   const trustMetrics = [
@@ -3301,12 +3475,12 @@ export default function App() {
     {
       label: aiText.prediction,
       value: `${fanLean.label} ${fanLean.implied}%`,
-      note: `${aiConfidence}. ${aiText.localModelNote}`,
+      note: `${aiConfidence}. ${dataStatusLabel}. ${aiText.localModelNote}`,
     },
     {
       label: aiText.evaluation,
       value: `${aiVolatility} ${volatilityScore}/100`,
-      note: aiText.noAdvice,
+      note: `${dataStatusLabel}. ${aiText.noAdvice}`,
     },
     {
       label: aiText.commentary,
@@ -4205,6 +4379,28 @@ export default function App() {
             ))}
           </div>
         </article>
+      </section>
+
+      <section className="api-access-panel" aria-label={t.apiAccessPlan}>
+        <div className="panel-heading">
+          <p className="eyebrow">{t.apiAccessPlan}</p>
+          <h2>{t.apiAccessTitle}</h2>
+        </div>
+        <div className="api-access-grid">
+          {apiAccessItems.map((item) => (
+            <article key={item.label}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              <p>{item.note}</p>
+            </article>
+          ))}
+        </div>
+        <div className="api-request-strip">
+          <span>{t.apiAccessAskOfficial}</span>
+          {officialAccessQuestions.map((item) => (
+            <strong key={item}>{item}</strong>
+          ))}
+        </div>
       </section>
 
       <section className="trust-center" aria-label={trust.title}>

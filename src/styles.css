@@ -120,16 +120,21 @@ button:hover {
   order: 17;
 }
 
-.trust-center {
+.api-access-panel {
   order: 18;
 }
 
-.judge-demo-layer {
+.trust-center {
   order: 19;
+}
+
+.judge-demo-layer {
+  order: 20;
 }
 
 .preset-fan .today-board,
 .preset-fan .brief-grid,
+.preset-fan .api-access-panel,
 .preset-fan .trust-center,
 .preset-fan .judge-demo-layer,
 .preset-fan .match-facts-panel,
@@ -1833,6 +1838,85 @@ h2 {
   border-bottom: 0;
 }
 
+.api-access-panel {
+  min-width: 0;
+  margin: 0 0 16px;
+  padding: 18px;
+  border: 1px solid #d8e0dc;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(23, 33, 38, 0.04), rgba(85, 167, 216, 0.1)),
+    #ffffff;
+}
+
+.api-access-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.api-access-grid article {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(216, 224, 220, 0.9);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.api-access-grid span {
+  display: block;
+  color: #657478;
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.api-access-grid strong {
+  display: block;
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+  color: #172126;
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.api-access-grid p {
+  margin: 8px 0 0;
+  color: #546669;
+  font-size: 0.9rem;
+  line-height: 1.42;
+}
+
+.api-request-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #d8e0dc;
+}
+
+.api-request-strip span,
+.api-request-strip strong {
+  min-height: 30px;
+  padding: 7px 9px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.api-request-strip span {
+  background: #172126;
+  color: #ffffff;
+}
+
+.api-request-strip strong {
+  border: 1px solid #d8e0dc;
+  background: #ffffff;
+  color: #314548;
+}
+
 .judge-demo-layer {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.58fr) minmax(300px, 0.9fr);
@@ -2903,6 +2987,7 @@ meter {
   .video-sync-layout,
   .today-board,
   .brief-grid,
+  .api-access-grid,
   .trust-center,
   .judge-demo-layer,
   .story-strip,

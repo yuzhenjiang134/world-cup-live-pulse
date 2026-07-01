@@ -93,6 +93,12 @@ Current mapped endpoint families:
 
 The official OpenAPI spec requires `Authorization: Bearer <guest JWT>` and `X-Api-Token: <API token>` for the authenticated data endpoints. The public GitHub Pages build does not include these secrets; local testing uses `.env.local`.
 
+For public Live mode, the adapter also supports `VITE_TXLINE_PROXY_BASE`. In that mode the static frontend calls a secure proxy, and the proxy attaches the TxLINE credentials server-side. This is required for GitHub Pages because frontend `VITE_` variables are compiled into the public bundle.
+
+Included proxy template:
+
+- `examples/txline-proxy-worker.mjs`: Fetch-compatible allowlisted proxy for fixtures, score snapshots, and odds snapshots.
+
 ## Safety boundary
 
 The product is informational only. It does not:

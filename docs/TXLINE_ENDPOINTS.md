@@ -4,6 +4,8 @@
 
 The public build runs with Replay and Seed data because no private TxLINE token is deployed to GitHub Pages. The local app can call the official TxLINE HTTP API through `src/lib/txlineAdapter.ts` when `.env.local` contains a valid `X-Api-Token`.
 
+For public Live mode, the static app should call a secure HTTPS proxy through `VITE_TXLINE_PROXY_BASE`. The proxy stores the real token server-side and forwards only the allowlisted TxLINE endpoints. This avoids exposing private credentials in the GitHub Pages bundle.
+
 The official OpenAPI spec checked on 2026-06-28 reports:
 
 - Production server: `https://txline.txodds.com`
@@ -24,6 +26,7 @@ Secrets must only be placed in a local `.env.local` file:
 
 ```bash
 VITE_TXLINE_API_BASE=https://txline.txodds.com
+VITE_TXLINE_PROXY_BASE=
 VITE_TXLINE_API_TOKEN=your_txline_x_api_token_here
 VITE_TXLINE_SESSION_JWT=
 VITE_TXLINE_FIXTURE_ID=17588325
@@ -42,6 +45,31 @@ npm run txline:probe
 ```
 
 The probe verifies guest JWT, fixture snapshot, score snapshot, and odds snapshot access without printing token values. If no token is configured, it exits safely with a skip message.
+
+## Public Live proxy mode
+
+Use this mode for any deployed build that needs real TxLINE data:
+
+```bash
+VITE_TXLINE_PROXY_BASE=https://your-secure-proxy.example.com
+```
+
+The proxy should keep these server-side secrets:
+
+```bash
+TXLINE_API_TOKEN=real_txline_x_api_token
+TXLINE_SESSION_JWT=optional_guest_jwt
+TXLINE_BASE=https://txline.txodds.com
+ALLOWED_ORIGIN=https://yuzhenjiang134.github.io
+```
+
+The included `examples/txline-proxy-worker.mjs` exposes:
+
+- `GET /api/fixtures/snapshot`
+- `GET /api/scores/snapshot/{fixtureId}`
+- `GET /api/odds/snapshot/{fixtureId}`
+
+The browser never receives the `X-Api-Token`.
 
 ## Implemented endpoint mapping
 
