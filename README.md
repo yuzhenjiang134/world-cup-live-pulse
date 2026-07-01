@@ -19,7 +19,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Fan Mode includes a compact rolling match data ticker for score, clock, source state, next beat, market mood, and safety.
 - Fan Mode now includes a market-benchmark-inspired match focus nav: Watch, Pick, Timeline, Mood, and Teams.
 - Fan Mode adds a compact matchday hub so replay fixtures and official TxLINE schedule snapshot matches are visible without opening the full Source Board.
-- The main fan command area keeps watch-now context, AI prediction, AI match evaluation, AI commentary, signal stats, score-linked prediction controls, implied-probability bars, source truth, and team / fixture detail buttons above secondary analysis.
+- The main fan command area keeps watch-now context, a tune-in signal, local alert threshold controls, AI prediction, AI match evaluation, AI commentary, signal stats, score-linked prediction controls, implied-probability bars, source truth, and team / fixture detail buttons above secondary analysis.
 - Analyst Mode reveals fixture briefing, Source Board, Data Audit, Live Readiness, and Trust & Accuracy Center for data verification.
 - Judge Mode reveals operation guide, fixture briefing, Judge Demo chapters, multilingual judging-criteria mapping, submission readiness, and a Path to 100 note for the external items that cannot be faked in code.
 - TxLINE endpoint coverage is shown as status cards instead of a dense table, making mapped, token-gated, and planned feeds easier to scan.
@@ -151,6 +151,7 @@ src/
 - `docs/TECHNICAL_OVERVIEW.md`: architecture, data consistency, and safety boundary
 - `docs/TXLINE_ENDPOINTS.md`: TxLINE endpoint mapping plan
 - `docs/API_ACCESS_PLAN.md`: local token and secure proxy plan for real TxLINE data
+- `docs/PRODUCT_VALUE_REVIEW.md`: candid fan value and commercial-readiness review
 - `docs/API_FEEDBACK.md`: API feedback for sponsor docs and live-data consistency
 - `docs/USER_MANUAL.md`: user-facing operation manual
 - `docs/SUBMISSION_DRAFT.md`: Superteam submission draft

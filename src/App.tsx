@@ -19,10 +19,14 @@ import type { DataSourceState, MatchData, MatchEvent, MatchMode, Team } from "./
 const replayDurationMs = 46000;
 const maxMinute = 90;
 const replaySpeeds = [0.5, 1, 2, 4] as const;
+const alertThresholdOptions = [55, 65, 78] as const;
 
 type Language = "en" | "zh" | "es" | "pt" | "fr" | "de" | "ja" | "ar";
 type PredictionPick = "home" | "draw" | "away";
+type AlertThreshold = (typeof alertThresholdOptions)[number];
 type LanguageOption = { code: Language; label: string; region: string };
+
+const highValueEventTypes = new Set<MatchEvent["type"]>(["goal", "red_card", "odds_shift"]);
 
 const languageOptions: LanguageOption[] = [
   { code: "en", label: "English", region: "Global" },
@@ -255,6 +259,21 @@ const copy = {
     videoRightsNoteValue: "No scraping, no unofficial streams, no pirated video.",
     fanCommand: "Fan command",
     watchNow: "Watch now",
+    watchSignal: "Tune-in signal",
+    watchSignalNow: "Watch now",
+    watchSignalSoon: "Stay close",
+    watchSignalLater: "Catch up later",
+    watchSignalReasonHot: "Pulse, score, or market movement says the match is worth attention now.",
+    watchSignalReasonNext: "A key moment is close enough that leaving the match may cost context.",
+    watchSignalReasonCalm: "The match is calm. Keep it in the background until the pulse rises.",
+    alertThreshold: "Alert threshold",
+    alertNow: "Would alert now",
+    alertQuiet: "No alert yet",
+    alertLow: "Early",
+    alertBalanced: "Balanced",
+    alertStrict: "Big swings",
+    attentionNotBetting: "Attention signal only, not betting advice",
+    minutesToKeyMoment: "min to next key moment",
     fanPrediction: "Fan score pick",
     predictionBody:
       "A local matchday pick for conversation only. No betting, no wallet, no trading advice.",
@@ -644,6 +663,21 @@ const cleanZhCopy = {
   videoRightsNoteValue: "不抓取、不盗播、不接入非官方视频流。",
   fanCommand: "看球主视图",
   watchNow: "现在看什么",
+  watchSignal: "观看信号",
+  watchSignalNow: "现在就看",
+  watchSignalSoon: "别走太远",
+  watchSignalLater: "稍后补看",
+  watchSignalReasonHot: "脉冲、比分或市场波动显示，这场比赛现在值得注意。",
+  watchSignalReasonNext: "关键节点已经接近，离开可能错过上下文。",
+  watchSignalReasonCalm: "比赛暂时平稳，可以后台关注，等脉冲升高再回来。",
+  alertThreshold: "提醒阈值",
+  alertNow: "现在会提醒",
+  alertQuiet: "暂不提醒",
+  alertLow: "早提醒",
+  alertBalanced: "平衡",
+  alertStrict: "只看大波动",
+  attentionNotBetting: "只是注意力信号，不是投注建议",
+  minutesToKeyMoment: "分钟到下一关键节点",
   fanPrediction: "球迷比分预测",
   predictionBody: "仅用于看球讨论的本地选择，不下注、不接钱包、不提供交易建议。",
   predictionSafety: "娱乐预测，不是投注建议",
@@ -3086,6 +3120,15 @@ function getPredictionPickFromScore(homeScore: number, awayScore: number): Predi
   return homeScore > awayScore ? "home" : "away";
 }
 
+function readAlertThreshold(): AlertThreshold {
+  if (typeof window === "undefined") {
+    return 65;
+  }
+
+  const storedValue = Number(window.localStorage.getItem("wclp-alert-threshold"));
+  return alertThresholdOptions.includes(storedValue as AlertThreshold) ? (storedValue as AlertThreshold) : 65;
+}
+
 export default function App() {
   const [mode, setMode] = useState<MatchMode>("replay");
   const [language, setLanguage] = useState<Language>(() => detectInitialLanguage());
@@ -3106,6 +3149,7 @@ export default function App() {
   const [predictionPick, setPredictionPick] = useState<PredictionPick | null>(null);
   const [predictedHomeScore, setPredictedHomeScore] = useState(1);
   const [predictedAwayScore, setPredictedAwayScore] = useState(1);
+  const [alertThreshold, setAlertThreshold] = useState<AlertThreshold>(() => readAlertThreshold());
 
   const t = localizedCopy[language];
   const trust = localizedTrustCopy[language];
@@ -3201,6 +3245,11 @@ export default function App() {
     setShowMatchGuide(true);
     setShowTeamAtlas(false);
     setShowVideoPanel(false);
+  }
+
+  function chooseAlertThreshold(nextThreshold: AlertThreshold) {
+    setAlertThreshold(nextThreshold);
+    window.localStorage.setItem("wclp-alert-threshold", String(nextThreshold));
   }
 
   if (!match || !frame) {
@@ -3444,6 +3493,36 @@ export default function App() {
         ? homeTeamName
         : awayTeamName;
   const eventStats = buildEventStats(frame.activeEvents);
+  const minutesUntilNextKeyMoment = nextEvent ? Math.max(0, nextEvent.minute - minute) : null;
+  const isHighValueLatestEvent = frame.latestEvent ? highValueEventTypes.has(frame.latestEvent.type) : false;
+  const shouldAlertNow = fanTemperature >= alertThreshold || isHighValueLatestEvent;
+  const isNextKeyMomentClose = minutesUntilNextKeyMoment !== null && minutesUntilNextKeyMoment <= 8;
+  const watchSignal =
+    shouldAlertNow || fanTemperature >= 70
+      ? {
+          label: t.watchSignalNow,
+          reason: t.watchSignalReasonHot,
+          tone: "hot",
+        }
+      : isNextKeyMomentClose || fanTemperature >= 45
+        ? {
+            label: t.watchSignalSoon,
+            reason:
+              minutesUntilNextKeyMoment !== null
+                ? `${minutesUntilNextKeyMoment} ${t.minutesToKeyMoment}. ${t.watchSignalReasonNext}`
+                : t.watchSignalReasonNext,
+            tone: "warm",
+          }
+        : {
+            label: t.watchSignalLater,
+            reason: t.watchSignalReasonCalm,
+            tone: "calm",
+          };
+  const thresholdLabels: Record<AlertThreshold, string> = {
+    55: t.alertLow,
+    65: t.alertBalanced,
+    78: t.alertStrict,
+  };
   const sortedImplied = [...predictionOptions].sort((first, second) => second.implied - first.implied);
   const confidenceGap = (sortedImplied[0]?.implied ?? 0) - (sortedImplied[1]?.implied ?? 0);
   const aiConfidence =
@@ -3887,6 +3966,33 @@ export default function App() {
           </div>
           <strong>{latestEventDisplay?.title ?? localizedInsight}</strong>
           {latestEventDisplay?.description ? <p>{latestEventDisplay.description}</p> : null}
+          <div className={`watch-signal-card signal-${watchSignal.tone}`} aria-label={t.watchSignal}>
+            <div>
+              <span>{t.watchSignal}</span>
+              <strong>{watchSignal.label}</strong>
+              <p>{watchSignal.reason}</p>
+            </div>
+            <small>
+              {shouldAlertNow ? t.alertNow : t.alertQuiet} / {t.attentionNotBetting}
+            </small>
+          </div>
+          <div className="alert-threshold-control" aria-label={t.alertThreshold}>
+            <span>{t.alertThreshold}</span>
+            <div>
+              {alertThresholdOptions.map((threshold) => (
+                <button
+                  aria-pressed={alertThreshold === threshold}
+                  className={alertThreshold === threshold ? "active" : ""}
+                  key={threshold}
+                  onClick={() => chooseAlertThreshold(threshold)}
+                  type="button"
+                >
+                  <span>{thresholdLabels[threshold]}</span>
+                  <strong>{threshold}</strong>
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="ai-readout">
             <span>{t.aiCommentary}</span>
             <strong>{localizedCommentary}</strong>
