@@ -18,7 +18,9 @@ Endpoint docs are already mapped. Give Codex only the safe integration materials
 
 - [x] TxLINE endpoint documentation
 - [x] Endpoint base URL
+- [x] Safe subscribe helper URL: `https://yuzhenjiang134.github.io/world-cup-live-pulse/tools/txline-subscribe/`
 - [x] Safe activation helper URL: `https://yuzhenjiang134.github.io/world-cup-live-pulse/tools/txline-activation/`
+- [ ] Free-tier subscription transaction signature (`txSig`) from TxLINE subscribe helper or official docs
 - [ ] Which endpoints are allowed for this hackathon token
 - [ ] Rate limit notes
 - [ ] Whether browser CORS is allowed or a server-side proxy is required

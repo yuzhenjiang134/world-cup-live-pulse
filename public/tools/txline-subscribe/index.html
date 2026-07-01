@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TxLINE Free Tier Subscribe Helper</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #f5f8f7;
+        color: #142126;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          linear-gradient(135deg, rgba(255, 228, 154, 0.34), rgba(45, 126, 113, 0.18)),
+          #f5f8f7;
+      }
+
+      main {
+        width: min(100% - 28px, 1080px);
+        margin: 0 auto;
+        padding: 32px 0;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(2.2rem, 7vw, 4.8rem);
+        line-height: 0.96;
+      }
+
+      h2 {
+        margin: 0 0 12px;
+        font-size: 1.15rem;
+      }
+
+      p {
+        color: #4d6264;
+        line-height: 1.58;
+      }
+
+      .shell {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .panel {
+        padding: 18px;
+        border: 1px solid #d7e0dd;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 20px 44px rgba(20, 33, 38, 0.07);
+      }
+
+      .warning {
+        border-color: #ffcf73;
+        background: #fff7df;
+      }
+
+      .compact-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .metric {
+        padding: 12px;
+        border: 1px solid #dde6e3;
+        border-radius: 8px;
+        background: #f6faf9;
+      }
+
+      .metric span {
+        display: block;
+        color: #667a7d;
+        font-size: 0.74rem;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 4px;
+        font-size: 0.94rem;
+        overflow-wrap: anywhere;
+      }
+
+      .field {
+        display: grid;
+        gap: 7px;
+        margin-bottom: 14px;
+      }
+
+      label {
+        color: #52666a;
+        font-size: 0.8rem;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      input,
+      select {
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 12px;
+        border: 1px solid #cbd8d5;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #142126;
+        font: inherit;
+      }
+
+      button {
+        min-height: 44px;
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 8px;
+        background: #142126;
+        color: #ffffff;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 900;
+      }
+
+      button.secondary {
+        border: 1px solid #cbd8d5;
+        background: #ffffff;
+        color: #142126;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      .actions,
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .links {
+        margin-top: 10px;
+      }
+
+      .links a {
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 10px;
+        border: 1px solid #cbd8d5;
+        border-radius: 8px;
+        color: #142126;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .hint {
+        margin: 0;
+        color: #667a7d;
+        font-size: 0.9rem;
+      }
+
+      .steps {
+        display: grid;
+        gap: 10px;
+      }
+
+      .step {
+        padding: 12px;
+        border: 1px solid #dde6e3;
+        border-radius: 8px;
+        background: #f6faf9;
+      }
+
+      .step strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      code {
+        padding: 2px 5px;
+        border-radius: 5px;
+        background: #e8f0ee;
+      }
+
+      pre {
+        min-height: 160px;
+        max-height: 360px;
+        overflow: auto;
+        padding: 12px;
+        border: 1px solid #d7e0dd;
+        border-radius: 8px;
+        background: #10191d;
+        color: #d8f7ef;
+        white-space: pre-wrap;
+      }
+
+      .ok {
+        color: #176b5b;
+        font-weight: 900;
+      }
+
+      .warn {
+        color: #9d6400;
+        font-weight: 900;
+      }
+
+      .bad {
+        color: #b02c3a;
+        font-weight: 900;
+      }
+
+      @media (max-width: 860px) {
+        .shell,
+        .compact-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p><strong>World Cup Live Pulse</strong> / TxLINE official free-tier subscribe helper</p>
+      <h1>Subscribe First, Then Activate</h1>
+      <p>
+        This page performs the missing official step before API activation: it asks your browser
+        wallet to send TxLINE's on-chain <code>subscribe</code> instruction, waits for the
+        transaction signature, and then sends you to the safe activation helper.
+      </p>
+
+      <section class="panel warning">
+        <h2>Wallet safety boundary</h2>
+        <p>
+          This helper never asks for a private key or seed phrase. It only requests a normal wallet
+          transaction approval. Review the wallet popup carefully: the program id, network, and free
+          tier service level must match the TxLINE docs.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>Official references</h2>
+        <p>
+          TxLINE documents that API access requires a free-tier on-chain subscription first. Keep the
+          same network for Solana RPC, TxLINE program id, guest JWT, and activation endpoint.
+        </p>
+        <div class="links">
+          <a href="https://txline.txodds.com/documentation/worldcup" target="_blank" rel="noreferrer">TxLINE World Cup Free Tier</a>
+          <a href="https://txline.txodds.com/documentation/programs/addresses" target="_blank" rel="noreferrer">Program addresses</a>
+          <a href="../txline-activation/">Activation helper</a>
+        </div>
+        <div class="compact-grid">
+          <div class="metric"><span>Host</span><strong id="hostMetric">Checking...</strong></div>
+          <div class="metric"><span>Wallet</span><strong id="walletMetric">Not checked</strong></div>
+          <div class="metric"><span>IDL</span><strong id="idlMetric">Not loaded</strong></div>
+          <div class="metric"><span>Balance</span><strong id="balanceMetric">Not checked</strong></div>
+        </div>
+      </section>
+
+      <div class="shell">
+        <section class="panel">
+          <h2>Subscribe inputs</h2>
+          <div class="field">
+            <label for="network">Network</label>
+            <select id="network">
+              <option value="mainnet">Mainnet / real TxLINE host</option>
+              <option value="devnet">Devnet / TxLINE dev host</option>
+            </select>
+            <p class="hint">Use one network end to end. A devnet txSig cannot activate on mainnet.</p>
+          </div>
+
+          <div class="field">
+            <label for="serviceLevel">Free service level</label>
+            <select id="serviceLevel">
+              <option value="1">1 / World Cup + International Friendlies, 60-second delay</option>
+              <option value="12">12 / World Cup + International Friendlies, real-time mainnet</option>
+            </select>
+            <p class="hint">TxLINE docs state mainnet supports 1 and 12; devnet documents level 1.</p>
+          </div>
+
+          <div class="field">
+            <label for="durationWeeks">Duration weeks</label>
+            <input id="durationWeeks" inputmode="numeric" value="4" />
+            <p class="hint">Official example uses 4 weeks. Subscriptions are in 4-week multiples.</p>
+          </div>
+
+          <div class="field">
+            <label for="rpcUrl">Solana RPC URL</label>
+            <input id="rpcUrl" autocomplete="off" />
+            <p class="hint">Public RPC is enough for testing but may rate-limit. Do not paste wallet secrets here.</p>
+          </div>
+
+          <div class="actions">
+            <button id="preflight" class="secondary">Preflight</button>
+            <button id="wallet" class="secondary">Connect wallet</button>
+            <button id="loadIdl" class="secondary">Load TxLINE IDL</button>
+            <button id="subscribe">Subscribe free tier</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Status</h2>
+          <div class="steps">
+            <div class="step"><strong>Network</strong><span id="networkStatus">Not checked</span></div>
+            <div class="step"><strong>Wallet</strong><span id="walletStatus">Not connected</span></div>
+            <div class="step"><strong>TxLINE Program</strong><span id="programStatus">Not loaded</span></div>
+            <div class="step"><strong>Subscription txSig</strong><span id="txStatus">Not submitted</span></div>
+          </div>
+          <h2 style="margin-top: 16px">Result</h2>
+          <pre id="result">Ready.</pre>
+          <div class="actions">
+            <button id="copyTx" class="secondary" disabled>Copy txSig</button>
+            <button id="openActivation" class="secondary" disabled>Open activation helper</button>
+            <button id="copyDiagnostics" class="secondary">Copy safe diagnostics</button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module">
+      const CONFIG = {
+        mainnet: {
+          rpcUrl: "https://api.mainnet-beta.solana.com",
+          apiOrigin: "https://txline.txodds.com",
+          programId: "9ExbZjAapQww1vfcisDmrngPinHTEfpjYRWMunJgcKaA",
+          txlMint: "Zhw9TVKp68a1QrftncMSd6ELXKDtpVMNuMGr1jNwdeL",
+          serviceLevels: [1, 12]
+        },
+        devnet: {
+          rpcUrl: "https://api.devnet.solana.com",
+          apiOrigin: "https://txline-dev.txodds.com",
+          programId: "6pW64gN1s2uqjHkn1unFeEjAwJkPGHoppGvS715wyP2J",
+          txlMint: "4Zao8ocPhmMgq7PdsYWyxvqySMGx7xb9cMftPMkEokRG",
+          serviceLevels: [1]
+        }
+      };
+
+      const state = {
+        libs: null,
+        provider: null,
+        walletPublicKey: "",
+        idl: null,
+        program: null,
+        txSig: "",
+        lastError: null
+      };
+
+      const $ = (id) => document.getElementById(id);
+
+      function cfg() {
+        return CONFIG[$("network").value] || CONFIG.mainnet;
+      }
+
+      function log(value) {
+        $("result").textContent = typeof value === "string" ? value : JSON.stringify(value, null, 2);
+      }
+
+      function setStatus(id, text, mode = "") {
+        const node = $(id);
+        node.textContent = text;
+        node.className = mode;
+      }
+
+      function setMetric(id, text, mode = "") {
+        setStatus(id, text, mode);
+      }
+
+      function shortValue(value, head = 8, tail = 6) {
+        if (!value) return "";
+        if (value.length <= head + tail + 3) return value;
+        return `${value.slice(0, head)}...${value.slice(-tail)}`;
+      }
+
+      function solanaProvider() {
+        return window.phantom?.solana || window.backpack?.solana || window.solflare || window.solana || null;
+      }
+
+      function providerLabel(provider) {
+        if (!provider) return "No wallet";
+        if (provider.isPhantom) return "Phantom";
+        if (provider.isBackpack) return "Backpack";
+        if (provider.isSolflare) return "Solflare";
+        return "Solana wallet";
+      }
+
+      function walletErrorMessage(error) {
+        const message = error?.message || String(error);
+        const code = error?.code ?? error?.data?.code;
+        state.lastError = {
+          name: error?.name || "WalletOrTxError",
+          code: code ?? null,
+          message
+        };
+        if (code === 4001 || /reject|denied|declined|cancel/i.test(message)) {
+          return "Transaction was rejected in the wallet popup. Only approve if the network and TxLINE program id look right.";
+        }
+        if (/insufficient|balance|funds/i.test(message)) {
+          return "The wallet does not have enough SOL for the network fee. Free tier has no TxL payment, but Solana still needs a tiny SOL fee.";
+        }
+        if (/blockhash|expired/i.test(message)) {
+          return "The transaction blockhash expired. Try Subscribe again.";
+        }
+        return message;
+      }
+
+      function setDefaults() {
+        $("rpcUrl").value = cfg().rpcUrl;
+        if ($("network").value === "devnet") {
+          $("serviceLevel").value = "1";
+        }
+      }
+
+      function validateInputs({ strict = true } = {}) {
+        const current = cfg();
+        const serviceLevel = Number($("serviceLevel").value);
+        const durationWeeks = Number($("durationWeeks").value);
+        const issues = [];
+        const warnings = [];
+
+        if (!current.serviceLevels.includes(serviceLevel)) {
+          warnings.push(`Service level ${serviceLevel} is not documented for ${$("network").value}.`);
+        }
+        if (!Number.isInteger(durationWeeks) || durationWeeks <= 0 || durationWeeks % 4 !== 0) {
+          issues.push("Duration weeks must be a positive 4-week multiple.");
+        }
+        if (!$("rpcUrl").value.trim().startsWith("https://")) {
+          issues.push("RPC URL must be HTTPS.");
+        }
+        if (location.protocol !== "https:" && location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
+          warnings.push("Wallet extensions usually require HTTPS or localhost.");
+        }
+
+        const summary = {
+          network: $("network").value,
+          apiOrigin: current.apiOrigin,
+          programId: current.programId,
+          txlMint: current.txlMint,
+          serviceLevel,
+          durationWeeks,
+          rpcUrl: $("rpcUrl").value.trim(),
+          issues,
+          warnings
+        };
+
+        if (issues.length) {
+          setStatus("networkStatus", `${issues.length} issue(s)`, "bad");
+        } else if (warnings.length) {
+          setStatus("networkStatus", `${warnings.length} warning(s)`, "warn");
+        } else {
+          setStatus("networkStatus", "Ready", "ok");
+        }
+
+        if (strict && issues.length) {
+          throw new Error(issues.join("\n"));
+        }
+        return summary;
+      }
+
+      function refreshMetrics() {
+        const secure = location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1";
+        setMetric("hostMetric", secure ? "Secure" : "Use HTTPS", secure ? "ok" : "warn");
+
+        const provider = solanaProvider();
+        setMetric("walletMetric", provider ? providerLabel(provider) : "No wallet", provider ? "ok" : "bad");
+        setMetric("idlMetric", state.idl ? "Loaded" : "Not loaded", state.idl ? "ok" : "");
+        if (!state.walletPublicKey) {
+          setMetric("balanceMetric", "Not checked");
+        }
+      }
+
+      async function loadLibraries() {
+        if (state.libs) return state.libs;
+        log("Loading Solana and Anchor libraries from CDN...");
+        const bufferModule = await import("https://esm.sh/buffer@6.0.3");
+        window.Buffer = bufferModule.Buffer;
+        const anchor = await import("https://esm.sh/@coral-xyz/anchor@0.30.1?bundle");
+        const spl = await import("https://esm.sh/@solana/spl-token@0.4.13?bundle");
+        state.libs = { anchor, spl };
+        return state.libs;
+      }
+
+      async function ensureWalletConnected() {
+        const provider = solanaProvider();
+        if (!provider) {
+          throw new Error("No Solana browser wallet found. Install Phantom, unlock it, and refresh this page.");
+        }
+        if (!provider.publicKey) {
+          const result = await provider.connect();
+          state.walletPublicKey = result?.publicKey?.toBase58?.() || provider.publicKey?.toBase58?.() || "";
+        } else {
+          state.walletPublicKey = provider.publicKey.toBase58?.() || String(provider.publicKey);
+        }
+        if (!provider.signTransaction) {
+          throw new Error("Wallet does not expose signTransaction. Use Phantom desktop extension first.");
+        }
+        state.provider = provider;
+        setStatus("walletStatus", state.walletPublicKey, "ok");
+        setMetric("walletMetric", `${providerLabel(provider)} connected`, "ok");
+        return provider;
+      }
+
+      function walletAdapter(provider) {
+        return {
+          publicKey: provider.publicKey,
+          signTransaction: provider.signTransaction.bind(provider),
+          signAllTransactions: provider.signAllTransactions
+            ? provider.signAllTransactions.bind(provider)
+            : async (transactions) => Promise.all(transactions.map((tx) => provider.signTransaction(tx)))
+        };
+      }
+
+      async function buildAnchorContext() {
+        validateInputs({ strict: true });
+        const provider = await ensureWalletConnected();
+        const { anchor } = await loadLibraries();
+        const current = cfg();
+        const connection = new anchor.web3.Connection($("rpcUrl").value.trim(), "confirmed");
+        const anchorProvider = new anchor.AnchorProvider(connection, walletAdapter(provider), {
+          commitment: "confirmed",
+          preflightCommitment: "confirmed"
+        });
+        anchor.setProvider(anchorProvider);
+        return {
+          anchor,
+          connection,
+          anchorProvider,
+          current,
+          programId: new anchor.web3.PublicKey(current.programId),
+          txlMint: new anchor.web3.PublicKey(current.txlMint)
+        };
+      }
+
+      async function loadProgram() {
+        const context = await buildAnchorContext();
+        log("Fetching TxLINE Anchor IDL from the selected network...");
+        const idl = await context.anchor.Program.fetchIdl(context.programId, context.anchorProvider);
+        if (!idl) {
+          throw new Error(
+            "Could not fetch the TxLINE Anchor IDL from chain. Check the network, RPC URL, and official program id."
+          );
+        }
+
+        const normalizedIdl = { ...idl, address: idl.address || context.programId.toBase58() };
+        let program;
+        try {
+          program = new context.anchor.Program(normalizedIdl, context.anchorProvider);
+        } catch {
+          program = new context.anchor.Program(normalizedIdl, context.programId, context.anchorProvider);
+        }
+
+        if (!program.programId.equals(context.programId)) {
+          throw new Error(
+            `Loaded program ${program.programId.toBase58()} does not match expected ${context.programId.toBase58()}.`
+          );
+        }
+
+        state.idl = normalizedIdl;
+        state.program = program;
+        setStatus("programStatus", `Loaded ${context.programId.toBase58()}`, "ok");
+        setMetric("idlMetric", "Loaded", "ok");
+        log({
+          ok: true,
+          network: $("network").value,
+          programId: context.programId.toBase58(),
+          idlName: normalizedIdl.name || normalizedIdl.metadata?.name || "TxLINE program",
+          next: "Click Subscribe free tier. Your wallet will show the transaction before it is sent."
+        });
+        return { ...context, program };
+      }
+
+      async function checkBalance(connection, publicKey) {
+        const lamports = await connection.getBalance(publicKey, "confirmed");
+        const sol = lamports / 1_000_000_000;
+        const label = `${sol.toFixed(sol >= 0.01 ? 4 : 6)} SOL`;
+        setMetric("balanceMetric", label, lamports > 0 ? "ok" : "warn");
+        return { lamports, sol };
+      }
+
+      async function subscribeFreeTier() {
+        const context = state.program ? await buildAnchorContext() : await loadProgram();
+        const { anchor, spl, connection, anchorProvider, current } = context;
+        const program = state.program || context.program;
+        const serviceLevel = Number($("serviceLevel").value);
+        const durationWeeks = Number($("durationWeeks").value);
+        const user = anchorProvider.wallet.publicKey;
+
+        await checkBalance(connection, user);
+
+        const [tokenTreasuryPda] = anchor.web3.PublicKey.findProgramAddressSync(
+          [window.Buffer.from("token_treasury_v2")],
+          program.programId
+        );
+        const tokenTreasuryVault = spl.getAssociatedTokenAddressSync(
+          new anchor.web3.PublicKey(current.txlMint),
+          tokenTreasuryPda,
+          true,
+          spl.TOKEN_2022_PROGRAM_ID,
+          spl.ASSOCIATED_TOKEN_PROGRAM_ID
+        );
+        const [pricingMatrixPda] = anchor.web3.PublicKey.findProgramAddressSync(
+          [window.Buffer.from("pricing_matrix")],
+          program.programId
+        );
+        const userTokenAccount = spl.getAssociatedTokenAddressSync(
+          new anchor.web3.PublicKey(current.txlMint),
+          user,
+          false,
+          spl.TOKEN_2022_PROGRAM_ID,
+          spl.ASSOCIATED_TOKEN_PROGRAM_ID
+        );
+
+        log({
+          reviewBeforeApproving: true,
+          network: $("network").value,
+          programId: program.programId.toBase58(),
+          serviceLevel,
+          durationWeeks,
+          user: user.toBase58(),
+          tokenTreasuryPda: tokenTreasuryPda.toBase58(),
+          pricingMatrixPda: pricingMatrixPda.toBase58(),
+          next: "Wallet approval required. Reject if anything looks unexpected."
+        });
+
+        const txSig = await program.methods
+          .subscribe(serviceLevel, durationWeeks)
+          .accounts({
+            user,
+            pricingMatrix: pricingMatrixPda,
+            tokenMint: new anchor.web3.PublicKey(current.txlMint),
+            userTokenAccount,
+            tokenTreasuryVault,
+            tokenTreasuryPda,
+            tokenProgram: spl.TOKEN_2022_PROGRAM_ID,
+            associatedTokenProgram: spl.ASSOCIATED_TOKEN_PROGRAM_ID,
+            systemProgram: anchor.web3.SystemProgram.programId
+          })
+          .rpc();
+
+        state.txSig = txSig;
+        setStatus("txStatus", txSig, "ok");
+        $("copyTx").disabled = false;
+        $("openActivation").disabled = false;
+        log({
+          ok: true,
+          txSig,
+          network: $("network").value,
+          next: "Copy txSig or open the activation helper. Use the same network there."
+        });
+      }
+
+      function activationUrl() {
+        const url = new URL("../txline-activation/", location.href);
+        url.searchParams.set("network", $("network").value);
+        url.searchParams.set("txSig", state.txSig);
+        return url.toString();
+      }
+
+      function safeDiagnostics() {
+        const provider = solanaProvider();
+        return {
+          helperVersion: "2026-07-01-txline-subscribe-v1",
+          page: location.href.split("?")[0],
+          network: $("network").value,
+          rpcUrl: $("rpcUrl").value.trim(),
+          programId: cfg().programId,
+          serviceLevel: Number($("serviceLevel").value),
+          durationWeeks: Number($("durationWeeks").value),
+          walletProvider: provider
+            ? {
+                label: providerLabel(provider),
+                hasPublicKey: Boolean(provider.publicKey),
+                hasSignTransaction: Boolean(provider.signTransaction),
+                hasSignAllTransactions: Boolean(provider.signAllTransactions)
+              }
+            : null,
+          connectedPublicKey: state.walletPublicKey ? shortValue(state.walletPublicKey) : "",
+          idlLoaded: Boolean(state.idl),
+          txSigPreview: state.txSig ? shortValue(state.txSig) : "",
+          lastError: state.lastError
+        };
+      }
+
+      $("network").addEventListener("change", () => {
+        state.idl = null;
+        state.program = null;
+        state.txSig = "";
+        $("copyTx").disabled = true;
+        $("openActivation").disabled = true;
+        setDefaults();
+        refreshMetrics();
+        validateInputs({ strict: false });
+        setStatus("programStatus", "Not loaded");
+        setStatus("txStatus", "Not submitted");
+      });
+
+      $("serviceLevel").addEventListener("change", () => validateInputs({ strict: false }));
+      $("durationWeeks").addEventListener("input", () => validateInputs({ strict: false }));
+      $("rpcUrl").addEventListener("input", () => validateInputs({ strict: false }));
+
+      $("preflight").addEventListener("click", async () => {
+        try {
+          refreshMetrics();
+          const summary = validateInputs({ strict: false });
+          const provider = solanaProvider();
+          log({
+            ok: !summary.issues.length,
+            preflight: summary,
+            wallet: provider
+              ? {
+                  label: providerLabel(provider),
+                  connected: Boolean(provider.publicKey),
+                  canSignTransaction: Boolean(provider.signTransaction)
+                }
+              : "not detected",
+            next: "Connect wallet, load IDL, then subscribe."
+          });
+        } catch (error) {
+          log(walletErrorMessage(error));
+        }
+      });
+
+      $("wallet").addEventListener("click", async () => {
+        try {
+          const provider = await ensureWalletConnected();
+          const { anchor } = await loadLibraries();
+          const connection = new anchor.web3.Connection($("rpcUrl").value.trim(), "confirmed");
+          await checkBalance(connection, provider.publicKey);
+          log({
+            connected: true,
+            wallet: providerLabel(provider),
+            publicKey: state.walletPublicKey
+          });
+        } catch (error) {
+          setStatus("walletStatus", "Connection failed", "bad");
+          log(walletErrorMessage(error));
+        }
+      });
+
+      $("loadIdl").addEventListener("click", async () => {
+        try {
+          await loadProgram();
+        } catch (error) {
+          setStatus("programStatus", "IDL load failed", "bad");
+          setMetric("idlMetric", "Failed", "bad");
+          log(walletErrorMessage(error));
+        }
+      });
+
+      $("subscribe").addEventListener("click", async () => {
+        try {
+          await subscribeFreeTier();
+        } catch (error) {
+          setStatus("txStatus", "Subscribe failed", "bad");
+          log(walletErrorMessage(error));
+        }
+      });
+
+      $("copyTx").addEventListener("click", async () => {
+        await navigator.clipboard.writeText(state.txSig);
+        log("txSig copied. Use it in the activation helper with the same network.");
+      });
+
+      $("openActivation").addEventListener("click", () => {
+        if (!state.txSig) {
+          log("No txSig yet. Subscribe first.");
+          return;
+        }
+        location.href = activationUrl();
+      });
+
+      $("copyDiagnostics").addEventListener("click", async () => {
+        const diagnostics = safeDiagnostics();
+        await navigator.clipboard.writeText(JSON.stringify(diagnostics, null, 2));
+        log({
+          copied: true,
+          safeDiagnostics: diagnostics,
+          note: "This diagnostic omits private keys, seed phrases, full JWTs, and API tokens."
+        });
+      });
+
+      setDefaults();
+      refreshMetrics();
+      validateInputs({ strict: false });
+    </script>
+  </body>
+</html>

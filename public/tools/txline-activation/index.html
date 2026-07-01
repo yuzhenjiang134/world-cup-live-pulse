@@ -268,6 +268,7 @@
           real-time data; devnet availability depends on the official tier table.
         </p>
         <div class="links">
+          <a href="../txline-subscribe/">TxLINE subscribe helper</a>
           <a href="https://txline.txodds.com/documentation/worldcup" target="_blank" rel="noreferrer">TxLINE free tier docs</a>
           <a href="https://docs.phantom.com/solana/signing-a-message" target="_blank" rel="noreferrer">Phantom signMessage docs</a>
           <a href="https://phantom.com/download" target="_blank" rel="noreferrer">Install Phantom</a>
@@ -486,6 +487,30 @@
         setStatus("tokenStatus", "Not activated");
         $("copyToken").disabled = true;
         $("copyEnv").disabled = true;
+      }
+
+      function hydrateFromQuery() {
+        const params = new URLSearchParams(location.search);
+        const network = params.get("network");
+        const txSig = params.get("txSig");
+        const leagues = params.get("leagues");
+        if (network && apiOrigins[network]) {
+          $("network").value = network;
+        }
+        if (txSig) {
+          $("txSig").value = txSig;
+        }
+        if (leagues) {
+          $("leagues").value = leagues;
+        }
+        if (network || txSig || leagues) {
+          log({
+            importedFromSubscribeHelper: true,
+            network: $("network").value,
+            txSig: txSig ? shortValue(txSig) : "not provided",
+            next: "Get or paste a guest JWT, then sign the activation message."
+          });
+        }
       }
 
       function activationMessage() {
@@ -935,6 +960,7 @@
         });
       });
 
+      hydrateFromQuery();
       refreshHostMetric();
       refreshWalletMetric();
       validateInputs({ strict: false });

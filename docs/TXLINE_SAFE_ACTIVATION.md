@@ -8,22 +8,28 @@ TxLINE activation requires a wallet signature, but private keys and seed phrases
 
 If a private key has been pasted into chat, treat that wallet as compromised and create a new clean wallet for testing.
 
-## Safe helper page
+## Safe helper pages
 
-The project includes a browser-wallet helper:
+The project includes a browser-wallet subscribe helper for the required on-chain free-tier registration:
+
+```text
+https://yuzhenjiang134.github.io/world-cup-live-pulse/tools/txline-subscribe/
+```
+
+It also includes a browser-wallet activation helper:
 
 ```text
 https://yuzhenjiang134.github.io/world-cup-live-pulse/tools/txline-activation/
 ```
 
-It does not ask for a private key. It uses the browser wallet's `signMessage` capability.
+Neither helper asks for a private key. The subscribe helper uses wallet `signTransaction`; the activation helper uses wallet `signMessage`.
 
 ## Workflow
 
 1. Create a clean Solana wallet.
-2. Use the official TxLINE docs to subscribe to the free World Cup tier.
-3. Copy the subscription transaction signature as `txSig`.
-4. Open the helper page.
+2. Use the subscribe helper or the official TxLINE docs to subscribe to the free World Cup tier.
+3. Copy the subscription transaction signature as `txSig`. Without this on-chain subscription txSig, TxLINE will not issue an API token.
+4. Open the activation helper page. If you came from the subscribe helper, `network` and `txSig` are prefilled.
 5. Click `Preflight` to check HTTPS, wallet injection, `txSig`, guest JWT, and league-id formatting.
 6. Click `Get guest JWT`, or paste the JWT from the official flow.
 7. Connect the wallet.
