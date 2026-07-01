@@ -24,9 +24,12 @@ It does not ask for a private key. It uses the browser wallet's `signMessage` ca
 2. Use the official TxLINE docs to subscribe to the free World Cup tier.
 3. Copy the subscription transaction signature as `txSig`.
 4. Open the helper page.
-5. Click `Get guest JWT`, or paste the JWT from the official flow.
-6. Connect the wallet.
-7. Sign the official activation message:
+5. Click `Preflight` to check HTTPS, wallet injection, `txSig`, guest JWT, and league-id formatting.
+6. Click `Get guest JWT`, or paste the JWT from the official flow.
+7. Connect the wallet.
+8. Click `Test wallet signing` if the wallet is newly installed or signing fails. This signs a harmless local message and does not call TxLINE.
+9. Click `Copy message` if you want to inspect the exact `txSig:leagues:jwt` activation string locally.
+10. Sign the official activation message:
 
 ```text
 txSig:leagues:jwt
@@ -38,8 +41,16 @@ For the default World Cup bundle with no selected leagues, the message is:
 txSig::jwt
 ```
 
-8. Click `Activate API token`.
-9. Copy the returned token into local `.env.local` only.
+11. Click `Activate API token`.
+12. Copy the returned token into local `.env.local` only.
+
+## Signing troubleshooting
+
+- If `Test wallet signing` fails, unlock the wallet extension, reconnect the site, approve the wallet popup, and refresh the helper page.
+- If `Test wallet signing` succeeds but `Sign activation message` fails, check that both `txSig` and `Guest JWT` are filled and that the network matches the on-chain subscription.
+- If `Get guest JWT` fails in the browser, it may be a TxLINE CORS/browser policy issue. Use the official TxLINE docs flow or support channel to obtain the guest JWT, then paste the JWT into the helper.
+- If the wallet returns an unusual signature shape, use Phantom first. The helper now accepts common `Uint8Array`, array, Buffer-like, base64, hex, and base58 signature formats.
+- If signing still fails, click `Copy safe diagnostics` and inspect only the non-secret fields: wallet provider flags, error code, network, `txSig` presence, and JWT length. Do not share private keys, seed phrases, full JWTs, or API tokens.
 
 ## Local env target
 
@@ -63,4 +74,3 @@ npm run txline:probe
 - Do not commit `.env.local`.
 - Do not put the real `X-Api-Token` into GitHub Pages build settings.
 - Public Live mode should use a secure proxy through `VITE_TXLINE_PROXY_BASE`.
-

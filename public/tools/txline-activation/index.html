@@ -67,6 +67,34 @@
         background: #fff7df;
       }
 
+      .compact-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .metric {
+        padding: 12px;
+        border: 1px solid #dde6e3;
+        border-radius: 8px;
+        background: #f6faf9;
+      }
+
+      .metric span {
+        display: block;
+        color: #667a7d;
+        font-size: 0.74rem;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 4px;
+        font-size: 0.96rem;
+      }
+
       .field {
         display: grid;
         gap: 7px;
@@ -127,6 +155,31 @@
         gap: 10px;
       }
 
+      .hint {
+        margin: 10px 0 0;
+        color: #667a7d;
+        font-size: 0.9rem;
+      }
+
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .links a {
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 10px;
+        border: 1px solid #cbd8d5;
+        border-radius: 8px;
+        color: #142126;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
       .steps {
         display: grid;
         gap: 10px;
@@ -167,6 +220,11 @@
         font-weight: 900;
       }
 
+      .warn {
+        color: #9d6400;
+        font-weight: 900;
+      }
+
       .bad {
         color: #b02c3a;
         font-weight: 900;
@@ -176,12 +234,16 @@
         .shell {
           grid-template-columns: 1fr;
         }
+
+        .compact-grid {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <p><strong>World Cup Live Pulse</strong> · TxLINE official free-tier activation helper</p>
+      <p><strong>World Cup Live Pulse</strong> / TxLINE official free-tier activation helper</p>
       <h1>Safe TxLINE Activation</h1>
       <p>
         This page never asks for a private key or seed phrase. It uses your browser wallet's
@@ -198,6 +260,25 @@
         </p>
       </section>
 
+      <section class="panel">
+        <h2>Before you start</h2>
+        <p>
+          Keep the same network for the Solana subscription transaction, guest JWT, and TxLINE API
+          host. Mainnet free tiers include Service Level 1 delayed data and Service Level 12
+          real-time data; devnet availability depends on the official tier table.
+        </p>
+        <div class="links">
+          <a href="https://txline.txodds.com/documentation/worldcup" target="_blank" rel="noreferrer">TxLINE free tier docs</a>
+          <a href="https://docs.phantom.com/solana/signing-a-message" target="_blank" rel="noreferrer">Phantom signMessage docs</a>
+          <a href="https://phantom.com/download" target="_blank" rel="noreferrer">Install Phantom</a>
+        </div>
+        <div class="compact-grid">
+          <div class="metric"><span>Host</span><strong id="hostMetric">Checking...</strong></div>
+          <div class="metric"><span>Wallet</span><strong id="walletMetric">Not checked</strong></div>
+          <div class="metric"><span>Inputs</span><strong id="inputsMetric">Not checked</strong></div>
+        </div>
+      </section>
+
       <div class="shell">
         <section class="panel">
           <h2>Activation inputs</h2>
@@ -211,26 +292,37 @@
           <div class="field">
             <label for="txSig">Subscription transaction signature</label>
             <input id="txSig" autocomplete="off" placeholder="Paste txSig after official free-tier subscribe" />
+            <p class="hint">Use the transaction signature returned by the official on-chain subscribe step.</p>
           </div>
           <div class="field">
             <label for="leagues">Selected leagues</label>
             <input id="leagues" autocomplete="off" placeholder="Leave empty for standard World Cup bundle" />
+            <p class="hint">Comma-separated numeric league ids only. Empty means the standard free World Cup bundle.</p>
           </div>
           <div class="field">
             <label for="jwt">Guest JWT</label>
             <textarea id="jwt" autocomplete="off" placeholder="Click Get guest JWT or paste one from official docs flow"></textarea>
+            <p class="hint">If browser CORS blocks guest JWT creation, paste the JWT from the official flow here.</p>
           </div>
           <div class="actions">
+            <button id="preflight" class="secondary">Preflight</button>
             <button id="guest">1. Get guest JWT</button>
             <button id="wallet" class="secondary">2. Connect wallet</button>
+            <button id="testSign" class="secondary">Test wallet signing</button>
+            <button id="copyMessage" class="secondary">Copy message</button>
             <button id="sign" class="secondary">3. Sign activation message</button>
             <button id="activate">4. Activate API token</button>
           </div>
+          <p class="hint">
+            If activation signing fails, use the test button first. It signs a harmless local message
+            and helps separate wallet issues from missing TxLINE txSig/JWT inputs.
+          </p>
         </section>
 
         <section class="panel">
           <h2>Status</h2>
           <div class="steps">
+            <div class="step"><strong>Preflight</strong><span id="preflightStatus">Not checked</span></div>
             <div class="step"><strong>Wallet</strong><span id="walletStatus">Not connected</span></div>
             <div class="step"><strong>Message</strong><span id="messageStatus">No signature yet</span></div>
             <div class="step"><strong>API token</strong><span id="tokenStatus">Not activated</span></div>
@@ -240,6 +332,7 @@
           <div class="actions">
             <button id="copyToken" class="secondary" disabled>Copy API token</button>
             <button id="copyEnv" class="secondary" disabled>Copy .env.local lines</button>
+            <button id="copyDiagnostics" class="secondary">Copy safe diagnostics</button>
           </div>
         </section>
       </div>
@@ -252,9 +345,11 @@
       };
 
       const state = {
+        provider: null,
         publicKey: "",
         walletSignature: "",
-        apiToken: ""
+        apiToken: "",
+        lastError: null
       };
 
       const $ = (id) => document.getElementById(id);
@@ -267,6 +362,30 @@
         const node = $(id);
         node.textContent = text;
         node.className = ok ? "ok" : "";
+      }
+
+      function setWarn(id, text) {
+        const node = $(id);
+        node.textContent = text;
+        node.className = "warn";
+      }
+
+      function setBad(id, text) {
+        const node = $(id);
+        node.textContent = text;
+        node.className = "bad";
+      }
+
+      function setMetric(id, text, mode = "") {
+        const node = $(id);
+        node.textContent = text;
+        node.className = mode;
+      }
+
+      function shortValue(value, head = 8, tail = 6) {
+        if (!value) return "";
+        if (value.length <= head + tail + 3) return value;
+        return `${value.slice(0, head)}...${value.slice(-tail)}`;
       }
 
       function apiOrigin() {
@@ -282,12 +401,321 @@
           .filter((item) => Number.isFinite(item));
       }
 
-      function activationMessage() {
+      function rawLeagueValues() {
+        return $("leagues").value
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean);
+      }
+
+      function validateInputs({ strict = true } = {}) {
         const txSig = $("txSig").value.trim();
         const jwt = $("jwt").value.trim();
-        if (!txSig) throw new Error("Missing subscription transaction signature.");
-        if (!jwt) throw new Error("Missing guest JWT.");
+        const rawLeagues = rawLeagueValues();
+        const numericLeagues = leaguesArray();
+        const issues = [];
+        const warnings = [];
+
+        if (!txSig) {
+          issues.push("Missing subscription transaction signature.");
+        } else if (!/^[1-9A-HJ-NP-Za-km-z]{64,110}$/.test(txSig)) {
+          warnings.push("txSig does not look like a typical Solana base58 signature. Verify it came from the subscribe transaction.");
+        }
+
+        if (!jwt) {
+          issues.push("Missing guest JWT.");
+        } else if (jwt.split(".").length !== 3) {
+          warnings.push("Guest JWT does not have 3 dot-separated segments. It may still work if TxLINE returned a non-standard token.");
+        }
+
+        if (rawLeagues.length !== numericLeagues.length) {
+          issues.push("Selected leagues must be comma-separated numeric ids, or empty for the standard World Cup bundle.");
+        }
+
+        if (location.protocol !== "https:" && location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
+          warnings.push("Wallet extensions usually require HTTPS or localhost.");
+        }
+
+        if (strict && issues.length) {
+          throw new Error(issues.join("\n"));
+        }
+
+        const summary = {
+          network: $("network").value,
+          apiOrigin: apiOrigin(),
+          txSig: txSig ? shortValue(txSig) : "missing",
+          guestJwt: jwt ? `${jwt.length} chars` : "missing",
+          leagues: numericLeagues.length ? numericLeagues : "standard bundle",
+          issues,
+          warnings
+        };
+
+        if (issues.length) {
+          setBad("preflightStatus", `${issues.length} issue(s)`);
+          setMetric("inputsMetric", "Needs input", "bad");
+        } else if (warnings.length) {
+          setWarn("preflightStatus", `${warnings.length} warning(s)`);
+          setMetric("inputsMetric", "Warnings", "warn");
+        } else {
+          setStatus("preflightStatus", "Ready to sign", true);
+          setMetric("inputsMetric", "Ready", "ok");
+        }
+
+        return summary;
+      }
+
+      function refreshHostMetric() {
+        const secure = location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1";
+        setMetric("hostMetric", secure ? "Secure" : "Use HTTPS", secure ? "ok" : "warn");
+      }
+
+      function refreshWalletMetric() {
+        const providers = walletProviders();
+        if (!providers.length) {
+          setMetric("walletMetric", "No wallet", "bad");
+          return [];
+        }
+        setMetric("walletMetric", providers.map(([label]) => label).join(", "), "ok");
+        return providers;
+      }
+
+      function invalidateSignature() {
+        state.walletSignature = "";
+        state.apiToken = "";
+        setStatus("messageStatus", "No signature yet");
+        setStatus("tokenStatus", "Not activated");
+        $("copyToken").disabled = true;
+        $("copyEnv").disabled = true;
+      }
+
+      function activationMessage() {
+        validateInputs({ strict: true });
+        const txSig = $("txSig").value.trim();
+        const jwt = $("jwt").value.trim();
         return `${txSig}:${leaguesArray().join(",")}:${jwt}`;
+      }
+
+      function walletProviders() {
+        return [
+          ["Phantom", window.phantom?.solana],
+          ["Solflare", window.solflare],
+          ["Backpack", window.backpack?.solana],
+          ["Browser Solana wallet", window.solana]
+        ]
+          .filter(([, provider]) => provider && (provider.connect || provider.signMessage || provider.request))
+          .filter((item, index, list) => list.findIndex(([, provider]) => provider === item[1]) === index);
+      }
+
+      function activeProvider() {
+        if (state.provider) return state.provider;
+        const providers = walletProviders();
+        if (!providers.length) {
+          throw new Error("No Solana browser wallet found. Install and enable Phantom, Backpack, or Solflare, then refresh this page.");
+        }
+        const phantom = providers.find(([, provider]) => provider?.isPhantom);
+        const [label, provider] = phantom || providers[0];
+        state.provider = provider;
+        log({
+          walletDetected: label,
+          providerFlags: {
+            isPhantom: Boolean(provider?.isPhantom),
+            isSolflare: Boolean(provider?.isSolflare),
+            isBackpack: Boolean(provider?.isBackpack)
+          }
+        });
+        return provider;
+      }
+
+      function publicKeyText(publicKey) {
+        return publicKey?.toBase58?.() || publicKey?.toString?.() || String(publicKey || "");
+      }
+
+      async function ensureWalletConnected() {
+        const provider = activeProvider();
+        if (provider.publicKey) {
+          state.publicKey = publicKeyText(provider.publicKey);
+          setStatus("walletStatus", state.publicKey, true);
+          return provider;
+        }
+
+        if (!provider.connect) {
+          throw new Error("Detected wallet does not expose connect(). Open the wallet extension, unlock it, and refresh this page.");
+        }
+
+        const result = await provider.connect();
+        state.publicKey = publicKeyText(result?.publicKey || provider.publicKey);
+        if (!state.publicKey) {
+          throw new Error("Wallet connected, but no public key was returned. Unlock the wallet and try again.");
+        }
+        setStatus("walletStatus", state.publicKey, true);
+        return provider;
+      }
+
+      function base58ToBytes(value) {
+        const alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        const bytes = [0];
+        for (const char of value) {
+          const carryStart = alphabet.indexOf(char);
+          if (carryStart < 0) throw new Error("not-base58");
+          let carry = carryStart;
+          for (let i = 0; i < bytes.length; i += 1) {
+            carry += bytes[i] * 58;
+            bytes[i] = carry & 0xff;
+            carry >>= 8;
+          }
+          while (carry) {
+            bytes.push(carry & 0xff);
+            carry >>= 8;
+          }
+        }
+        for (const char of value) {
+          if (char === "1") bytes.push(0);
+          else break;
+        }
+        return Uint8Array.from(bytes.reverse());
+      }
+
+      function hexToBytes(value) {
+        if (!/^(0x)?[0-9a-fA-F]+$/.test(value) || value.replace(/^0x/, "").length % 2) {
+          throw new Error("not-hex");
+        }
+        const clean = value.replace(/^0x/, "");
+        const bytes = new Uint8Array(clean.length / 2);
+        for (let i = 0; i < clean.length; i += 2) {
+          bytes[i / 2] = Number.parseInt(clean.slice(i, i + 2), 16);
+        }
+        return bytes;
+      }
+
+      function base64ToBytes(value) {
+        const binary = atob(value);
+        return Uint8Array.from(binary, (char) => char.charCodeAt(0));
+      }
+
+      function signatureToBytes(value) {
+        const candidate =
+          value?.signature ?? value?.data?.signature ?? value?.result?.signature ?? value?.signedMessage ?? value;
+
+        if (candidate instanceof Uint8Array) return candidate;
+        if (candidate instanceof ArrayBuffer) return new Uint8Array(candidate);
+        if (ArrayBuffer.isView(candidate)) {
+          return new Uint8Array(candidate.buffer, candidate.byteOffset, candidate.byteLength);
+        }
+        if (Array.isArray(candidate)) return Uint8Array.from(candidate);
+        if (candidate?.type === "Buffer" && Array.isArray(candidate.data)) {
+          return Uint8Array.from(candidate.data);
+        }
+        if (candidate && typeof candidate === "object" && Number.isInteger(candidate.length)) {
+          const values = Array.from({ length: candidate.length }, (_, index) => candidate[index]);
+          if (values.every((item) => Number.isInteger(item))) return Uint8Array.from(values);
+        }
+        if (typeof candidate === "string") {
+          for (const parser of [base64ToBytes, hexToBytes, base58ToBytes]) {
+            try {
+              const bytes = parser(candidate);
+              if (bytes.length === 64) return bytes;
+            } catch {
+              // Try the next common signature encoding.
+            }
+          }
+        }
+
+        throw new Error("Wallet returned an unsupported signature format. Try Phantom first, then refresh the page.");
+      }
+
+      function walletErrorMessage(error) {
+        const message = error?.message || String(error);
+        const code = error?.code ?? error?.data?.code;
+        state.lastError = {
+          name: error?.name || "WalletError",
+          code: code ?? null,
+          message
+        };
+        if (code === 4001 || /reject|denied|declined|cancel/i.test(message)) {
+          return "Signature was rejected in the wallet popup. Open the wallet prompt and approve the message if it matches the TxLINE activation text.";
+        }
+        if (/locked/i.test(message)) {
+          return "Wallet is locked. Unlock the wallet extension and try again.";
+        }
+        if (/not connected|connect/i.test(message)) {
+          return "Wallet is not connected. Click Connect wallet first, approve the wallet popup, then sign again.";
+        }
+        return message;
+      }
+
+      function safeDiagnostics() {
+        const providers = walletProviders();
+        return {
+          helperVersion: "2026-07-01-wallet-signing-v2",
+          page: location.href.split("?")[0],
+          protocol: location.protocol,
+          network: $("network").value,
+          apiOrigin: apiOrigin(),
+          walletProviders: providers.map(([label, provider]) => ({
+            label,
+            isPhantom: Boolean(provider?.isPhantom),
+            isSolflare: Boolean(provider?.isSolflare),
+            isBackpack: Boolean(provider?.isBackpack),
+            hasConnect: Boolean(provider?.connect),
+            hasSignMessage: Boolean(provider?.signMessage),
+            hasRequest: Boolean(provider?.request),
+            hasPublicKey: Boolean(provider?.publicKey)
+          })),
+          connectedPublicKey: state.publicKey ? shortValue(state.publicKey) : "",
+          txSigPresent: Boolean($("txSig").value.trim()),
+          txSigPreview: shortValue($("txSig").value.trim()),
+          guestJwtPresent: Boolean($("jwt").value.trim()),
+          guestJwtLength: $("jwt").value.trim().length,
+          leagues: leaguesArray(),
+          lastError: state.lastError
+        };
+      }
+
+      async function signBytes(provider, encoded) {
+        const attempts = [];
+        const shouldStop = (error) => {
+          const message = error?.message || "";
+          const code = error?.code ?? error?.data?.code;
+          return code === 4001 || /reject|denied|declined|cancel/i.test(message);
+        };
+
+        if (provider.signMessage) {
+          try {
+            return await provider.signMessage(encoded, "utf8");
+          } catch (error) {
+            attempts.push(`signMessage(message, "utf8"): ${error?.message || error}`);
+            if (shouldStop(error)) throw error;
+          }
+
+          try {
+            return await provider.signMessage(encoded);
+          } catch (error) {
+            attempts.push(`signMessage(message): ${error?.message || error}`);
+            if (shouldStop(error)) throw error;
+          }
+        }
+
+        if (provider.request) {
+          for (const params of [
+            { message: encoded, display: "utf8" },
+            { message: encoded, display: "hex" },
+            [encoded, "utf8"]
+          ]) {
+            try {
+              return await provider.request({
+                method: "signMessage",
+                params
+              });
+            } catch (error) {
+              attempts.push(`request(signMessage): ${error?.message || error}`);
+              if (shouldStop(error)) throw error;
+            }
+          }
+        }
+
+        throw new Error(
+          `Wallet signing failed after all supported methods.\n${attempts.join("\n") || "No signing method exposed."}`
+        );
       }
 
       function base64(bytes) {
@@ -300,6 +728,32 @@
         await navigator.clipboard.writeText(text);
       }
 
+      $("preflight").addEventListener("click", () => {
+        try {
+          refreshHostMetric();
+          const providers = refreshWalletMetric();
+          const summary = validateInputs({ strict: false });
+          log({
+            ok: !summary.issues.length,
+            preflight: summary,
+            walletProviders: providers.map(([label, provider]) => ({
+              label,
+              isPhantom: Boolean(provider?.isPhantom),
+              isSolflare: Boolean(provider?.isSolflare),
+              isBackpack: Boolean(provider?.isBackpack),
+              hasSignMessage: Boolean(provider?.signMessage),
+              hasRequest: Boolean(provider?.request)
+            })),
+            next: summary.issues.length
+              ? "Fix required input issues before signing."
+              : "Inputs look ready. Connect wallet, test signing, then sign the TxLINE activation message."
+          });
+        } catch (error) {
+          setBad("preflightStatus", "Preflight failed");
+          log(walletErrorMessage(error));
+        }
+      });
+
       $("guest").addEventListener("click", async () => {
         try {
           log("Requesting guest JWT...");
@@ -308,6 +762,7 @@
           const data = await response.json();
           const token = data.token || data.jwt || data;
           $("jwt").value = typeof token === "string" ? token : JSON.stringify(token);
+          validateInputs({ strict: false });
           log({ ok: true, endpoint: `${apiOrigin()}/auth/guest/start`, tokenReceived: Boolean($("jwt").value) });
         } catch (error) {
           log(`Guest JWT failed. If this is CORS, use the official docs or TxODDS support to issue the JWT.\n\n${error.message}`);
@@ -316,40 +771,82 @@
 
       $("wallet").addEventListener("click", async () => {
         try {
-          const provider = window.solana;
-          if (!provider || !provider.connect) {
-            throw new Error("No Solana browser wallet found. Install Phantom or another wallet that exposes window.solana.");
-          }
-          const result = await provider.connect();
-          state.publicKey = result.publicKey?.toBase58?.() || String(result.publicKey || "");
+          state.provider = null;
+          const provider = await ensureWalletConnected();
           setStatus("walletStatus", state.publicKey, true);
-          log({ connected: true, publicKey: state.publicKey });
+          setMetric("walletMetric", provider.isPhantom ? "Phantom connected" : "Wallet connected", "ok");
+          log({
+            connected: true,
+            publicKey: state.publicKey,
+            wallet: provider.isPhantom ? "Phantom" : provider.isSolflare ? "Solflare" : "Solana provider"
+          });
         } catch (error) {
           setStatus("walletStatus", "Connection failed");
-          log(error.message);
+          $("walletStatus").className = "bad";
+          refreshWalletMetric();
+          log(walletErrorMessage(error));
+        }
+      });
+
+      $("testSign").addEventListener("click", async () => {
+        try {
+          const provider = await ensureWalletConnected();
+          const messageString = `World Cup Live Pulse wallet signing test\n${new Date().toISOString()}`;
+          const encoded = new TextEncoder().encode(messageString);
+          const signed = await signBytes(provider, encoded);
+          const signatureBytes = signatureToBytes(signed);
+          setStatus("messageStatus", "Wallet signing works", true);
+          log({
+            ok: true,
+            testOnly: true,
+            publicKey: state.publicKey,
+            signaturePreview: `${base64(signatureBytes).slice(0, 10)}...`,
+            next: "Wallet signing works. Now enter txSig and guest JWT, then sign the TxLINE activation message."
+          });
+        } catch (error) {
+          setStatus("messageStatus", "Wallet signing test failed");
+          $("messageStatus").className = "bad";
+          log(walletErrorMessage(error));
+        }
+      });
+
+      $("copyMessage").addEventListener("click", async () => {
+        try {
+          const messageString = activationMessage();
+          await copy(messageString);
+          log({
+            copied: true,
+            messageFormat: "txSig:leagues:jwt",
+            preview: `${messageString.slice(0, 28)}...`,
+            length: messageString.length,
+            next: "Message copied for local verification only. Do not paste private keys or seed phrases anywhere."
+          });
+        } catch (error) {
+          setBad("preflightStatus", "Inputs required");
+          log(walletErrorMessage(error));
         }
       });
 
       $("sign").addEventListener("click", async () => {
         try {
-          const provider = window.solana;
-          if (!provider || !provider.signMessage) {
-            throw new Error("Wallet does not expose signMessage.");
-          }
+          const provider = await ensureWalletConnected();
           const messageString = activationMessage();
           const encoded = new TextEncoder().encode(messageString);
-          const signed = await provider.signMessage(encoded, "utf8");
-          const signatureBytes = signed.signature || signed;
+          const signed = await signBytes(provider, encoded);
+          const signatureBytes = signatureToBytes(signed);
           state.walletSignature = base64(signatureBytes);
           setStatus("messageStatus", "Signed activation message", true);
           log({
             publicKey: state.publicKey || "wallet public key unavailable",
             messagePreview: messageString.slice(0, 34) + "...",
-            walletSignature: state.walletSignature
+            signaturePreview: `${state.walletSignature.slice(0, 10)}...`,
+            signatureEncoding: "base64",
+            next: "Now click Activate API token. The full signature is kept in page memory only."
           });
         } catch (error) {
           setStatus("messageStatus", "Signature failed");
-          log(error.message);
+          $("messageStatus").className = "bad";
+          log(walletErrorMessage(error));
         }
       });
 
@@ -416,6 +913,31 @@
         await copy(lines);
         log("Env lines copied. Save them in .env.local only; never commit that file.");
       });
+
+      $("copyDiagnostics").addEventListener("click", async () => {
+        const diagnostics = safeDiagnostics();
+        await copy(JSON.stringify(diagnostics, null, 2));
+        log({
+          copied: true,
+          safeDiagnostics: diagnostics,
+          note: "This diagnostic omits private keys, seed phrases, full JWTs, and API tokens."
+        });
+      });
+
+      ["network", "txSig", "leagues", "jwt"].forEach((id) => {
+        $(id).addEventListener("input", () => {
+          invalidateSignature();
+          validateInputs({ strict: false });
+        });
+        $(id).addEventListener("change", () => {
+          invalidateSignature();
+          validateInputs({ strict: false });
+        });
+      });
+
+      refreshHostMetric();
+      refreshWalletMetric();
+      validateInputs({ strict: false });
     </script>
   </body>
 </html>
