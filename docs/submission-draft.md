@@ -48,7 +48,7 @@ Implemented local integration:
 
 - Deployed app: https://yuzhenjiang134.github.io/world-cup-live-pulse/
 - GitHub repo: https://github.com/yuzhenjiang134/world-cup-live-pulse
-- Demo video:
+- Demo video: https://yuzhenjiang134.github.io/world-cup-live-pulse/demo/
 - Technical write-up: docs/technical-writeup.md
 - TxLINE endpoints used:
 

@@ -4,3 +4,8 @@ dist
 .env.local
 .DS_Store
 *.log
+demo-assets/screenshots/
+demo-assets/*.png
+demo-assets/*.webm
+demo-assets/*.mp4
+demo-assets/video-status.json

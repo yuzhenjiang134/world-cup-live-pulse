@@ -82,6 +82,28 @@ npm run security
 npm run validate
 ```
 
+## Demo video
+
+The reproducible local demo-video package is documented in `docs/DEMO_VIDEO_PACKAGE.md`.
+
+After refreshing screenshots, run:
+
+```bash
+node scripts/record-demo-video.mjs
+```
+
+Then open the printed local recorder URL. The generated captioned WebM is written to:
+
+```text
+demo-assets/world-cup-live-pulse-demo.webm
+```
+
+The current public draft is served from:
+
+```text
+https://yuzhenjiang134.github.io/world-cup-live-pulse/demo/
+```
+
 ## Deploy
 
 GitHub Pages deployment is configured in `.github/workflows/pages.yml`.
@@ -153,6 +175,8 @@ src/
 - `docs/API_ACCESS_PLAN.md`: local token and secure proxy plan for real TxLINE data
 - `docs/PRODUCT_VALUE_REVIEW.md`: candid fan value and commercial-readiness review
 - `docs/COMPETITOR_REVIEW.md`: public competitor scan and number-one plan
+- `docs/OFFICIAL_SOURCE_RECHECK.md`: current official Superteam / TxLINE source check
+- `docs/DEMO_VIDEO_PACKAGE.md`: reproducible local demo-video generation notes
 - `docs/API_FEEDBACK.md`: API feedback for sponsor docs and live-data consistency
 - `docs/USER_MANUAL.md`: user-facing operation manual
 - `docs/SUBMISSION_DRAFT.md`: Superteam submission draft

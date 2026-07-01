@@ -108,7 +108,7 @@ Updated: 2026-06-28
 - [x] GitHub Pages deployment check
 - [ ] Superteam Earn account access
 - [ ] Telegram contact for submission
-- [ ] Demo video hosting target
+- [x] Demo video hosting target
 - [ ] Clean Solana wallet for prize workflow only
 
 ## Next implementation after TxLINE token arrives
@@ -134,8 +134,8 @@ Updated: 2026-06-28
 - [x] Make GitHub repo public
 - [x] Confirm no `.env`, API token, private key, seed phrase, or verification code is committed
 - [x] Run local security scan
-- [ ] Record 3 to 5 minute demo video
+- [x] Record under-5-minute demo video draft
 - [x] Fill final GitHub Pages URL in `docs/SUBMISSION_DRAFT.md`
 - [x] Fill GitHub URL in `docs/SUBMISSION_DRAFT.md`
-- [ ] Fill demo video URL in `docs/submission-draft.md`
+- [x] Fill demo video URL in `docs/submission-draft.md`
 - [ ] Re-check the live Superteam listing, then submit before the deadline snapshot of 2026-07-19 23:59 UTC if unchanged

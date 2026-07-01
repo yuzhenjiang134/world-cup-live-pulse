@@ -1,6 +1,6 @@
 # Public Research Summary
 
-Updated: 2026-06-28
+Updated: 2026-07-01
 
 ## Why We Are Building This
 
@@ -129,6 +129,10 @@ Applied decision for this repo:
 ## Sources Checked
 
 - Saved Superteam / TxODDS track brief pasted into the project thread.
+- Superteam World Cup Hackathon page rechecked on 2026-07-01: https://superteam.fun/earn/hackathon/world-cup/
+- TxLINE Quickstart rechecked on 2026-07-01: https://txline.txodds.com/documentation/quickstart
+- TxLINE World Cup Free Tier rechecked on 2026-07-01: https://txline.txodds.com/documentation/worldcup
+- TxLINE OpenAPI spec rechecked on 2026-07-01: https://txline.txodds.com/docs/docs.yaml
 - TxLINE World Cup docs: https://txline.txodds.com/documentation/worldcup
 - TxLINE World Cup schedule docs: https://txline.txodds.com/documentation/scores/schedule
 - TxLINE guest auth docs: https://txline.txodds.com/api-reference/authentication/start-a-new-guest-session

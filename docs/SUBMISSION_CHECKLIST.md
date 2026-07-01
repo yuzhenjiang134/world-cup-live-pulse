@@ -46,6 +46,8 @@
 ## Demo video
 
 - [ ] Under 5 minutes.
+- [ ] Local draft generated at `demo-assets/world-cup-live-pulse-demo.webm`.
+- [ ] Public Loom / YouTube / hosted video URL created from the final draft.
 - [ ] Shows Source Board, checked timestamp, and data consistency.
 - [ ] Shows Trust & Accuracy Center and explains schedule seed versus Live data.
 - [ ] Uses Judge Demo chapters.

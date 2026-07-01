@@ -6,7 +6,7 @@ Use this as the final project packet index.
 
 - App: https://yuzhenjiang134.github.io/world-cup-live-pulse/
 - GitHub: https://github.com/yuzhenjiang134/world-cup-live-pulse
-- Demo video: fill after recording
+- Demo video: https://yuzhenjiang134.github.io/world-cup-live-pulse/demo/
 - Project title: World Cup Live Pulse
 - Track: Consumer and Fan Experiences
 
@@ -61,7 +61,7 @@ It does not:
 ```text
 Deployed URL: https://yuzhenjiang134.github.io/world-cup-live-pulse/
 GitHub URL: https://github.com/yuzhenjiang134/world-cup-live-pulse
-Demo video URL:
+Demo video URL: https://yuzhenjiang134.github.io/world-cup-live-pulse/demo/
 TxLINE endpoints used:
 POST /auth/guest/start; GET /api/fixtures/snapshot; GET /api/scores/snapshot/{fixtureId}; GET /api/odds/snapshot/{fixtureId}
 TxLINE feedback: see docs/API_FEEDBACK.md; update again after real token testing
