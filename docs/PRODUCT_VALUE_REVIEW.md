@@ -16,6 +16,7 @@ The current build is therefore optimized for an attention product, not a generic
 - Added a local alert threshold selector: Early, Balanced, Big swings.
 - The signal is based on current pulse, score/event movement, high-value events, and distance to the next replay key moment.
 - The copy explicitly says this is an attention signal, not betting advice.
+- Added an Operator Kit for buyer evaluation: venue use case, community use case, media embed use case, timeliness contract, brand safety, and commercial path.
 
 ## Why this matters for the hackathon
 
@@ -37,5 +38,9 @@ Judges are likely to reward real fan usefulness more than raw data volume. A fan
 
 - Fan usefulness: 8/10 for a demo, 6/10 for daily real use until TxLINE live data is active.
 - Trust and accuracy: 8/10 because Replay, Seed, and Live boundaries are explicit.
-- Commercial path: 6/10 now, potentially 8/10 if live data + alerts are deployed.
+- Commercial path: 7/10 now for B2B/venue positioning, potentially 8.5/10 if live data + alerts are deployed.
 - Submission strength: 8/10 because the build has a clear consumer problem, working replay demo, safety boundaries, and documented API plan.
+
+## Competitive read
+
+The most threatening public Consumer/Fan competitor is a watch-room product with multiplayer loops and AI recaps. World Cup Live Pulse should not try to clone that feature set late. Its stronger path is to be the simplest, safest second-screen attention layer: immediate tune-in signal, source truth, multilingual fan read, and buyer-ready venue/media use cases.

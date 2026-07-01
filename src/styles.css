@@ -124,17 +124,22 @@ button:hover {
   order: 18;
 }
 
-.trust-center {
+.operator-kit-panel {
   order: 19;
 }
 
-.judge-demo-layer {
+.trust-center {
   order: 20;
+}
+
+.judge-demo-layer {
+  order: 21;
 }
 
 .preset-fan .today-board,
 .preset-fan .brief-grid,
 .preset-fan .api-access-panel,
+.preset-fan .operator-kit-panel,
 .preset-fan .trust-center,
 .preset-fan .judge-demo-layer,
 .preset-fan .match-facts-panel,
@@ -2260,6 +2265,104 @@ h2 {
   background: #d53652;
 }
 
+.operator-kit-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 12px;
+  margin: 0 0 16px;
+}
+
+.operator-decision,
+.operator-grid-card,
+.operator-edge-card {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid #d8e0dc;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 14px 28px rgba(23, 33, 38, 0.04);
+}
+
+.operator-decision {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  background:
+    linear-gradient(135deg, rgba(23, 33, 38, 0.96), rgba(42, 81, 74, 0.92)),
+    #172126;
+  color: #ffffff;
+}
+
+.operator-decision .eyebrow,
+.operator-decision h2,
+.operator-decision strong {
+  color: #ffffff;
+}
+
+.operator-decision > span,
+.operator-edge-card > span {
+  color: #8ca0a3;
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.operator-decision > strong {
+  font-size: clamp(1.12rem, 1.7vw, 1.42rem);
+  line-height: 1.32;
+}
+
+.operator-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.operator-card-grid section {
+  min-width: 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f3f6f5;
+}
+
+.operator-card-grid span {
+  color: #657478;
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.operator-card-grid strong {
+  display: block;
+  margin: 5px 0;
+  color: #172126;
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.operator-card-grid p {
+  margin: 0;
+  color: #546669;
+  line-height: 1.42;
+}
+
+.operator-edge-card {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(170px, 0.3fr) repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+}
+
+.operator-edge-card strong {
+  min-height: 54px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fff7f4;
+  color: #172126;
+  line-height: 1.28;
+}
+
 .trust-center {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
@@ -3093,6 +3196,9 @@ meter {
   .today-board,
   .brief-grid,
   .api-access-grid,
+  .operator-kit-panel,
+  .operator-card-grid,
+  .operator-edge-card,
   .trust-center,
   .judge-demo-layer,
   .story-strip,

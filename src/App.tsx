@@ -179,6 +179,34 @@ const copy = {
     apiAccessQuestionToken: "Hackathon X-Api-Token or activation route",
     apiAccessQuestionCors: "CORS policy and whether browser demos are allowed",
     apiAccessQuestionLimits: "Rate limits, fixture access, delay level, and SSE rules",
+    operatorKit: "Operator kit",
+    operatorTitle: "Would a buyer license this?",
+    operatorBuyerQuestion: "Buyer decision",
+    operatorBuyerAnswer:
+      "Yes for venues, fan communities, and media pages if live TxLINE data is activated through a secure proxy; not yet as a paid standalone consumer app without true live payloads.",
+    operatorVenue: "Sports bars / fan zones",
+    operatorVenueNote:
+      "Use the tune-in signal, score pulse, and sponsor-safe moments on a shared screen while fans keep predictions local.",
+    operatorCommunity: "Creators / communities",
+    operatorCommunityNote:
+      "Shareable pick cards, multilingual reads, and replayable match moments give community managers content without running a betting pool.",
+    operatorMedia: "Media / club pages",
+    operatorMediaNote:
+      "Embed as a lightweight second-screen match center with explicit Replay, Seed, Live, and freshness labels.",
+    operatorProofLatency: "Timeliness contract",
+    operatorProofLatencyNote:
+      "The app shows source freshness. Live should only be claimed after authenticated TxLINE payloads load; otherwise it stays Replay or Seed.",
+    operatorProofSafety: "Brand safety",
+    operatorProofSafetyNote:
+      "No wallet custody, no betting calls, no pirated video, no private token in the browser bundle.",
+    operatorProofCommercial: "Commercial path",
+    operatorProofCommercialNote:
+      "White-label attention layer, venue screen, sponsor moments, and API-backed match intelligence.",
+    competitorEdgeTitle: "Competitive edge",
+    competitorEdgeFinalWhistle: "Against room products: simpler, instant, no host setup.",
+    competitorEdgeProof: "Against proof/trading tools: more consumer-readable, less financial.",
+    competitorEdgeOurEdge: "Our edge: attention signal + trust labels + multilingual fan view.",
+    competitorEdgeBlocker: "To be number one: activate real TxLINE live and record the demo video.",
     matchIntelligence: "Match Intelligence",
     phaseSummary: "Phase summary",
     preMatch: "Pre-match",
@@ -598,6 +626,28 @@ const cleanZhCopy = {
   apiAccessQuestionToken: "Hackathon X-Api-Token 或激活路径",
   apiAccessQuestionCors: "CORS 策略以及是否允许浏览器演示",
   apiAccessQuestionLimits: "速率限制、fixture 权限、延迟等级和 SSE 规则",
+  operatorKit: "运营方套件",
+  operatorTitle: "厂家会愿意买吗？",
+  operatorBuyerQuestion: "买方判断",
+  operatorBuyerAnswer:
+    "如果通过安全代理接入真实 TxLINE live 数据，酒吧、球迷社区、媒体页会有购买理由；如果没有真实 live payload，还不足以作为独立付费消费应用。",
+  operatorVenue: "体育酒吧 / 球迷现场",
+  operatorVenueNote: "把观看信号、比分脉冲和品牌安全节点放到大屏，球迷预测仍只保存在本地。",
+  operatorCommunity: "创作者 / 社区",
+  operatorCommunityNote: "可分享预测卡、多语言解读和可回放节点，能给社群运营内容，但不变成投注平台。",
+  operatorMedia: "媒体 / 俱乐部页面",
+  operatorMediaNote: "作为轻量第二屏比赛中心嵌入，并明确标注 Replay、Seed、Live 和刷新时间。",
+  operatorProofLatency: "及时性契约",
+  operatorProofLatencyNote: "页面展示来源新鲜度。只有 TxLINE 鉴权数据成功加载后才称为 Live，否则保持 Replay 或 Seed。",
+  operatorProofSafety: "品牌安全",
+  operatorProofSafetyNote: "不托管钱包、不引导下注、不盗播视频、不把私密 token 打进浏览器包。",
+  operatorProofCommercial: "商业路径",
+  operatorProofCommercialNote: "白标注意力层、场馆大屏、赞助节点和 API 驱动的比赛智能。",
+  competitorEdgeTitle: "竞争优势",
+  competitorEdgeFinalWhistle: "对比房间类产品：更轻、更快打开、不需要房主设置。",
+  competitorEdgeProof: "对比证明/交易工具：更面向普通球迷，不金融化。",
+  competitorEdgeOurEdge: "我们的优势：观看信号 + 数据可信标签 + 多语言球迷视图。",
+  competitorEdgeBlocker: "冲第一还差：真实 TxLINE live 接入和最终 demo 视频。",
   matchIntelligence: "比赛智能层",
   phaseSummary: "阶段摘要",
   preMatch: "赛前",
@@ -3371,6 +3421,22 @@ export default function App() {
     t.apiAccessQuestionCors,
     t.apiAccessQuestionLimits,
   ];
+  const operatorValueItems = [
+    { label: t.operatorVenue, value: t.watchSignal, note: t.operatorVenueNote },
+    { label: t.operatorCommunity, value: t.downloadPickCard, note: t.operatorCommunityNote },
+    { label: t.operatorMedia, value: t.dataConsistency, note: t.operatorMediaNote },
+  ];
+  const operatorProofItems = [
+    { label: t.operatorProofLatency, value: dataStatusLabel, note: t.operatorProofLatencyNote },
+    { label: t.operatorProofSafety, value: t.noBetting, note: t.operatorProofSafetyNote },
+    { label: t.operatorProofCommercial, value: t.ready, note: t.operatorProofCommercialNote },
+  ];
+  const competitorEdges = [
+    t.competitorEdgeFinalWhistle,
+    t.competitorEdgeProof,
+    t.competitorEdgeOurEdge,
+    t.competitorEdgeBlocker,
+  ];
   const scheduleSeedItems = dataConsistencyState.today.filter((item) => item.fixtureId);
   const matchdayItems = dataConsistencyState.today.slice(0, 5);
   const trustMetrics = [
@@ -4507,6 +4573,45 @@ export default function App() {
             <strong key={item}>{item}</strong>
           ))}
         </div>
+      </section>
+
+      <section className="operator-kit-panel" aria-label={t.operatorKit}>
+        <article className="operator-decision">
+          <div className="panel-heading">
+            <p className="eyebrow">{t.operatorKit}</p>
+            <h2>{t.operatorTitle}</h2>
+          </div>
+          <span>{t.operatorBuyerQuestion}</span>
+          <strong>{t.operatorBuyerAnswer}</strong>
+        </article>
+        <article className="operator-grid-card">
+          <div className="operator-card-grid">
+            {operatorValueItems.map((item) => (
+              <section key={item.label}>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <p>{item.note}</p>
+              </section>
+            ))}
+          </div>
+        </article>
+        <article className="operator-grid-card">
+          <div className="operator-card-grid">
+            {operatorProofItems.map((item) => (
+              <section key={item.label}>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <p>{item.note}</p>
+              </section>
+            ))}
+          </div>
+        </article>
+        <article className="operator-edge-card">
+          <span>{t.competitorEdgeTitle}</span>
+          {competitorEdges.map((item) => (
+            <strong key={item}>{item}</strong>
+          ))}
+        </article>
       </section>
 
       <section className="trust-center" aria-label={trust.title}>
