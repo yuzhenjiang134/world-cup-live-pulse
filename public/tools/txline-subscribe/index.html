@@ -305,7 +305,7 @@
           <div class="actions">
             <button id="preflight" class="secondary">Preflight</button>
             <button id="wallet" class="secondary">Connect wallet</button>
-            <button id="loadIdl" class="secondary">Load TxLINE IDL</button>
+            <button id="loadIdl" class="secondary">Prepare instruction</button>
             <button id="subscribe">Subscribe free tier</button>
           </div>
         </section>
@@ -315,7 +315,7 @@
           <div class="steps">
             <div class="step"><strong>Network</strong><span id="networkStatus">Not checked</span></div>
             <div class="step"><strong>Wallet</strong><span id="walletStatus">Not connected</span></div>
-            <div class="step"><strong>TxLINE Program</strong><span id="programStatus">Not loaded</span></div>
+            <div class="step"><strong>TxLINE Instruction</strong><span id="programStatus">Not prepared</span></div>
             <div class="step"><strong>Subscription txSig</strong><span id="txStatus">Not submitted</span></div>
           </div>
           <h2 style="margin-top: 16px">Result</h2>
@@ -690,6 +690,184 @@
           txSigPreview: state.txSig ? shortValue(state.txSig) : "",
           lastError: state.lastError
         };
+      }
+
+      async function loadLibraries() {
+        if (state.libs) return state.libs;
+        log("Loading Solana libraries from CDN...");
+        const web3 = await import("https://esm.sh/@solana/web3.js@1.98.2?bundle");
+        const spl = await import("https://esm.sh/@solana/spl-token@0.4.13?bundle");
+        state.libs = { web3, spl };
+        return state.libs;
+      }
+
+      async function buildAnchorContext() {
+        validateInputs({ strict: true });
+        const provider = await ensureWalletConnected();
+        const { web3 } = await loadLibraries();
+        const current = cfg();
+        const connection = new web3.Connection($("rpcUrl").value.trim(), "confirmed");
+        return {
+          web3,
+          connection,
+          provider,
+          current,
+          programId: new web3.PublicKey(current.programId),
+          txlMint: new web3.PublicKey(current.txlMint)
+        };
+      }
+
+      function pdaSeed(text) {
+        return new TextEncoder().encode(text);
+      }
+
+      function subscribeInstructionData(serviceLevel, durationWeeks) {
+        const data = new Uint8Array(11);
+        data.set([254, 28, 191, 138, 156, 179, 183, 53], 0);
+        new DataView(data.buffer).setUint16(8, serviceLevel, true);
+        data[10] = durationWeeks;
+        return data;
+      }
+
+      async function prepareSubscribeInstruction() {
+        const context = await buildAnchorContext();
+        const { web3, spl, provider, current, programId, txlMint } = {
+          ...context,
+          spl: (await loadLibraries()).spl
+        };
+        const user = provider.publicKey;
+        const [tokenTreasuryPda] = web3.PublicKey.findProgramAddressSync(
+          [pdaSeed("token_treasury_v2")],
+          programId
+        );
+        const tokenTreasuryVault = spl.getAssociatedTokenAddressSync(
+          txlMint,
+          tokenTreasuryPda,
+          true,
+          spl.TOKEN_2022_PROGRAM_ID,
+          spl.ASSOCIATED_TOKEN_PROGRAM_ID
+        );
+        const [pricingMatrixPda] = web3.PublicKey.findProgramAddressSync(
+          [pdaSeed("pricing_matrix")],
+          programId
+        );
+        const userTokenAccount = spl.getAssociatedTokenAddressSync(
+          txlMint,
+          user,
+          false,
+          spl.TOKEN_2022_PROGRAM_ID,
+          spl.ASSOCIATED_TOKEN_PROGRAM_ID
+        );
+
+        return {
+          ...context,
+          spl,
+          user,
+          serviceLevel: Number($("serviceLevel").value),
+          durationWeeks: Number($("durationWeeks").value),
+          tokenTreasuryPda,
+          tokenTreasuryVault,
+          pricingMatrixPda,
+          userTokenAccount,
+          instruction: new web3.TransactionInstruction({
+            programId,
+            keys: [
+              { pubkey: user, isSigner: true, isWritable: true },
+              { pubkey: pricingMatrixPda, isSigner: false, isWritable: false },
+              { pubkey: txlMint, isSigner: false, isWritable: false },
+              { pubkey: userTokenAccount, isSigner: false, isWritable: true },
+              { pubkey: tokenTreasuryVault, isSigner: false, isWritable: true },
+              { pubkey: tokenTreasuryPda, isSigner: false, isWritable: false },
+              { pubkey: spl.TOKEN_2022_PROGRAM_ID, isSigner: false, isWritable: false },
+              { pubkey: web3.SystemProgram.programId, isSigner: false, isWritable: false },
+              { pubkey: spl.ASSOCIATED_TOKEN_PROGRAM_ID, isSigner: false, isWritable: false }
+            ],
+            data: subscribeInstructionData(Number($("serviceLevel").value), Number($("durationWeeks").value))
+          })
+        };
+      }
+
+      async function loadProgram() {
+        const plan = await prepareSubscribeInstruction();
+        state.idl = { manualSubscribeInstruction: true };
+        state.program = null;
+        setStatus("programStatus", `Prepared ${plan.programId.toBase58()}`, "ok");
+        setMetric("idlMetric", "Prepared", "ok");
+        log({
+          ok: true,
+          mode: "manual official IDL instruction",
+          network: $("network").value,
+          programId: plan.programId.toBase58(),
+          serviceLevel: plan.serviceLevel,
+          durationWeeks: plan.durationWeeks,
+          accounts: {
+            user: plan.user.toBase58(),
+            pricingMatrix: plan.pricingMatrixPda.toBase58(),
+            tokenMint: plan.txlMint.toBase58(),
+            userTokenAccount: plan.userTokenAccount.toBase58(),
+            tokenTreasuryVault: plan.tokenTreasuryVault.toBase58(),
+            tokenTreasuryPda: plan.tokenTreasuryPda.toBase58()
+          },
+          next: "Click Subscribe free tier. Your wallet will show a transaction for this instruction."
+        });
+        return plan;
+      }
+
+      async function subscribeFreeTier() {
+        const plan = await prepareSubscribeInstruction();
+        const { web3, connection, provider } = plan;
+        await checkBalance(connection, plan.user);
+
+        const transaction = new web3.Transaction().add(plan.instruction);
+        const blockhash = await connection.getLatestBlockhash("confirmed");
+        transaction.recentBlockhash = blockhash.blockhash;
+        transaction.feePayer = plan.user;
+
+        log({
+          reviewBeforeApproving: true,
+          network: $("network").value,
+          mode: "manual official IDL instruction",
+          programId: plan.programId.toBase58(),
+          serviceLevel: plan.serviceLevel,
+          durationWeeks: plan.durationWeeks,
+          user: plan.user.toBase58(),
+          next: "Wallet approval required. Reject if anything looks unexpected."
+        });
+
+        const signedTransaction = await provider.signTransaction(transaction);
+        const simulation = await connection.simulateTransaction(signedTransaction, {
+          commitment: "confirmed",
+          replaceRecentBlockhash: true
+        });
+        if (simulation.value.err) {
+          throw new Error(
+            `Transaction simulation failed before sending.\n${JSON.stringify(simulation.value.err)}\n\nLogs:\n${(simulation.value.logs || []).join("\n")}`
+          );
+        }
+
+        const txSig = await connection.sendRawTransaction(signedTransaction.serialize(), {
+          skipPreflight: false,
+          preflightCommitment: "confirmed"
+        });
+        await connection.confirmTransaction(
+          {
+            signature: txSig,
+            blockhash: blockhash.blockhash,
+            lastValidBlockHeight: blockhash.lastValidBlockHeight
+          },
+          "confirmed"
+        );
+
+        state.txSig = txSig;
+        setStatus("txStatus", txSig, "ok");
+        $("copyTx").disabled = false;
+        $("openActivation").disabled = false;
+        log({
+          ok: true,
+          txSig,
+          network: $("network").value,
+          next: "Copy txSig or open the activation helper. Use the same network there."
+        });
       }
 
       $("network").addEventListener("change", () => {
