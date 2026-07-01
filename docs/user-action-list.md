@@ -18,6 +18,7 @@ Endpoint docs are already mapped. Give Codex only the safe integration materials
 
 - [x] TxLINE endpoint documentation
 - [x] Endpoint base URL
+- [x] Safe activation helper URL: `https://yuzhenjiang134.github.io/world-cup-live-pulse/tools/txline-activation/`
 - [ ] Which endpoints are allowed for this hackathon token
 - [ ] Rate limit notes
 - [ ] Whether browser CORS is allowed or a server-side proxy is required
@@ -30,6 +31,8 @@ Keep private:
 - API token
 - Account password
 - Verification code
+- Wallet private key
+- Seed phrase
 
 When the token is ready, place it only in `.env.local`:
 

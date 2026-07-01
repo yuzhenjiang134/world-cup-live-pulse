@@ -153,6 +153,14 @@ Without a local token the probe safely skips. With a token it verifies guest JWT
 
 Do not commit `.env`, `.env.local`, API tokens, wallet keys, seed phrases, or verification codes. Do not put real tokens into GitHub Pages build settings unless the sponsor explicitly allows public browser exposure.
 
+For official free-tier activation, use the safe browser-wallet helper instead of sharing a private key:
+
+```text
+https://yuzhenjiang134.github.io/world-cup-live-pulse/tools/txline-activation/
+```
+
+The helper uses wallet `signMessage` and is documented in `docs/TXLINE_SAFE_ACTIVATION.md`.
+
 `VITE_AUTHORIZED_VIDEO_EMBED_URL` is optional and must only contain a rights-cleared `https://` embed URL from an official broadcaster, FIFA, YouTube Live, or another authorized provider. The public build does not scrape or embed unofficial match video.
 
 ## Project structure
@@ -172,6 +180,7 @@ src/
 - `TASKS.md`: current task list and blocked external inputs
 - `docs/TECHNICAL_OVERVIEW.md`: architecture, data consistency, and safety boundary
 - `docs/TXLINE_ENDPOINTS.md`: TxLINE endpoint mapping plan
+- `docs/TXLINE_SAFE_ACTIVATION.md`: safe browser-wallet activation workflow
 - `docs/API_ACCESS_PLAN.md`: local token and secure proxy plan for real TxLINE data
 - `docs/PRODUCT_VALUE_REVIEW.md`: candid fan value and commercial-readiness review
 - `docs/COMPETITOR_REVIEW.md`: public competitor scan and number-one plan
