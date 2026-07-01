@@ -264,7 +264,7 @@
         <div class="compact-grid">
           <div class="metric"><span>Host</span><strong id="hostMetric">Checking...</strong></div>
           <div class="metric"><span>Wallet</span><strong id="walletMetric">Not checked</strong></div>
-          <div class="metric"><span>IDL</span><strong id="idlMetric">Not loaded</strong></div>
+          <div class="metric"><span>Instruction</span><strong id="idlMetric">Not prepared</strong></div>
           <div class="metric"><span>Balance</span><strong id="balanceMetric">Not checked</strong></div>
         </div>
       </section>
@@ -474,21 +474,10 @@
 
         const provider = solanaProvider();
         setMetric("walletMetric", provider ? providerLabel(provider) : "No wallet", provider ? "ok" : "bad");
-        setMetric("idlMetric", state.idl ? "Loaded" : "Not loaded", state.idl ? "ok" : "");
+        setMetric("idlMetric", state.idl ? "Prepared" : "Not prepared", state.idl ? "ok" : "");
         if (!state.walletPublicKey) {
           setMetric("balanceMetric", "Not checked");
         }
-      }
-
-      async function loadLibraries() {
-        if (state.libs) return state.libs;
-        log("Loading Solana and Anchor libraries from CDN...");
-        const bufferModule = await import("https://esm.sh/buffer@6.0.3");
-        window.Buffer = bufferModule.Buffer;
-        const anchor = await import("https://esm.sh/@coral-xyz/anchor@0.30.1?bundle");
-        const spl = await import("https://esm.sh/@solana/spl-token@0.4.13?bundle");
-        state.libs = { anchor, spl };
-        return state.libs;
       }
 
       async function ensureWalletConnected() {
@@ -511,153 +500,12 @@
         return provider;
       }
 
-      function walletAdapter(provider) {
-        return {
-          publicKey: provider.publicKey,
-          signTransaction: provider.signTransaction.bind(provider),
-          signAllTransactions: provider.signAllTransactions
-            ? provider.signAllTransactions.bind(provider)
-            : async (transactions) => Promise.all(transactions.map((tx) => provider.signTransaction(tx)))
-        };
-      }
-
-      async function buildAnchorContext() {
-        validateInputs({ strict: true });
-        const provider = await ensureWalletConnected();
-        const { anchor } = await loadLibraries();
-        const current = cfg();
-        const connection = new anchor.web3.Connection($("rpcUrl").value.trim(), "confirmed");
-        const anchorProvider = new anchor.AnchorProvider(connection, walletAdapter(provider), {
-          commitment: "confirmed",
-          preflightCommitment: "confirmed"
-        });
-        anchor.setProvider(anchorProvider);
-        return {
-          anchor,
-          connection,
-          anchorProvider,
-          current,
-          programId: new anchor.web3.PublicKey(current.programId),
-          txlMint: new anchor.web3.PublicKey(current.txlMint)
-        };
-      }
-
-      async function loadProgram() {
-        const context = await buildAnchorContext();
-        log("Fetching TxLINE Anchor IDL from the selected network...");
-        const idl = await context.anchor.Program.fetchIdl(context.programId, context.anchorProvider);
-        if (!idl) {
-          throw new Error(
-            "Could not fetch the TxLINE Anchor IDL from chain. Check the network, RPC URL, and official program id."
-          );
-        }
-
-        const normalizedIdl = { ...idl, address: idl.address || context.programId.toBase58() };
-        let program;
-        try {
-          program = new context.anchor.Program(normalizedIdl, context.anchorProvider);
-        } catch {
-          program = new context.anchor.Program(normalizedIdl, context.programId, context.anchorProvider);
-        }
-
-        if (!program.programId.equals(context.programId)) {
-          throw new Error(
-            `Loaded program ${program.programId.toBase58()} does not match expected ${context.programId.toBase58()}.`
-          );
-        }
-
-        state.idl = normalizedIdl;
-        state.program = program;
-        setStatus("programStatus", `Loaded ${context.programId.toBase58()}`, "ok");
-        setMetric("idlMetric", "Loaded", "ok");
-        log({
-          ok: true,
-          network: $("network").value,
-          programId: context.programId.toBase58(),
-          idlName: normalizedIdl.name || normalizedIdl.metadata?.name || "TxLINE program",
-          next: "Click Subscribe free tier. Your wallet will show the transaction before it is sent."
-        });
-        return { ...context, program };
-      }
-
       async function checkBalance(connection, publicKey) {
         const lamports = await connection.getBalance(publicKey, "confirmed");
         const sol = lamports / 1_000_000_000;
         const label = `${sol.toFixed(sol >= 0.01 ? 4 : 6)} SOL`;
         setMetric("balanceMetric", label, lamports > 0 ? "ok" : "warn");
         return { lamports, sol };
-      }
-
-      async function subscribeFreeTier() {
-        const context = state.program ? await buildAnchorContext() : await loadProgram();
-        const { anchor, spl, connection, anchorProvider, current } = context;
-        const program = state.program || context.program;
-        const serviceLevel = Number($("serviceLevel").value);
-        const durationWeeks = Number($("durationWeeks").value);
-        const user = anchorProvider.wallet.publicKey;
-
-        await checkBalance(connection, user);
-
-        const [tokenTreasuryPda] = anchor.web3.PublicKey.findProgramAddressSync(
-          [window.Buffer.from("token_treasury_v2")],
-          program.programId
-        );
-        const tokenTreasuryVault = spl.getAssociatedTokenAddressSync(
-          new anchor.web3.PublicKey(current.txlMint),
-          tokenTreasuryPda,
-          true,
-          spl.TOKEN_2022_PROGRAM_ID,
-          spl.ASSOCIATED_TOKEN_PROGRAM_ID
-        );
-        const [pricingMatrixPda] = anchor.web3.PublicKey.findProgramAddressSync(
-          [window.Buffer.from("pricing_matrix")],
-          program.programId
-        );
-        const userTokenAccount = spl.getAssociatedTokenAddressSync(
-          new anchor.web3.PublicKey(current.txlMint),
-          user,
-          false,
-          spl.TOKEN_2022_PROGRAM_ID,
-          spl.ASSOCIATED_TOKEN_PROGRAM_ID
-        );
-
-        log({
-          reviewBeforeApproving: true,
-          network: $("network").value,
-          programId: program.programId.toBase58(),
-          serviceLevel,
-          durationWeeks,
-          user: user.toBase58(),
-          tokenTreasuryPda: tokenTreasuryPda.toBase58(),
-          pricingMatrixPda: pricingMatrixPda.toBase58(),
-          next: "Wallet approval required. Reject if anything looks unexpected."
-        });
-
-        const txSig = await program.methods
-          .subscribe(serviceLevel, durationWeeks)
-          .accounts({
-            user,
-            pricingMatrix: pricingMatrixPda,
-            tokenMint: new anchor.web3.PublicKey(current.txlMint),
-            userTokenAccount,
-            tokenTreasuryVault,
-            tokenTreasuryPda,
-            tokenProgram: spl.TOKEN_2022_PROGRAM_ID,
-            associatedTokenProgram: spl.ASSOCIATED_TOKEN_PROGRAM_ID,
-            systemProgram: anchor.web3.SystemProgram.programId
-          })
-          .rpc();
-
-        state.txSig = txSig;
-        setStatus("txStatus", txSig, "ok");
-        $("copyTx").disabled = false;
-        $("openActivation").disabled = false;
-        log({
-          ok: true,
-          txSig,
-          network: $("network").value,
-          next: "Copy txSig or open the activation helper. Use the same network there."
-        });
       }
 
       function activationUrl() {
@@ -902,7 +750,7 @@
                   canSignTransaction: Boolean(provider.signTransaction)
                 }
               : "not detected",
-            next: "Connect wallet, load IDL, then subscribe."
+            next: "Connect wallet, prepare the instruction, then subscribe."
           });
         } catch (error) {
           log(walletErrorMessage(error));
@@ -912,8 +760,8 @@
       $("wallet").addEventListener("click", async () => {
         try {
           const provider = await ensureWalletConnected();
-          const { anchor } = await loadLibraries();
-          const connection = new anchor.web3.Connection($("rpcUrl").value.trim(), "confirmed");
+          const { web3 } = await loadLibraries();
+          const connection = new web3.Connection($("rpcUrl").value.trim(), "confirmed");
           await checkBalance(connection, provider.publicKey);
           log({
             connected: true,
@@ -930,7 +778,7 @@
         try {
           await loadProgram();
         } catch (error) {
-          setStatus("programStatus", "IDL load failed", "bad");
+          setStatus("programStatus", "Instruction prepare failed", "bad");
           setMetric("idlMetric", "Failed", "bad");
           log(walletErrorMessage(error));
         }
