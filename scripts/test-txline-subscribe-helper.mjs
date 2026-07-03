@@ -247,6 +247,7 @@ async function runScenario({ withWallet }) {
       wallet: el("walletMetric").textContent,
       instruction: el("idlMetric").textContent,
       network: el("networkStatus").textContent,
+      serviceLevel: el("serviceLevel").value,
       result: el("result").textContent
     };
   }
@@ -260,6 +261,7 @@ async function runScenario({ withWallet }) {
     wallet: el("walletStatus").textContent,
     instruction: el("programStatus").textContent,
     balance: el("balanceMetric").textContent,
+    serviceLevel: el("serviceLevel").value,
     tx: el("txStatus").textContent,
     copyEnabled: !el("copyTx").disabled,
     openEnabled: !el("openActivation").disabled,
@@ -269,7 +271,13 @@ async function runScenario({ withWallet }) {
 }
 
 const noWallet = await runScenario({ withWallet: false });
-if (noWallet.host !== "安全" || noWallet.wallet !== "未检测到钱包" || noWallet.instruction !== "未准备" || noWallet.network !== "就绪") {
+if (
+  noWallet.host !== "安全" ||
+  noWallet.wallet !== "未检测到钱包" ||
+  noWallet.instruction !== "未准备" ||
+  noWallet.network !== "就绪" ||
+  noWallet.serviceLevel !== "12"
+) {
   throw new Error(`No-wallet scenario failed: ${JSON.stringify(noWallet, null, 2)}`);
 }
 
@@ -282,7 +290,9 @@ if (
   walletFlow.calls.simulate !== 1 ||
   walletFlow.calls.send !== 1 ||
   walletFlow.calls.confirm !== 1 ||
-  !walletFlow.instruction.startsWith("已准备:")
+  !walletFlow.instruction.startsWith("已准备:") ||
+  walletFlow.serviceLevel !== "12" ||
+  !walletFlow.balance.includes("建议 >= 0.03 SOL")
 ) {
   throw new Error(`Wallet scenario failed: ${JSON.stringify(walletFlow, null, 2)}`);
 }

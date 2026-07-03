@@ -276,16 +276,16 @@
               <option value="mainnet">Mainnet / 真实 TxLINE 主机</option>
               <option value="devnet">Devnet / TxLINE 开发主机</option>
             </select>
-            <p class="hint">全流程必须使用同一个网络。devnet txSig 不能在 mainnet 激活。</p>
+            <p class="hint">全流程必须使用同一个网络。最终参赛路线建议使用 mainnet；devnet 如果出现 pricing matrix 或激活 500 错误，需等赞助方修复。</p>
           </div>
 
           <div class="field">
             <label for="serviceLevel">免费服务等级</label>
             <select id="serviceLevel">
+              <option value="12" selected>12 / 世界杯 + 国际友谊赛，mainnet 实时</option>
               <option value="1">1 / 世界杯 + 国际友谊赛，延迟 60 秒</option>
-              <option value="12">12 / 世界杯 + 国际友谊赛，mainnet 实时</option>
             </select>
-            <p class="hint">TxLINE 文档显示 mainnet 支持 1 和 12；devnet 文档列出 Level 1。</p>
+            <p class="hint">参赛演示优先用 mainnet Level 12。TxLINE 文档显示 mainnet 支持 1 和 12；devnet 文档列出 Level 1。</p>
           </div>
 
           <div class="field">
@@ -344,6 +344,7 @@
           serviceLevels: [1]
         }
       };
+      const RECOMMENDED_MAINNET_SOL = 0.03;
 
       const state = {
         libs: null,
@@ -405,7 +406,7 @@
           return "钱包弹窗里拒绝了交易。如果网络和 TxLINE program id 正确，请重新点击订阅并在钱包里批准。";
         }
         if (/insufficient|balance|funds/i.test(message)) {
-          return "钱包 SOL 不足。免费套餐不需要支付 TxL，但 Solana 仍需要少量 SOL 作为网络手续费。";
+          return `钱包 SOL 不足。免费套餐不需要支付 TxL，但 Solana 仍需要少量 SOL 作为网络手续费和可能的 Token-2022 账户租金。建议补到 ${RECOMMENDED_MAINNET_SOL} - 0.05 SOL 后重试。\n\n原始错误：${message}`;
         }
         if (/blockhash|expired/i.test(message)) {
           return "交易 blockhash 过期了。请重新点击订阅免费套餐。";
@@ -423,6 +424,8 @@
         $("rpcUrl").value = cfg().rpcUrl;
         if ($("network").value === "devnet") {
           $("serviceLevel").value = "1";
+        } else {
+          $("serviceLevel").value = "12";
         }
       }
 
@@ -444,6 +447,9 @@
         }
         if (location.protocol !== "https:" && location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
           warnings.push("钱包扩展通常要求 HTTPS 或 localhost。");
+        }
+        if ($("network").value === "devnet") {
+          warnings.push("devnet 仅用于排错；如果遇到 pricing matrix 或 activation 500，请切回 mainnet 并联系 TxLINEChat。");
         }
 
         const summary = {
@@ -507,9 +513,10 @@
       async function checkBalance(connection, publicKey) {
         const lamports = await connection.getBalance(publicKey, "confirmed");
         const sol = lamports / 1_000_000_000;
-        const label = `${sol.toFixed(sol >= 0.01 ? 4 : 6)} SOL`;
-        setMetric("balanceMetric", label, lamports > 0 ? "ok" : "warn");
-        return { lamports, sol };
+        const lowMainnet = $("network").value === "mainnet" && sol < RECOMMENDED_MAINNET_SOL;
+        const label = `${sol.toFixed(sol >= 0.01 ? 4 : 6)} SOL${lowMainnet ? ` (建议 >= ${RECOMMENDED_MAINNET_SOL} SOL)` : ""}`;
+        setMetric("balanceMetric", label, lamports > 0 && !lowMainnet ? "ok" : "warn");
+        return { lamports, sol, lowMainnet };
       }
 
       function activationUrl() {
@@ -529,6 +536,7 @@
           programId: cfg().programId,
           serviceLevel: Number($("serviceLevel").value),
           durationWeeks: Number($("durationWeeks").value),
+          recommendedMainnetSol: RECOMMENDED_MAINNET_SOL,
           walletProvider: provider
             ? {
                 label: providerLabel(provider),
@@ -668,7 +676,7 @@
       async function subscribeFreeTier() {
         const plan = await prepareSubscribeInstruction();
         const { web3, connection, provider } = plan;
-        await checkBalance(connection, plan.user);
+        const balance = await checkBalance(connection, plan.user);
 
         const transaction = new web3.Transaction().add(plan.instruction);
         const blockhash = await connection.getLatestBlockhash("confirmed");
@@ -682,8 +690,15 @@
           programId: plan.programId.toBase58(),
           serviceLevel: plan.serviceLevel,
           durationWeeks: plan.durationWeeks,
+          balance: {
+            sol: Number(balance.sol.toFixed(6)),
+            lowMainnet: balance.lowMainnet,
+            recommendedMainnetSol: RECOMMENDED_MAINNET_SOL
+          },
           user: plan.user.toBase58(),
-          next: "需要在钱包弹窗中批准。若 program id 或网络不符合预期，请拒绝。"
+          next: balance.lowMainnet
+            ? `当前 SOL 余额低于建议值，交易可能因手续费或账户租金失败。建议补到 ${RECOMMENDED_MAINNET_SOL} - 0.05 SOL 后再批准。`
+            : "需要在钱包弹窗中批准。若 program id 或网络不符合预期，请拒绝。"
         });
 
         const signedTransaction = await provider.signTransaction(transaction);

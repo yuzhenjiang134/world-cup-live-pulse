@@ -54,6 +54,22 @@ They also advised checking the official hackathon resources for the latest API a
 2. Contact `TxLINEChat` if the wallet subscribe step, token activation endpoint, or endpoint permission remains blocked.
 3. Record any sponsor answer in this file and in `docs/API_FEEDBACK.md` without publishing private credentials.
 
+On 2026-07-03, TxLINEChat messages also indicated that devnet activation may be down or inconsistent, including reports of `/api/token/activate` returning 500 and the devnet pricing matrix PDA returning `AccountNotFound`. This is not proof that mainnet is broken. For final hackathon work, prefer mainnet Level 12 unless the sponsor explicitly recommends devnet.
+
+Current working route:
+
+```text
+mainnet -> service level 12 -> subscribe txSig -> guest JWT -> /api/token/activate
+```
+
+Recommended wallet balance for the subscribe step:
+
+```text
+0.03 - 0.05 SOL
+```
+
+The free tier does not require TxL payment, but Solana still needs transaction fees and may need Token-2022 account rent.
+
 ## Telegram Sponsor Message Draft
 
 Use this message in `TxLINEChat`. Do not include private keys, seed phrases, verification codes, or API tokens.
@@ -78,10 +94,11 @@ We are following the official World Cup Free Tier docs:
 
 Could you please confirm:
 1. Is the correct hackathon path self-serve subscribe -> txSig -> guest JWT -> /api/token/activate?
-2. If our free-tier subscribe transaction fails, what minimum SOL balance do you recommend for fees / Token-2022 account rent?
-3. Are browser demos allowed to call TxLINE directly, or should public apps use a server-side proxy?
-4. Which fixture IDs, league IDs, or competition filters should World Cup Hackathon teams use?
-5. Are there rate limits, polling intervals, or SSE stream rules for the free tier?
+2. TxLINEChat mentioned possible devnet activation / pricing matrix issues. Should hackathon teams use mainnet Level 12 for final demos?
+3. If our free-tier subscribe transaction fails, what minimum SOL balance do you recommend for fees / Token-2022 account rent?
+4. Are browser demos allowed to call TxLINE directly, or should public apps use a server-side proxy?
+5. Which fixture IDs, league IDs, or competition filters should World Cup Hackathon teams use?
+6. Are there rate limits, polling intervals, or SSE stream rules for the free tier?
 
 Project repo:
 https://github.com/yuzhenjiang134/world-cup-live-pulse
