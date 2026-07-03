@@ -7,6 +7,7 @@ World Cup Live Pulse is built replay-first because the public hackathon build ne
 ## What would improve the developer experience
 
 - A self-serve hackathon token path that does not require guessing whether teams should use Solana activation, direct support, or a sponsor-issued `X-Api-Token`.
+- A single visible sponsor access route on the hackathon page. On 2026-07-03, Superteam Earn support clarified that Earn support does not issue TxODDS API credentials and teams should contact `https://t.me/TxLINEChat` for sponsor-side questions.
 - A match calendar endpoint with explicit `no_live_match_today` or equivalent empty-state metadata.
 - A fixture access field that says whether a fixture is unlocked live, delayed, token-gated, or unavailable.
 - A clear freshness field for every score, event, and odds snapshot.

@@ -1,6 +1,6 @@
 # User Action List
 
-Updated: 2026-06-28
+Updated: 2026-07-03
 
 This is the exact list of items the user needs to provide or complete. Do not share secrets publicly, and do not commit private files.
 
@@ -12,6 +12,12 @@ This is the exact list of items the user needs to provide or complete. Do not sh
 - [x] Deployment target: GitHub Pages
 - [ ] Demo video hosting account or upload target
 
+Superteam Earn support replied on 2026-07-03 that Earn support does not directly issue TxODDS API credentials. Use the sponsor channel for API access questions:
+
+```text
+https://t.me/TxLINEChat
+```
+
 ## Step 2: TxLINE API
 
 Endpoint docs are already mapped. Give Codex only the safe integration materials:
@@ -21,6 +27,7 @@ Endpoint docs are already mapped. Give Codex only the safe integration materials
 - [x] Safe subscribe helper URL: `https://yuzhenjiang134.github.io/world-cup-live-pulse/tools/txline-subscribe/`
 - [x] Safe activation helper URL: `https://yuzhenjiang134.github.io/world-cup-live-pulse/tools/txline-activation/`
 - [ ] Free-tier subscription transaction signature (`txSig`) from TxLINE subscribe helper or official docs
+- [ ] Sponsor confirmation from `TxLINEChat` if subscribe or activation remains blocked
 - [ ] Which endpoints are allowed for this hackathon token
 - [ ] Rate limit notes
 - [ ] Whether browser CORS is allowed or a server-side proxy is required

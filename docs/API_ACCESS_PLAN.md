@@ -1,6 +1,6 @@
 # API Access Plan
 
-Updated: 2026-07-01
+Updated: 2026-07-03
 
 ## Decision
 
@@ -39,6 +39,58 @@ Ask TxODDS / TxLINE support for:
 - Rate limits and recommended polling interval.
 - Whether Free Tier data is live or delayed for each fixture, including the documented 60-second delay mode.
 - SSE stream requirements, resume behavior, and heartbeat handling.
+
+## Sponsor Contact Status
+
+Superteam Earn support replied on 2026-07-03 that Earn support does not directly issue TxODDS API credentials. They directed teams to the sponsor channel:
+
+```text
+https://t.me/TxLINEChat
+```
+
+They also advised checking the official hackathon resources for the latest API access steps. This means the active access path is:
+
+1. Continue the official TxLINE self-serve flow: free-tier on-chain subscribe, then API token activation.
+2. Contact `TxLINEChat` if the wallet subscribe step, token activation endpoint, or endpoint permission remains blocked.
+3. Record any sponsor answer in this file and in `docs/API_FEEDBACK.md` without publishing private credentials.
+
+## Telegram Sponsor Message Draft
+
+Use this message in `TxLINEChat`. Do not include private keys, seed phrases, verification codes, or API tokens.
+
+```text
+Hi TxLINE / TxODDS team,
+
+We are building World Cup Live Pulse for the Superteam Earn World Cup Hackathon, Consumer and Fan Experiences track.
+
+Superteam Earn support told us that TxODDS API credentials are handled by the sponsor channel, so we are asking here.
+
+Project:
+World Cup Live Pulse - a fan-first live match dashboard with score, events, market mood, AI-style commentary, replay fallback, and clear data freshness labels.
+
+Safety boundary:
+No betting, no trading advice, no prediction market, no wallet custody, and no private keys or seed phrases.
+
+We are following the official World Cup Free Tier docs:
+- Mainnet program: 9ExbZjAapQww1vfcisDmrngPinHTEfpjYRWMunJgcKaA
+- API host: https://txline.txodds.com/api/
+- Free service levels: 1 delayed and 12 real-time
+
+Could you please confirm:
+1. Is the correct hackathon path self-serve subscribe -> txSig -> guest JWT -> /api/token/activate?
+2. If our free-tier subscribe transaction fails, what minimum SOL balance do you recommend for fees / Token-2022 account rent?
+3. Are browser demos allowed to call TxLINE directly, or should public apps use a server-side proxy?
+4. Which fixture IDs, league IDs, or competition filters should World Cup Hackathon teams use?
+5. Are there rate limits, polling intervals, or SSE stream rules for the free tier?
+
+Project repo:
+https://github.com/yuzhenjiang134/world-cup-live-pulse
+
+Public demo:
+https://yuzhenjiang134.github.io/world-cup-live-pulse/
+
+Thanks!
+```
 
 ## Implemented In This Repo
 
