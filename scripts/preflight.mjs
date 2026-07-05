@@ -62,7 +62,7 @@ const requiredText = [
   ["docs/SUBMISSION_CHECKLIST.md", "Final submission"],
   [".github/workflows/pages.yml", "Deploy GitHub Pages"],
   ["vite.config.ts", "github-pages"],
-  ["src/lib/txlineAdapter.ts", "Needs TxLINE API token"],
+  ["src/lib/txlineAdapter.ts", "Live activation pending"],
   ["src/lib/txlineAdapter.ts", "/api/scores/snapshot"],
   ["src/data/replayMatch.ts", "replayMatches"],
   ["src/data/matchCalendar.ts", "never invents live games"],

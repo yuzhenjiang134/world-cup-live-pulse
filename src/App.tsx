@@ -46,7 +46,7 @@ const copy = {
     appEyebrow: "Superteam Earn x TxODDS / Consumer Fan Experience",
     eventBuildStatus: "World Cup Hackathon build",
     judgeableBuild: "Judgeable public build",
-    txlineLiveGated: "TxLINE Live token-gated",
+    txlineLiveGated: "TxLINE Live activation-ready",
     settings: "Settings",
     close: "Close",
     language: "Language",
@@ -56,10 +56,10 @@ const copy = {
     live: "Live",
     mockFixture: "Mock fixture",
     txlineAdapter: "TxLINE adapter",
-    waitingForTxline: "Waiting for TxLINE token",
+    waitingForTxline: "Live waiting for devnet token",
     sourceReplay: "Replay data ready",
     sourceLiveReady: "Live adapter ready",
-    sourceNeedsToken: "TxLINE token needed",
+    sourceNeedsToken: "Live waiting for activation",
     sourceError: "Data source error",
     sourceReplayMessage: "Replay mode uses fixed match data so the demo works without live access.",
     sourceLiveReadyMessage: "Live mode is wired through the TxLINE adapter boundary.",
@@ -167,7 +167,7 @@ const copy = {
     apiAccessImplemented: "Implemented now",
     apiAccessImplementedNote:
       "Fixtures, score snapshots, odds snapshots, replay fallback, and the local probe are already wired.",
-    apiAccessTokenBlocked: "Official token gate",
+    apiAccessTokenBlocked: "Devnet activation gate",
     apiAccessTokenBlockedNote:
       "Authenticated Live now follows the TxLINE devnet free-tier route: subscribe txSig, guest JWT, /api/token/activate, then local probe.",
     apiAccessProxyStatus: "Online proxy mode",
@@ -326,7 +326,7 @@ const copy = {
     matchdayHub: "Matchday hub",
     todaysMatches: "Schedule snapshot",
     nowPlaying: "Now playing",
-    tokenRequiredShort: "Token required",
+    tokenRequiredShort: "Activate first",
     replayAvailable: "Replay available",
     officialSeed: "Official seed",
     downloadPickCard: "Download pick card",
@@ -496,7 +496,7 @@ const cleanZhCopy = {
   ...copy.en,
   eventBuildStatus: "世界杯黑客松参赛版",
   judgeableBuild: "公开版本可随时评审",
-  txlineLiveGated: "TxLINE Live 需要官方 token",
+  txlineLiveGated: "TxLINE Live 待激活",
   appEyebrow: "Superteam Earn x TxODDS / 球迷体验赛道",
   settings: "设置",
   close: "关闭",
@@ -507,10 +507,10 @@ const cleanZhCopy = {
   live: "实时",
   mockFixture: "回放数据",
   txlineAdapter: "TxLINE 接入层",
-  waitingForTxline: "等待 TxLINE token",
+  waitingForTxline: "实时待激活",
   sourceReplay: "回放数据已就绪",
   sourceLiveReady: "实时数据已接入",
-  sourceNeedsToken: "需要 TxLINE token",
+  sourceNeedsToken: "实时待激活",
   sourceError: "数据源错误",
   sourceReplayMessage: "回放模式使用固定比赛数据，评委可以随时完整体验。",
   sourceLiveReadyMessage: "实时模式已通过 TxLINE adapter 加载。",
@@ -616,7 +616,7 @@ const cleanZhCopy = {
   apiAccessTitle: "实时数据路径",
   apiAccessImplemented: "已经完成",
   apiAccessImplementedNote: "赛程、比分快照、赔率快照、回放兜底和本地探针已经接好。",
-  apiAccessTokenBlocked: "官方 token 门槛",
+  apiAccessTokenBlocked: "devnet 激活门槛",
   apiAccessTokenBlockedNote: "鉴权 Live 走 TxLINE devnet 免费层：订阅 txSig、guest JWT、/api/token/activate，然后本地探针验证。",
   apiAccessProxyStatus: "线上代理模式",
   apiAccessProxyConfigured: "已配置代理，浏览器流量不暴露 token。",
@@ -751,7 +751,7 @@ const cleanZhCopy = {
   matchdayHub: "比赛日入口",
   todaysMatches: "赛程快照",
   nowPlaying: "正在观看",
-  tokenRequiredShort: "需要 Token",
+  tokenRequiredShort: "待激活",
   replayAvailable: "可回放",
   officialSeed: "官方种子",
   downloadPickCard: "下载预测卡",
@@ -1759,7 +1759,7 @@ const trustCopy = {
     scheduleNote:
       "TxLINE World Cup schedule snapshot observed Jordan vs Argentina and Algeria vs Austria for 2026-06-28 UTC.",
     liveGate: "Live gate",
-    liveGateValue: "Token required",
+    liveGateValue: "Activation pending",
     liveGateNote:
       "The app will not show Live until authenticated scores, events, and odds are loaded from TxLINE.",
     replayTruth: "Replay truth",
@@ -1775,7 +1775,7 @@ const trustCopy = {
     coverage: "Coverage",
     status: "Status",
     mapped: "Mapped",
-    tokenGated: "Token-gated",
+    tokenGated: "Activation-gated",
     planned: "Planned",
     evidence: "Evidence",
     visibleFixtures: "Visible fixtures",
@@ -1789,7 +1789,7 @@ const trustCopy = {
     scheduleNote:
       "TxLINE World Cup schedule 快照在 2026-06-28 UTC 观察到 Jordan vs Argentina、Algeria vs Austria。",
     liveGate: "实时数据门槛",
-    liveGateValue: "需要 Token",
+    liveGateValue: "待激活",
     liveGateNote: "只有从 TxLINE 鉴权后的比分、事件、赔率接口加载成功后，页面才会显示 Live。",
     replayTruth: "回放真实性",
     replayTruthValue: "固定可复现",
@@ -1802,7 +1802,7 @@ const trustCopy = {
     coverage: "覆盖内容",
     status: "状态",
     mapped: "已映射",
-    tokenGated: "Token 锁定",
+    tokenGated: "待激活",
     planned: "计划中",
     evidence: "证据",
     visibleFixtures: "可见赛程",
@@ -1990,7 +1990,7 @@ const localizedTrustCopy = {
     scheduleNote:
       "TxLINE World Cup schedule 快照在 2026-06-28 UTC 观察到 Jordan vs Argentina、Algeria vs Austria。",
     liveGate: "实时数据门槛",
-    liveGateValue: "需要 Token",
+    liveGateValue: "待激活",
     liveGateNote: "只有 TxLINE 鉴权后的比分、事件和赔率接口加载成功后，页面才会显示 Live。",
     replayTruth: "回放真实性",
     replayTruthValue: "固定可复现",
@@ -2003,7 +2003,7 @@ const localizedTrustCopy = {
     coverage: "覆盖内容",
     status: "状态",
     mapped: "已映射",
-    tokenGated: "Token 锁定",
+    tokenGated: "待激活",
     planned: "计划中",
     evidence: "证据",
     visibleFixtures: "可见赛程",
@@ -5161,8 +5161,8 @@ function getSourceStatus(source: DataSourceState, language: Language) {
 
   if (source.kind === "needs-token") {
     return {
-      label: source.label || t.sourceNeedsToken,
-      message: source.message || t.sourceNeedsTokenMessage,
+      label: t.sourceNeedsToken,
+      message: t.sourceNeedsTokenMessage,
     };
   }
 
@@ -5244,15 +5244,15 @@ function getTodayCardDisplay(
     en: {
       "txline-fixture-17588325": {
         label: "Official TxLINE schedule seed",
-        stage: "World Cup Group Stage / Token Required",
+        stage: "World Cup Group Stage / Activation pending",
       },
       "txline-fixture-17588326": {
         label: "Official TxLINE schedule seed",
-        stage: "World Cup Group Stage / Token Required",
+        stage: "World Cup Group Stage / Activation pending",
       },
       "calendar-live-status": {
         label: "No public TxLINE live fixture configured",
-        stage: "No Match Day / Token Required",
+        stage: "No Match Day / Activation pending",
       },
       "wc-demo-arg-fra": { label: "Replay demo", stage: "Final replay" },
       "wc-demo-jpn-ger": { label: "Upset replay demo", stage: "Group stage replay" },
@@ -5260,15 +5260,15 @@ function getTodayCardDisplay(
     zh: {
       "txline-fixture-17588325": {
         label: "官方 TxLINE 赛程种子",
-        stage: "世界杯小组赛 / 需要 Token",
+        stage: "世界杯小组赛 / 待激活",
       },
       "txline-fixture-17588326": {
         label: "官方 TxLINE 赛程种子",
-        stage: "世界杯小组赛 / 需要 Token",
+        stage: "世界杯小组赛 / 待激活",
       },
       "calendar-live-status": {
         label: "未配置公开 TxLINE 实时赛程",
-        stage: "无比赛日 / 需要 Token",
+        stage: "无比赛日 / 待激活",
       },
       "wc-demo-arg-fra": { label: "回放演示", stage: "决赛回放" },
       "wc-demo-jpn-ger": { label: "爆冷回放演示", stage: "小组赛回放" },

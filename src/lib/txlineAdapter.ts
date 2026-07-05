@@ -350,7 +350,7 @@ function buildNeedsTokenResult(
     },
     source: {
       kind: "needs-token",
-      label: "Needs TxLINE API token",
+      label: "Live activation pending",
       message:
         "Live mode is wired to TxLINE's official endpoints. For the hackathon free tier, activate a devnet token first, then place it in local .env.local before loading authenticated scores and odds.",
       checkedAtIso,
