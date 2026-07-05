@@ -6,7 +6,7 @@ World Cup Live Pulse is built replay-first because the public hackathon build ne
 
 ## What would improve the developer experience
 
-- A self-serve hackathon token path that does not require guessing whether teams should use Solana activation, direct support, or a sponsor-issued `X-Api-Token`.
+- Keep the self-serve hackathon token path visible in the official docs: funded devnet wallet, free-tier subscribe transaction, guest JWT, signed activation payload, `/api/token/activate`, then `X-Api-Token`.
 - A single visible sponsor access route on the hackathon page. On 2026-07-03, Superteam Earn support clarified that Earn support does not issue TxODDS API credentials and teams should contact `https://t.me/TxLINEChat` for sponsor-side questions.
 - A match calendar endpoint with explicit `no_live_match_today` or equivalent empty-state metadata.
 - A fixture access field that says whether a fixture is unlocked live, delayed, token-gated, or unavailable.
@@ -18,6 +18,7 @@ World Cup Live Pulse is built replay-first because the public hackathon build ne
 - A recommended secure-proxy pattern for static deployments such as GitHub Pages.
 - Rate limits and recommended polling interval.
 - Standard error codes for token missing, token expired, rate limit, match not found, and no active fixture.
+- A documented final-score recipe for fan apps: select `Action = "game_finalised"`, then request `statKeys=1,2` from `/api/scores/stat-validation` for participant total goals.
 
 ## Product-specific feedback
 
@@ -44,6 +45,7 @@ The current app uses:
 - A No Match Day rule when no official fixture is known.
 - A real local TxLINE adapter that requests `POST /auth/guest/start`, `GET /api/fixtures/snapshot`, `GET /api/scores/snapshot/{fixtureId}`, and `GET /api/odds/snapshot/{fixtureId}` when credentials are present.
 - Optional public Live proxy support through `VITE_TXLINE_PROXY_BASE`, so GitHub Pages can call a token-holding proxy instead of exposing credentials in the frontend bundle.
+- Safe activation helper pages for the devnet free-tier subscribe and `/api/token/activate` flow.
 - Judge Demo chapters to make replay evaluation repeatable.
 - English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic UI labels for global fan testing.
 
@@ -64,6 +66,7 @@ The safest pattern for this project is the same: GitHub Pages remains a static r
 - `GET /api/fixtures/snapshot`: schedule snapshot and Source Board.
 - `GET /api/scores/snapshot/{fixtureId}`: live score clock and event mapping.
 - `GET /api/odds/snapshot/{fixtureId}`: market mood snapshots.
+- `GET /api/scores/stat-validation?fixtureId=<FixtureId>&seq=<Seq>&statKeys=1,2`: optional final-score proof path after `Action = "game_finalised"`.
 - `GET /api/scores/stream`: future server-sent score updates.
 - `GET /api/odds/stream`: future server-sent odds updates.
 

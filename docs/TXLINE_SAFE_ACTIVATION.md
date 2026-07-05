@@ -1,12 +1,14 @@
 # TxLINE Safe Activation
 
-Updated: 2026-07-01
+Updated: 2026-07-05
 
 ## Why this exists
 
 TxLINE activation requires a wallet signature, but private keys and seed phrases must never be shared with Codex, GitHub, Superteam, Telegram, or a public chat.
 
 If a private key has been pasted into chat, treat that wallet as compromised and create a new clean wallet for testing.
+
+TxLINEChat clarified on 2026-07-05 that the hackathon free tier is self-serve on devnet. Use a funded devnet wallet, run the on-chain subscribe transaction, then activate with `/api/token/activate`. Do not share JWT publicly. If sponsor support is needed, share only the public wallet address and subscribe transaction signature.
 
 ## Safe helper pages
 
@@ -27,15 +29,16 @@ Neither helper asks for a private key. The subscribe helper uses wallet `signTra
 ## Workflow
 
 1. Create a clean Solana wallet.
-2. Use the subscribe helper or the official TxLINE docs to subscribe to the free World Cup tier.
-3. Copy the subscription transaction signature as `txSig`. Without this on-chain subscription txSig, TxLINE will not issue an API token.
-4. Open the activation helper page. If you came from the subscribe helper, `network` and `txSig` are prefilled.
-5. Click `Preflight` to check HTTPS, wallet injection, `txSig`, guest JWT, and league-id formatting.
-6. Click `Get guest JWT`, or paste the JWT from the official flow.
-7. Connect the wallet.
-8. Click `Test wallet signing` if the wallet is newly installed or signing fails. This signs a harmless local message and does not call TxLINE.
-9. Click `Copy message` if you want to inspect the exact `txSig:leagues:jwt` activation string locally.
-10. Sign the official activation message:
+2. Switch the wallet to devnet and fund it from a devnet faucet.
+3. Use the subscribe helper or the official TxLINE docs to subscribe to the free World Cup tier on devnet.
+4. Copy the subscription transaction signature as `txSig`. Without this on-chain subscription txSig, TxLINE will not issue an API token.
+5. Open the activation helper page. If you came from the subscribe helper, `network` and `txSig` are prefilled.
+6. Click `Preflight` to check HTTPS, wallet injection, `txSig`, guest JWT, and league-id formatting.
+7. Click `Get guest JWT`, or paste the JWT from the official flow.
+8. Connect the wallet.
+9. Click `Test wallet signing` if the wallet is newly installed or signing fails. This signs a harmless local message and does not call TxLINE.
+10. Click `Copy message` if you want to inspect the exact `txSig:leagues:jwt` activation string locally.
+11. Sign the official activation message:
 
 ```text
 txSig:leagues:jwt
@@ -47,8 +50,14 @@ For the default World Cup bundle with no selected leagues, the message is:
 txSig::jwt
 ```
 
-11. Click `Activate API token`.
-12. Copy the returned token into local `.env.local` only.
+This exact activation message format is also confirmed by the Rust SDK helper shared in TxLINEChat:
+
+```text
+${txSig}:${selectedLeagues.join(",")}:${jwt}
+```
+
+12. Click `Activate API token`.
+13. Copy the returned token into local `.env.local` only.
 
 ## Signing troubleshooting
 
@@ -61,7 +70,7 @@ txSig::jwt
 ## Local env target
 
 ```bash
-VITE_TXLINE_API_BASE=https://txline.txodds.com
+VITE_TXLINE_API_BASE=https://txline-dev.txodds.com
 VITE_TXLINE_PROXY_BASE=
 VITE_TXLINE_API_TOKEN=your_real_x_api_token
 VITE_TXLINE_SESSION_JWT=your_guest_jwt_if_you_have_one

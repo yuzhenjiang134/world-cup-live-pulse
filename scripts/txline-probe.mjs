@@ -4,15 +4,24 @@ import path from "node:path";
 const root = process.cwd();
 const localEnv = readLocalEnv(path.join(root, ".env.local"));
 
-const apiBase = clean(envValue("VITE_TXLINE_API_BASE")) ?? "https://txline.txodds.com";
+const apiBase = clean(envValue("VITE_TXLINE_API_BASE")) ?? "https://txline-dev.txodds.com";
+const proxyBase = clean(envValue("VITE_TXLINE_PROXY_BASE"));
 const apiToken = clean(envValue("VITE_TXLINE_API_TOKEN"));
 const configuredJwt = clean(envValue("VITE_TXLINE_SESSION_JWT"));
 const fixtureId = Number(envValue("VITE_TXLINE_FIXTURE_ID") ?? "17588325");
+const finalScoreSeq = optionalNumber(envValue("VITE_TXLINE_FINAL_SCORE_SEQ"));
 const asOf = optionalNumber(envValue("VITE_TXLINE_AS_OF_MS"));
+const startEpochDay = optionalNumber(envValue("VITE_TXLINE_START_EPOCH_DAY"));
+const competitionId = optionalNumber(envValue("VITE_TXLINE_COMPETITION_ID"));
+
+if (proxyBase) {
+  await probeProxyMode();
+  process.exit(0);
+}
 
 if (!apiToken) {
-  console.log("SKIP TxLINE probe: VITE_TXLINE_API_TOKEN is not configured in .env.local.");
-  console.log("Add the token locally only; do not commit .env.local or paste the token into chat.");
+  console.log("SKIP TxLINE probe: neither VITE_TXLINE_PROXY_BASE nor VITE_TXLINE_API_TOKEN is configured.");
+  console.log("Use proxy mode for public Live, or add the token locally only. Do not commit .env.local or paste tokens into chat.");
   process.exit(0);
 }
 
@@ -22,18 +31,63 @@ const authHeaders = {
   "X-Api-Token": apiToken,
 };
 
-const fixtures = await requestJson("/api/fixtures/snapshot", authHeaders);
-const scores = await requestJson(`/api/scores/snapshot/${fixtureId}`, authHeaders, { asOf });
-const odds = await requestJson(`/api/odds/snapshot/${fixtureId}`, authHeaders, { asOf });
+const fixtures = await requestJson(apiBase, "/api/fixtures/snapshot", authHeaders, {
+  startEpochDay,
+  competitionId,
+});
+const scores = await requestJson(apiBase, `/api/scores/snapshot/${fixtureId}`, authHeaders, { asOf });
+const odds = await requestJson(apiBase, `/api/odds/snapshot/${fixtureId}`, authHeaders, { asOf });
+const finalScoreProof = finalScoreSeq
+  ? await requestJson(apiBase, "/api/scores/stat-validation", authHeaders, {
+      fixtureId,
+      seq: finalScoreSeq,
+      statKeys: "1,2",
+    })
+  : null;
 
 console.log("PASS TxLINE guest JWT resolved.");
+console.log(`PASS TxLINE API base: ${apiBase}`);
 console.log(`PASS fixtures snapshot records: ${countRecords(fixtures)}`);
 console.log(`PASS score snapshot records for fixture ${fixtureId}: ${countRecords(scores)}`);
 console.log(`PASS odds snapshot records for fixture ${fixtureId}: ${countRecords(odds)}`);
+if (finalScoreSeq) {
+  console.log(`PASS final-score stat-validation proof payload: ${countRecords(finalScoreProof)}`);
+} else {
+  console.log("SKIP final-score proof probe: VITE_TXLINE_FINAL_SCORE_SEQ is not configured.");
+}
 console.log("TxLINE probe complete. No token values were printed.");
 
+async function probeProxyMode() {
+  const health = await requestJson(proxyBase, "/__health");
+  const fixtures = await requestJson(proxyBase, "/api/fixtures/snapshot", undefined, {
+    startEpochDay,
+    competitionId,
+  });
+  const scores = await requestJson(proxyBase, `/api/scores/snapshot/${fixtureId}`, undefined, { asOf });
+  const odds = await requestJson(proxyBase, `/api/odds/snapshot/${fixtureId}`, undefined, { asOf });
+  const finalScoreProof = finalScoreSeq
+    ? await requestJson(proxyBase, "/api/scores/stat-validation", undefined, {
+        fixtureId,
+        seq: finalScoreSeq,
+        statKeys: "1,2",
+      })
+    : null;
+
+  console.log("PASS TxLINE proxy health check.");
+  console.log(`PASS proxy token configured: ${Boolean(health?.hasToken)}`);
+  console.log(`PASS proxy fixtures snapshot records: ${countRecords(fixtures)}`);
+  console.log(`PASS proxy score snapshot records for fixture ${fixtureId}: ${countRecords(scores)}`);
+  console.log(`PASS proxy odds snapshot records for fixture ${fixtureId}: ${countRecords(odds)}`);
+  if (finalScoreSeq) {
+    console.log(`PASS proxy final-score stat-validation proof payload: ${countRecords(finalScoreProof)}`);
+  } else {
+    console.log("SKIP proxy final-score proof probe: VITE_TXLINE_FINAL_SCORE_SEQ is not configured.");
+  }
+  console.log("TxLINE proxy probe complete. Browser-facing probe did not receive token values.");
+}
+
 async function getGuestJwt() {
-  const payload = await requestJson("/auth/guest/start", undefined, undefined, "POST");
+  const payload = await requestJson(apiBase, "/auth/guest/start", undefined, undefined, "POST");
   const token = readToken(payload);
 
   if (!token) {
@@ -43,11 +97,14 @@ async function getGuestJwt() {
   return token;
 }
 
-async function requestJson(endpoint, headers, query, method = "GET") {
-  const url = new URL(endpoint, `${apiBase.replace(/\/+$/, "")}/`);
+async function requestJson(baseUrl, endpoint, headers, query, method = "GET") {
+  const url = new URL(endpoint, `${baseUrl.replace(/\/+$/, "")}/`);
 
   for (const [key, value] of Object.entries(query ?? {})) {
     if (typeof value === "number" && Number.isFinite(value)) {
+      url.searchParams.set(key, String(value));
+    }
+    if (typeof value === "string" && value.trim()) {
       url.searchParams.set(key, String(value));
     }
   }

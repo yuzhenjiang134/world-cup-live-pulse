@@ -1,6 +1,6 @@
 # API Access Plan
 
-Updated: 2026-07-03
+Updated: 2026-07-05
 
 ## Decision
 
@@ -54,21 +54,65 @@ They also advised checking the official hackathon resources for the latest API a
 2. Contact `TxLINEChat` if the wallet subscribe step, token activation endpoint, or endpoint permission remains blocked.
 3. Record any sponsor answer in this file and in `docs/API_FEEDBACK.md` without publishing private credentials.
 
-On 2026-07-03, TxLINEChat messages also indicated that devnet activation may be down or inconsistent, including reports of `/api/token/activate` returning 500 and the devnet pricing matrix PDA returning `AccountNotFound`. This is not proof that mainnet is broken. For final hackathon work, prefer mainnet Level 12 unless the sponsor explicitly recommends devnet.
+On 2026-07-05, TxLINEChat clarified the current hackathon free-tier route:
+
+- Do not share JWT publicly.
+- Use a funded devnet wallet.
+- Run the on-chain free-tier subscribe transaction.
+- Call `/api/token/activate` with the signed activation payload.
+- If it still fails, share only the wallet public key and subscribe transaction signature with TxLINEChat.
+- A TxLINEChat follow-up said devnet activation was retested with a fresh wallet and `/api/token/activate` returned 200.
+
+This supersedes the earlier 2026-07-03 devnet outage note for our working plan. Mainnet Level 12 remains a later production option only if the sponsor explicitly confirms it for the final public demo.
 
 Current working route:
 
 ```text
-mainnet -> service level 12 -> subscribe txSig -> guest JWT -> /api/token/activate
+devnet -> service level 1 -> 4 week subscribe txSig -> guest JWT -> /api/token/activate -> X-Api-Token
 ```
 
 Recommended wallet balance for the subscribe step:
 
 ```text
-0.03 - 0.05 SOL
+devnet: funded wallet from faucet; keep at least 0.005 devnet SOL before signing
+mainnet fallback only: 0.03 - 0.05 SOL
 ```
 
 The free tier does not require TxL payment, but Solana still needs transaction fees and may need Token-2022 account rent.
+
+## Final-score verification note
+
+TxLINEChat also clarified the correct proof path for final scores in knockout matches:
+
+1. Do not use an arbitrary 90-minute or in-play score record.
+2. Fetch score updates or snapshots and select the record where `Action = "game_finalised"`.
+3. Use that record's `FixtureId` and `Seq`.
+4. Request `/api/scores/stat-validation?fixtureId=<FixtureId>&seq=<Seq>&statKeys=1,2`.
+5. `statKeys=1,2` means participant 1 total goals and participant 2 total goals.
+6. Use the returned proof payload with on-chain `validateStatV2` when cryptographic proof is needed.
+
+For the Consumer and Fan Experiences track, this is a credibility feature for final result verification. It is not a betting, trading, or prediction-market workflow.
+
+## Reference implementations
+
+The browser helpers in this repo are the preferred route for this project because they do not require sharing wallet keys and they match a consumer-facing demo flow.
+
+Additional references checked on 2026-07-05:
+
+- Official TypeScript devnet examples: `https://github.com/txodds/tx-on-chain/tree/main/examples/devnet/scripts`
+- Rust SDK helper shared in TxLINEChat: `https://github.com/Berektassuly/txline-rs/blob/main/crates/txline/examples/devnet_setup_user.rs`
+
+The Rust SDK confirms the same core activation contract:
+
+```text
+TXLINE_SERVICE_LEVEL_ID default = 1
+TXLINE_SUBSCRIPTION_WEEKS default = 4
+activation preimage = ${txSig}:${selectedLeagues.join(",")}:${jwt}
+empty selectedLeagues = ${txSig}::${jwt}
+devnet host = https://txline-dev.txodds.com
+```
+
+Use the Rust helper only as an engineering fallback. Do not paste private keys into chat, screenshots, docs, or this repository.
 
 ## Telegram Sponsor Message Draft
 
@@ -87,18 +131,18 @@ World Cup Live Pulse - a fan-first live match dashboard with score, events, mark
 Safety boundary:
 No betting, no trading advice, no prediction market, no wallet custody, and no private keys or seed phrases.
 
-We are following the official World Cup Free Tier docs:
-- Mainnet program: 9ExbZjAapQww1vfcisDmrngPinHTEfpjYRWMunJgcKaA
-- API host: https://txline.txodds.com/api/
-- Free service levels: 1 delayed and 12 real-time
+We are following the current TxLINEChat free-tier route:
+- Devnet program: 6pW64gN1s2uqjHkn1unFeEjAwJkPGHoppGvS715wyP2J
+- API host: https://txline-dev.txodds.com/api/
+- Free service level: 1
+- Duration: 4 weeks
 
 Could you please confirm:
-1. Is the correct hackathon path self-serve subscribe -> txSig -> guest JWT -> /api/token/activate?
-2. TxLINEChat mentioned possible devnet activation / pricing matrix issues. Should hackathon teams use mainnet Level 12 for final demos?
-3. If our free-tier subscribe transaction fails, what minimum SOL balance do you recommend for fees / Token-2022 account rent?
-4. Are browser demos allowed to call TxLINE directly, or should public apps use a server-side proxy?
-5. Which fixture IDs, league IDs, or competition filters should World Cup Hackathon teams use?
-6. Are there rate limits, polling intervals, or SSE stream rules for the free tier?
+1. Can you confirm the exact fixture or competition ids teams should use for World Cup Hackathon demos?
+2. Are browser demos allowed to call TxLINE directly, or should public apps use a server-side proxy?
+3. What polling interval and SSE reconnect rules should we use for the free tier?
+4. For final result accuracy, should Consumer track apps also prefer `Action = "game_finalised"` plus `statKeys=1,2`?
+5. Are mainnet Level 12 credentials available for final public demos, or should final judging rely on devnet plus replay fallback?
 
 Project repo:
 https://github.com/yuzhenjiang134/world-cup-live-pulse

@@ -38,6 +38,20 @@ Implemented live inputs:
 
 Authenticated data calls use `Authorization: Bearer <guest JWT>` and `X-Api-Token: <API token>`. The public GitHub Pages build does not include private tokens; real data testing belongs in local `.env.local`.
 
+The current hackathon free-tier route is:
+
+```text
+funded devnet wallet -> service level 1 / 4 week subscribe txSig -> guest JWT -> /api/token/activate -> local X-Api-Token
+```
+
+For final result accuracy, knockout matches should use the TxLINE score record where `Action = "game_finalised"`, then request:
+
+```text
+GET /api/scores/stat-validation?fixtureId=<FixtureId>&seq=<Seq>&statKeys=1,2
+```
+
+`statKeys=1,2` represent participant 1 and participant 2 total goals. The returned payload can be passed to `validateStatV2` when on-chain proof is needed. In this Consumer and Fan Experiences product, that path is used as a trust feature, not as a betting or prediction-market flow.
+
 ## Replay fallback
 
 Replay mode remains useful even after live API integration because judges may open the app when no live match is active. If live API calls fail, the app keeps a visible error state and replay fallback instead of becoming blank or presenting replay data as live.

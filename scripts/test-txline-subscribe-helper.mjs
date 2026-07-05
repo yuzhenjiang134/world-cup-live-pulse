@@ -146,8 +146,8 @@ async function createImportHandler(PublicKey, calls, context) {
 function createDom({ wallet }) {
   const elements = new Map();
   const initial = {
-    network: { value: "mainnet" },
-    serviceLevel: { value: "12" },
+    network: { value: "devnet" },
+    serviceLevel: { value: "1" },
     durationWeeks: { value: "4" },
     rpcUrl: { value: "" },
     hostMetric: { textContent: "Checking..." },
@@ -276,7 +276,7 @@ if (
   noWallet.wallet !== "未检测到钱包" ||
   noWallet.instruction !== "未准备" ||
   noWallet.network !== "就绪" ||
-  noWallet.serviceLevel !== "12"
+  noWallet.serviceLevel !== "1"
 ) {
   throw new Error(`No-wallet scenario failed: ${JSON.stringify(noWallet, null, 2)}`);
 }
@@ -291,8 +291,8 @@ if (
   walletFlow.calls.send !== 1 ||
   walletFlow.calls.confirm !== 1 ||
   !walletFlow.instruction.startsWith("已准备:") ||
-  walletFlow.serviceLevel !== "12" ||
-  !walletFlow.balance.includes("建议 >= 0.03 SOL")
+  walletFlow.serviceLevel !== "1" ||
+  walletFlow.balance.includes("建议")
 ) {
   throw new Error(`Wallet scenario failed: ${JSON.stringify(walletFlow, null, 2)}`);
 }

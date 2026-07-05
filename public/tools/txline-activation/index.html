@@ -264,11 +264,12 @@
         <h2>Before you start</h2>
         <p>
           Keep the same network for the Solana subscription transaction, guest JWT, and TxLINE API
-          host. Mainnet free tiers include Service Level 1 delayed data and Service Level 12
-          real-time data; devnet availability depends on the official tier table.
+          host. TxLINEChat confirmed on 2026-07-05 that the hackathon free tier is self-serve on
+          devnet: use a funded devnet wallet, run the free-tier subscribe transaction, then activate
+          with <code>/api/token/activate</code>. Do not share JWTs publicly.
         </p>
         <div class="links">
-          <a href="../txline-subscribe/">TxLINE subscribe helper</a>
+          <a href="../txline-subscribe/index.html">TxLINE subscribe helper</a>
           <a href="https://txline.txodds.com/documentation/worldcup" target="_blank" rel="noreferrer">TxLINE free tier docs</a>
           <a href="https://docs.phantom.com/solana/signing-a-message" target="_blank" rel="noreferrer">Phantom signMessage docs</a>
           <a href="https://phantom.com/download" target="_blank" rel="noreferrer">Install Phantom</a>
@@ -286,8 +287,8 @@
           <div class="field">
             <label for="network">Network</label>
             <select id="network">
-              <option value="mainnet">Mainnet · Service Level 12 real-time or Level 1 delayed</option>
-              <option value="devnet">Devnet · check official tier availability</option>
+              <option value="devnet" selected>Devnet · hackathon free tier</option>
+              <option value="mainnet">Mainnet · sponsor-confirmed production access</option>
             </select>
           </div>
           <div class="field">
@@ -390,7 +391,7 @@
       }
 
       function apiOrigin() {
-        return apiOrigins[$("network").value] || apiOrigins.mainnet;
+        return apiOrigins[$("network").value] || apiOrigins.devnet;
       }
 
       function leaguesArray() {
@@ -671,7 +672,7 @@
       function safeDiagnostics() {
         const providers = walletProviders();
         return {
-          helperVersion: "2026-07-01-wallet-signing-v2",
+          helperVersion: "2026-07-05-devnet-activation-v3",
           page: location.href.split("?")[0],
           protocol: location.protocol,
           network: $("network").value,
@@ -790,7 +791,7 @@
           validateInputs({ strict: false });
           log({ ok: true, endpoint: `${apiOrigin()}/auth/guest/start`, tokenReceived: Boolean($("jwt").value) });
         } catch (error) {
-          log(`Guest JWT failed. If this is CORS, use the official docs or TxODDS support to issue the JWT.\n\n${error.message}`);
+          log(`Guest JWT failed. If this is CORS, use the official docs flow. Do not share the JWT publicly; if support is needed, share only the public wallet address and subscribe txSig.\n\n${error.message}`);
         }
       });
 

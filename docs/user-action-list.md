@@ -46,11 +46,12 @@ Keep private:
 When the token is ready, place it only in `.env.local`:
 
 ```bash
-VITE_TXLINE_API_BASE=https://txline.txodds.com
+VITE_TXLINE_API_BASE=https://txline-dev.txodds.com
 VITE_TXLINE_PROXY_BASE=
 VITE_TXLINE_API_TOKEN=your_real_x_api_token
 VITE_TXLINE_SESSION_JWT=
 VITE_TXLINE_FIXTURE_ID=17588325
+VITE_TXLINE_FINAL_SCORE_SEQ=
 ```
 
 For public GitHub Pages Live mode, do not put `VITE_TXLINE_API_TOKEN` into the deployed frontend. Put the real token in a secure proxy environment as `TXLINE_API_TOKEN`, then set only `VITE_TXLINE_PROXY_BASE` in the frontend build.

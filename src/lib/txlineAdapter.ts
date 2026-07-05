@@ -2,7 +2,7 @@ import { dataConsistencyState } from "../data/matchCalendar";
 import { getReplayMatch } from "../data/replayMatch";
 import type { MatchData, MatchEvent, MatchEventType, MatchLoadResult, MarketSnapshot, Team } from "../types";
 
-const defaultApiBase = "https://txline.txodds.com";
+const defaultApiBase = "https://txline-dev.txodds.com";
 const requestTimeoutMs = 12_000;
 
 type TxlineAdapterOptions = {
@@ -352,7 +352,7 @@ function buildNeedsTokenResult(
       kind: "needs-token",
       label: "Needs TxLINE API token",
       message:
-        "Live mode is wired to TxLINE's official endpoints, but it needs a local X-Api-Token before authenticated score and odds data can load.",
+        "Live mode is wired to TxLINE's official endpoints. For the hackathon free tier, activate a devnet token first, then place it in local .env.local before loading authenticated scores and odds.",
       checkedAtIso,
       endpoint: "/api/fixtures/snapshot + /api/scores/snapshot/{fixtureId} + /api/odds/snapshot/{fixtureId}",
       fixtureId: fixtureId ? String(fixtureId) : undefined,

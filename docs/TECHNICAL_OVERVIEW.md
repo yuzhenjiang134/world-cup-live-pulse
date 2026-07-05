@@ -25,7 +25,7 @@ The final submission package is optimized for the official Consumer and Fan Expe
 - Real-Time Responsiveness: the adapter and pulse model are ready to react to live score, event, and market updates from TxLINE.
 - Originality and Value Creation: fan command center, local score pick, Judge Demo chapters, fan commentary, and share cards turn raw feed changes into understandable match moments.
 - Commercial and Monetization Path: the same surface can support fan communities, match media embeds, and premium club or creator dashboards without betting mechanics.
-- Completeness and Execution: the public app is functional now in Replay + Seed mode, with a clear path to TxLINE Live mode after official access is configured.
+- Completeness and Execution: the public app is functional now in Replay + Seed mode, with a concrete TxLINE free-tier path for devnet activation, local probing, and later secure public Live mode.
 
 The competition requires a working deployed app or endpoint, public repo, demo video under 5 minutes, technical documentation, endpoint usage notes, and API feedback. This repository keeps those files in `docs/` so product work and submission work stay synchronized.
 
@@ -89,9 +89,18 @@ Current mapped endpoint families:
 - `GET /api/fixtures/snapshot` for schedule snapshots and Source Board reconciliation.
 - `GET /api/scores/snapshot/{fixtureId}` for score clock and match events.
 - `GET /api/odds/snapshot/{fixtureId}` for market snapshots.
+- `GET /api/scores/stat-validation?fixtureId=<FixtureId>&seq=<Seq>&statKeys=1,2` as the final-score proof path after selecting the score record where `Action = "game_finalised"`.
 - `GET /api/scores/stream` and `GET /api/odds/stream` remain future SSE streaming upgrades.
 
 The official OpenAPI spec requires `Authorization: Bearer <guest JWT>` and `X-Api-Token: <API token>` for the authenticated data endpoints. The public GitHub Pages build does not include these secrets; local testing uses `.env.local`.
+
+For the hackathon free tier, the working access route is:
+
+```text
+funded devnet wallet -> service level 1 / 4 week subscribe txSig -> guest JWT -> /api/token/activate -> local X-Api-Token
+```
+
+The default local API base is therefore `https://txline-dev.txodds.com`. Mainnet production access should be configured explicitly only after sponsor confirmation.
 
 For public Live mode, the adapter also supports `VITE_TXLINE_PROXY_BASE`. In that mode the static frontend calls a secure proxy, and the proxy attaches the TxLINE credentials server-side. This is required for GitHub Pages because frontend `VITE_` variables are compiled into the public bundle.
 

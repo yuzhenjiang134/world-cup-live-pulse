@@ -13,6 +13,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Replay data mode is implemented.
 - Multiple replay scenarios are available for demo recording.
 - Live mode is wired to the official TxLINE HTTP endpoints through `src/lib/txlineAdapter.ts`.
+- TxLINE free-tier activation is now documented as the current hackathon path: funded devnet wallet, free-tier subscribe txSig, guest JWT, `/api/token/activate`, then local `X-Api-Token` probing.
 - Source Board and No Match Day / Token Required states are visible.
 - Source Board includes a TxLINE schedule snapshot observed for 2026-06-28 UTC while keeping live score/event/odds data token-gated.
 - Fan Mode opens as a clean match pulse surface: score, source trust, latest beat, AI read, live signal summary, event feed, market mood, timeline, and local fan score pick.
@@ -39,7 +40,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 
 - Final submission needs a working deployed app, a public GitHub repo, a demo video under 5 minutes, brief technical docs, TxLINE endpoint notes, and API feedback.
 - The product must be functional, not a pitch deck, wireframe, or static mockup.
-- Final live competition readiness requires a local TxLINE `X-Api-Token` and, optionally, a guest session JWT.
+- Final live competition readiness requires a local TxLINE `X-Api-Token` activated through the TxLINE free-tier flow and, optionally, a guest session JWT.
 - The public build must stay honest when no match is active: Replay and Seed data are labeled clearly and never presented as Live.
 - The product stays informational only and avoids betting, wagering, trading, prediction-market, wallet, custody, private-key, seed-phrase, verification-code, or token handling.
 
@@ -122,11 +123,12 @@ Copy `.env.example` to `.env.local` when a TxLINE token is available.
 
 ```bash
 VITE_APP_MODE=replay
-VITE_TXLINE_API_BASE=https://txline.txodds.com
+VITE_TXLINE_API_BASE=https://txline-dev.txodds.com
 VITE_TXLINE_PROXY_BASE=
 VITE_TXLINE_API_TOKEN=your_txline_x_api_token_here
 VITE_TXLINE_SESSION_JWT=
 VITE_TXLINE_FIXTURE_ID=17588325
+VITE_TXLINE_FINAL_SCORE_SEQ=
 VITE_TXLINE_START_EPOCH_DAY=
 VITE_TXLINE_COMPETITION_ID=
 VITE_TXLINE_AS_OF_MS=
@@ -135,13 +137,23 @@ VITE_AUTHORIZED_VIDEO_EMBED_URL=
 
 The adapter can request a guest JWT from `POST /auth/guest/start` when `VITE_TXLINE_SESSION_JWT` is empty. Data endpoints still require `X-Api-Token`.
 
+For the hackathon free tier, use devnet unless TxLINE explicitly tells you to use mainnet:
+
+```text
+devnet wallet with faucet SOL -> service level 1 subscribe txSig -> guest JWT -> /api/token/activate -> local X-Api-Token
+```
+
+Never publish JWTs or API tokens. If TxLINE support needs to inspect a failed activation, share only the public wallet address and subscription tx signature.
+
+The browser helpers are the preferred project flow. The same devnet defaults are also confirmed by the official TypeScript examples and the Rust helper shared in TxLINEChat: service level `1`, duration `4` weeks, activation message `txSig:selectedLeagues:jwt` or `txSig::jwt` for the standard bundle.
+
 For public Live mode, keep the real token on a server-side proxy and set:
 
 ```bash
 VITE_TXLINE_PROXY_BASE=https://your-secure-proxy.example.com
 ```
 
-The proxy must expose the same safe paths used by the app: `/api/fixtures/snapshot`, `/api/scores/snapshot/{fixtureId}`, and `/api/odds/snapshot/{fixtureId}`.
+The proxy must expose the same safe paths used by the app and probe: `/api/fixtures/snapshot`, `/api/scores/snapshot/{fixtureId}`, `/api/scores/stat-validation`, and `/api/odds/snapshot/{fixtureId}`.
 
 After `.env.local` is configured, run:
 

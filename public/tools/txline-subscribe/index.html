@@ -251,13 +251,14 @@
       <section class="panel">
         <h2>官方参考资料</h2>
         <p>
-          TxLINE 文档说明：API 访问前需要先完成免费层级的链上订阅。Solana RPC、
-          TxLINE program id、guest JWT 和激活端点必须使用同一个网络。
+          TxLINEChat 2026-07-05 明确：黑客松免费层走 devnet 自助激活。
+          使用有 devnet SOL 的钱包完成链上订阅，再用 txSig、guest JWT 和钱包签名调用
+          <code>/api/token/activate</code>。不要公开 JWT；如果失败，只向 TxLINEChat 提供钱包公钥和订阅 txSig。
         </p>
         <div class="links">
           <a href="https://txline.txodds.com/documentation/worldcup" target="_blank" rel="noreferrer">TxLINE 世界杯免费套餐</a>
           <a href="https://txline.txodds.com/documentation/programs/addresses" target="_blank" rel="noreferrer">Program 地址</a>
-          <a href="../txline-activation/">API 激活助手</a>
+          <a href="../txline-activation/index.html">API 激活助手</a>
         </div>
         <div class="compact-grid">
           <div class="metric"><span>页面安全</span><strong id="hostMetric">检查中...</strong></div>
@@ -273,19 +274,19 @@
           <div class="field">
             <label for="network">网络</label>
             <select id="network">
-              <option value="mainnet">Mainnet / 真实 TxLINE 主机</option>
-              <option value="devnet">Devnet / TxLINE 开发主机</option>
+              <option value="devnet" selected>Devnet / 黑客松免费层自助激活</option>
+              <option value="mainnet">Mainnet / 赞助方确认后再用于生产实时</option>
             </select>
-            <p class="hint">全流程必须使用同一个网络。最终参赛路线建议使用 mainnet；devnet 如果出现 pricing matrix 或激活 500 错误，需等赞助方修复。</p>
+            <p class="hint">全流程必须使用同一个网络。当前参赛 API 落地主线：devnet 钱包 + devnet 订阅 txSig + devnet guest JWT + devnet 激活端点。</p>
           </div>
 
           <div class="field">
             <label for="serviceLevel">免费服务等级</label>
             <select id="serviceLevel">
-              <option value="12" selected>12 / 世界杯 + 国际友谊赛，mainnet 实时</option>
-              <option value="1">1 / 世界杯 + 国际友谊赛，延迟 60 秒</option>
+              <option value="1" selected>1 / 世界杯 + 国际友谊赛，黑客松免费层</option>
+              <option value="12">12 / mainnet 实时，等待赞助方确认</option>
             </select>
-            <p class="hint">参赛演示优先用 mainnet Level 12。TxLINE 文档显示 mainnet 支持 1 和 12；devnet 文档列出 Level 1。</p>
+            <p class="hint">TxODDS devnet 示例使用 Level 1 和 4 周。Mainnet Level 12 只保留为之后真实生产访问选项。</p>
           </div>
 
           <div class="field">
@@ -345,6 +346,7 @@
         }
       };
       const RECOMMENDED_MAINNET_SOL = 0.03;
+      const RECOMMENDED_DEVNET_SOL = 0.005;
 
       const state = {
         libs: null,
@@ -359,7 +361,7 @@
       const $ = (id) => document.getElementById(id);
 
       function cfg() {
-        return CONFIG[$("network").value] || CONFIG.mainnet;
+        return CONFIG[$("network").value] || CONFIG.devnet;
       }
 
       function log(value) {
@@ -406,7 +408,11 @@
           return "钱包弹窗里拒绝了交易。如果网络和 TxLINE program id 正确，请重新点击订阅并在钱包里批准。";
         }
         if (/insufficient|balance|funds/i.test(message)) {
-          return `钱包 SOL 不足。免费套餐不需要支付 TxL，但 Solana 仍需要少量 SOL 作为网络手续费和可能的 Token-2022 账户租金。建议补到 ${RECOMMENDED_MAINNET_SOL} - 0.05 SOL 后重试。\n\n原始错误：${message}`;
+          const network = $("network").value;
+          const suggested = network === "devnet"
+            ? `从 devnet faucet 补到至少 ${RECOMMENDED_DEVNET_SOL} SOL`
+            : `补到 ${RECOMMENDED_MAINNET_SOL} - 0.05 SOL`;
+          return `钱包 SOL 不足。免费套餐不需要支付 TxL，但 Solana 仍需要少量 SOL 作为网络手续费和可能的 Token-2022 账户租金。建议${suggested}后重试。\n\n原始错误：${message}`;
         }
         if (/blockhash|expired/i.test(message)) {
           return "交易 blockhash 过期了。请重新点击订阅免费套餐。";
@@ -415,7 +421,7 @@
           return `${message}\n\n下一步：复制这里的 Logs，核对 service level、program id、RPC 网络是否与 TxLINE 官方文档一致。`;
         }
         if (/429|rate|timeout|fetch|network/i.test(message)) {
-          return `${message}\n\n下一步：公共 RPC 可能限流。可以换一个 HTTPS mainnet RPC，或稍等 1 分钟后重试。`;
+          return `${message}\n\n下一步：公共 RPC 可能限流。可以换一个同网络 HTTPS RPC，或稍等 1 分钟后重试。`;
         }
         return message;
       }
@@ -448,8 +454,8 @@
         if (location.protocol !== "https:" && location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
           warnings.push("钱包扩展通常要求 HTTPS 或 localhost。");
         }
-        if ($("network").value === "devnet") {
-          warnings.push("devnet 仅用于排错；如果遇到 pricing matrix 或 activation 500，请切回 mainnet 并联系 TxLINEChat。");
+        if ($("network").value === "mainnet") {
+          warnings.push("mainnet 只在赞助方确认生产访问后使用；黑客松免费层当前主线是 devnet 自助激活。");
         }
 
         const summary = {
@@ -514,13 +520,19 @@
         const lamports = await connection.getBalance(publicKey, "confirmed");
         const sol = lamports / 1_000_000_000;
         const lowMainnet = $("network").value === "mainnet" && sol < RECOMMENDED_MAINNET_SOL;
-        const label = `${sol.toFixed(sol >= 0.01 ? 4 : 6)} SOL${lowMainnet ? ` (建议 >= ${RECOMMENDED_MAINNET_SOL} SOL)` : ""}`;
-        setMetric("balanceMetric", label, lamports > 0 && !lowMainnet ? "ok" : "warn");
-        return { lamports, sol, lowMainnet };
+        const lowDevnet = $("network").value === "devnet" && sol < RECOMMENDED_DEVNET_SOL;
+        const recommended = lowMainnet
+          ? ` (建议 >= ${RECOMMENDED_MAINNET_SOL} SOL)`
+          : lowDevnet
+            ? ` (建议 >= ${RECOMMENDED_DEVNET_SOL} devnet SOL)`
+            : "";
+        const label = `${sol.toFixed(sol >= 0.01 ? 4 : 6)} SOL${recommended}`;
+        setMetric("balanceMetric", label, lamports > 0 && !lowMainnet && !lowDevnet ? "ok" : "warn");
+        return { lamports, sol, lowMainnet, lowDevnet };
       }
 
       function activationUrl() {
-        const url = new URL("../txline-activation/", location.href);
+        const url = new URL("../txline-activation/index.html", location.href);
         url.searchParams.set("network", $("network").value);
         url.searchParams.set("txSig", state.txSig);
         return url.toString();
@@ -529,7 +541,7 @@
       function safeDiagnostics() {
         const provider = solanaProvider();
         return {
-          helperVersion: "2026-07-01-txline-subscribe-v1",
+          helperVersion: "2026-07-05-txline-devnet-free-tier-v2",
           page: location.href.split("?")[0],
           network: $("network").value,
           rpcUrl: $("rpcUrl").value.trim(),
@@ -537,6 +549,7 @@
           serviceLevel: Number($("serviceLevel").value),
           durationWeeks: Number($("durationWeeks").value),
           recommendedMainnetSol: RECOMMENDED_MAINNET_SOL,
+          recommendedDevnetSol: RECOMMENDED_DEVNET_SOL,
           walletProvider: provider
             ? {
                 label: providerLabel(provider),
@@ -693,11 +706,15 @@
           balance: {
             sol: Number(balance.sol.toFixed(6)),
             lowMainnet: balance.lowMainnet,
-            recommendedMainnetSol: RECOMMENDED_MAINNET_SOL
+            lowDevnet: balance.lowDevnet,
+            recommendedMainnetSol: RECOMMENDED_MAINNET_SOL,
+            recommendedDevnetSol: RECOMMENDED_DEVNET_SOL
           },
           user: plan.user.toBase58(),
           next: balance.lowMainnet
             ? `当前 SOL 余额低于建议值，交易可能因手续费或账户租金失败。建议补到 ${RECOMMENDED_MAINNET_SOL} - 0.05 SOL 后再批准。`
+            : balance.lowDevnet
+              ? `当前 devnet SOL 余额低于建议值。请先从 devnet faucet 补到至少 ${RECOMMENDED_DEVNET_SOL} SOL。`
             : "需要在钱包弹窗中批准。若 program id 或网络不符合预期，请拒绝。"
         });
 

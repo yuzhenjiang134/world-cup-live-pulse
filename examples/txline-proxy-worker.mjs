@@ -4,20 +4,24 @@
 // Required environment variables:
 //   TXLINE_API_TOKEN=real_txline_x_api_token
 // Optional:
-//   TXLINE_BASE=https://txline.txodds.com
+//   TXLINE_BASE=https://txline-dev.txodds.com
 //   TXLINE_SESSION_JWT=preissued_guest_jwt
 //   ALLOWED_ORIGIN=https://yuzhenjiang134.github.io
 //
 // Exposed proxy paths:
+//   GET /__health
 //   GET /api/fixtures/snapshot
 //   GET /api/scores/snapshot/:fixtureId
+//   GET /api/scores/stat-validation
 //   GET /api/odds/snapshot/:fixtureId
 
 let cachedGuestJwt = "";
+const defaultTxlineBase = "https://txline-dev.txodds.com";
 
 const allowedPathPatterns = [
   /^\/api\/fixtures\/snapshot$/,
   /^\/api\/scores\/snapshot\/[A-Za-z0-9_-]+$/,
+  /^\/api\/scores\/stat-validation$/,
   /^\/api\/odds\/snapshot\/[A-Za-z0-9_-]+$/,
 ];
 
@@ -36,6 +40,28 @@ export default {
     }
 
     const url = new URL(request.url);
+    const txlineBase = (env.TXLINE_BASE || defaultTxlineBase).replace(/\/+$/, "");
+
+    if (url.pathname === "/__health" || url.pathname === "/api/health") {
+      return json(
+        {
+          ok: true,
+          service: "world-cup-live-pulse-txline-proxy",
+          hasToken: Boolean(clean(env.TXLINE_API_TOKEN)),
+          hasStaticGuestJwt: Boolean(clean(env.TXLINE_SESSION_JWT)),
+          txlineBase,
+          allowedOrigin: allowedOrigin === "*" ? "*" : "restricted",
+          allowedPaths: [
+            "/api/fixtures/snapshot",
+            "/api/scores/snapshot/:fixtureId",
+            "/api/scores/stat-validation",
+            "/api/odds/snapshot/:fixtureId",
+          ],
+        },
+        200,
+        corsHeaders,
+      );
+    }
 
     if (!allowedPathPatterns.some((pattern) => pattern.test(url.pathname))) {
       return json({ error: "not_found" }, 404, corsHeaders);
@@ -47,26 +73,36 @@ export default {
       return json({ error: "txline_token_missing" }, 503, corsHeaders);
     }
 
-    const txlineBase = (env.TXLINE_BASE || "https://txline.txodds.com").replace(/\/+$/, "");
-    const guestJwt = clean(env.TXLINE_SESSION_JWT) || (await getGuestJwt(txlineBase));
-    const upstreamUrl = new URL(`${txlineBase}${url.pathname}${url.search}`);
-    const upstream = await fetch(upstreamUrl, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${guestJwt}`,
-        "X-Api-Token": apiToken,
-      },
-    });
-    const body = await upstream.arrayBuffer();
-    const headers = new Headers(corsHeaders);
-    headers.set("Cache-Control", "no-store");
-    headers.set("Content-Type", upstream.headers.get("Content-Type") || "application/json");
+    try {
+      const guestJwt = clean(env.TXLINE_SESSION_JWT) || (await getGuestJwt(txlineBase));
+      const upstreamUrl = new URL(`${txlineBase}${url.pathname}${url.search}`);
+      const upstream = await fetch(upstreamUrl, {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${guestJwt}`,
+          "X-Api-Token": apiToken,
+        },
+      });
+      const body = await upstream.arrayBuffer();
+      const headers = new Headers(corsHeaders);
+      headers.set("Cache-Control", "no-store");
+      headers.set("Content-Type", upstream.headers.get("Content-Type") || "application/json");
 
-    return new Response(body, {
-      status: upstream.status,
-      statusText: upstream.statusText,
-      headers,
-    });
+      return new Response(body, {
+        status: upstream.status,
+        statusText: upstream.statusText,
+        headers,
+      });
+    } catch (error) {
+      return json(
+        {
+          error: "txline_proxy_upstream_error",
+          message: safeErrorMessage(error),
+        },
+        502,
+        corsHeaders,
+      );
+    }
   },
 };
 
@@ -111,4 +147,9 @@ function json(payload, status, headers) {
       "Cache-Control": "no-store",
     },
   });
+}
+
+function safeErrorMessage(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.slice(0, 180);
 }
