@@ -3634,6 +3634,28 @@ export default function App() {
       note: latestEventDisplay?.title ?? localizedInsight,
     },
   ].filter((item) => item.value.trim().length > 0);
+  const aiEvidenceItems = [
+    {
+      label: t.marketMood,
+      value: `${frame.market.sentiment}/100`,
+      note: `${swingSignalLabel}: ${frame.insight.swing > 0 ? "+" : ""}${frame.insight.swing}`,
+    },
+    {
+      label: t.pulse,
+      value: `${fanTemperature}/100`,
+      note: watchSignal.label,
+    },
+    {
+      label: t.currentRead,
+      value: `${eventStats.goals} ${t.goals} / ${eventStats.marketSwings} ${t.marketSwings}`,
+      note: localizedInsight,
+    },
+    {
+      label: t.source,
+      value: dataStatusLabel,
+      note: sourceStatus?.label ?? t.publicSeedSource,
+    },
+  ];
   const fanSignalItems = [
     { label: t.currentRead, value: localizedInsight },
     { label: t.goals, value: String(eventStats.goals) },
@@ -3943,6 +3965,20 @@ export default function App() {
             </small>
           </div>
           <p>{t.sourceBoundary}</p>
+          <div className="matchday-current-facts">
+            <span>
+              <small>{t.dataStatus}</small>
+              <strong>{dataStatusLabel}</strong>
+            </span>
+            <span>
+              <small>{t.pulse}</small>
+              <strong>{fanTemperature}/100</strong>
+            </span>
+            <span>
+              <small>{t.nextBeat}</small>
+              <strong>{nextEvent ? `${nextEvent.minute}'` : t.replayLoop}</strong>
+            </span>
+          </div>
         </article>
         <div className="matchday-list" aria-label={t.todaysMatches}>
           {matchdayItems.map((item) => {
@@ -3954,12 +3990,19 @@ export default function App() {
             if (!isAvailable) {
               return (
                 <article className="matchday-item locked" key={item.id}>
-                  <span>{t.officialSeed}</span>
+                  <div className="matchday-card-top">
+                    <span>{t.officialSeed}</span>
+                    <em>{statusLabel}</em>
+                  </div>
                   <strong>
                     {item.homeCode} vs {item.awayCode}
                   </strong>
                   <small>{formatKickoff(item.kickoffIso, language)}</small>
-                  <em>{statusLabel}</em>
+                  <small>{display.stage}</small>
+                  <div className="matchday-card-foot">
+                    <span>{t.source}</span>
+                    <strong>{item.sourceLabel ?? t.publicSeedSource}</strong>
+                  </div>
                 </article>
               );
             }
@@ -3976,12 +4019,18 @@ export default function App() {
                 }}
                 type="button"
               >
-                <span>{statusLabel}</span>
+                <div className="matchday-card-top">
+                  <span>{statusLabel}</span>
+                  <em>{isActiveReplay ? t.nowPlaying : t.focusWatch}</em>
+                </div>
                 <strong>
                   {item.homeCode} vs {item.awayCode}
                 </strong>
                 <small>{display.stage}</small>
-                <em>{isActiveReplay ? t.nowPlaying : t.focusWatch}</em>
+                <div className="matchday-card-foot">
+                  <span>{t.source}</span>
+                  <strong>{item.sourceLabel ?? t.replay}</strong>
+                </div>
               </button>
             );
           })}
@@ -4177,6 +4226,23 @@ export default function App() {
                 <em style={{ width: `${option.implied}%` }} />
               </button>
             ))}
+          </div>
+          <div className="prediction-evidence" aria-label={aiText.evaluation}>
+            <header>
+              <span>{aiText.lab}</span>
+              <strong>
+                {aiConfidence} / {aiVolatility}
+              </strong>
+            </header>
+            <div>
+              {aiEvidenceItems.map((item) => (
+                <span key={item.label}>
+                  <small>{item.label}</small>
+                  <strong>{item.value}</strong>
+                  <em>{item.note}</em>
+                </span>
+              ))}
+            </div>
           </div>
           <div className="prediction-readout">
             <span>
