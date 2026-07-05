@@ -603,7 +603,7 @@ h2 {
 
 .source-banner {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(210px, 0.34fr) minmax(360px, 0.9fr);
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
   margin: 16px 0 0;
@@ -619,6 +619,31 @@ h2 {
   min-width: 0;
   align-items: center;
   gap: 12px;
+}
+
+.source-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.source-banner-actions a,
+.source-banner-actions button {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid #c8d4d2;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #172126;
+  font-size: 0.84rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.source-banner-actions button:first-child {
+  border-color: #ffe8a3;
+  background: #ffe8a3;
 }
 
 .source-banner strong,
@@ -653,6 +678,7 @@ h2 {
 
 .source-trust-strip {
   display: grid;
+  grid-column: 1 / -1;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
@@ -682,6 +708,10 @@ h2 {
 .source-needs-token {
   border-color: #e3c66e;
   background: #fff8df;
+}
+
+.source-live-pending {
+  background: linear-gradient(180deg, #fffdf4, #ffffff);
 }
 
 .source-error {
@@ -804,8 +834,9 @@ h2 {
 }
 
 .matchday-item.locked {
-  border-color: #e2d6ad;
-  background: linear-gradient(180deg, #fffaf0, #f8f1df);
+  border-color: #d8e0dc;
+  background: linear-gradient(180deg, #ffffff, #f8faf8);
+  opacity: 0.74;
 }
 
 .matchday-card-top {
@@ -840,8 +871,8 @@ h2 {
 }
 
 .matchday-item.locked .matchday-card-top em {
-  background: #fff4cf;
-  color: #6d5200;
+  background: #edf3f1;
+  color: #405357;
 }
 
 .matchday-item strong {

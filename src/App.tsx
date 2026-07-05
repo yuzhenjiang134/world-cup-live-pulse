@@ -3341,6 +3341,16 @@ export default function App() {
         ? homeTeamName
         : awayTeamName;
   const sourceStatus = source ? getSourceStatus(source, language) : null;
+  const liveActivationPending = mode === "live" && source?.kind === "needs-token";
+  const visibleSourceLabel = liveActivationPending ? t.replayFallbackReady : (sourceStatus?.label ?? t.publicSeedSource);
+  const visibleSourceMessage = liveActivationPending
+    ? t.apiAccessReviewFallbackNote
+    : (sourceStatus?.message ?? t.sourceBoundary);
+  const visibleSourceMode = liveActivationPending
+    ? t.replayFallbackReady
+    : mode === "replay"
+      ? t.mockFixture
+      : t.txlineAdapter;
   const videoEmbedUrl = getSafeVideoEmbedUrl(import.meta.env.VITE_AUTHORIZED_VIDEO_EMBED_URL);
   const visibleCards = frame.activeEvents.filter((event) =>
     ["yellow_card", "red_card"].includes(event.type),
@@ -3881,9 +3891,9 @@ export default function App() {
         <div className="hero-copy">
           <div className="status-ribbon">
             <span className={source?.kind === "replay" ? "status-replay" : "status-waiting"}>
-              {sourceStatus?.label ?? t.publicSeedSource}
+              {visibleSourceLabel}
             </span>
-            <span>{mode === "replay" ? t.mockFixture : t.txlineAdapter}</span>
+            <span>{visibleSourceMode}</span>
             <span>{dataStatusLabel}</span>
             <span>{leader}</span>
           </div>
@@ -3899,7 +3909,7 @@ export default function App() {
           <div className="match-meta">
             <span>{matchDisplay.competition}</span>
             <span>{matchDisplay.venue}</span>
-            <span>{mode === "live" ? t.waitingForTxline : kickoffLabel}</span>
+            <span>{liveActivationPending ? t.replayFallbackReady : mode === "live" ? t.txlineAdapter : kickoffLabel}</span>
           </div>
           <div className="hero-actions" aria-label={t.focusNav}>
             <button type="button" onClick={() => revealSection(".fan-command-center", () => undefined)}>
@@ -3921,15 +3931,21 @@ export default function App() {
       </section>
 
       {sourceStatus ? (
-        <section className={`source-banner source-${source?.kind}`} aria-label="Data source status">
+        <section
+          className={`source-banner source-${source?.kind} ${liveActivationPending ? "source-live-pending" : ""}`}
+          aria-label="Data source status"
+        >
           <div className="source-banner-main">
-            <strong>{sourceStatus.label}</strong>
-            <span>{sourceStatus.message}</span>
+            <strong>{visibleSourceLabel}</strong>
+            <span>{visibleSourceMessage}</span>
           </div>
-          <div className="source-freshness" aria-label={t.freshness}>
-            <span>{t.freshness}</span>
-            <strong>{formatKickoff(dataConsistencyState.checkedAtIso, language)}</strong>
-            <small>{t.publicSeedSource}</small>
+          <div className="source-banner-actions">
+            <button type="button" onClick={() => switchMode("replay")}>
+              {t.replayDemo}
+            </button>
+            <a href="tools/txline-subscribe/index.html" rel="noreferrer" target="_blank">
+              {t.apiAccessPlan}
+            </a>
           </div>
           <div className="source-trust-strip" aria-label={t.dataConsistency}>
             <span>
@@ -3959,7 +3975,7 @@ export default function App() {
             {homeTeamName} vs {awayTeamName}
           </h2>
           <div className="matchday-current-status">
-            <span>{mode === "replay" ? t.nowPlaying : t.waitingForTxline}</span>
+            <span>{liveActivationPending ? t.replayFallbackReady : mode === "replay" ? t.nowPlaying : t.waitingForTxline}</span>
             <small>
               {t.checkedAt}: {formatKickoff(dataConsistencyState.checkedAtIso, language)}
             </small>
@@ -3984,12 +4000,12 @@ export default function App() {
           {matchdayItems.map((item) => {
             const isActiveReplay = item.id === replayMatchId;
             const isAvailable = item.availability === "available";
-            const statusLabel = isAvailable ? t.replayAvailable : t.tokenRequiredShort;
+            const statusLabel = isAvailable ? t.replayAvailable : getDataStatusLabel(item.dataStatus ?? "Seed", language);
             const display = getTodayCardDisplay(item, language);
 
             if (!isAvailable) {
               return (
-                <article className="matchday-item locked" key={item.id}>
+                <article aria-disabled="true" className="matchday-item locked" key={item.id}>
                   <div className="matchday-card-top">
                     <span>{t.officialSeed}</span>
                     <em>{statusLabel}</em>
@@ -4001,7 +4017,7 @@ export default function App() {
                   <small>{display.stage}</small>
                   <div className="matchday-card-foot">
                     <span>{t.source}</span>
-                    <strong>{item.sourceLabel ?? t.publicSeedSource}</strong>
+                    <strong>{item.sourceLabel ?? t.txlineLiveGated}</strong>
                   </div>
                 </article>
               );
