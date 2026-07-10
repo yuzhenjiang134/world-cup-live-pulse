@@ -1,6 +1,6 @@
 import { dataConsistencyState } from "../data/matchCalendar";
-import { getReplayMatch } from "../data/replayMatch";
-import type { MatchData, MatchEvent, MatchEventType, MatchLoadResult, MarketSnapshot, Team } from "../types";
+import { getReplayMatch, replayMatches } from "../data/replayMatch";
+import type { MatchData, MatchEvent, MatchEventType, MatchLoadResult, MatchScheduleItem, MarketSnapshot, Team } from "../types";
 
 const defaultApiBase = "https://txline-dev.txodds.com";
 const requestTimeoutMs = 12_000;
@@ -274,6 +274,7 @@ export async function loadMatchData(
   if (mode === "replay") {
     return {
       match: replayMatch,
+      schedule: replayMatches.map((candidate) => toScheduleItem(candidate, "Replay fixture")),
       source: {
         kind: "replay",
         label: "Replay running",
@@ -344,6 +345,7 @@ export async function loadMatchData(
 
     return {
       match,
+      schedule: buildTxlineSchedule(fixtures, match),
       source: {
         kind: "live-ready",
         label: livePayloadCount ? "TxLINE delayed feed loaded" : "TxLINE fixture loaded",
@@ -360,6 +362,7 @@ export async function loadMatchData(
         kickoffLabel: "Replay fallback",
         dataStatus: "Replay",
       },
+      schedule: replayMatches.map((candidate) => toScheduleItem(candidate, "Replay fixture")),
       source: {
         kind: "error",
         label: "TxLINE live source unavailable",
@@ -383,6 +386,7 @@ async function loadPublicScoreboardFallback(
 
     return {
       match,
+      schedule: buildEspnSchedule(payload),
       source: {
         kind: "live-ready",
         label: "Free public scoreboard loaded",
@@ -398,6 +402,7 @@ async function loadPublicScoreboardFallback(
 
     return {
       ...tokenResult,
+      schedule: tokenResult.schedule ?? replayMatches.map((candidate) => toScheduleItem(candidate, "Replay fixture")),
       source: {
         ...tokenResult.source,
         message: `${tokenResult.source.message} Free public scoreboard fallback also failed: ${toSafeErrorMessage(error)}`,
@@ -454,6 +459,7 @@ async function loadViaProxy(
 
     return {
       match,
+      schedule: buildTxlineSchedule(fixtures, match),
       source: {
         kind: "live-ready",
         label: livePayloadCount ? "TxLINE proxy delayed feed loaded" : "TxLINE proxy fixture loaded",
@@ -470,6 +476,7 @@ async function loadViaProxy(
         kickoffLabel: "Replay fallback",
         dataStatus: "Replay",
       },
+      schedule: replayMatches.map((candidate) => toScheduleItem(candidate, "Replay fixture")),
       source: {
         kind: "error",
         label: "TxLINE proxy unavailable",
@@ -494,6 +501,7 @@ function buildNeedsTokenResult(
       status: "scheduled",
       dataStatus: "Seed",
     },
+    schedule: buildSeedSchedule(),
     source: {
       kind: "needs-token",
       label: "Live activation pending",
@@ -803,7 +811,7 @@ function normalizeTxlineMatch(payload: TxlineLivePayload): MatchData {
     status,
     stage: seed?.stage ?? payload.fixture?.Competition ?? "TxLINE live fixture",
     kickoffIso,
-    referee: "TxLINE feed",
+    referee: undefined,
     dataStatus: hasLivePayload ? "Delay" : "Seed",
     marketSource: payload.odds.length ? "official-odds" : "derived-from-score",
     qualificationNote:
@@ -815,6 +823,105 @@ function normalizeTxlineMatch(payload: TxlineLivePayload): MatchData {
     groupTable: undefined,
     market,
   };
+}
+
+function toScheduleItem(match: MatchData, sourceLabel: string): MatchScheduleItem {
+  const finalEvent = match.events.at(-1);
+  return {
+    id: match.id,
+    home: match.home,
+    away: match.away,
+    kickoffIso: match.kickoffIso,
+    stage: match.stage ?? match.competition,
+    status: match.status,
+    dataStatus: match.dataStatus ?? "Replay",
+    sourceLabel,
+    homeScore: finalEvent?.homeScore,
+    awayScore: finalEvent?.awayScore,
+    advancementNote: match.groupTable?.length ? "Group table available" : match.qualificationNote,
+  };
+}
+
+function buildSeedSchedule(): MatchScheduleItem[] {
+  return dataConsistencyState.today
+    .filter((item) => item.homeCode && item.awayCode)
+    .map((item) => ({
+      id: item.id,
+      fixtureId: item.fixtureId,
+      home: buildTeam(teamNamesByCode[item.homeCode] ?? item.homeCode, item.homeCode),
+      away: buildTeam(teamNamesByCode[item.awayCode] ?? item.awayCode, item.awayCode),
+      kickoffIso: item.kickoffIso,
+      stage: item.stage,
+      status: item.availability === "available" ? "finished" : "scheduled",
+      dataStatus: item.dataStatus,
+      sourceLabel: item.sourceLabel ?? "Schedule snapshot",
+      advancementNote: item.statusNote ?? item.coverage,
+    }));
+}
+
+function buildTxlineSchedule(fixtures: TxlineFixture[], selectedMatch: MatchData): MatchScheduleItem[] {
+  const cards: MatchScheduleItem[] = fixtures
+    .filter((fixture) => typeof fixture.FixtureId === "number")
+    .map((fixture) => {
+      const seed = findScheduleSeed(fixture.FixtureId as number);
+      const participant1 = buildTeam(
+        fixture.Participant1 ?? seed?.homeCode ?? "Participant 1",
+        seed?.homeCode ?? inferTeamCode(fixture.Participant1 ?? "Participant 1"),
+      );
+      const participant2 = buildTeam(
+        fixture.Participant2 ?? seed?.awayCode ?? "Participant 2",
+        seed?.awayCode ?? inferTeamCode(fixture.Participant2 ?? "Participant 2"),
+      );
+      const participant1IsHome = fixture.Participant1IsHome ?? true;
+      const kickoffIso = toIso(fixture.StartTime);
+      return {
+        id: `txline-${fixture.FixtureId}`,
+        fixtureId: fixture.FixtureId,
+        home: participant1IsHome ? participant1 : participant2,
+        away: participant1IsHome ? participant2 : participant1,
+        kickoffIso,
+        stage: fixture.Competition ?? seed?.stage ?? "TxLINE World Cup fixture",
+        status: "scheduled" as const,
+        dataStatus: "Seed" as const,
+        sourceLabel: "TxLINE fixture feed",
+        advancementNote: "Live score, events and odds are loaded separately for the selected fixture.",
+      };
+    });
+
+  const merged = cards.map((card) => (card.id === selectedMatch.id ? toScheduleItem(selectedMatch, "TxLINE score feed") : card));
+  return merged.length ? merged.sort(compareScheduleItems) : buildSeedSchedule();
+}
+
+function buildEspnSchedule(payload: EspnScoreboardPayload): MatchScheduleItem[] {
+  const league = payload.leagues?.[0];
+  return (payload.events ?? []).flatMap((event) => {
+    const competition = event.competitions?.[0];
+    if (!competition) return [];
+    const competitors = competition.competitors ?? [];
+    const homeCompetitor = competitors.find((item) => item.homeAway === "home") ?? competitors[0];
+    const awayCompetitor = competitors.find((item) => item.homeAway === "away") ?? competitors.find((item) => item !== homeCompetitor);
+    if (!homeCompetitor || !awayCompetitor) return [];
+    const home = buildEspnTeam(homeCompetitor, "HOME");
+    const away = buildEspnTeam(awayCompetitor, "AWAY");
+    const status = normalizeEspnStatus(competition.status);
+    return [{
+      id: `espn-${event.id ?? competition.id ?? `${home.code}-${away.code}`}`,
+      home,
+      away,
+      kickoffIso: competition.date ?? event.date,
+      stage: competition.altGameNote ?? league?.season?.type?.name ?? "FIFA World Cup",
+      status,
+      dataStatus: (status === "scheduled" ? "Seed" : "Delay") as MatchScheduleItem["dataStatus"],
+      sourceLabel: "ESPN public scoreboard",
+      homeScore: parseScore(homeCompetitor.score),
+      awayScore: parseScore(awayCompetitor.score),
+      advancementNote: competition.altGameNote ?? "Official standings and advancement context may be separate from the scoreboard feed.",
+    }];
+  }).sort(compareScheduleItems);
+}
+
+function compareScheduleItems(first: MatchScheduleItem, second: MatchScheduleItem) {
+  return new Date(first.kickoffIso ?? 0).getTime() - new Date(second.kickoffIso ?? 0).getTime();
 }
 
 function buildPublicMarket(events: MatchEvent[], score: { homeScore: number; awayScore: number }): MarketSnapshot[] {
@@ -1609,6 +1716,7 @@ const teamNamesByCode: Record<string, string> = {
   ALG: "Algeria",
   ARG: "Argentina",
   AUT: "Austria",
+  BEL: "Belgium",
   BRA: "Brazil",
   ENG: "England",
   FRA: "France",
@@ -1625,6 +1733,7 @@ const teamColorsByCode: Record<string, string> = {
   ALG: "#0b8f55",
   ARG: "#55a7d8",
   AUT: "#d62839",
+  BEL: "#1f2933",
   BRA: "#f2c94c",
   ENG: "#b91c1c",
   FRA: "#233f8f",

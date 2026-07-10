@@ -188,7 +188,7 @@ https://yuzhenjiang134.github.io/world-cup-live-pulse/tools/txline-activation/
 
 The subscribe helper uses wallet `signTransaction`; the activation helper uses wallet `signMessage`. They are documented in `docs/TXLINE_SUBSCRIBE_HELPER.md` and `docs/TXLINE_SAFE_ACTIVATION.md`.
 
-`VITE_AUTHORIZED_VIDEO_EMBED_URL` is optional and must only contain a rights-cleared `https://` embed URL from an official broadcaster, FIFA, YouTube Live, or another authorized provider. The public build does not scrape or embed unofficial match video.
+`VITE_AUTHORIZED_VIDEO_EMBED_URL` is optional and must only contain a rights-cleared `https://` URL from an official broadcaster, FIFA, YouTube Live, or another authorized provider. Without it, the app opens the official [FIFA+ World Cup archive](https://www.plus.fifa.com/en/showcase/fifa-world-cup-editions/9e331159-475a-4b7e-9ee7-27ff9587c6e2) as the legal replay/highlights path. Availability varies by territory and rights; the public build does not scrape or embed unofficial match video.
 
 ## Project structure
 

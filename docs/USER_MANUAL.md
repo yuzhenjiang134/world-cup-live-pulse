@@ -79,9 +79,9 @@ The compact matchday hub separates playable Replay fixtures from official TxLINE
 
 ## Authorized Video Sync
 
-The app can display a video embed only when `VITE_AUTHORIZED_VIDEO_EMBED_URL` is configured with a rights-cleared `https://` source from an official broadcaster, FIFA, YouTube Live, or another authorized provider.
+The watch card opens an official FIFA+ archive/highlights page by default. Availability depends on territory and rights, so the app does not call it a guaranteed live stream. A team-owned rights-cleared `https://` source may be supplied through `VITE_AUTHORIZED_VIDEO_EMBED_URL` when an authorized provider grants it.
 
-The public build does not include match video, scrape streams, or embed unofficial sources. Without an authorized URL, the panel shows a clear rights-required state.
+The public build does not include match video, scrape streams, or embed unofficial sources. The deterministic in-app timeline replay remains available even when no exact video is available.
 
 ## Country Team Atlas
 

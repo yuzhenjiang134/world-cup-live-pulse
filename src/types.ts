@@ -141,6 +141,22 @@ export type DataSourceState =
 export type MatchLoadResult = {
   match: MatchData;
   source: DataSourceState;
+  schedule?: MatchScheduleItem[];
+};
+
+export type MatchScheduleItem = {
+  id: string;
+  fixtureId?: number;
+  home: Team;
+  away: Team;
+  kickoffIso?: string;
+  stage: string;
+  status: MatchData["status"];
+  dataStatus: DataStatus;
+  sourceLabel: string;
+  homeScore?: number;
+  awayScore?: number;
+  advancementNote?: string;
 };
 
 export type PulseFrame = {

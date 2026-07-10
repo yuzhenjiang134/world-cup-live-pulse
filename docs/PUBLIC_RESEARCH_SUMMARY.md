@@ -87,9 +87,16 @@ The implemented Authorized Video Sync module therefore works like this:
 
 - It is hidden by default in Settings.
 - It only accepts `https://` embed URLs through `VITE_AUTHORIZED_VIDEO_EMBED_URL`.
-- It is intended for rights-cleared sources such as an official broadcaster, FIFA, YouTube Live, or another authorized provider.
-- If no authorized source is configured, the UI shows a clear "rights required" state.
-- The video layer can synchronize to match clock or replay minute, but does not pretend to be a TxLINE video feed.
+- It opens an official FIFA+ archive/highlights page by default, so the product has a useful and legal watch path without inventing a stream URL.
+- A configured `VITE_AUTHORIZED_VIDEO_EMBED_URL` can replace that default only when the team has a rights-cleared `https://` source.
+- FIFA+ availability can vary by territory and rights. The UI therefore calls it an official replay/highlights source, never a guaranteed live stream.
+- The in-app timeline replay remains the deterministic fallback and does not pretend to be a TxLINE video feed.
+
+Official sources checked for the default watch path:
+
+- [FIFA+ World Cup editions](https://www.plus.fifa.com/en/showcase/fifa-world-cup-editions/9e331159-475a-4b7e-9ee7-27ff9587c6e2)
+- [FIFA+ highlights and replays](https://www.plus.fifa.com/en/showcase/highlights-and-replays/483be165-7819-4791-8815-e502790a5aa4)
+- [FIFA World Cup official hub](https://www.fifa.com/en/tournaments/mens/worldcup/)
 
 ## Competition-Oriented Product Direction
 
