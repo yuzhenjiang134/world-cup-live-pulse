@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 
 const root = process.cwd();
 
@@ -83,6 +84,30 @@ function pass(message) {
   console.log(`PASS ${message}`);
 }
 
+function isIgnoredAndUntracked(file) {
+  try {
+    execFileSync("git", ["check-ignore", "--quiet", "--", file], { stdio: "ignore" });
+    execFileSync("git", ["ls-files", "--error-unmatch", "--", file], { stdio: "ignore" });
+    return false;
+  } catch {
+    let ignored = false;
+    let tracked = false;
+    try {
+      execFileSync("git", ["check-ignore", "--quiet", "--", file], { stdio: "ignore" });
+      ignored = true;
+    } catch {
+      ignored = false;
+    }
+    try {
+      execFileSync("git", ["ls-files", "--error-unmatch", "--", file], { stdio: "ignore" });
+      tracked = true;
+    } catch {
+      tracked = false;
+    }
+    return ignored && !tracked;
+  }
+}
+
 for (const file of requiredFiles) {
   const fullPath = path.join(root, file);
   if (fs.existsSync(fullPath)) {
@@ -94,7 +119,9 @@ for (const file of requiredFiles) {
 
 for (const file of forbiddenFiles) {
   const fullPath = path.join(root, file);
-  if (fs.existsSync(fullPath)) {
+  if (file === ".env.local" && fs.existsSync(fullPath) && isIgnoredAndUntracked(file)) {
+    pass(`${file} is present locally, ignored, and untracked`);
+  } else if (fs.existsSync(fullPath)) {
     fail(`${file} must not be committed`);
   } else {
     pass(`${file} absent`);

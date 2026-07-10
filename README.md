@@ -45,6 +45,8 @@ This project is not a betting product. It does not place bets, recommend trades,
 - The product must be functional, not a pitch deck, wireframe, or static mockup.
 - Final live competition readiness requires a local TxLINE `X-Api-Token` activated through the TxLINE free-tier flow and, optionally, a guest session JWT.
 - The public build must stay honest when no match is active: Replay and Seed data are labeled clearly and never presented as Live.
+- The production entry point now uses a focused three-column matchday shell: left navigation, center match workflow, and a right trust / replay rail. Authentication is hidden under Settings > Live data connection.
+- The main screen includes a browser-only 1,000-point fan score challenge. Points have no cash value and never touch wallets, tokens, or transactions.
 - The product stays informational only and avoids betting, wagering, trading, prediction-market, wallet, custody, private-key, seed-phrase, verification-code, or token handling.
 
 ## Judge demo path
@@ -157,6 +159,8 @@ For public Live mode, keep the real token on a server-side proxy and set:
 ```bash
 VITE_TXLINE_PROXY_BASE=https://your-secure-proxy.example.com
 ```
+
+During local development, the browser uses the built-in `/__txline` Vite dev proxy. It reads the ignored `.env.local` on the server side and forwards only the allowlisted TxLINE data paths, so the token and JWT are not compiled into the browser bundle.
 
 The proxy must expose the same safe paths used by the app and probe: `/api/fixtures/snapshot`, `/api/scores/snapshot/{fixtureId}`, `/api/scores/stat-validation`, and `/api/odds/snapshot/{fixtureId}`.
 

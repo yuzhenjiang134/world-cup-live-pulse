@@ -657,6 +657,7 @@ function normalizeEspnScoreboardMatch(payload: EspnScoreboardPayload, replayMatc
     kickoffIso,
     referee: "Public scoreboard feed",
     dataStatus: status === "scheduled" ? "Seed" : "Delay",
+    marketSource: "derived-from-score",
     qualificationNote:
       "No-token public scoreboard signal. Use for fan context and demo reliability; TxLINE remains the sponsor-verified source when an official token is active.",
     kickoffLabel: status === "scheduled" ? "ESPN public fixture" : "ESPN public scoreboard",
@@ -804,6 +805,7 @@ function normalizeTxlineMatch(payload: TxlineLivePayload): MatchData {
     kickoffIso,
     referee: "TxLINE feed",
     dataStatus: hasLivePayload ? "Delay" : "Seed",
+    marketSource: payload.odds.length ? "official-odds" : "derived-from-score",
     qualificationNote:
       "TxLINE data is used as fan context only. This product does not place bets, give trading advice, or handle wallet secrets.",
     kickoffLabel: hasLivePayload ? "TxLINE 60s delayed feed" : "TxLINE fixture seed",
@@ -1493,6 +1495,10 @@ function normalizeProxyBase(proxyBase: string | undefined) {
     return undefined;
   }
 
+  if (cleaned.startsWith("/")) {
+    return cleaned.replace(/\/+$/, "");
+  }
+
   try {
     const url = new URL(cleaned);
 
@@ -1521,7 +1527,7 @@ function buildUrl(apiBase: string, endpoint: string, query?: Record<string, numb
 function buildProxyUrl(proxyBase: string, endpoint: string, query?: Record<string, number | undefined>) {
   const base = proxyBase.replace(/\/+$/, "");
   const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-  const url = new URL(`${base}${path}`);
+  const url = new URL(`${base}${path}`, globalThis.location?.origin ?? "http://127.0.0.1");
 
   for (const [key, value] of Object.entries(query ?? {})) {
     if (typeof value === "number" && Number.isFinite(value)) {

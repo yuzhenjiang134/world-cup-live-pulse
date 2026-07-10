@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 
 const root = process.cwd();
 const ignoredDirs = new Set([".git", "node_modules", "dist"]);
@@ -71,7 +72,37 @@ function walk(directory) {
 
 const files = walk(root);
 
+function isIgnoredAndUntrackedLocalEnv(file) {
+  if (file.name !== ".env.local") {
+    return false;
+  }
+
+  let ignored = false;
+  let tracked = false;
+
+  try {
+    execFileSync("git", ["check-ignore", "--quiet", "--", file.relativePath], { stdio: "ignore" });
+    ignored = true;
+  } catch {
+    ignored = false;
+  }
+
+  try {
+    execFileSync("git", ["ls-files", "--error-unmatch", "--", file.relativePath], { stdio: "ignore" });
+    tracked = true;
+  } catch {
+    tracked = false;
+  }
+
+  return ignored && !tracked;
+}
+
 for (const file of files) {
+  if (isIgnoredAndUntrackedLocalEnv(file)) {
+    pass(`${file.relativePath} is ignored and untracked; local credentials are not scanned or committed`);
+    continue;
+  }
+
   if (forbiddenFileNames.has(file.name)) {
     fail(`${file.relativePath} must not exist in the repository`);
   }

@@ -100,10 +100,10 @@ Updated: 2026-06-28
 
 ## Blocked until user provides external inputs
 
-- [ ] TxLINE World Cup API token
+- [x] TxLINE World Cup API token activated and stored locally in ignored `.env.local`
 - [x] TxLINE endpoint documentation
-- [ ] TxLINE / Solana hackathon access sign-up confirmation
-- [ ] Example TxLINE response payloads with secrets removed
+- [x] TxLINE / Solana hackathon access sign-up confirmation
+- [x] Example TxLINE response payloads with secrets removed
 - [x] GitHub public repository target
 - [x] GitHub Pages deployment check
 - [ ] Superteam Earn account access
@@ -111,7 +111,7 @@ Updated: 2026-06-28
 - [x] Demo video hosting target
 - [ ] Clean Solana wallet for prize workflow only
 
-## Next implementation after TxLINE token arrives
+## Verified after TxLINE token arrival
 
 - [x] Map live match list endpoint into `MatchData`
 - [x] Map live score endpoint into the score card
@@ -120,11 +120,23 @@ Updated: 2026-06-28
 - [x] Add live API loading state
 - [x] Add live API error fallback to Replay mode
 - [x] Document exact TxLINE endpoints used
-- [ ] Verify real token works against one fixture locally
+- [x] Verify real token works against one fixture locally with `npm run txline:probe` twice
 - [ ] Confirm browser CORS behavior with real token
-- [ ] Add live API empty-state copy from real no-match-day response, if provided
-- [ ] Add endpoint feedback to submission draft after real token testing
+- [x] Add live API empty-state copy from real no-match-day response, if provided
+- [x] Add endpoint feedback to submission draft after real token testing
 - [ ] Replace static Source Board schedule snapshot with real TxLINE calendar response when token and CORS are verified
+
+## Matchday shell completion
+
+- [x] Replace the overloaded primary screen with a focused three-column matchday shell
+- [x] Keep API authentication, JWT, wallet, and endpoint details inside Settings > Live data connection
+- [x] Add truthful Live / Delay / Replay / Seed source chip and checked timestamp
+- [x] Add 1,000 browser-only test points for the local score challenge
+- [x] Add goals, yellow cards, red cards, added time, and final-score signals to the primary view
+- [x] Add replay library and teams / players view with working navigation
+- [x] Add authorized-video-only watch entry; no unofficial stream is embedded
+- [x] Add eight-language controls without mojibake labels in the new shell
+- [x] Update security checks to allow only ignored, untracked `.env.local`
 
 ## Submission checklist
 

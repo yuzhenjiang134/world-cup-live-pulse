@@ -3231,14 +3231,11 @@ export default function App() {
 
       try {
         const result = await loadMatchData(mode, {
-          apiBase: import.meta.env.VITE_TXLINE_API_BASE,
-          apiToken: import.meta.env.VITE_TXLINE_API_TOKEN,
+          proxyBase: import.meta.env.VITE_TXLINE_PROXY_BASE || (import.meta.env.DEV ? "/__txline" : ""),
           asOfMs: import.meta.env.VITE_TXLINE_AS_OF_MS,
           competitionId: import.meta.env.VITE_TXLINE_COMPETITION_ID,
           fixtureId: import.meta.env.VITE_TXLINE_FIXTURE_ID,
-          proxyBase: import.meta.env.VITE_TXLINE_PROXY_BASE,
           replayMatchId,
-          sessionJwt: import.meta.env.VITE_TXLINE_SESSION_JWT,
           startEpochDay: import.meta.env.VITE_TXLINE_START_EPOCH_DAY,
         });
 

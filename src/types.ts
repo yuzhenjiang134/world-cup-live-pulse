@@ -60,6 +60,7 @@ export type MatchData = {
   kickoffIso?: string;
   referee?: string;
   dataStatus?: DataStatus;
+  marketSource?: "official-odds" | "derived-from-score" | "replay-snapshot";
   qualificationNote?: string;
   home: Team;
   away: Team;

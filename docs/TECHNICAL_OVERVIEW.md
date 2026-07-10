@@ -54,6 +54,30 @@ Snapshot-only facts must be re-checked before final submission. The app treats t
 - `src/lib/pulse.ts`: deterministic pulse frame builder for score, latest event, commentary, pressure, and market mood.
 - `src/lib/shareCard.ts`: SVG export for match pulse share cards and local fan score-pick cards.
 - `src/App.tsx`: dashboard UI with Replay/Live mode, source trust strip, rolling match ticker, fan command center, localized AI prediction / evaluation / commentary, live signal summary, visual local score-pick controls, details-on-demand reveal buttons, Source Board, Daily Brief, Data Audit, Live Readiness, endpoint status cards, Judge Demo chapters, multilingual judging-criteria score map, Path to 100 note, Match Intelligence, Match Center, team profiles, group table, eight-language settings, and safety copy.
+- `src/MatchdayApp.tsx`: focused matchday shell used by the production entry point. It keeps score, source truth, event timeline, pulse, replay selection, teams, and local score challenge in the primary workflow while moving TxLINE authentication into a settings-only advanced section.
+- `src/matchday.css`: responsive three-column layout with mobile navigation, compact source status, data-quality labels, and no raw credential fields on the main view.
+
+## Authentication and surface boundary
+
+Authentication is an implementation dependency, not a fan feature. The main view only exposes a source chip, checked time, and a truthful Live / Delay / Replay / Seed state. The settings drawer contains the advanced connection state and a link to the TxLINE activation helper. It does not accept or display private keys, seed phrases, JWTs, API tokens, or raw transaction payloads.
+
+The local flow is:
+
+```text
+ignored .env.local -> Vite /__txline dev proxy -> guest JWT / X-Api-Token headers -> normalized MatchData -> source chip
+```
+
+The browser never receives the local token or JWT. The Vite dev proxy allowlists only fixtures, score snapshots, odds snapshots, and stat-validation paths. A production deployment must provide the same behavior through an external server-side proxy; GitHub Pages itself cannot keep a private token.
+
+The GitHub Pages flow is:
+
+```text
+secure server-side proxy -> TxLINE headers -> safe JSON endpoints -> same normalized MatchData
+```
+
+If neither path is available, the adapter uses the public scoreboard or fixed Replay fixture and labels it. This prevents the polished interface from overstating freshness or pretending that an unauthenticated response is sponsor-verified.
+
+The local score challenge initializes with 1,000 browser-only points and uses no wallet, token, transaction, or remote persistence. It is a fan engagement mechanic for the Consumer and Fan Experiences track, not a wagering or prediction-market system.
 
 ## Product surfaces
 

@@ -19,6 +19,18 @@ It is informational only. It does not place bets, give trading advice, connect w
 9. Open Settings and switch to Analyst Mode for source verification, or Judge Mode for demo chapters.
 10. Export the match pulse share card only after checking the data state.
 
+## Matchday Shell
+
+The current main view is intentionally split into three working areas:
+
+- Left rail: Live, Replay, Match Center, Teams, and Settings.
+- Center: score, verified source, match clock, fan pulse, event timeline, and local score challenge.
+- Right rail: local test points, source truth, replay library, and an authorized watch entry if one is configured.
+
+The first screen does not expose wallet controls, JWT fields, program IDs, raw endpoint tables, or long operator instructions. Those are advanced implementation details and belong in Settings. Every interactive control on the main view has a concrete result: it changes mode, refreshes verified data, opens a replay, opens team context, or updates the local score challenge.
+
+The score challenge starts with 1,000 local test points in the browser. It costs 50 local points to lock a score and may award local points after a verified final score. These points have no cash value, are not transferable, are not a wager, and never touch Solana or TxLINE.
+
 ## Data States
 
 | State | Meaning |
@@ -34,7 +46,9 @@ Always check the source banner before reading a match. It shows the data state, 
 
 ## Settings
 
-- Language: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic labels for the current fan regions represented in the demo. Dynamic event titles, event descriptions, AI reads, source rules, and control labels switch together.
+- Language: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic labels for the current fan regions represented in the demo. Team and player names remain source-of-truth names.
+- Live data connection: a compact advanced section shows whether the authenticated source is ready and links to the self-serve helper. It never renders the API token, guest JWT, private key, or wallet signature.
+- Refresh verified feed: reruns the adapter without exposing request headers or secrets.
 - Viewing preset: Fan Mode keeps the main screen focused on the match, Analyst Mode reveals data-verification panels, and Judge Mode reveals the demo chapters, judging-criteria score map, Path to 100 note, and review path.
 - Operation manual: show or hide the matchday guide.
 - Fixture briefing: show or hide fixture-specific data rules.
@@ -42,6 +56,8 @@ Always check the source banner before reading a match. It shows the data state, 
 - Authorized video sync: show or hide the rights-cleared video integration status.
 
 The main page keeps secondary material collapsed by default. Presets apply sensible module visibility automatically, and the module switches let you override that layout when needed.
+
+Authentication is deliberately not a first-screen action. For local development, credentials stay in the ignored `.env.local` file. For GitHub Pages, use a server-side proxy because Vite `VITE_` values are public after build. The public page remains useful through Replay and a no-token public scoreboard fallback, with the actual source state shown next to the score.
 
 ## Fan Score Pick
 
