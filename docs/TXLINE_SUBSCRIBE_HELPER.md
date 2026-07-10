@@ -51,6 +51,7 @@ The helper now checks both networks after wallet connection. A wallet address is
 - If the page shows `Devnet 0 SOL` while Phantom shows real SOL, the funds are on Mainnet. They cannot pay a Devnet subscription. Keep the helper on Devnet and use faucet SOL.
 - If the page shows `Mainnet 0 SOL` while the wallet has faucet SOL, the funds are on Devnet. Do not switch to Mainnet for the hackathon free tier.
 - For the current hackathon route, use Devnet, service level `1`, and at least `0.005` faucet SOL. Mainnet SOL is not needed for this free-tier activation.
+- If the default Solana Devnet RPC returns `403` or `Access forbidden`, the helper automatically tries the public Devnet RPC fallback and shows the active RPC in the advanced diagnostics.
 - If a previous page showed `Cannot read properties of undefined (reading 'numRequiredSignatures')`, refresh the helper and reconnect Phantom. The helper now uses the wallet standard `sendTransaction` path first and leaves preflight to the Solana RPC.
 
 ## Safety notes

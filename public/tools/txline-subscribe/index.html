@@ -305,6 +305,7 @@
         <div class="links">
           <a href="https://txline.txodds.com/documentation/worldcup" target="_blank" rel="noreferrer">TxLINE 世界杯免费套餐</a>
           <a href="https://txline.txodds.com/documentation/programs/addresses" target="_blank" rel="noreferrer">Program 地址</a>
+          <a href="https://faucet.solana.com/" target="_blank" rel="noreferrer">Solana Devnet Faucet</a>
           <a href="../txline-activation/index.html">API 激活助手</a>
         </div>
         <div class="compact-grid">
@@ -395,6 +396,7 @@
       const CONFIG = {
         mainnet: {
           rpcUrl: "https://api.mainnet-beta.solana.com",
+          rpcUrls: ["https://api.mainnet-beta.solana.com"],
           apiOrigin: "https://txline.txodds.com",
           programId: "9ExbZjAapQww1vfcisDmrngPinHTEfpjYRWMunJgcKaA",
           txlMint: "Zhw9TVKp68a1QrftncMSd6ELXKDtpVMNuMGr1jNwdeL",
@@ -402,6 +404,7 @@
         },
         devnet: {
           rpcUrl: "https://api.devnet.solana.com",
+          rpcUrls: ["https://api.devnet.solana.com", "https://devnet.rpcpool.com"],
           apiOrigin: "https://txline-dev.txodds.com",
           programId: "6pW64gN1s2uqjHkn1unFeEjAwJkPGHoppGvS715wyP2J",
           txlMint: "4Zao8ocPhmMgq7PdsYWyxvqySMGx7xb9cMftPMkEokRG",
@@ -418,6 +421,7 @@
         idl: null,
         program: null,
         txSig: "",
+        activeRpcUrl: "",
         lastError: null
       };
 
@@ -480,6 +484,9 @@
         if (/Attempt to debit|no record of a prior credit/i.test(message)) {
           const network = $("network").value;
           return `当前 ${network} 网络没有足够 SOL，交易在链上模拟阶段已被拒绝。请先为当前网络准备余额；Mainnet SOL 不会计入 Devnet。\n\n当前页面已阻止继续发送必失败交易。`;
+        }
+        if (/403|access forbidden|blocked/i.test(message)) {
+          return `${message}\n\n当前 RPC 拒绝了浏览器请求。页面会自动尝试备用 Devnet RPC；如果仍失败，请稍后重试或更换高级设置中的 RPC。`;
         }
         if (/blockhash|expired/i.test(message)) {
           return "交易 blockhash 过期了。请重新点击订阅免费套餐。";
@@ -570,6 +577,11 @@
         return network === "devnet" ? "mainnet" : "devnet";
       }
 
+      function rpcCandidates(network, preferred = "") {
+        const configured = CONFIG[network]?.rpcUrls || [CONFIG[network]?.rpcUrl];
+        return [...new Set([preferred, ...configured].filter(Boolean))];
+      }
+
       function balanceLabel(network, sol) {
         const digits = sol >= 0.01 ? 6 : 9;
         return `${network === "devnet" ? "Devnet" : "Mainnet"} ${sol.toFixed(digits)} SOL`;
@@ -582,10 +594,38 @@
         return { lamports, sol, network, low };
       }
 
-      async function readBalance(web3, network, publicKey) {
-        const connection = new web3.Connection(CONFIG[network].rpcUrl, "confirmed");
-        const lamports = await connection.getBalance(publicKey, "confirmed");
-        return classifyBalance(lamports, lamports / 1_000_000_000, network);
+      async function readBalance(web3, network, publicKey, preferred = "") {
+        let lastError = null;
+        for (const rpcUrl of rpcCandidates(network, preferred)) {
+          try {
+            const connection = new web3.Connection(rpcUrl, "confirmed");
+            const lamports = await connection.getBalance(publicKey, "confirmed");
+            return { ...classifyBalance(lamports, lamports / 1_000_000_000, network), rpcUrl };
+          } catch (error) {
+            lastError = error;
+          }
+        }
+
+        throw new Error(
+          `${network} RPC balance check failed on all configured endpoints: ${lastError?.message || "unknown error"}`
+        );
+      }
+
+      async function resolveRpcConnection(web3, network, publicKey, preferred = "") {
+        let lastError = null;
+        for (const rpcUrl of rpcCandidates(network, preferred)) {
+          try {
+            const connection = new web3.Connection(rpcUrl, "confirmed");
+            await connection.getBalance(publicKey, "confirmed");
+            return { connection, rpcUrl };
+          } catch (error) {
+            lastError = error;
+          }
+        }
+
+        throw new Error(
+          `${network} RPC health check failed on all configured endpoints: ${lastError?.message || "unknown error"}`
+        );
       }
 
       async function refreshWalletBalances() {
@@ -596,10 +636,18 @@
         const publicKey = new web3.PublicKey(state.walletPublicKey);
         const selectedNetwork = $("network").value;
         const alternateNetwork = otherNetwork(selectedNetwork);
-        const [selected, alternate] = await Promise.all([
-          readBalance(web3, selectedNetwork, publicKey),
+        const [selectedResult, alternateResult] = await Promise.allSettled([
+          readBalance(web3, selectedNetwork, publicKey, state.activeRpcUrl),
           readBalance(web3, alternateNetwork, publicKey)
         ]);
+        if (selectedResult.status === "rejected") {
+          throw selectedResult.reason;
+        }
+
+        const selected = selectedResult.value;
+        const alternate = alternateResult.status === "fulfilled" ? alternateResult.value : null;
+        state.activeRpcUrl = selected.rpcUrl;
+        $("rpcUrl").value = selected.rpcUrl;
 
         const selectedText = `${selected.sol.toFixed(selected.sol >= 0.01 ? 6 : 9)} SOL`;
         const selectedRecommendation = selected.low
@@ -609,7 +657,7 @@
           : "余额达到当前网络的建议值。";
         setMetric("balanceMetric", selectedText, selected.low ? "warn" : "ok");
 
-        if (selected.sol === 0 && alternate.sol > 0) {
+        if (selected.sol === 0 && alternate?.sol > 0) {
           setStatus(
             "balanceHint",
             `当前选择 ${selectedNetwork}，检测到 ${balanceLabel(alternateNetwork, alternate.sol)}。两条网络余额彼此独立，请切换钱包网络或为当前网络准备余额。${selectedRecommendation}`,
@@ -618,12 +666,18 @@
         } else {
           setStatus(
             "balanceHint",
-            `${balanceLabel(selectedNetwork, selected.sol)}；${balanceLabel(alternateNetwork, alternate.sol)}。${selectedRecommendation}`,
+            `${balanceLabel(selectedNetwork, selected.sol)}；${alternate ? balanceLabel(alternateNetwork, alternate.sol) : `${alternateNetwork} RPC 暂不可用`}。${selectedRecommendation}`,
             selected.low ? "warn" : "ok"
           );
         }
 
-        return { selected, alternate };
+        return {
+          selected,
+          alternate,
+          alternateRpcError: alternateResult.status === "rejected"
+            ? String(alternateResult.reason?.message || alternateResult.reason)
+            : ""
+        };
       }
 
       async function ensureWalletConnected() {
@@ -680,6 +734,7 @@
           durationWeeks: Number($("durationWeeks").value),
           recommendedMainnetSol: RECOMMENDED_MAINNET_SOL,
           recommendedDevnetSol: RECOMMENDED_DEVNET_SOL,
+          activeRpcUrl: state.activeRpcUrl,
           walletProvider: provider
             ? {
                 label: providerLabel(provider),
@@ -710,10 +765,17 @@
         const provider = await ensureWalletConnected();
         const { web3 } = await loadLibraries();
         const current = cfg();
-        const connection = new web3.Connection($("rpcUrl").value.trim(), "confirmed");
+        const rpc = await resolveRpcConnection(
+          web3,
+          $("network").value,
+          provider.publicKey,
+          state.activeRpcUrl || $("rpcUrl").value.trim()
+        );
+        state.activeRpcUrl = rpc.rpcUrl;
+        $("rpcUrl").value = rpc.rpcUrl;
         return {
           web3,
-          connection,
+          connection: rpc.connection,
           provider,
           current,
           programId: new web3.PublicKey(current.programId),
@@ -901,6 +963,7 @@
         state.idl = null;
         state.program = null;
         state.txSig = "";
+        state.activeRpcUrl = "";
         $("copyTx").disabled = true;
         $("openActivation").disabled = true;
         setDefaults();
