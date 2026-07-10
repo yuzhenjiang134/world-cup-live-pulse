@@ -4,6 +4,7 @@ import type { MatchData, MatchEvent, MatchEventType, MatchLoadResult, MarketSnap
 
 const defaultApiBase = "https://txline-dev.txodds.com";
 const requestTimeoutMs = 12_000;
+const publicWorldCupScoreboardUrl = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard";
 
 type TxlineAdapterOptions = {
   apiBase?: string;
@@ -137,6 +138,117 @@ type TxlineLivePayload = {
   scores: TxlineScore[];
 };
 
+type EspnScoreboardPayload = {
+  leagues?: EspnLeague[];
+  day?: {
+    date?: string;
+  };
+  events?: EspnEvent[];
+};
+
+type EspnLeague = {
+  name?: string;
+  displayName?: string;
+  abbreviation?: string;
+  season?: {
+    year?: number;
+    displayName?: string;
+    type?: {
+      name?: string;
+      abbreviation?: string;
+    };
+  };
+};
+
+type EspnEvent = {
+  id?: string;
+  name?: string;
+  shortName?: string;
+  date?: string;
+  season?: {
+    year?: number;
+    slug?: string;
+  };
+  competitions?: EspnCompetition[];
+};
+
+type EspnCompetition = {
+  id?: string;
+  date?: string;
+  competitors?: EspnCompetitor[];
+  details?: EspnDetail[];
+  status?: EspnStatus;
+  venue?: {
+    displayName?: string;
+    fullName?: string;
+    address?: {
+      city?: string;
+      country?: string;
+    };
+  };
+  altGameNote?: string;
+  broadcasts?: Array<{
+    names?: string[];
+  }>;
+};
+
+type EspnCompetitor = {
+  homeAway?: "home" | "away";
+  score?: string;
+  winner?: boolean;
+  team?: {
+    id?: string;
+    abbreviation?: string;
+    displayName?: string;
+    shortDisplayName?: string;
+    name?: string;
+    location?: string;
+    color?: string;
+    alternateColor?: string;
+  };
+  statistics?: Array<{
+    name?: string;
+    abbreviation?: string;
+    displayValue?: string;
+  }>;
+};
+
+type EspnStatus = {
+  clock?: number;
+  displayClock?: string;
+  type?: {
+    state?: "pre" | "in" | "post";
+    completed?: boolean;
+    description?: string;
+    detail?: string;
+    shortDetail?: string;
+  };
+};
+
+type EspnDetail = {
+  type?: {
+    text?: string;
+  };
+  clock?: {
+    value?: number;
+    displayValue?: string;
+  };
+  team?: {
+    id?: string;
+  };
+  scoreValue?: number;
+  scoringPlay?: boolean;
+  redCard?: boolean;
+  yellowCard?: boolean;
+  penaltyKick?: boolean;
+  ownGoal?: boolean;
+  athletesInvolved?: Array<{
+    displayName?: string;
+    fullName?: string;
+    shortName?: string;
+  }>;
+};
+
 type RequestHeaders = {
   Authorization: string;
   "X-Api-Token": string;
@@ -181,7 +293,7 @@ export async function loadMatchData(
   }
 
   if (!apiToken) {
-    return buildNeedsTokenResult(replayMatch, checkedAtIso, fixtureId);
+    return loadPublicScoreboardFallback(replayMatch, checkedAtIso, fixtureId);
   }
 
   try {
@@ -234,7 +346,7 @@ export async function loadMatchData(
       match,
       source: {
         kind: "live-ready",
-        label: livePayloadCount ? "TxLINE live data loaded" : "TxLINE fixture loaded",
+        label: livePayloadCount ? "TxLINE delayed feed loaded" : "TxLINE fixture loaded",
         message: buildLiveReadyMessage(liveFixtureId, scores.length, odds.length, partialErrors),
         checkedAtIso,
         endpoint: livePayloadCount ? `${scorePath} + ${oddsPath}` : "/api/fixtures/snapshot",
@@ -255,6 +367,40 @@ export async function loadMatchData(
         checkedAtIso,
         endpoint: "/api/fixtures/snapshot",
         fixtureId: fixtureId ? String(fixtureId) : undefined,
+      },
+    };
+  }
+}
+
+async function loadPublicScoreboardFallback(
+  replayMatch: MatchData,
+  checkedAtIso: string,
+  fixtureId?: number,
+): Promise<MatchLoadResult> {
+  try {
+    const payload = (await requestAbsoluteJson(publicWorldCupScoreboardUrl)) as EspnScoreboardPayload;
+    const match = normalizeEspnScoreboardMatch(payload, replayMatch);
+
+    return {
+      match,
+      source: {
+        kind: "live-ready",
+        label: "Free public scoreboard loaded",
+        message:
+          "Loaded ESPN's no-token FIFA World Cup scoreboard as a public fallback signal. TxLINE remains the sponsor source for authenticated hackathon data.",
+        checkedAtIso,
+        endpoint: publicWorldCupScoreboardUrl,
+        fixtureId: match.id,
+      },
+    };
+  } catch (error) {
+    const tokenResult = buildNeedsTokenResult(replayMatch, checkedAtIso, fixtureId);
+
+    return {
+      ...tokenResult,
+      source: {
+        ...tokenResult.source,
+        message: `${tokenResult.source.message} Free public scoreboard fallback also failed: ${toSafeErrorMessage(error)}`,
       },
     };
   }
@@ -310,7 +456,7 @@ async function loadViaProxy(
       match,
       source: {
         kind: "live-ready",
-        label: livePayloadCount ? "TxLINE proxy data loaded" : "TxLINE proxy fixture loaded",
+        label: livePayloadCount ? "TxLINE proxy delayed feed loaded" : "TxLINE proxy fixture loaded",
         message: buildLiveReadyMessage(liveFixtureId, scores.length, odds.length, partialErrors),
         checkedAtIso,
         endpoint: livePayloadCount ? `${scorePath} + ${oddsPath}` : "/api/fixtures/snapshot",
@@ -445,6 +591,191 @@ async function requestProxyJson(
   }
 }
 
+async function requestAbsoluteJson(urlString: string): Promise<unknown> {
+  const controller = new AbortController();
+  const timeout = globalThis.setTimeout(() => controller.abort(), requestTimeoutMs);
+
+  try {
+    const response = await fetch(urlString, {
+      headers: {
+        Accept: "application/json",
+      },
+      signal: controller.signal,
+    });
+    const text = await response.text();
+
+    if (!response.ok) {
+      throw new TxlineHttpError(response.status, urlString, truncate(text, 220));
+    }
+
+    return text ? parseMaybeJson(text) : null;
+  } finally {
+    globalThis.clearTimeout(timeout);
+  }
+}
+
+function normalizeEspnScoreboardMatch(payload: EspnScoreboardPayload, replayMatch: MatchData): MatchData {
+  const league = payload.leagues?.[0];
+  const event = selectEspnEvent(payload.events ?? []);
+  const competition = event?.competitions?.[0];
+
+  if (!event || !competition) {
+    throw new Error("ESPN public scoreboard did not return a selectable World Cup event.");
+  }
+
+  const competitors = competition.competitors ?? [];
+  const homeCompetitor = competitors.find((item) => item.homeAway === "home") ?? competitors[0];
+  const awayCompetitor = competitors.find((item) => item.homeAway === "away") ?? competitors.find((item) => item !== homeCompetitor);
+
+  if (!homeCompetitor || !awayCompetitor) {
+    throw new Error("ESPN public scoreboard event did not contain two teams.");
+  }
+
+  const home = buildEspnTeam(homeCompetitor, "HOME");
+  const away = buildEspnTeam(awayCompetitor, "AWAY");
+  const status = normalizeEspnStatus(competition.status);
+  const kickoffIso = competition.date ?? event.date;
+  const score = {
+    homeScore: parseScore(homeCompetitor.score),
+    awayScore: parseScore(awayCompetitor.score),
+  };
+  const events = normalizeEspnEvents(competition.details ?? [], competition.status, home, away, score, {
+    homeId: homeCompetitor.team?.id,
+    awayId: awayCompetitor.team?.id,
+  });
+  const market = buildPublicMarket(events, score);
+  const venue = formatEspnVenue(competition.venue);
+  const stage = competition.altGameNote ?? league?.season?.type?.name ?? event.season?.slug ?? "FIFA World Cup";
+
+  return {
+    ...replayMatch,
+    id: `espn-${event.id ?? competition.id ?? "world-cup"}`,
+    competition: league?.season?.displayName ?? league?.name ?? "FIFA World Cup",
+    venue,
+    status,
+    stage,
+    kickoffIso,
+    referee: "Public scoreboard feed",
+    dataStatus: status === "scheduled" ? "Seed" : "Delay",
+    qualificationNote:
+      "No-token public scoreboard signal. Use for fan context and demo reliability; TxLINE remains the sponsor-verified source when an official token is active.",
+    kickoffLabel: status === "scheduled" ? "ESPN public fixture" : "ESPN public scoreboard",
+    home,
+    away,
+    events,
+    groupTable: undefined,
+    market,
+  };
+}
+
+function selectEspnEvent(events: EspnEvent[]) {
+  const withCompetition = events.filter((event) => event.competitions?.[0]?.competitors?.length);
+  const live = withCompetition.find((event) => event.competitions?.[0]?.status?.type?.state === "in");
+
+  if (live) {
+    return live;
+  }
+
+  const upcoming = withCompetition.find((event) => event.competitions?.[0]?.status?.type?.state === "pre");
+
+  if (upcoming) {
+    return upcoming;
+  }
+
+  return withCompetition
+    .sort(
+      (first, second) =>
+        Math.abs(new Date(second.competitions?.[0]?.date ?? second.date ?? 0).getTime() - Date.now()) -
+        Math.abs(new Date(first.competitions?.[0]?.date ?? first.date ?? 0).getTime() - Date.now()),
+    )
+    .at(-1);
+}
+
+function normalizeEspnEvents(
+  details: EspnDetail[],
+  status: EspnStatus | undefined,
+  home: Team,
+  away: Team,
+  finalScore: { homeScore: number; awayScore: number },
+  teamIds: { homeId?: string; awayId?: string },
+): MatchEvent[] {
+  let homeScore = 0;
+  let awayScore = 0;
+  const events: MatchEvent[] = [
+    {
+      id: "public-kickoff",
+      minute: 1,
+      type: "kickoff",
+      title: "Public scoreboard opened",
+      description: "No-token public scoreboard signal is active for this World Cup fixture.",
+      homeScore: 0,
+      awayScore: 0,
+      marketPulse: 50,
+    },
+  ];
+
+  for (const detail of [...details].sort(compareEspnDetail)) {
+    const type = inferEspnDetailType(detail);
+
+    if (!type) {
+      continue;
+    }
+
+    const teamCode = resolveEspnTeamCode(detail, home, away, teamIds);
+
+    if (type === "goal") {
+      if (teamCode === home.code) {
+        homeScore += 1;
+      } else if (teamCode === away.code) {
+        awayScore += 1;
+      }
+    }
+
+    const minute = minuteFromEspnDetail(detail);
+    const player = detail.athletesInvolved?.[0]?.displayName ?? detail.athletesInvolved?.[0]?.fullName;
+    const title = buildEventTitle(type, teamCode);
+
+    events.push({
+      id: `public-${minute}-${type}-${events.length}`,
+      minute,
+      type,
+      team: teamCode,
+      player,
+      title,
+      description: `${title} from the public World Cup scoreboard${player ? ` involving ${player}` : ""}.`,
+      homeScore,
+      awayScore,
+      marketPulse: inferMarketPulseFromScore(homeScore, awayScore),
+    });
+  }
+
+  if (status?.type?.completed || status?.type?.state === "post") {
+    events.push({
+      id: "public-fulltime",
+      minute: minuteFromDisplayClock(status.displayClock) ?? 90,
+      type: "fulltime",
+      title: "Full time",
+      description: "Final public scoreboard result.",
+      homeScore: finalScore.homeScore,
+      awayScore: finalScore.awayScore,
+      marketPulse: inferMarketPulseFromScore(finalScore.homeScore, finalScore.awayScore),
+    });
+  } else if (events.length === 1 && (finalScore.homeScore > 0 || finalScore.awayScore > 0)) {
+    events.push({
+      id: "public-score-snapshot",
+      minute: minuteFromDisplayClock(status?.displayClock) ?? 1,
+      type: "score_update",
+      title: "Public score snapshot",
+      description: "Current public scoreboard score for this fixture.",
+      homeScore: finalScore.homeScore,
+      awayScore: finalScore.awayScore,
+      marketPulse: inferMarketPulseFromScore(finalScore.homeScore, finalScore.awayScore),
+    });
+  }
+
+  return dedupeEvents(events).sort((first, second) => first.minute - second.minute);
+}
+
 function normalizeTxlineMatch(payload: TxlineLivePayload): MatchData {
   const seed = findScheduleSeed(payload.fixtureId);
   const latestScore = latestByTime(payload.scores);
@@ -472,15 +803,173 @@ function normalizeTxlineMatch(payload: TxlineLivePayload): MatchData {
     stage: seed?.stage ?? payload.fixture?.Competition ?? "TxLINE live fixture",
     kickoffIso,
     referee: "TxLINE feed",
-    dataStatus: hasLivePayload ? "Live" : "Seed",
+    dataStatus: hasLivePayload ? "Delay" : "Seed",
     qualificationNote:
       "TxLINE data is used as fan context only. This product does not place bets, give trading advice, or handle wallet secrets.",
-    kickoffLabel: hasLivePayload ? "TxLINE live data" : "TxLINE fixture seed",
+    kickoffLabel: hasLivePayload ? "TxLINE 60s delayed feed" : "TxLINE fixture seed",
     home,
     away,
     events,
     groupTable: undefined,
     market,
+  };
+}
+
+function buildPublicMarket(events: MatchEvent[], score: { homeScore: number; awayScore: number }): MarketSnapshot[] {
+  if (events.length) {
+    return dedupeMarket(
+      events.map((event) => ({
+        minute: event.minute,
+        homeWin: score.homeScore > score.awayScore ? 1.7 : 2.45,
+        draw: score.homeScore === score.awayScore ? 2.9 : 3.6,
+        awayWin: score.awayScore > score.homeScore ? 1.7 : 2.45,
+        sentiment: event.marketPulse,
+      })),
+    );
+  }
+
+  return [
+    {
+      minute: 1,
+      homeWin: 2.45,
+      draw: 3.2,
+      awayWin: 2.45,
+      sentiment: inferMarketPulseFromScore(score.homeScore, score.awayScore),
+    },
+  ];
+}
+
+function normalizeEspnStatus(status: EspnStatus | undefined): MatchData["status"] {
+  if (status?.type?.completed || status?.type?.state === "post") {
+    return "finished";
+  }
+
+  if (status?.type?.state === "in") {
+    return "live";
+  }
+
+  return "scheduled";
+}
+
+function formatEspnVenue(venue: EspnCompetition["venue"] | undefined) {
+  const name = venue?.fullName ?? venue?.displayName;
+  const city = venue?.address?.city;
+  const country = venue?.address?.country;
+
+  return [name, city, country].filter(Boolean).join(", ") || "Public scoreboard venue";
+}
+
+function compareEspnDetail(first: EspnDetail, second: EspnDetail) {
+  return minuteFromEspnDetail(first) - minuteFromEspnDetail(second);
+}
+
+function inferEspnDetailType(detail: EspnDetail): MatchEventType | null {
+  const text = `${detail.type?.text ?? ""}`.toLowerCase();
+
+  if (detail.scoringPlay || text.includes("goal")) {
+    return "goal";
+  }
+
+  if (detail.redCard || text.includes("red card")) {
+    return "red_card";
+  }
+
+  if (detail.yellowCard || text.includes("yellow card")) {
+    return "yellow_card";
+  }
+
+  if (text.includes("substitution")) {
+    return "substitution";
+  }
+
+  if (text.includes("half")) {
+    return "halftime";
+  }
+
+  return null;
+}
+
+function resolveEspnTeamCode(
+  detail: EspnDetail,
+  home: Team,
+  away: Team,
+  teamIds: { homeId?: string; awayId?: string },
+) {
+  if (!detail.team?.id) {
+    return undefined;
+  }
+
+  if (detail.team.id === teamIds.homeId) {
+    return home.code;
+  }
+
+  if (detail.team.id === teamIds.awayId) {
+    return away.code;
+  }
+
+  return undefined;
+}
+
+function minuteFromEspnDetail(detail: EspnDetail) {
+  const displayMinute = minuteFromDisplayClock(detail.clock?.displayValue);
+
+  if (displayMinute) {
+    return displayMinute;
+  }
+
+  if (typeof detail.clock?.value === "number" && Number.isFinite(detail.clock.value)) {
+    return Math.max(1, Math.min(130, Math.round(detail.clock.value / 60)));
+  }
+
+  return 1;
+}
+
+function minuteFromDisplayClock(displayClock: string | undefined) {
+  if (!displayClock) {
+    return undefined;
+  }
+
+  const match = displayClock.match(/\d+/);
+
+  if (!match) {
+    return undefined;
+  }
+
+  const minute = Number(match[0]);
+  return Number.isFinite(minute) ? Math.max(1, Math.min(130, minute)) : undefined;
+}
+
+function parseScore(score: string | undefined) {
+  const parsed = Number(score);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function readStat(competitor: EspnCompetitor, names: string[]) {
+  const normalized = names.map((name) => name.toLowerCase());
+  const stat = competitor.statistics?.find((item) =>
+    normalized.includes(`${item.name ?? ""}`.toLowerCase()) || normalized.includes(`${item.abbreviation ?? ""}`.toLowerCase()),
+  );
+  const numeric = Number(stat?.displayValue);
+
+  return Number.isFinite(numeric) ? numeric : undefined;
+}
+
+function buildEspnTeam(competitor: EspnCompetitor, fallbackCode: string): Team {
+  const code = competitor.team?.abbreviation ?? competitor.team?.id ?? fallbackCode;
+  const color = competitor.team?.color ? `#${competitor.team.color.replace(/^#/, "")}` : teamColorsByCode[code] ?? "#3d5a80";
+  const shots = readStat(competitor, ["totalShots", "SHOT"]);
+  const possession = readStat(competitor, ["possessionPct", "PP"]);
+  const corners = readStat(competitor, ["wonCorners", "CW"]);
+
+  return {
+    code,
+    name: competitor.team?.displayName ?? competitor.team?.shortDisplayName ?? competitor.team?.name ?? competitor.team?.location ?? code,
+    color,
+    group: "FIFA World Cup public scoreboard",
+    record: [possession ? `${possession}% possession` : "", shots ? `${shots} shots` : "", corners ? `${corners} corners` : ""]
+      .filter(Boolean)
+      .join(" / "),
+    profile: "Public scoreboard participant. Team context is loaded without a private API token.",
   };
 }
 
@@ -498,7 +987,7 @@ function normalizeScoreEvents(
       minute: Math.max(1, extractMinute(kickoffScore)),
       type: "kickoff",
       title: "TxLINE feed opened",
-      description: "Authenticated TxLINE score feed is connected for this fixture.",
+      description: "Authenticated TxLINE score feed is connected for this fixture; free-tier data is treated as delayed unless upgraded.",
       homeScore: 0,
       awayScore: 0,
       marketPulse: 50,
@@ -796,7 +1285,7 @@ function buildLiveReadyMessage(
   oddsCount: number,
   partialErrors: string[],
 ) {
-  const base = `Authenticated TxLINE fixture ${fixtureId} loaded with ${scoresCount} score records and ${oddsCount} odds records.`;
+  const base = `Authenticated TxLINE fixture ${fixtureId} loaded with ${scoresCount} score records and ${oddsCount} odds records. Free-tier data is labeled as delayed unless upgraded.`;
 
   if (!partialErrors.length) {
     return base;

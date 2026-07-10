@@ -14,6 +14,9 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Multiple replay scenarios are available for demo recording.
 - Live mode is wired to the official TxLINE HTTP endpoints through `src/lib/txlineAdapter.ts`.
 - TxLINE free-tier activation is now documented as the current hackathon path: funded devnet wallet, free-tier subscribe txSig, guest JWT, `/api/token/activate`, then local `X-Api-Token` probing.
+- Current TxLINEChat evidence indicates hackathon service level 1 should be treated as a 60-second delayed feed for World Cup and International Friendlies unless TxLINE grants a higher live tier.
+- If no TxLINE token or proxy is configured, Live mode now falls back to the free no-token ESPN FIFA World Cup scoreboard JSON, which was verified on 2026-07-10 with browser-safe CORS.
+- The app opens in Live mode by default so the first screen attempts the real free public scoreboard source before users choose Replay.
 - Source Board and No Match Day / Token Required states are visible.
 - Source Board includes a TxLINE schedule snapshot observed for 2026-06-28 UTC while keeping live score/event/odds data token-gated.
 - Fan Mode opens as a clean match pulse surface: score, source trust, latest beat, AI read, live signal summary, event feed, market mood, timeline, and local fan score pick.
@@ -56,10 +59,12 @@ Use the built-in Judge Demo chapters for a clean review or video recording path:
 ## Data truth model
 
 - Official schedule snapshot: TxLINE World Cup Schedule was checked on 2026-06-28 and observed Jordan vs Argentina and Algeria vs Austria for 2026-06-28 UTC; the app shows them as Seed / Token Required.
-- Live: only shown after authenticated TxLINE scores, events, and odds are loaded.
-- Delay: reserved for TxLINE Free Tier or delayed feeds, including the documented 60-second delay mode.
+- Live: only shown after authenticated TxLINE scores, events, and odds are loaded, or after a confirmed public scoreboard event is loaded and labeled with its real source.
+- Delay: reserved for TxLINE Free Tier or delayed feeds, including the observed service level 1 / 60-second delay mode.
+- Public scoreboard: ESPN FIFA World Cup scoreboard is a free no-token backup for score, status, events, teams, venue, and public freshness when TxLINE token access is blocked.
 - Replay: deterministic historical scenarios for judging and video recording.
 - Seed: official schedule or static context that is useful to fans but is not a live feed.
+- TxLINE token: cannot be safely or legally collected from public GitHub repositories. Use the official self-serve flow and TxLINEChat guidance; never paste private keys, JWTs, or API tokens into the public repo.
 
 The checked timestamp shown in the app is part of the product. Before final submission, re-check Superteam, TxODDS, and TxLINE public pages and update any snapshot-only facts if they changed.
 

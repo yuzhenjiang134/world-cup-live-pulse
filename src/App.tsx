@@ -1767,9 +1767,9 @@ const trustCopy = {
     replayTruthNote:
       "Replay fixtures are fixed historical scenarios for judging and demo recording, never presented as live.",
     freeTier: "Free Tier behavior",
-    freeTierValue: "Live or 60s delay",
+    freeTierValue: "SL1 / 60s delay",
     freeTierNote:
-      "TxLINE docs describe real-time access for unlocked fixtures and a 60-second delay mode for other fixtures.",
+      "Video review and TxLINE community guidance indicate hackathon free-tier service level 1 is a 60-second delayed feed for World Cup and International Friendlies.",
     endpointsTitle: "Endpoint coverage",
     endpoint: "Endpoint",
     coverage: "Coverage",
@@ -1795,8 +1795,8 @@ const trustCopy = {
     replayTruthValue: "固定可复现",
     replayTruthNote: "Replay 是用于评审和录屏的历史场景，不会伪装成实时比赛。",
     freeTier: "Free Tier 行为",
-    freeTierValue: "实时或 60 秒延迟",
-    freeTierNote: "TxLINE 文档说明可解锁实时 fixture，其他 fixture 可用 60 秒延迟模式。",
+    freeTierValue: "SL1 / 60 秒延迟",
+    freeTierNote: "视频核查与 TxLINE 社群信息显示，黑客松免费层 service level 1 是世界杯与国际友谊赛的 60 秒延迟 feed。",
     endpointsTitle: "Endpoint 覆盖",
     endpoint: "Endpoint",
     coverage: "覆盖内容",
@@ -1824,9 +1824,9 @@ const trustCopy = {
     replayTruthNote:
       "Replay usa escenarios historicos fijos para jueces y video demo; nunca se presenta como live.",
     freeTier: "Free Tier",
-    freeTierValue: "Live o 60s delay",
+    freeTierValue: "SL1 / 60s delay",
     freeTierNote:
-      "La documentacion TxLINE describe acceso real-time para fixtures desbloqueados y modo 60-second delay para otros.",
+      "La guia de la comunidad TxLINE indica que el free tier SL1 usa feed con 60s de retraso para World Cup e International Friendlies.",
     endpointsTitle: "Cobertura de endpoints",
     endpoint: "Endpoint",
     coverage: "Cobertura",
@@ -1854,9 +1854,9 @@ const trustCopy = {
     replayTruthNote:
       "Replay usa cenarios historicos fixos para jurados e video demo; nunca e apresentado como live.",
     freeTier: "Free Tier",
-    freeTierValue: "Live ou 60s delay",
+    freeTierValue: "SL1 / 60s delay",
     freeTierNote:
-      "A documentacao TxLINE descreve acesso real-time para fixtures liberados e modo 60-second delay para outros.",
+      "A orientacao da comunidade TxLINE indica que o free tier SL1 usa feed com atraso de 60s para World Cup e International Friendlies.",
     endpointsTitle: "Cobertura de endpoints",
     endpoint: "Endpoint",
     coverage: "Cobertura",
@@ -1882,9 +1882,9 @@ const trustCopy = {
     replayTruthValue: "Déterministe",
     replayTruthNote: "Les replays sont des scénarios fixes pour jury et vidéo, jamais présentés comme live.",
     freeTier: "Free Tier",
-    freeTierValue: "Live ou délai 60s",
+    freeTierValue: "SL1 / délai 60s",
     freeTierNote:
-      "La documentation TxLINE décrit l'accès temps réel pour certains fixtures et un mode retardé de 60 secondes.",
+      "Les indications de la communaute TxLINE signalent que le free tier SL1 est un flux retarde de 60s pour World Cup et International Friendlies.",
     endpointsTitle: "Couverture endpoints",
     endpoint: "Endpoint",
     coverage: "Couverture",
@@ -1910,9 +1910,9 @@ const trustCopy = {
     replayTruthValue: "Deterministisch",
     replayTruthNote: "Replay-Spiele sind feste Szenarien für Jury und Demo, nie als Live dargestellt.",
     freeTier: "Free Tier",
-    freeTierValue: "Live oder 60s Verzögerung",
+    freeTierValue: "SL1 / 60s Verzögerung",
     freeTierNote:
-      "Die TxLINE-Dokumentation beschreibt Echtzeit-Zugriff für freigegebene Fixtures und einen 60-Sekunden-Delay-Modus.",
+      "TxLINE-Community-Hinweise deuten darauf hin, dass Free Tier SL1 ein 60-Sekunden-verzoegerter Feed fuer World Cup und International Friendlies ist.",
     endpointsTitle: "Endpoint-Abdeckung",
     endpoint: "Endpoint",
     coverage: "Abdeckung",
@@ -1938,8 +1938,8 @@ const trustCopy = {
     replayTruthValue: "固定再現",
     replayTruthNote: "リプレイは審査と動画用の固定シナリオで、ライブとして表示しません。",
     freeTier: "Free Tier",
-    freeTierValue: "Liveまたは60秒遅延",
-    freeTierNote: "TxLINE docs は解放済みfixtureのリアルタイムアクセスと60秒遅延モードを説明しています。",
+    freeTierValue: "SL1 / 60秒遅延",
+    freeTierNote: "TxLINEコミュニティの案内では、Free Tier SL1はWorld CupとInternational Friendlies向けの60秒遅延フィードとして扱います。",
     endpointsTitle: "Endpoint範囲",
     endpoint: "Endpoint",
     coverage: "範囲",
@@ -1965,8 +1965,8 @@ const trustCopy = {
     replayTruthValue: "ثابتة",
     replayTruthNote: "الإعادة سيناريو ثابت للتحكيم والفيديو، ولا تعرض كبيانات مباشرة.",
     freeTier: "Free Tier",
-    freeTierValue: "مباشر أو تأخير 60ث",
-    freeTierNote: "توثق TxLINE وصولا فوريا لبعض fixtures ووضع تأخير 60 ثانية لغيرها.",
+    freeTierValue: "SL1 / تأخير 60ث",
+    freeTierNote: "تشير إرشادات مجتمع TxLINE إلى أن Free Tier SL1 هو بث بتأخير 60 ثانية لكأس العالم والمباريات الودية الدولية.",
     endpointsTitle: "تغطية الواجهات",
     endpoint: "Endpoint",
     coverage: "التغطية",
@@ -1996,8 +1996,8 @@ const localizedTrustCopy = {
     replayTruthValue: "固定可复现",
     replayTruthNote: "Replay 是用于评审和录屏的历史场景，不会伪装成实时比赛。",
     freeTier: "Free Tier 行为",
-    freeTierValue: "实时或 60 秒延迟",
-    freeTierNote: "TxLINE 文档说明可解锁实时 fixture，其它 fixture 可用 60 秒延迟模式。",
+    freeTierValue: "SL1 / 60 秒延迟",
+    freeTierNote: "视频核查与 TxLINE 社群信息显示，黑客松免费层 service level 1 是世界杯与国际友谊赛的 60 秒延迟 feed。",
     endpointsTitle: "Endpoint 覆盖",
     endpoint: "Endpoint",
     coverage: "覆盖内容",
@@ -3181,7 +3181,7 @@ function readAlertThreshold(): AlertThreshold {
 }
 
 export default function App() {
-  const [mode, setMode] = useState<MatchMode>("replay");
+  const [mode, setMode] = useState<MatchMode>("live");
   const [language, setLanguage] = useState<Language>(() => detectInitialLanguage());
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -3350,7 +3350,7 @@ export default function App() {
     ? t.replayFallbackReady
     : mode === "replay"
       ? t.mockFixture
-      : t.txlineAdapter;
+      : (sourceStatus?.label ?? t.txlineAdapter);
   const videoEmbedUrl = getSafeVideoEmbedUrl(import.meta.env.VITE_AUTHORIZED_VIDEO_EMBED_URL);
   const visibleCards = frame.activeEvents.filter((event) =>
     ["yellow_card", "red_card"].includes(event.type),
@@ -3785,6 +3785,7 @@ export default function App() {
         <span>{t.judgeableBuild}</span>
         <span>{t.replayAvailable}</span>
         <span>{t.txlineLiveGated}</span>
+        <span>{trust.freeTierValue}</span>
         <time>
           {t.checkedAt}: {formatKickoff(dataConsistencyState.checkedAtIso, language)}
         </time>
@@ -3909,7 +3910,7 @@ export default function App() {
           <div className="match-meta">
             <span>{matchDisplay.competition}</span>
             <span>{matchDisplay.venue}</span>
-            <span>{liveActivationPending ? t.replayFallbackReady : mode === "live" ? t.txlineAdapter : kickoffLabel}</span>
+            <span>{liveActivationPending ? t.replayFallbackReady : kickoffLabel}</span>
           </div>
           <div className="hero-actions" aria-label={t.focusNav}>
             <button type="button" onClick={() => revealSection(".fan-command-center", () => undefined)}>
@@ -3924,6 +3925,12 @@ export default function App() {
           </div>
         </div>
         <div className="hero-panel">
+          <section className={`hero-watch-card signal-${watchSignal.tone}`} aria-label={t.watchSignal}>
+            <span>{t.watchSignal}</span>
+            <strong>{watchSignal.label}</strong>
+            <p>{watchSignal.reason}</p>
+            <small>{localizedCommentary}</small>
+          </section>
           <Metric label={t.clock} value={`${minute}'`} />
           <Metric label={t.pulse} value={`${fanTemperature}/100`} />
           <Metric label={t.latestBeat} value={latestEventDisplay?.title ?? t.waitingForKickoff} />
@@ -3958,7 +3965,7 @@ export default function App() {
             </span>
             <span>
               <strong>{t.source}</strong>
-              {source?.kind === "live-ready" ? t.txlineAdapter : t.publicSeedSource}
+              {liveActivationPending ? trust.freeTierValue : sourceStatus?.label ?? t.publicSeedSource}
             </span>
             <span>
               <strong>{t.freshness}</strong>
@@ -3975,7 +3982,7 @@ export default function App() {
             {homeTeamName} vs {awayTeamName}
           </h2>
           <div className="matchday-current-status">
-            <span>{liveActivationPending ? t.replayFallbackReady : mode === "replay" ? t.nowPlaying : t.waitingForTxline}</span>
+            <span>{liveActivationPending ? t.replayFallbackReady : mode === "replay" ? t.nowPlaying : visibleSourceLabel}</span>
             <small>
               {t.checkedAt}: {formatKickoff(dataConsistencyState.checkedAtIso, language)}
             </small>

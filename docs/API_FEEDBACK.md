@@ -10,6 +10,7 @@ World Cup Live Pulse is built replay-first because the public hackathon build ne
 - A single visible sponsor access route on the hackathon page. On 2026-07-03, Superteam Earn support clarified that Earn support does not issue TxODDS API credentials and teams should contact `https://t.me/TxLINEChat` for sponsor-side questions.
 - A match calendar endpoint with explicit `no_live_match_today` or equivalent empty-state metadata.
 - A fixture access field that says whether a fixture is unlocked live, delayed, token-gated, or unavailable.
+- A machine-readable delay field for the free tier. Current community evidence says service level 1 is a 60-second delayed feed for World Cup and International Friendlies, and products should not have to infer that from chat messages.
 - A clear freshness field for every score, event, and odds snapshot.
 - Stable event IDs so the UI can deduplicate goals, cards, substitutions, and market shifts.
 - Sample payloads for live, delayed, scheduled, finished, postponed, and no-match-day states.
@@ -45,6 +46,7 @@ The current app uses:
 - A No Match Day rule when no official fixture is known.
 - A real local TxLINE adapter that requests `POST /auth/guest/start`, `GET /api/fixtures/snapshot`, `GET /api/scores/snapshot/{fixtureId}`, and `GET /api/odds/snapshot/{fixtureId}` when credentials are present.
 - Optional public Live proxy support through `VITE_TXLINE_PROXY_BASE`, so GitHub Pages can call a token-holding proxy instead of exposing credentials in the frontend bundle.
+- A free no-token ESPN public World Cup scoreboard fallback that keeps Live mode useful when TxLINE activation is blocked, while clearly labeling it as a non-TxLINE public signal.
 - Safe activation helper pages for the devnet free-tier subscribe and `/api/token/activate` flow.
 - Judge Demo chapters to make replay evaluation repeatable.
 - English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic UI labels for global fan testing.

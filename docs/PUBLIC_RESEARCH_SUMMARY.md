@@ -97,6 +97,9 @@ To improve award chances, the project should keep moving toward:
 
 - Less clutter in the first viewport.
 - Stronger live data proof after a real TxLINE token is available.
+- No-token public fallback: ESPN FIFA World Cup scoreboard JSON was checked on 2026-07-10 and returned score, status, event details, teams, venue, broadcast labels, and CORS `*`. This is now integrated as a free public signal when TxLINE credentials are missing.
+- Video/highlight source check: ScoreBat documents official videos and live streams from verified sources, but its free plan is limited to a Free Feed and may include branding/ads. It is useful as a future authorized-video source, not the core score truth layer.
+- Team/context source check: TheSportsDB offers a free JSON API for data and artwork, while its own page lists 2-minute livescores under the supporter/premium API. It is useful for context, not the primary free livescore source.
 - A demo video that shows the product flow, not just the UI.
 - Clear API feedback for TxODDS.
 - A commercial story around fan communities, sports media embeds, Telegram channels, and sponsor-safe second-screen experiences.

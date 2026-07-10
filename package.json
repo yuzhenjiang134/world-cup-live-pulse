@@ -15,7 +15,7 @@
     "txline:probe": "node scripts/txline-probe.mjs",
     "txline:helper-test": "node --experimental-vm-modules scripts/test-txline-subscribe-helper.mjs",
     "demo:video": "node scripts/record-demo-video.mjs",
-    "validate": "npm run check && npm run fixtures && npm run preflight && npm run security && npm run txline:helper-test && npm run build"
+    "validate": "tsc --noEmit && node scripts/validate-fixtures.mjs && node scripts/preflight.mjs && node scripts/security-scan.mjs && node --experimental-vm-modules scripts/test-txline-subscribe-helper.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.3.4",

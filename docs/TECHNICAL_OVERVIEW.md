@@ -7,7 +7,7 @@ World Cup Live Pulse is a fan-facing World Cup match dashboard for the Superteam
 ## Architecture
 
 ```text
-TxLINE API or replay fixtures
+TxLINE API, free public scoreboard, or replay fixtures
 -> src/lib/txlineAdapter.ts
 -> normalized MatchData
 -> src/lib/pulse.ts
@@ -35,8 +35,8 @@ The app separates four data states:
 
 | State | Meaning | Current use |
 |---|---|---|
-| Live | Data pulled from TxLINE with configured credentials and endpoint mapping | Implemented in the adapter; requires local token |
-| Delay | Live-like data that is not guaranteed to be real time | Reserved for delayed feeds |
+| Live | Data pulled from TxLINE with configured credentials and a confirmed live tier, or a public scoreboard event loaded with its real source label | Supported by the adapter |
+| Delay | Authenticated or public data that is near-live but not guaranteed real time | Used for hackathon service level 1 / 60-second delayed feeds and the no-token public scoreboard fallback |
 | Replay | Fixed historical replay data for judging and demo recording | Implemented |
 | Seed | Official schedule/context or static background data such as teams, players, referee, standings, and schedule labels | Implemented |
 
@@ -50,7 +50,7 @@ Snapshot-only facts must be re-checked before final submission. The app treats t
 
 - `src/data/replayMatch.ts`: two replay fixtures with score events, market snapshots, team profiles, key players, referee, kickoff time, and optional group table.
 - `src/data/matchCalendar.ts`: public Source Board state with official schedule snapshot fixtures and Token Required behavior.
-- `src/lib/txlineAdapter.ts`: single integration boundary for replay fallback and authenticated TxLINE live mode.
+- `src/lib/txlineAdapter.ts`: single integration boundary for replay fallback, authenticated TxLINE mode, secure TxLINE proxy mode, and the free no-token ESPN public scoreboard fallback.
 - `src/lib/pulse.ts`: deterministic pulse frame builder for score, latest event, commentary, pressure, and market mood.
 - `src/lib/shareCard.ts`: SVG export for match pulse share cards and local fan score-pick cards.
 - `src/App.tsx`: dashboard UI with Replay/Live mode, source trust strip, rolling match ticker, fan command center, localized AI prediction / evaluation / commentary, live signal summary, visual local score-pick controls, details-on-demand reveal buttons, Source Board, Daily Brief, Data Audit, Live Readiness, endpoint status cards, Judge Demo chapters, multilingual judging-criteria score map, Path to 100 note, Match Intelligence, Match Center, team profiles, group table, eight-language settings, and safety copy.
@@ -103,6 +103,14 @@ funded devnet wallet -> service level 1 / 4 week subscribe txSig -> guest JWT ->
 The default local API base is therefore `https://txline-dev.txodds.com`. Mainnet production access should be configured explicitly only after sponsor confirmation.
 
 For public Live mode, the adapter also supports `VITE_TXLINE_PROXY_BASE`. In that mode the static frontend calls a secure proxy, and the proxy attaches the TxLINE credentials server-side. This is required for GitHub Pages because frontend `VITE_` variables are compiled into the public bundle.
+
+If no TxLINE token or proxy is available, the adapter now calls:
+
+```text
+https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard
+```
+
+This endpoint was checked on 2026-07-10 and returned FIFA World Cup scoreboard JSON with browser-safe CORS. The app maps it into the same `MatchData` model for score, teams, venue, status, public events, and a conservative `Delay` data label. This is not a replacement for the sponsor source, but it makes the public build useful while TxLINE activation is blocked.
 
 Included proxy template:
 

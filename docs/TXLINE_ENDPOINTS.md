@@ -4,13 +4,27 @@
 
 The public build runs with Replay and Seed data because no private TxLINE token is deployed to GitHub Pages. The local app can call the official TxLINE HTTP API through `src/lib/txlineAdapter.ts` when `.env.local` contains a valid `X-Api-Token`.
 
-Current hackathon access route, based on TxLINEChat clarification on 2026-07-05:
+Current hackathon access route, based on TxLINEChat clarification on 2026-07-05 and a 2026-07-10 video review of the same group:
 
 ```text
 funded devnet wallet -> service level 1 / 4 week subscribe txSig -> guest JWT -> /api/token/activate -> local X-Api-Token
 ```
 
 Do not share JWT publicly. If activation fails after a valid subscribe transaction, share only the public wallet address and subscribe tx signature with TxLINEChat.
+
+Treat service level 1 as a 60-second delayed feed for World Cup and International Friendlies unless TxLINE explicitly grants a higher live tier. The UI labels this as `Delay`, not `Live`.
+
+## Free public fallback source
+
+The public app cannot depend on a private token during judging. When TxLINE credentials are missing, Live mode calls the free no-token ESPN FIFA World Cup scoreboard:
+
+```text
+GET https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard
+```
+
+This was checked on 2026-07-10 and returned scoreboard JSON with `Access-Control-Allow-Origin: *`. The adapter maps score, status, venue, teams, and match details into the same `MatchData` model, with source label `Free public scoreboard loaded` and data status `Delay` for completed or in-progress games.
+
+This fallback keeps the app useful and truthful while TxLINE activation is blocked. It does not replace the required TxLINE endpoint notes for the hackathon sponsor.
 
 The Rust SDK helper shared in TxLINEChat confirms the same activation message preimage:
 
@@ -127,8 +141,8 @@ The optional Authorized Video Sync panel only accepts a rights-cleared `https://
 
 ## Data consistency rules
 
-- Use `Live` only when TxLINE data is successfully loaded from official endpoints.
-- Use `Delay` when a sponsor feed is near-live but not guaranteed real time.
+- Use `Live` only when TxLINE confirms the feed is live or a higher live tier is granted.
+- Use `Delay` for hackathon service level 1, near-live feeds, or any sponsor feed that is not guaranteed real time.
 - Use `Replay` for fixed historical fixtures used in demos and judging.
 - Use `Seed` for static context such as teams, players, referee, standings, and schedule labels.
 - If no match is active today, show No Match Day / Seed state instead of filling the page with fake live data.

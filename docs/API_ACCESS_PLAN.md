@@ -6,12 +6,13 @@ Updated: 2026-07-05
 
 GitHub Pages is a static host. It cannot safely store a private TxLINE `X-Api-Token`.
 
-World Cup Live Pulse therefore supports two safe access modes:
+World Cup Live Pulse therefore supports three safe access modes:
 
 1. Local verification mode: `.env.local` contains `VITE_TXLINE_API_TOKEN` and `npm run txline:probe` verifies fixtures, scores, and odds locally.
 2. Public live mode: `VITE_TXLINE_PROXY_BASE` points the static app to a small HTTPS proxy. The proxy stores `TXLINE_API_TOKEN` server-side and forwards only allowed TxLINE endpoints.
+3. Public fallback mode: if no TxLINE token or proxy exists, the app loads the free no-token ESPN FIFA World Cup scoreboard and labels it as a public `Delay` signal.
 
-The public GitHub Pages build stays in Replay / Seed mode until one of those access paths is configured. It must not expose tokens or label replay data as Live.
+The public GitHub Pages build must not expose tokens or label replay data as Live. It can show the free public scoreboard source, while official TxLINE data remains token/proxy gated.
 
 ## Why A Proxy Is Needed
 
@@ -37,7 +38,7 @@ Ask TxODDS / TxLINE support for:
 - Whether browser-side CORS demos are allowed, or whether a server-side proxy is required.
 - Allowed fixture IDs, endpoints, and competition filters for the World Cup hackathon.
 - Rate limits and recommended polling interval.
-- Whether Free Tier data is live or delayed for each fixture, including the documented 60-second delay mode.
+- Whether Free Tier data is live or delayed for each fixture. Current TxLINEChat evidence indicates service level 1 is a 60-second delayed feed for World Cup and International Friendlies.
 - SSE stream requirements, resume behavior, and heartbeat handling.
 
 ## Sponsor Contact Status
@@ -54,6 +55,8 @@ They also advised checking the official hackathon resources for the latest API a
 2. Contact `TxLINEChat` if the wallet subscribe step, token activation endpoint, or endpoint permission remains blocked.
 3. Record any sponsor answer in this file and in `docs/API_FEEDBACK.md` without publishing private credentials.
 
+Do not search for or reuse another team's token from GitHub, Telegram screenshots, browser logs, or demo videos. A valid token is a credential, not public data. For the competition, the legitimate route is official self-serve activation or direct sponsor support in TxLINEChat.
+
 On 2026-07-05, TxLINEChat clarified the current hackathon free-tier route:
 
 - Do not share JWT publicly.
@@ -62,6 +65,7 @@ On 2026-07-05, TxLINEChat clarified the current hackathon free-tier route:
 - Call `/api/token/activate` with the signed activation payload.
 - If it still fails, share only the wallet public key and subscribe transaction signature with TxLINEChat.
 - A TxLINEChat follow-up said devnet activation was retested with a fresh wallet and `/api/token/activate` returned 200.
+- A 2026-07-10 video review showed TxLINEChat guidance that service level 1 provides 60-second delayed World Cup and International Friendlies data.
 
 This supersedes the earlier 2026-07-03 devnet outage note for our working plan. Mainnet Level 12 remains a later production option only if the sponsor explicitly confirms it for the final public demo.
 
@@ -163,7 +167,7 @@ Thanks!
 
 ## Current Public Build State
 
-The deployed GitHub Pages app currently runs as Replay / Seed unless `VITE_TXLINE_PROXY_BASE` is set before build. This is intentional and safer than placing a private TxLINE token in the frontend bundle.
+The deployed GitHub Pages app currently runs the free public scoreboard fallback plus Replay / Seed. Official TxLINE mode still requires local `.env.local` or `VITE_TXLINE_PROXY_BASE`. This is intentional and safer than placing a private TxLINE token in the frontend bundle.
 
 ## Token Handling Rules
 

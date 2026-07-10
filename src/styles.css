@@ -468,6 +468,58 @@ h2 {
   gap: 10px;
 }
 
+.hero-watch-card {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.hero-watch-card span {
+  color: #b9d6dc;
+  font-size: 0.74rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.hero-watch-card strong {
+  overflow-wrap: anywhere;
+  color: #ffffff;
+  font-size: 1.22rem;
+  line-height: 1.12;
+}
+
+.hero-watch-card p {
+  margin: 0;
+  color: #e4eef0;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.hero-watch-card small {
+  display: block;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffe8a3;
+  font-size: 0.82rem;
+  font-weight: 850;
+  line-height: 1.32;
+}
+
+.hero-watch-card.signal-hot {
+  border-color: rgba(255, 209, 102, 0.54);
+  background: linear-gradient(135deg, rgba(255, 209, 102, 0.22), rgba(207, 50, 70, 0.18));
+}
+
+.hero-watch-card.signal-warm {
+  border-color: rgba(85, 167, 216, 0.46);
+  background: linear-gradient(135deg, rgba(85, 167, 216, 0.22), rgba(255, 255, 255, 0.1));
+}
+
 .hero-panel .metric-card {
   min-height: 86px;
   background: rgba(255, 255, 255, 0.11);
