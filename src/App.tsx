@@ -18,6 +18,7 @@ import type { DataSourceState, MatchData, MatchEvent, MatchMode, Team } from "./
 
 const replayDurationMs = 46000;
 const maxMinute = 90;
+const liveRefreshIntervalMs = 60000;
 const replaySpeeds = [0.5, 1, 2, 4] as const;
 const alertThresholdOptions = [55, 65, 78] as const;
 
@@ -3201,6 +3202,8 @@ export default function App() {
   const [predictedHomeScore, setPredictedHomeScore] = useState(1);
   const [predictedAwayScore, setPredictedAwayScore] = useState(1);
   const [alertThreshold, setAlertThreshold] = useState<AlertThreshold>(() => readAlertThreshold());
+  const [refreshNonce, setRefreshNonce] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const t = localizedCopy[language];
   const trust = localizedTrustCopy[language];
@@ -3214,30 +3217,70 @@ export default function App() {
   }, [language]);
 
   useEffect(() => {
-    setLoadError(null);
-    loadMatchData(mode, {
-      apiBase: import.meta.env.VITE_TXLINE_API_BASE,
-      apiToken: import.meta.env.VITE_TXLINE_API_TOKEN,
-      asOfMs: import.meta.env.VITE_TXLINE_AS_OF_MS,
-      competitionId: import.meta.env.VITE_TXLINE_COMPETITION_ID,
-      fixtureId: import.meta.env.VITE_TXLINE_FIXTURE_ID,
-      proxyBase: import.meta.env.VITE_TXLINE_PROXY_BASE,
-      replayMatchId,
-      sessionJwt: import.meta.env.VITE_TXLINE_SESSION_JWT,
-      startEpochDay: import.meta.env.VITE_TXLINE_START_EPOCH_DAY,
-    })
-      .then((result) => {
+    let cancelled = false;
+    let requestInFlight = false;
+
+    const loadLatestMatch = async () => {
+      if (requestInFlight) {
+        return;
+      }
+
+      requestInFlight = true;
+      setIsRefreshing(true);
+      setLoadError(null);
+
+      try {
+        const result = await loadMatchData(mode, {
+          apiBase: import.meta.env.VITE_TXLINE_API_BASE,
+          apiToken: import.meta.env.VITE_TXLINE_API_TOKEN,
+          asOfMs: import.meta.env.VITE_TXLINE_AS_OF_MS,
+          competitionId: import.meta.env.VITE_TXLINE_COMPETITION_ID,
+          fixtureId: import.meta.env.VITE_TXLINE_FIXTURE_ID,
+          proxyBase: import.meta.env.VITE_TXLINE_PROXY_BASE,
+          replayMatchId,
+          sessionJwt: import.meta.env.VITE_TXLINE_SESSION_JWT,
+          startEpochDay: import.meta.env.VITE_TXLINE_START_EPOCH_DAY,
+        });
+
+        if (cancelled) {
+          return;
+        }
+
         setMatch(result.match);
         setSource(result.source);
 
         if (mode === "live") {
           setMinute(Math.max(1, result.match.events.at(-1)?.minute ?? 1));
         }
-      })
-      .catch((error: unknown) => {
-        setLoadError(error instanceof Error ? error.message : "Unknown data loading error");
-      });
-  }, [mode, replayMatchId]);
+      } catch (error: unknown) {
+        if (!cancelled) {
+          setLoadError(error instanceof Error ? error.message : "Unknown data loading error");
+        }
+      } finally {
+        requestInFlight = false;
+        if (!cancelled) {
+          setIsRefreshing(false);
+        }
+      }
+    };
+
+    void loadLatestMatch();
+
+    if (mode !== "live") {
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    const refreshTimer = window.setInterval(() => {
+      void loadLatestMatch();
+    }, liveRefreshIntervalMs);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(refreshTimer);
+    };
+  }, [mode, refreshNonce, replayMatchId]);
 
   useEffect(() => {
     if (!isPlaying || mode !== "replay") {
@@ -3771,6 +3814,17 @@ export default function App() {
             </button>
           </div>
           <button
+            aria-busy={isRefreshing}
+            aria-label="Refresh live data"
+            className="settings-button refresh-button"
+            disabled={isRefreshing}
+            onClick={() => setRefreshNonce((value) => value + 1)}
+            title="Refresh live data"
+            type="button"
+          >
+            {isRefreshing ? "..." : "↻"}
+          </button>
+          <button
             className="settings-button"
             onClick={() => setSettingsOpen((value) => !value)}
             type="button"
@@ -3950,7 +4004,7 @@ export default function App() {
             <button type="button" onClick={() => switchMode("replay")}>
               {t.replayDemo}
             </button>
-            <a href="tools/txline-subscribe/index.html" rel="noreferrer" target="_blank">
+            <a href="tools/txline-subscribe/index.html?v=2026-07-10" rel="noreferrer" target="_blank">
               {t.apiAccessPlan}
             </a>
           </div>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TxLINE 免费套餐订阅助手</title>
+    <title>TxLINE 免费套餐订阅助手 · 2026-07-10</title>
     <style>
       :root {
         color-scheme: light;
@@ -151,6 +151,51 @@
         gap: 10px;
       }
 
+      .primary-actions {
+        margin-top: 16px;
+      }
+
+      .primary-actions button {
+        min-height: 52px;
+        flex: 1 1 220px;
+        font-size: 1.02rem;
+      }
+
+      .quick-summary {
+        display: grid;
+        gap: 8px;
+        padding: 14px;
+        border: 1px solid #d7e0dd;
+        border-radius: 8px;
+        background: #f6faf9;
+      }
+
+      .quick-summary strong {
+        color: #176b5b;
+      }
+
+      .advanced-panel {
+        margin-top: 14px;
+        border: 1px solid #d7e0dd;
+        border-radius: 8px;
+        background: #fbfdfc;
+      }
+
+      .advanced-panel summary {
+        padding: 12px 14px;
+        cursor: pointer;
+        color: #52666a;
+        font-weight: 900;
+      }
+
+      .advanced-panel[open] summary {
+        border-bottom: 1px solid #d7e0dd;
+      }
+
+      .advanced-panel > .advanced-content {
+        padding: 14px;
+      }
+
       .links {
         margin-top: 10px;
       }
@@ -233,7 +278,7 @@
   </head>
   <body>
     <main>
-      <p><strong>World Cup Live Pulse</strong> / TxLINE 官方免费套餐订阅助手</p>
+      <p><strong>World Cup Live Pulse</strong> / TxLINE 官方免费套餐订阅助手 <code>v2026-07-10</code></p>
       <h1>先完成链上订阅，再激活 API</h1>
       <p>
         这个页面只做一件事：让浏览器钱包发送 TxLINE 官方 <code>subscribe</code>
@@ -248,7 +293,9 @@
         </p>
       </section>
 
-      <section class="panel">
+      <details class="panel advanced-panel">
+        <summary>官方资料、网络和 API 高级设置</summary>
+        <div class="advanced-content">
         <h2>官方参考资料</h2>
         <p>
           TxLINEChat 2026-07-05 明确：黑客松免费层走 devnet 自助激活。
@@ -267,48 +314,57 @@
           <div class="metric"><span>本网络 SOL</span><strong id="balanceMetric">未检查</strong></div>
         </div>
         <p id="balanceHint" class="hint" aria-live="polite">连接钱包后会同时核对 Devnet 和 Mainnet 余额。</p>
-      </section>
+        </div>
+      </details>
 
       <div class="shell">
         <section class="panel">
-          <h2>订阅输入</h2>
-          <div class="field">
-            <label for="network">网络</label>
-            <select id="network">
-              <option value="devnet" selected>Devnet / 黑客松免费层自助激活</option>
-              <option value="mainnet">Mainnet / 赞助方确认后再用于生产实时</option>
-            </select>
-            <p class="hint">全流程必须使用同一个网络。当前参赛 API 落地主线：devnet 钱包 + devnet 订阅 txSig + devnet guest JWT + devnet 激活端点。</p>
+          <h2>两步完成 API 订阅</h2>
+          <p>默认路线已经固定为 Devnet 黑客松免费层、服务等级 1、4 周。你只需要连接钱包，然后订阅。</p>
+          <div class="quick-summary">
+            <strong>当前默认路线</strong>
+            <span>Devnet · Level 1 · 4 周 · 只使用测试 SOL</span>
+            <span>你的 Mainnet SOL 不会被扣除。</span>
           </div>
-
-          <div class="field">
-            <label for="serviceLevel">免费服务等级</label>
-            <select id="serviceLevel">
-              <option value="1" selected>1 / 世界杯 + 国际友谊赛，黑客松免费层</option>
-              <option value="12">12 / mainnet 实时，等待赞助方确认</option>
-            </select>
-            <p class="hint">TxODDS devnet 示例使用 Level 1 和 4 周。Mainnet Level 12 只保留为之后真实生产访问选项。</p>
-          </div>
-
-          <div class="field">
-            <label for="durationWeeks">持续周数</label>
-            <input id="durationWeeks" inputmode="numeric" value="4" />
-            <p class="hint">官方示例是 4 周。订阅周期按 4 周为单位。</p>
-          </div>
-
-          <div class="field">
-            <label for="rpcUrl">Solana RPC URL</label>
-            <input id="rpcUrl" autocomplete="off" />
-            <p class="hint">公共 RPC 可用于测试，但可能限流。这里不要粘贴任何钱包秘密。</p>
-          </div>
-
-          <div class="actions">
-            <button id="preflight" class="secondary">预检查</button>
+          <div class="actions primary-actions">
             <button id="wallet" class="secondary">连接钱包</button>
-            <button id="refreshBalance" class="secondary">刷新双网络余额</button>
-            <button id="loadIdl" class="secondary">准备指令</button>
-            <button id="subscribe">订阅免费套餐</button>
+            <button id="subscribe">订阅黑客松免费层</button>
           </div>
+          <p class="hint">若 Devnet 余额不足，系统会在订阅前明确提示，不会弹出必失败交易。</p>
+          <details class="advanced-panel">
+            <summary>高级设置与诊断</summary>
+            <div class="advanced-content">
+              <div class="field">
+                <label for="network">网络</label>
+                <select id="network">
+                  <option value="devnet" selected>Devnet / 黑客松免费层自助激活</option>
+                  <option value="mainnet">Mainnet / 赞助方确认后再用于生产实时</option>
+                </select>
+                <p class="hint">全流程必须使用同一个网络。参赛主线：devnet 钱包 + devnet 订阅 txSig + devnet guest JWT + devnet 激活端点。</p>
+              </div>
+              <div class="field">
+                <label for="serviceLevel">服务等级</label>
+                <select id="serviceLevel">
+                  <option value="1" selected>1 / 世界杯 + 国际友谊赛，黑客松免费层</option>
+                  <option value="12">12 / mainnet 实时，等待赞助方确认</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="durationWeeks">持续周数</label>
+                <input id="durationWeeks" inputmode="numeric" value="4" />
+              </div>
+              <div class="field">
+                <label for="rpcUrl">Solana RPC URL</label>
+                <input id="rpcUrl" autocomplete="off" />
+                <p class="hint">公共 RPC 可用于测试，但可能限流。这里不要粘贴钱包秘密。</p>
+              </div>
+              <div class="actions">
+                <button id="preflight" class="secondary">预检查</button>
+                <button id="refreshBalance" class="secondary">刷新双网络余额</button>
+                <button id="loadIdl" class="secondary">准备指令</button>
+              </div>
+            </div>
+          </details>
         </section>
 
         <section class="panel">
@@ -319,13 +375,18 @@
             <div class="step"><strong>TxLINE 指令</strong><span id="programStatus">未准备</span></div>
             <div class="step"><strong>订阅 txSig</strong><span id="txStatus">未提交</span></div>
           </div>
-          <h2 style="margin-top: 16px">结果</h2>
-          <pre id="result">准备就绪。</pre>
-          <div class="actions">
-            <button id="copyTx" class="secondary" disabled>复制 txSig</button>
-            <button id="openActivation" class="secondary" disabled>打开激活助手</button>
-            <button id="copyDiagnostics" class="secondary">复制安全诊断</button>
-          </div>
+          <details class="advanced-panel">
+            <summary>查看 txSig、日志和安全诊断</summary>
+            <div class="advanced-content">
+              <h2>结果</h2>
+              <pre id="result">准备就绪。</pre>
+              <div class="actions">
+                <button id="copyTx" class="secondary" disabled>复制 txSig</button>
+                <button id="openActivation" class="secondary" disabled>打开激活助手</button>
+                <button id="copyDiagnostics" class="secondary">复制安全诊断</button>
+              </div>
+            </div>
+          </details>
         </section>
       </div>
     </main>
@@ -415,6 +476,10 @@
             ? `从 devnet faucet 补到至少 ${RECOMMENDED_DEVNET_SOL} SOL`
             : `补到 ${RECOMMENDED_MAINNET_SOL} - 0.05 SOL`;
           return `钱包 SOL 不足。免费套餐不需要支付 TxL，但 Solana 仍需要少量 SOL 作为网络手续费和可能的 Token-2022 账户租金。建议${suggested}后重试。\n\n原始错误：${message}`;
+        }
+        if (/Attempt to debit|no record of a prior credit/i.test(message)) {
+          const network = $("network").value;
+          return `当前 ${network} 网络没有足够 SOL，交易在链上模拟阶段已被拒绝。请先为当前网络准备余额；Mainnet SOL 不会计入 Devnet。\n\n当前页面已阻止继续发送必失败交易。`;
         }
         if (/blockhash|expired/i.test(message)) {
           return "交易 blockhash 过期了。请重新点击订阅免费套餐。";
@@ -756,6 +821,15 @@
         const plan = await prepareSubscribeInstruction();
         const { web3, connection, provider } = plan;
         const balance = await checkBalance(connection, plan.user);
+
+        if (balance.lowMainnet || balance.lowDevnet) {
+          const network = $("network").value;
+          const minimum = network === "devnet" ? RECOMMENDED_DEVNET_SOL : RECOMMENDED_MAINNET_SOL;
+          throw new Error(
+            `当前 ${network} 余额为 ${balance.sol.toFixed(6)} SOL，低于安全最低值 ${minimum} SOL。\n\n` +
+              `请先为当前网络准备余额。Devnet 免费层需要 faucet SOL；Mainnet 的 SOL 不会计入 Devnet。`
+          );
+        }
 
         const transaction = new web3.Transaction().add(plan.instruction);
         const blockhash = await connection.getLatestBlockhash("confirmed");
