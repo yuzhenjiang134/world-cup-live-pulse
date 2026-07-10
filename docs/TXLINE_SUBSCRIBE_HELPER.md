@@ -1,6 +1,6 @@
 # TxLINE Subscribe Helper
 
-Updated: 2026-07-05
+Updated: 2026-07-10
 
 ## Why this exists
 
@@ -43,6 +43,15 @@ Both align with the helper defaults: devnet, service level `1`, duration `4` wee
 10. Review and approve the wallet transaction.
 11. Copy the returned `txSig`, or click `Open activation helper`.
 12. In the activation helper, get or paste a guest JWT and activate the API token.
+
+## Balance troubleshooting
+
+The helper now checks both networks after wallet connection. A wallet address is the same on Devnet and Mainnet, but the balances are separate ledgers.
+
+- If the page shows `Devnet 0 SOL` while Phantom shows real SOL, the funds are on Mainnet. They cannot pay a Devnet subscription. Keep the helper on Devnet and use faucet SOL.
+- If the page shows `Mainnet 0 SOL` while the wallet has faucet SOL, the funds are on Devnet. Do not switch to Mainnet for the hackathon free tier.
+- For the current hackathon route, use Devnet, service level `1`, and at least `0.005` faucet SOL. Mainnet SOL is not needed for this free-tier activation.
+- If a previous page showed `Cannot read properties of undefined (reading 'numRequiredSignatures')`, refresh the helper and reconnect Phantom. The helper now uses the wallet standard `sendTransaction` path first and leaves preflight to the Solana RPC.
 
 ## Safety notes
 

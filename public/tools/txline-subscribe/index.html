@@ -264,8 +264,9 @@
           <div class="metric"><span>页面安全</span><strong id="hostMetric">检查中...</strong></div>
           <div class="metric"><span>钱包</span><strong id="walletMetric">未检查</strong></div>
           <div class="metric"><span>TxLINE 指令</span><strong id="idlMetric">未准备</strong></div>
-          <div class="metric"><span>SOL 余额</span><strong id="balanceMetric">未检查</strong></div>
+          <div class="metric"><span>本网络 SOL</span><strong id="balanceMetric">未检查</strong></div>
         </div>
+        <p id="balanceHint" class="hint" aria-live="polite">连接钱包后会同时核对 Devnet 和 Mainnet 余额。</p>
       </section>
 
       <div class="shell">
@@ -304,6 +305,7 @@
           <div class="actions">
             <button id="preflight" class="secondary">预检查</button>
             <button id="wallet" class="secondary">连接钱包</button>
+            <button id="refreshBalance" class="secondary">刷新双网络余额</button>
             <button id="loadIdl" class="secondary">准备指令</button>
             <button id="subscribe">订阅免费套餐</button>
           </div>
@@ -420,6 +422,9 @@
         if (/simulation failed|simulate/i.test(message)) {
           return `${message}\n\n下一步：复制这里的 Logs，核对 service level、program id、RPC 网络是否与 TxLINE 官方文档一致。`;
         }
+        if (/numRequiredSignatures/i.test(message)) {
+          return `${message}\n\n钱包返回的交易对象与当前页面的 Solana 库版本不兼容。页面已改用钱包标准 sendTransaction 路径；请刷新页面、重新连接 Phantom 后再试。`;
+        }
         if (/429|rate|timeout|fetch|network/i.test(message)) {
           return `${message}\n\n下一步：公共 RPC 可能限流。可以换一个同网络 HTTPS RPC，或稍等 1 分钟后重试。`;
         }
@@ -496,6 +501,66 @@
         }
       }
 
+      function otherNetwork(network) {
+        return network === "devnet" ? "mainnet" : "devnet";
+      }
+
+      function balanceLabel(network, sol) {
+        const digits = sol >= 0.01 ? 6 : 9;
+        return `${network === "devnet" ? "Devnet" : "Mainnet"} ${sol.toFixed(digits)} SOL`;
+      }
+
+      function classifyBalance(lamports, sol, network) {
+        const low = network === "devnet"
+          ? sol < RECOMMENDED_DEVNET_SOL
+          : sol < RECOMMENDED_MAINNET_SOL;
+        return { lamports, sol, network, low };
+      }
+
+      async function readBalance(web3, network, publicKey) {
+        const connection = new web3.Connection(CONFIG[network].rpcUrl, "confirmed");
+        const lamports = await connection.getBalance(publicKey, "confirmed");
+        return classifyBalance(lamports, lamports / 1_000_000_000, network);
+      }
+
+      async function refreshWalletBalances() {
+        if (!state.walletPublicKey) {
+          throw new Error("请先连接钱包，再刷新双网络余额。");
+        }
+        const { web3 } = await loadLibraries();
+        const publicKey = new web3.PublicKey(state.walletPublicKey);
+        const selectedNetwork = $("network").value;
+        const alternateNetwork = otherNetwork(selectedNetwork);
+        const [selected, alternate] = await Promise.all([
+          readBalance(web3, selectedNetwork, publicKey),
+          readBalance(web3, alternateNetwork, publicKey)
+        ]);
+
+        const selectedText = `${selected.sol.toFixed(selected.sol >= 0.01 ? 6 : 9)} SOL`;
+        const selectedRecommendation = selected.low
+          ? selectedNetwork === "devnet"
+            ? `建议从 Devnet faucet 补到至少 ${RECOMMENDED_DEVNET_SOL} SOL。`
+            : `建议至少准备 ${RECOMMENDED_MAINNET_SOL} SOL 作为网络手续费和账户租金。`
+          : "余额达到当前网络的建议值。";
+        setMetric("balanceMetric", selectedText, selected.low ? "warn" : "ok");
+
+        if (selected.sol === 0 && alternate.sol > 0) {
+          setStatus(
+            "balanceHint",
+            `当前选择 ${selectedNetwork}，检测到 ${balanceLabel(alternateNetwork, alternate.sol)}。两条网络余额彼此独立，请切换钱包网络或为当前网络准备余额。${selectedRecommendation}`,
+            "warn"
+          );
+        } else {
+          setStatus(
+            "balanceHint",
+            `${balanceLabel(selectedNetwork, selected.sol)}；${balanceLabel(alternateNetwork, alternate.sol)}。${selectedRecommendation}`,
+            selected.low ? "warn" : "ok"
+          );
+        }
+
+        return { selected, alternate };
+      }
+
       async function ensureWalletConnected() {
         const provider = solanaProvider();
         if (!provider) {
@@ -507,8 +572,8 @@
         } else {
           state.walletPublicKey = provider.publicKey.toBase58?.() || String(provider.publicKey);
         }
-        if (!provider.signTransaction) {
-          throw new Error("当前钱包没有 signTransaction 能力。请优先使用 Phantom 桌面浏览器扩展。");
+        if (!provider.signTransaction && !provider.sendTransaction) {
+          throw new Error("当前钱包没有发送 Solana 交易的能力。请优先使用 Phantom 桌面浏览器扩展。");
         }
         state.provider = provider;
         setStatus("walletStatus", state.walletPublicKey, "ok");
@@ -554,7 +619,8 @@
             ? {
                 label: providerLabel(provider),
                 hasPublicKey: Boolean(provider.publicKey),
-                hasSignTransaction: Boolean(provider.signTransaction),
+          hasSignTransaction: Boolean(provider.signTransaction),
+          hasSendTransaction: Boolean(provider.sendTransaction),
                 hasSignAllTransactions: Boolean(provider.signAllTransactions)
               }
             : null,
@@ -718,21 +784,24 @@
             : "需要在钱包弹窗中批准。若 program id 或网络不符合预期，请拒绝。"
         });
 
-        const signedTransaction = await provider.signTransaction(transaction);
-        const simulation = await connection.simulateTransaction(signedTransaction, {
-          commitment: "confirmed",
-          replaceRecentBlockhash: true
-        });
-        if (simulation.value.err) {
-          throw new Error(
-            `Transaction simulation failed before sending.\n${JSON.stringify(simulation.value.err)}\n\nLogs:\n${(simulation.value.logs || []).join("\n")}`
-          );
+        let txSig;
+        if (typeof provider.sendTransaction === "function") {
+          txSig = await provider.sendTransaction(transaction, connection, {
+            skipPreflight: false,
+            preflightCommitment: "confirmed",
+            maxRetries: 2
+          });
+        } else {
+          const signedTransaction = await provider.signTransaction(transaction);
+          if (!signedTransaction || typeof signedTransaction.serialize !== "function") {
+            throw new Error("钱包没有返回可发送的已签名交易。请刷新页面并重新连接钱包。");
+          }
+          txSig = await connection.sendRawTransaction(signedTransaction.serialize(), {
+            skipPreflight: false,
+            preflightCommitment: "confirmed",
+            maxRetries: 2
+          });
         }
-
-        const txSig = await connection.sendRawTransaction(signedTransaction.serialize(), {
-          skipPreflight: false,
-          preflightCommitment: "confirmed"
-        });
         await connection.confirmTransaction(
           {
             signature: txSig,
@@ -796,16 +865,24 @@
       $("wallet").addEventListener("click", async () => {
         try {
           const provider = await ensureWalletConnected();
-          const { web3 } = await loadLibraries();
-          const connection = new web3.Connection($("rpcUrl").value.trim(), "confirmed");
-          await checkBalance(connection, provider.publicKey);
+          const balances = await refreshWalletBalances();
           log({
             connected: true,
             wallet: providerLabel(provider),
-            publicKey: state.walletPublicKey
+            publicKey: state.walletPublicKey,
+            balances
           });
         } catch (error) {
           setStatus("walletStatus", "连接失败", "bad");
+          log(walletErrorMessage(error));
+        }
+      });
+
+      $("refreshBalance").addEventListener("click", async () => {
+        try {
+          const balances = await refreshWalletBalances();
+          log({ ok: true, balances });
+        } catch (error) {
           log(walletErrorMessage(error));
         }
       });

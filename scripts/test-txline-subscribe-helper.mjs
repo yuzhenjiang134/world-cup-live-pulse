@@ -154,6 +154,7 @@ function createDom({ wallet }) {
     walletMetric: { textContent: "Not checked" },
     idlMetric: { textContent: "Not prepared" },
     balanceMetric: { textContent: "Not checked" },
+    balanceHint: { textContent: "Connect a wallet to check both networks." },
     networkStatus: { textContent: "Not checked" },
     walletStatus: { textContent: "Not connected" },
     programStatus: { textContent: "Not prepared" },
@@ -161,6 +162,7 @@ function createDom({ wallet }) {
     result: { textContent: "" },
     preflight: {},
     wallet: {},
+    refreshBalance: {},
     loadIdl: {},
     subscribe: {},
     copyTx: { disabled: true },
@@ -287,7 +289,7 @@ if (
   !walletFlow.copyEnabled ||
   !walletFlow.openEnabled ||
   walletFlow.calls.sign !== 1 ||
-  walletFlow.calls.simulate !== 1 ||
+  walletFlow.calls.simulate !== 0 ||
   walletFlow.calls.send !== 1 ||
   walletFlow.calls.confirm !== 1 ||
   !walletFlow.instruction.startsWith("已准备:") ||
