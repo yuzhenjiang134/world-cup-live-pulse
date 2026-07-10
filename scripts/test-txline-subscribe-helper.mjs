@@ -101,6 +101,11 @@ async function createImportHandler(PublicKey, calls, context) {
         this.commitment = commitment;
       }
 
+      async getAccountInfo() {
+        calls.accountInfo += 1;
+        return null;
+      }
+
       async getBalance() {
         calls.balance += 1;
         return 8_070_000;
@@ -133,6 +138,10 @@ async function createImportHandler(PublicKey, calls, context) {
     ASSOCIATED_TOKEN_PROGRAM_ID: new PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"),
     getAssociatedTokenAddressSync(mint, owner) {
       return new PublicKey(`ATA_${mint.toBase58().slice(0, 6)}_${owner.toBase58().slice(0, 6)}`);
+    },
+    createAssociatedTokenAccountInstruction(...args) {
+      calls.ata += 1;
+      return { kind: "createAssociatedTokenAccount", args };
     }
   });
 
@@ -200,7 +209,7 @@ function createDom({ wallet }) {
 
 async function runScenario({ withWallet }) {
   const PublicKey = createPublicKeyClass();
-  const calls = { balance: 0, blockhash: 0, simulate: 0, send: 0, confirm: 0, sign: 0 };
+  const calls = { accountInfo: 0, ata: 0, balance: 0, blockhash: 0, simulate: 0, send: 0, confirm: 0, sign: 0 };
   const wallet = withWallet
     ? {
         isPhantom: true,
@@ -289,6 +298,8 @@ if (
   !walletFlow.copyEnabled ||
   !walletFlow.openEnabled ||
   walletFlow.calls.sign !== 1 ||
+  walletFlow.calls.accountInfo !== 2 ||
+  walletFlow.calls.ata !== 2 ||
   walletFlow.calls.simulate !== 0 ||
   walletFlow.calls.send !== 1 ||
   walletFlow.calls.confirm !== 1 ||

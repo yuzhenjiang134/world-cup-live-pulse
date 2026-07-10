@@ -53,6 +53,7 @@ The helper now checks both networks after wallet connection. A wallet address is
 - For the current hackathon route, use Devnet, service level `1`, and at least `0.005` faucet SOL. Mainnet SOL is not needed for this free-tier activation.
 - If the default Solana Devnet RPC returns `403` or `Access forbidden`, the helper automatically tries the public Devnet RPC fallback and shows the active RPC in the advanced diagnostics.
 - If a previous page showed `Cannot read properties of undefined (reading 'numRequiredSignatures')`, refresh the helper and reconnect Phantom. The helper now uses the wallet standard `sendTransaction` path first and leaves preflight to the Solana RPC.
+- On a first-time wallet, the helper derives the official Token-2022 associated account and prepends its initialization instruction to the same wallet approval. This prevents the on-chain `user_token_account` initialization error without adding another user-facing step.
 
 ## Safety notes
 

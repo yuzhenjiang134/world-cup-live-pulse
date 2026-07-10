@@ -797,7 +797,7 @@
 
       async function prepareSubscribeInstruction() {
         const context = await buildAnchorContext();
-        const { web3, spl, provider, current, programId, txlMint } = {
+        const { web3, spl, provider, connection, current, programId, txlMint } = {
           ...context,
           spl: (await loadLibraries()).spl
         };
@@ -824,6 +824,19 @@
           spl.TOKEN_2022_PROGRAM_ID,
           spl.ASSOCIATED_TOKEN_PROGRAM_ID
         );
+        const userTokenAccountExists = Boolean(
+          await connection.getAccountInfo(userTokenAccount, "confirmed")
+        );
+        const setupInstruction = userTokenAccountExists
+          ? null
+          : spl.createAssociatedTokenAccountInstruction(
+              user,
+              userTokenAccount,
+              user,
+              txlMint,
+              spl.TOKEN_2022_PROGRAM_ID,
+              spl.ASSOCIATED_TOKEN_PROGRAM_ID
+            );
 
         return {
           ...context,
@@ -835,6 +848,8 @@
           tokenTreasuryVault,
           pricingMatrixPda,
           userTokenAccount,
+          userTokenAccountExists,
+          setupInstruction,
           instruction: new web3.TransactionInstruction({
             programId,
             keys: [
@@ -871,6 +886,7 @@
             pricingMatrix: plan.pricingMatrixPda.toBase58(),
             tokenMint: plan.txlMint.toBase58(),
             userTokenAccount: plan.userTokenAccount.toBase58(),
+            userTokenAccountExists: plan.userTokenAccountExists,
             tokenTreasuryVault: plan.tokenTreasuryVault.toBase58(),
             tokenTreasuryPda: plan.tokenTreasuryPda.toBase58()
           },
@@ -893,7 +909,9 @@
           );
         }
 
-        const transaction = new web3.Transaction().add(plan.instruction);
+        const transaction = new web3.Transaction();
+        if (plan.setupInstruction) transaction.add(plan.setupInstruction);
+        transaction.add(plan.instruction);
         const blockhash = await connection.getLatestBlockhash("confirmed");
         transaction.recentBlockhash = blockhash.blockhash;
         transaction.feePayer = plan.user;
