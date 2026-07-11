@@ -151,3 +151,16 @@ Updated: 2026-06-28
 - [x] Fill GitHub URL in `docs/SUBMISSION_DRAFT.md`
 - [x] Fill demo video URL in `docs/submission-draft.md`
 - [ ] Re-check the live Superteam listing, then submit before the deadline snapshot of 2026-07-19 23:59 UTC if unchanged
+
+## 2026-07-11 Current release truth
+
+- [x] Official listing rechecked: 20 public submissions; Consumer and Fan Experiences prize pool is 16,000 USDT, inside the 50,000 USDT World Cup pool; close is 2026-07-19 23:59 UTC and announcement is scheduled for 2026-07-29 15:00 UTC.
+- [x] Match Center is the primary fan workflow: verified score state first, then the score challenge, events, AI-style commentary, market context, and schedule/replay entry points.
+- [x] The score challenge starts each local session with 1,000 browser-only test points. It settles from the verified final score and never touches cash, wallets, tokens, wagering, or trading.
+- [x] Current 2026 data is kept separate from the fixed Argentina-France and Germany-Japan 2022 replay stories. Replay is for repeatable judging; it is never labeled as a current match.
+- [x] Data states are explicit: Live, Delay, Seed, Replay, or public fallback. Unknown source teams remain pending confirmation instead of being guessed.
+- [x] Official FIFA+ archive and highlights/replay links are available from the match view. No unofficial stream is scraped or embedded; rights and territory availability remain visible.
+- [x] `npm run audit` checks replay dates, score/event consistency, market ranges, team identities, official video domains, localization markers, and source-boundary markers.
+- [x] Verification snapshot on 2026-07-11: `npm run txline:probe` passed twice; 7 fixture records, 41 score records for fixture `17588325`, and 0 odds records for that fixture.
+- [x] The current submission checklist is `docs/SUBMISSION_CHECKLIST.md`; it is the source of truth for the final demo, Pages asset hash, and submission package.
+- [ ] External gates remain external: final TxLINE production/CORS confirmation, latest GitHub Pages asset hash, authorized video availability, final demo recording, and Superteam submission.

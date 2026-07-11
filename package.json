@@ -10,13 +10,14 @@
     "preview": "vite preview --host 127.0.0.1",
     "check": "tsc --noEmit",
     "fixtures": "node scripts/validate-fixtures.mjs",
+    "audit": "node scripts/audit-product-data.mjs",
     "i18n": "node scripts/validate-i18n.mjs",
     "preflight": "node scripts/preflight.mjs",
     "security": "node scripts/security-scan.mjs",
     "txline:probe": "node scripts/txline-probe.mjs",
     "txline:helper-test": "node --experimental-vm-modules scripts/test-txline-subscribe-helper.mjs",
     "demo:video": "node scripts/record-demo-video.mjs",
-    "validate": "tsc --noEmit && node scripts/validate-fixtures.mjs && node scripts/validate-i18n.mjs && node scripts/preflight.mjs && node scripts/security-scan.mjs && node --experimental-vm-modules scripts/test-txline-subscribe-helper.mjs"
+    "validate": "tsc --noEmit && node scripts/validate-fixtures.mjs && node scripts/validate-i18n.mjs && node scripts/audit-product-data.mjs && node scripts/preflight.mjs && node scripts/security-scan.mjs && node --experimental-vm-modules scripts/test-txline-subscribe-helper.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.3.4",

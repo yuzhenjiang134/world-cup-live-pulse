@@ -1,6 +1,6 @@
 # Public Research Summary
 
-Updated: 2026-07-01
+Updated: 2026-07-11
 
 ## Why We Are Building This
 
@@ -18,6 +18,8 @@ What is happening in this match, and why does it feel different now?
 
 From the saved public track brief:
 
+- Current public listing snapshot: 20 submissions; Consumer and Fan Experiences track prize pool is 16,000 USDT (10,000 / 4,000 / 2,000), within the 50,000 USDT World Cup pool.
+- Submission window closes July 19, 2026 at 23:59 UTC; winner announcement is scheduled for July 29, 2026 at 15:00 UTC.
 - Demo video up to 5 minutes is an absolute requirement for initial screening.
 - The submission needs a working app link or functional API endpoint.
 - The submission needs a public repo.
@@ -27,6 +29,7 @@ From the saved public track brief:
 - Products must be functional, not pitch decks, wireframes, mockups, or non-working concepts.
 - Submissions should use TxLINE data as a live input and sign up through Solana.
 - Judges care about fan accessibility, real-time responsiveness, originality, monetization path, and completeness.
+- The official page says the demo should show the problem, live app walkthrough, and how TxLINE powers the backend. Since matches may end before review, Replay must make the core user flow judgeable without mislabeling old data as current.
 
 ## What The Page Should Prioritize
 
@@ -136,10 +139,19 @@ Applied decision for this repo:
 - Keep direct `VITE_TXLINE_API_TOKEN` only for local verification.
 - Show the API Access Plan directly in Analyst / Judge view.
 
+Current release check against the official listing:
+
+- Fan accessibility: the first view is Match Center, with score, latest event, AI-style explanation, and the score challenge before secondary reference material.
+- Real-time responsiveness: authenticated TxLINE fixtures, scores, and odds are refreshed at the adapter boundary; Free Tier is labeled Delay when applicable.
+- Originality: the score challenge and replayable match-pulse story add a fan interaction layer instead of only re-rendering a feed.
+- Commercial path: the same shell can be embedded by fan communities, sports media, Telegram channels, and sponsor-safe second-screen products; local points are a demo mechanic, not a paid wager.
+- Completeness: deployed app, public repo, endpoint documentation, API feedback, replay fallback, Settings, language controls, and a sub-five-minute demo path are present.
+
 ## Sources Checked
 
 - Saved Superteam / TxODDS track brief pasted into the project thread.
-- Superteam World Cup Hackathon page rechecked on 2026-07-01: https://superteam.fun/earn/hackathon/world-cup/
+- Superteam Consumer and Fan Experiences listing rechecked on 2026-07-11: https://superteam.fun/earn/listing/consumer-and-fan-experiences
+- Superteam World Cup Hackathon page rechecked on 2026-07-11: https://superteam.fun/earn/hackathon/world-cup/
 - TxLINE Quickstart rechecked on 2026-07-01: https://txline.txodds.com/documentation/quickstart
 - TxLINE World Cup Free Tier rechecked on 2026-07-01: https://txline.txodds.com/documentation/worldcup
 - TxLINE OpenAPI spec rechecked on 2026-07-01: https://txline.txodds.com/docs/docs.yaml

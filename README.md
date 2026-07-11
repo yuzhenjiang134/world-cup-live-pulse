@@ -34,6 +34,8 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Language setting supports English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic for the teams and fan regions currently represented in the demo. Dynamic event titles, event descriptions, AI reads, source rules, judge criteria, and control labels use the same localization layer.
 - Empty or unavailable secondary facts are not padded with fake copy. The UI hides them or leaves the area quiet until useful data exists.
 - Match score card, local fan score pick, downloadable fan pick card, timeline, market mood, Match Center, team profiles, and AI commentary are visible in the local app.
+- The score challenge is a first-class Match Center action: each local session starts with 1,000 test points, and a pick is settled only from a verified final score.
+- `npm run audit` performs the product/data truth audit before release, including replay score/event consistency, source labels, team identity, official video domains, and required feature markers.
 - `docs/UX_BENCHMARKS.md` records market examples and the UX choices adopted or rejected for submission safety.
 - Data states are explicitly labeled as Live, Delay, Replay, or Seed.
 - TxLINE API token is not required for the public replay demo. Real TxLINE data can be tested locally with `.env.local`.
@@ -85,6 +87,7 @@ Then open the local URL printed by Vite.
 npm run check
 npm run build
 npm run fixtures
+npm run audit
 npm run preflight
 npm run security
 npm run validate

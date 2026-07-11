@@ -32,6 +32,7 @@ const requiredFiles = [
   "src/data/matchCalendar.ts",
   "src/data/fanGuide.ts",
   "scripts/validate-fixtures.mjs",
+  "scripts/audit-product-data.mjs",
   "scripts/security-scan.mjs",
   "scripts/txline-probe.mjs",
 ];
@@ -148,10 +149,10 @@ if (packageJson.scripts?.check && packageJson.scripts?.build) {
   fail("package scripts must include check and build");
 }
 
-if (packageJson.scripts?.validate && packageJson.scripts?.fixtures && packageJson.scripts?.security) {
-  pass("package scripts include validate, fixtures, and security");
+if (packageJson.scripts?.validate && packageJson.scripts?.fixtures && packageJson.scripts?.audit && packageJson.scripts?.security) {
+  pass("package scripts include validate, fixtures, audit, and security");
 } else {
-  fail("package scripts must include validate, fixtures, and security");
+  fail("package scripts must include validate, fixtures, audit, and security");
 }
 
 if (packageJson.scripts?.["txline:probe"]) {

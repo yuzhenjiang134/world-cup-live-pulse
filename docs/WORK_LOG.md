@@ -57,3 +57,12 @@ npm run txline:probe
 - Kept the current Match Center focused on the 2026 TxLINE schedule/score boundary; the bundled Argentina-France and Germany-Japan fixtures are explicitly historical 2022 replay demos and never presented as current matches.
 - Set the local fan challenge balance to a versioned 1,000-point starting balance, with persistence and a visible reset action in Settings.
 - The playback path is an official FIFA+ external archive/highlights link. It is a real legal source, but rights and territory can limit individual match availability; the in-app event timeline is the deterministic fallback.
+
+## 2026-07-11: Score challenge priority, official video entry, and data truth audit
+
+- Moved the score challenge directly below the score hero so the core fan interaction is visible before secondary schedule and reference content.
+- Kept the starting balance at 1,000 local test points and made the final-score settlement path explicit. This is a discussion game only: no cash value, wallet, bet, trade, or prediction-market settlement.
+- Added two official FIFA+ entry links in the watch surface: archive and highlights/replays. The product does not promise a free live stream; rights and territory can vary, and the in-app timeline is the deterministic fallback.
+- Added `npm run audit` as a data and product-boundary audit. It checks deterministic replay identity, event/score consistency, market ranges, team identity coverage, official video domains, localized feature markers, and Live/Delay/Seed/Replay boundaries.
+- Reconciled `docs/SUBMISSION_CHECKLIST.md` and `TASKS.md` with the current Match Center shell so retired prototype panels are not presented as the primary product.
+- TxLINE probe snapshot on 2026-07-11 passed twice: 7 fixture records, 41 score records for fixture `17588325`, and 0 odds records. No odds are invented when the official odds payload is empty.

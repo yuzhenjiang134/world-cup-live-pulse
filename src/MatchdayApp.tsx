@@ -56,6 +56,9 @@ type UiCopy = {
   scoreChallenge: string;
   testPoints: string;
   pointsNote: string;
+  currentPoints: string;
+  pickCost: string;
+  settlementRule: string;
   resetPoints: string;
   yourScore: string;
   lockPick: string;
@@ -74,6 +77,8 @@ type UiCopy = {
   coach: string;
   watch: string;
   officialWatch: string;
+  archiveLink: string;
+  highlightsLink: string;
   noWatch: string;
   settings: string;
   close: string;
@@ -138,6 +143,9 @@ const ui: Record<Language, UiCopy> = {
     scoreChallenge: "Fan score challenge",
     testPoints: "Test points",
     pointsNote: "Local-only points. No cash value, wallet, or betting.",
+    currentPoints: "Current points",
+    pickCost: "Pick cost",
+    settlementRule: "Settles from the verified final score",
     yourScore: "Your score",
     lockPick: "Lock score pick · 50 pts",
     locked: "Pick locked",
@@ -155,6 +163,8 @@ const ui: Record<Language, UiCopy> = {
     coach: "Coach",
     watch: "Watch / replay",
     officialWatch: "Open official source",
+    archiveLink: "FIFA+ archive",
+    highlightsLink: "FIFA+ highlights",
     noWatch: "Official FIFA+ archive and highlights are available when rights allow; timeline replay remains available.",
     resetPoints: "Reset local points",
     settings: "Settings",
@@ -215,9 +225,12 @@ const ui: Record<Language, UiCopy> = {
     aiCommentary: "AI 风格球迷解说",
     schedule: "赛程",
     advancement: "阶段与晋级",
-    scoreChallenge: "球迷比分挑战",
+    scoreChallenge: "积分比分挑战",
     testPoints: "测试积分",
     pointsNote: "仅本地积分，无现金价值，不连接钱包，不是下注。",
+    currentPoints: "当前积分",
+    pickCost: "本次消耗",
+    settlementRule: "按核验后的最终比分结算",
     yourScore: "你的比分",
     lockPick: "锁定比分 · 50 积分",
     locked: "已锁定",
@@ -235,6 +248,8 @@ const ui: Record<Language, UiCopy> = {
     coach: "教练",
     watch: "观看 / 回放",
     officialWatch: "打开官方来源",
+    archiveLink: "FIFA+ 回放库",
+    highlightsLink: "FIFA+ 集锦",
     noWatch: "官方 FIFA+ 回放和集锦入口会受地区与版权影响；时间线回放始终可用。",
     resetPoints: "重置本地积分",
     settings: "设置",
@@ -298,6 +313,9 @@ const ui: Record<Language, UiCopy> = {
     scoreChallenge: "Reto de marcador",
     testPoints: "Puntos de prueba",
     pointsNote: "Solo local. Sin valor monetario ni apuestas.",
+    currentPoints: "Puntos actuales",
+    pickCost: "Coste de la jugada",
+    settlementRule: "Se resuelve con el marcador final verificado",
     yourScore: "Tu marcador",
     lockPick: "Bloquear · 50 puntos",
     locked: "Bloqueado",
@@ -315,6 +333,8 @@ const ui: Record<Language, UiCopy> = {
     coach: "Entrenador",
     watch: "Ver / repetir",
     officialWatch: "Abrir fuente oficial",
+    archiveLink: "Archivo FIFA+",
+    highlightsLink: "Resúmenes FIFA+",
     noWatch: "El archivo y los resúmenes oficiales de FIFA+ dependen de territorio y derechos; la línea de tiempo sigue disponible.",
     resetPoints: "Restablecer puntos locales",
     settings: "Ajustes",
@@ -378,6 +398,9 @@ const ui: Record<Language, UiCopy> = {
     scoreChallenge: "Desafio de placar",
     testPoints: "Pontos de teste",
     pointsNote: "Somente local. Sem valor em dinheiro ou apostas.",
+    currentPoints: "Pontos atuais",
+    pickCost: "Custo da escolha",
+    settlementRule: "Resolvido pelo placar final verificado",
     yourScore: "Seu placar",
     lockPick: "Travar placar · 50 pontos",
     locked: "Travado",
@@ -395,6 +418,8 @@ const ui: Record<Language, UiCopy> = {
     coach: "Técnico",
     watch: "Assistir / reprise",
     officialWatch: "Abrir fonte oficial",
+    archiveLink: "Arquivo FIFA+",
+    highlightsLink: "Destaques FIFA+",
     noWatch: "O arquivo e os destaques oficiais do FIFA+ dependem do território e dos direitos; a linha do tempo continua disponível.",
     resetPoints: "Redefinir pontos locais",
     settings: "Configurações",
@@ -458,6 +483,9 @@ const ui: Record<Language, UiCopy> = {
     scoreChallenge: "Défi de score",
     testPoints: "Points de test",
     pointsNote: "Local uniquement. Sans valeur monétaire ni pari.",
+    currentPoints: "Points actuels",
+    pickCost: "Coût du choix",
+    settlementRule: "Réglé selon le score final vérifié",
     yourScore: "Votre score",
     lockPick: "Verrouiller · 50 points",
     locked: "Verrouillé",
@@ -475,6 +503,8 @@ const ui: Record<Language, UiCopy> = {
     coach: "Entraîneur",
     watch: "Regarder / replay",
     officialWatch: "Ouvrir la source officielle",
+    archiveLink: "Archives FIFA+",
+    highlightsLink: "Temps forts FIFA+",
     noWatch: "Les archives et temps forts officiels de FIFA+ dépendent du territoire et des droits; la timeline reste disponible.",
     resetPoints: "Réinitialiser les points locaux",
     settings: "Réglages",
@@ -538,6 +568,9 @@ const ui: Record<Language, UiCopy> = {
     scoreChallenge: "Tippspiel für Fans",
     testPoints: "Testpunkte",
     pointsNote: "Nur lokal. Kein Geldwert und keine Wette.",
+    currentPoints: "Aktuelle Punkte",
+    pickCost: "Tippkosten",
+    settlementRule: "Auswertung nach verifiziertem Endstand",
     yourScore: "Dein Ergebnis",
     lockPick: "Festlegen · 50 Punkte",
     locked: "Festgelegt",
@@ -555,6 +588,8 @@ const ui: Record<Language, UiCopy> = {
     coach: "Trainer",
     watch: "Ansehen / Replay",
     officialWatch: "Offizielle Quelle öffnen",
+    archiveLink: "FIFA+ Archiv",
+    highlightsLink: "FIFA+ Highlights",
     noWatch: "Offizielle FIFA+ Archive und Highlights hängen von Gebiet und Rechten ab; die Timeline bleibt verfügbar.",
     resetPoints: "Lokale Punkte zurücksetzen",
     settings: "Einstellungen",
@@ -618,6 +653,9 @@ const ui: Record<Language, UiCopy> = {
     scoreChallenge: "ファンスコアチャレンジ",
     testPoints: "テストポイント",
     pointsNote: "ローカル専用。金銭価値・賭けなし。",
+    currentPoints: "現在のポイント",
+    pickCost: "予想コスト",
+    settlementRule: "検証済みの最終スコアで判定",
     yourScore: "予想スコア",
     lockPick: "スコアを確定 · 50ポイント",
     locked: "確定済み",
@@ -635,6 +673,8 @@ const ui: Record<Language, UiCopy> = {
     coach: "監督",
     watch: "視聴 / リプレイ",
     officialWatch: "公式ソースを開く",
+    archiveLink: "FIFA+ アーカイブ",
+    highlightsLink: "FIFA+ ハイライト",
     noWatch: "FIFA+公式アーカイブとハイライトは地域・権利により異なります。タイムラインは利用できます。",
     resetPoints: "ローカルポイントをリセット",
     settings: "設定",
@@ -698,6 +738,9 @@ const ui: Record<Language, UiCopy> = {
     scoreChallenge: "تحدي نتيجة المشجع",
     testPoints: "نقاط اختبار",
     pointsNote: "محلية فقط. بلا قيمة نقدية أو مراهنة.",
+    currentPoints: "النقاط الحالية",
+    pickCost: "تكلفة الاختيار",
+    settlementRule: "تُحسم بالنتيجة النهائية الموثقة",
     yourScore: "نتيجتك",
     lockPick: "تثبيت النتيجة · 50 نقطة",
     locked: "مثبتة",
@@ -715,6 +758,8 @@ const ui: Record<Language, UiCopy> = {
     coach: "المدرب",
     watch: "مشاهدة / إعادة",
     officialWatch: "فتح المصدر الرسمي",
+    archiveLink: "أرشيف FIFA+",
+    highlightsLink: "ملخصات FIFA+",
     noWatch: "يتوفر أرشيف وملخصات FIFA+ الرسمية حسب المنطقة والحقوق؛ الخط الزمني متاح دائمًا.",
     resetPoints: "إعادة ضبط النقاط المحلية",
     settings: "الإعدادات",
@@ -760,8 +805,8 @@ function detectLanguage(): Language {
 
 function readPoints() {
   if (typeof window === "undefined") return 1000;
-  if (window.localStorage.getItem("wclp-points-version") !== "v3") {
-    window.localStorage.setItem("wclp-points-version", "v3");
+  if (window.localStorage.getItem("wclp-points-version") !== "v4") {
+    window.localStorage.setItem("wclp-points-version", "v4");
     window.localStorage.setItem("wclp-test-points", "1000");
     return 1000;
   }
@@ -938,11 +983,7 @@ export default function MatchdayApp() {
   }, [language]);
 
   useEffect(() => {
-    window.localStorage.setItem("wclp-points-version", "v3");
-    window.localStorage.setItem("wclp-test-points", String(points));
-  }, [points]);
-
-  useEffect(() => {
+    window.localStorage.setItem("wclp-points-version", "v4");
     window.localStorage.setItem("wclp-test-points", String(points));
   }, [points]);
 
@@ -1177,6 +1218,11 @@ export default function MatchdayApp() {
               </div>
             </section>
 
+            <section className="prediction-focus" aria-label={copy.scoreChallenge}>
+              <ScoreChallenge copy={copy} match={match} homeScore={pickHome} awayScore={pickAway} setHomeScore={setPickHome} setAwayScore={setPickAway} locked={pickLocked} points={points} settlement={settlement} onLock={lockPick} onSettle={settlePick} canSettle={canSettle} />
+              <OddsContext copy={copy} label={marketLabel} match={match} market={frame.market} />
+            </section>
+
             <div className="signal-row" aria-label={copy.events}>
               <Signal label={copy.goals} value={goalCount} tone="goal" />
               <Signal label={copy.yellow} value={yellowCount} tone="yellow" />
@@ -1205,11 +1251,6 @@ export default function MatchdayApp() {
               <ScheduleBoard copy={copy} items={schedule} selectedId={match.id} onOpenReplay={startReplay} language={language} />
             </section>
 
-            <section className="prediction-focus">
-              <ScoreChallenge copy={copy} match={match} homeScore={pickHome} awayScore={pickAway} setHomeScore={setPickHome} setAwayScore={setPickAway} locked={pickLocked} points={points} settlement={settlement} onLock={lockPick} onSettle={settlePick} canSettle={canSettle} />
-              <OddsContext copy={copy} label={marketLabel} match={match} market={frame.market} />
-            </section>
-
             <section className="content-grid">
               <div className="feed-column">
                 <section className="section-block">
@@ -1232,8 +1273,12 @@ export default function MatchdayApp() {
                <aside className="right-content-column">
                 <section className="side-block">
                   <SectionHeading eyebrow={copy.watch} title={configuredVideoUrl ? copy.officialWatch : copy.replay} />
-                  <a className="watch-link" href={videoUrl} target="_blank" rel="noreferrer">{copy.officialWatch}<span>↗</span></a>
-                  <p className="muted-copy">{copy.noWatch}</p>
+                   <a className="watch-link" href={videoUrl} target="_blank" rel="noreferrer">{copy.officialWatch}<span>↗</span></a>
+                   <div className="official-video-links">
+                     <a href={officialVideoSources[0].url} target="_blank" rel="noreferrer">{copy.archiveLink}<span>↗</span></a>
+                     <a href={officialVideoSources[1].url} target="_blank" rel="noreferrer">{copy.highlightsLink}<span>↗</span></a>
+                   </div>
+                   <p className="muted-copy">{copy.noWatch}</p>
                   <div className="replay-progress"><span style={{ width: `${Math.min(100, (minute / maxMinute) * 100)}%` }} /></div>
                 </section>
                 <section className="side-block">
@@ -1315,7 +1360,8 @@ function OddsContext({ copy, label, match, market }: { copy: UiCopy; label: stri
 }
 
 function ScoreChallenge({ copy, match, homeScore, awayScore, setHomeScore, setAwayScore, locked, points, settlement, onLock, onSettle, canSettle }: { copy: UiCopy; match: MatchData; homeScore: number; awayScore: number; setHomeScore: (value: number) => void; setAwayScore: (value: number) => void; locked: boolean; points: number; settlement: string | null; onLock: () => void; onSettle: () => void; canSettle: boolean }) {
-  return <section className="challenge-block"><SectionHeading eyebrow={copy.scoreChallenge} title={`${match.home.code} vs ${match.away.code}`} /><div className="challenge-score"><ScoreInput label={match.home.code} value={homeScore} disabled={locked} onChange={setHomeScore} /><span>:</span><ScoreInput label={match.away.code} value={awayScore} disabled={locked} onChange={setAwayScore} /></div><p className="muted-copy">{copy.noBetting}</p><div className="challenge-actions">{locked ? <button className="primary-button" type="button" onClick={onSettle} disabled={!canSettle}>{canSettle ? copy.settle : copy.locked}</button> : <button className="primary-button" type="button" onClick={onLock} disabled={points < pointsPerPick}>{copy.lockPick}</button>}</div>{settlement ? <p className="challenge-result">{settlement}</p> : null}</section>;
+  const matchState = match.status === "finished" ? copy.final : match.status === "live" ? copy.live : copy.scheduled;
+  return <section className="challenge-block"><SectionHeading eyebrow={copy.scoreChallenge} title={`${match.home.code} vs ${match.away.code}`} /><div className="challenge-meta"><div><span>{copy.currentPoints}</span><strong>{points.toLocaleString()} pts</strong></div><div><span>{copy.pickCost}</span><strong>{pointsPerPick} pts</strong></div><div><span>{copy.settlementRule}</span><strong>{locked ? copy.locked : matchState}</strong></div></div><div className="challenge-score"><ScoreInput label={match.home.code} value={homeScore} disabled={locked} onChange={setHomeScore} /><span>:</span><ScoreInput label={match.away.code} value={awayScore} disabled={locked} onChange={setAwayScore} /></div><p className="muted-copy">{copy.pointsNote}</p><div className="challenge-actions">{locked ? <button className="primary-button" type="button" onClick={onSettle} disabled={!canSettle}>{canSettle ? copy.settle : copy.locked}</button> : <button className="primary-button" type="button" onClick={onLock} disabled={points < pointsPerPick}>{copy.lockPick}</button>}</div>{settlement ? <p className="challenge-result">{settlement}</p> : null}</section>;
 }
 
 function ScoreInput({ label, value, disabled, onChange }: { label: string; value: number; disabled: boolean; onChange: (value: number) => void }) {

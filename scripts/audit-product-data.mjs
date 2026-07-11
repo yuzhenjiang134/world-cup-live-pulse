@@ -1,0 +1,125 @@
+import { readFile } from "node:fs/promises";
+import { Buffer } from "node:buffer";
+import path from "node:path";
+import ts from "typescript";
+
+const root = process.cwd();
+let failed = false;
+
+function pass(message) {
+  console.log(`PASS ${message}`);
+}
+
+function fail(message) {
+  failed = true;
+  console.error(`FAIL ${message}`);
+}
+
+async function loadTsModule(relativePath) {
+  const filePath = path.join(root, relativePath);
+  const source = await readFile(filePath, "utf8");
+  const result = ts.transpileModule(source, {
+    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 },
+    fileName: relativePath,
+  });
+  const encoded = Buffer.from(result.outputText, "utf8").toString("base64");
+  return import(`data:text/javascript;base64,${encoded}`);
+}
+
+const replayModule = await loadTsModule("src/data/replayMatch.ts");
+const videoModule = await loadTsModule("src/data/videoSources.ts");
+const fanGuideModule = await loadTsModule("src/data/fanGuide.ts");
+const replayMatches = replayModule.replayMatches;
+const videoSources = videoModule.officialVideoSources;
+const teamAtlas = fanGuideModule.teamAtlas;
+const appSource = await readFile(path.join(root, "src/MatchdayApp.tsx"), "utf8");
+const adapterSource = await readFile(path.join(root, "src/lib/txlineAdapter.ts"), "utf8");
+const calendarSource = await readFile(path.join(root, "src/data/matchCalendar.ts"), "utf8");
+
+if (!Array.isArray(replayMatches) || replayMatches.length < 2) {
+  fail("Replay library must contain at least two deterministic fixtures");
+} else {
+  pass(`Replay library contains ${replayMatches.length} deterministic fixtures`);
+}
+
+for (const match of replayMatches ?? []) {
+  const year = new Date(match.kickoffIso).getUTCFullYear();
+  if (!match.id.startsWith("wc-demo-") || match.dataStatus !== "Replay" || year >= 2026) {
+    fail(`${match.id} must remain historical replay data before the 2026 tournament window`);
+  } else {
+    pass(`${match.id} is isolated as historical ${year} replay data`);
+  }
+
+  const eventIds = new Set(match.events.map((event) => event.id));
+  if (eventIds.size !== match.events.length) fail(`${match.id} has duplicate event ids`);
+  if (match.events.at(-1)?.type !== "fulltime") fail(`${match.id} does not end with fulltime`);
+  if (match.events.some((event) => event.homeScore < 0 || event.awayScore < 0 || event.marketPulse < 0 || event.marketPulse > 100)) {
+    fail(`${match.id} contains invalid event score or pulse values`);
+  }
+  if (match.market.some((snapshot) => snapshot.homeWin <= 0 || snapshot.draw <= 0 || snapshot.awayWin <= 0 || snapshot.sentiment < 0 || snapshot.sentiment > 100)) {
+    fail(`${match.id} contains invalid market snapshot values`);
+  }
+}
+
+const teamCodes = new Set();
+for (const team of teamAtlas ?? []) {
+  if (!team.code || teamCodes.has(team.code) || !team.name || !team.colors?.length) fail(`Team atlas identity is invalid for ${team.code || "unknown"}`);
+  teamCodes.add(team.code);
+}
+pass(`Team atlas has ${teamCodes.size} unique source profiles`);
+
+for (const source of videoSources ?? []) {
+  let url;
+  try {
+    url = new URL(source.url);
+  } catch {
+    fail(`Video source ${source.id} has an invalid URL`);
+    continue;
+  }
+  if (url.protocol !== "https:" || !["fifa.com", "plus.fifa.com"].some((domain) => url.hostname === domain || url.hostname.endsWith(`.${domain}`))) {
+    fail(`Video source ${source.id} is outside the authorized FIFA domains`);
+  } else {
+    pass(`Video source ${source.id} is an HTTPS FIFA source`);
+  }
+}
+
+const requiredAppMarkers = [
+  ["1,000 local starting points", "1000"],
+  ["score challenge component", "function ScoreChallenge"],
+  ["localized event descriptions", "localizeEventDescription"],
+  ["official video sources", "officialVideoSources"],
+  ["replay mode boundary", 'setMode("replay")'],
+];
+for (const [label, marker] of requiredAppMarkers) {
+  if (appSource.includes(marker)) pass(`App contains ${label}`);
+  else fail(`App is missing ${label}`);
+}
+
+const requiredAdapterMarkers = [
+  ["fixture endpoint", "/api/fixtures/snapshot"],
+  ["score endpoint", "/api/scores/snapshot"],
+  ["odds endpoint", "/api/odds/snapshot"],
+  ["official odds boundary", 'payload.odds.length ? "official-odds"'],
+  ["seed boundary", 'hasLivePayload ? "Delay" : "Seed"'],
+];
+for (const [label, marker] of requiredAdapterMarkers) {
+  if (adapterSource.includes(marker)) pass(`Adapter contains ${label}`);
+  else fail(`Adapter is missing ${label}`);
+}
+
+if (/checkedAtIso:\s*"\d{4}-\d{2}-\d{2}T/.test(calendarSource) && calendarSource.includes("never invents live games")) {
+  pass("Fallback calendar is timestamped and explicitly non-live");
+} else {
+  fail("Fallback calendar must be timestamped and explicitly non-live");
+}
+
+const readme = await readFile(path.join(root, "README.md"), "utf8");
+const submission = await readFile(path.join(root, "docs/SUBMISSION_DRAFT.md"), "utf8");
+if (readme.includes("does not place bets") && submission.includes("Consumer and Fan Experiences")) {
+  pass("Submission boundary and judging track are documented");
+} else {
+  fail("Submission boundary or judging track is missing from documents");
+}
+
+if (failed) process.exitCode = 1;
+else console.log("Product data audit complete.");

@@ -1009,6 +1009,43 @@ summary:focus-visible {
   background: #fff9e9;
 }
 
+.challenge-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 14px 0 2px;
+}
+
+.challenge-meta > div {
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid #e7d8ad;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.challenge-meta span,
+.challenge-meta strong {
+  display: block;
+}
+
+.challenge-meta span {
+  overflow: hidden;
+  color: #8d7a45;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.challenge-meta strong {
+  overflow: hidden;
+  margin-top: 5px;
+  color: var(--md-ink);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .challenge-score {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -1068,6 +1105,31 @@ summary:focus-visible {
   font-size: 12px;
   font-weight: 800;
   text-decoration: none;
+}
+
+.official-video-links {
+  display: grid;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.official-video-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--md-line);
+  border-radius: 6px;
+  color: var(--md-ink);
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.official-video-links a:hover {
+  border-color: var(--md-teal);
+  color: var(--md-teal);
 }
 
 .watch-link:hover {
@@ -1724,6 +1786,10 @@ details summary {
   .content-grid,
   .team-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .challenge-meta {
+    grid-template-columns: 1fr;
   }
 
   .match-context-grid {
