@@ -46,7 +46,7 @@ The 2026-07-11 authenticated snapshot returned three `CompetitionId 72` World Cu
 - Fixture `18222446`: Argentina vs Switzerland.
 - Fixture `18237038`: France vs Spain.
 
-The adapter sends `competitionId=72` and applies a second response-side filter, preventing `CompetitionId 430` Friendlies from entering the World Cup Match Center or Teams view. Two consecutive probes on 2026-07-12 returned two current fixtures; fixture `18222446` returned 40 score records and 20 official-odds records in both runs. The production fixture override stays blank so selection follows the latest source response. Empty odds remain empty instead of being fabricated.
+The adapter sends `competitionId=72` and applies a second response-side filter, preventing `CompetitionId 430` Friendlies from entering the World Cup Match Center or Teams view. The latest two consecutive probes on 2026-07-12 returned three current fixtures; fixture `18222446` returned 42 score records and zero official-odds records in both runs. The production fixture override stays blank so selection follows the latest source response, and numerical odds remain hidden while the current official payload is empty.
 
 Implemented TxLINE endpoint mapping:
 

@@ -2,7 +2,7 @@
 
 Updated: 2026-07-11
 
-Official listing snapshot checked 2026-07-12: 26 public submissions; this track lists 16,000 USDT total prizes (10,000 / 4,000 / 2,000), with a July 19, 2026 23:59 UTC close and July 29, 2026 15:00 UTC announcement. The overall World Cup hackathon pool is listed as 50,000 USDT.
+Official listing checked 2026-07-12: the syncing public submission counter moved from 25 to 27 across consecutive fetches. This track still lists 16,000 USDT total prizes (10,000 / 4,000 / 2,000) and a July 29, 2026 winner announcement. Recheck the dynamic count and close timer immediately before submission.
 
 This is the checklist for the current matchday shell. Older Source Board / Judge Demo prototype labels are retired from the primary interface and must not be described as visible product features.
 
@@ -10,6 +10,10 @@ This is the checklist for the current matchday shell. Older Source Board / Judge
 
 - [x] Match Center is the first view and shows the selected 2026 fixture state.
 - [x] Score challenge is the first interaction block below the score hero.
+- [x] Score challenge history is stored by fixture and settles a verified final exactly once.
+- [x] The season demonstration is explicitly labeled, uses verified 2026 replay finals, and is isolated from the user's actual points and history.
+- [x] AI match briefs react to goals, cards, score reviews, half-time, full-time, and momentum changes in all eight languages, with browser speech playback.
+- [x] Known current team names use the active interface language across Match Center, schedule context, team details, and AI briefs.
 - [x] New local sessions receive 1,000 test points; points persist locally and can be reset in Settings.
 - [x] The challenge visibly explains current points, per-pick cost, and final-score settlement before the user enters a score.
 - [x] Fan level and XP progress reward correct and exact historical results without turning points into money or a transferable asset.
@@ -37,7 +41,7 @@ This is the checklist for the current matchday shell. Older Source Board / Judge
 - [x] The primary replay library uses eight authenticated, sanitized 2026 TxLINE historical sequences with `game_finalised` results.
 - [x] `npm run audit` checks replay dates, event scores, market values, team identities, video domains, feature markers, and data boundaries.
 - [x] Repeated `npm run txline:probe` checks on 2026-07-11 kept 3 World Cup fixtures and 2 score records for fixture `18213979` stable. Official odds varied between 0 and 27 records across checks; the final local pair returned 3 then 5. Empty odds are shown honestly and never backfilled with invented values.
-- [x] The 2026-07-12 probe pair returned 2 World Cup fixtures; fixture `18222446` returned 40 score records and 20 official-odds records both times. Production leaves the fixture override blank to follow the current source fixture.
+- [x] The latest 2026-07-12 probe pair returned 3 World Cup fixtures; fixture `18222446` returned 42 score records and 0 official-odds records both times. Production follows the current source fixture and hides numerical odds while the official payload is empty.
 
 ## Video
 

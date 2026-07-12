@@ -1,6 +1,6 @@
 # World Cup Live Pulse Task List
 
-Updated: 2026-06-28
+Updated: 2026-07-12
 
 ## Done locally
 
@@ -154,7 +154,7 @@ Updated: 2026-06-28
 
 ## 2026-07-11 Current release truth
 
-- [x] Official listing rechecked on 2026-07-12: 26 public submissions; Consumer and Fan Experiences prize pool is 16,000 USDT, inside the 50,000 USDT World Cup pool; close is 2026-07-19 23:59 UTC and announcement is scheduled for 2026-07-29 15:00 UTC.
+- [x] Official listing rechecked on 2026-07-12: the syncing submission counter changed from 25 to 27 across consecutive fetches; Consumer and Fan Experiences still lists 16,000 USDT (10,000 / 4,000 / 2,000), and the winner announcement remains scheduled for 2026-07-29. Recheck the dynamic count and close timer immediately before submission.
 - [x] Match Center is the primary fan workflow: verified score state first, then the score challenge, events, AI-style commentary, market context, and schedule/replay entry points.
 - [x] The score challenge starts each local session with 1,000 browser-only test points. It settles from the verified final score and never touches cash, wallets, tokens, wagering, or trading.
 - [x] Primary Replay now uses eight authenticated TxLINE 2026 historical sequences. The two 2022 editorial stories remain secondary legacy examples and are never presented as current data.
@@ -162,7 +162,7 @@ Updated: 2026-06-28
 - [x] Official FIFA+ archive and highlights/replay links are available from the match view. No unofficial stream is scraped or embedded; rights and territory availability remain visible.
 - [x] `npm run audit` checks replay dates, score/event consistency, market ranges, team identities, official video domains, localization markers, and source-boundary markers.
 - [x] Repeated 2026-07-11 verification: strict `CompetitionId 72` probing kept 3 World Cup fixtures and 2 score records for fixture `18213979` stable. Official odds varied between 0 and 27 records; the final local pair returned 3 then 5, and empty odds were never fabricated.
-- [x] Repeated 2026-07-12 verification: strict `CompetitionId 72` probing returned 2 World Cup fixtures; fixture `18222446` returned 40 score records and 20 official-odds records in both probes. The default fixture override is now blank so deployment follows the current source fixture instead of pinning yesterday's match.
+- [x] Latest repeated 2026-07-12 verification: strict `CompetitionId 72` probing returned 3 World Cup fixtures; fixture `18222446` returned 42 score records and 0 official-odds records in both probes. Empty odds remain hidden, and the blank fixture override follows the current source fixture instead of pinning an older match.
 - [x] Browser E2E verifies one-charge/one-settlement challenge rules, persistence after reload, commentary/share controls, and a 390px layout with zero horizontal overflow.
 - [x] The current submission checklist is `docs/SUBMISSION_CHECKLIST.md`; it is the source of truth for the final demo, Pages asset hash, and submission package.
 - [ ] External gates remain external: final TxLINE production/CORS confirmation, latest GitHub Pages asset hash, authorized video availability, final demo recording, and Superteam submission.
@@ -200,3 +200,23 @@ Do not push or record the final video until all three local rounds pass on the s
 - [x] Keep points local, non-transferable, wallet-free, and without cash value; this remains a fan challenge rather than wagering.
 - [x] Remove the duplicated right-rail points card and replace the mixed-language data rule with localized source guidance.
 - [x] Browser-test pending-fixture handling, automatic settlement, no duplicate award after reload, history visibility, focus-triggered refresh, and 390px layout on the same final worktree.
+
+## Product depth standard
+
+Every official requirement must be implemented as a useful, testable product loop rather than a checkbox. Extend one required capability into two or three user benefits only when every added detail remains source-backed and understandable:
+
+- Live TxLINE input -> automatic refresh, focus recovery, freshness display, event detail, pending-pick checks, final-score settlement, and deterministic replay.
+- Fan interaction -> prominent score challenge, 1,000 local points, fixture-keyed history, one-time settlement, season demo, sharing, streaks, levels, and clear non-wagering boundaries.
+- AI pundit example -> event-driven multilingual match brief, source-grounded facts, TTS playback, and honest fallback when no event exists.
+- Fan UX -> plain-language labels, mobile layout, eight languages, RTL, useful empty states, and technical controls hidden in Settings.
+- Completeness -> public app, public repository, endpoint documentation, API feedback, business path, security boundary, tests, and under-five-minute demo.
+- Detail pages -> show every confirmed score, event, card, time, team, player ID/name, stage, and source timestamp that the feed actually provides; leave unknown facts blank instead of guessing.
+
+### Acceptance rule: requirement 1 must become product value 2 or 3
+
+- [x] Treat every published judging requirement as the minimum, then extend it into two or three connected fan benefits that can be demonstrated and tested.
+- [x] Reject decorative feature count: every extension must either shorten the fan's path, improve freshness/trust, deepen a match story, or increase repeat engagement.
+- [x] Keep source truth stronger than visual richness: confirmed details may be expanded; missing player names, stages, winners, odds, or video rights stay blank or explicitly pending.
+- [x] Keep the primary view immediately understandable to a non-technical fan; endpoint, token, cache, proxy, and diagnostics remain collapsed in Settings or documentation.
+- [x] Make depth progressive: score challenge and current match first, verified events and AI brief second, schedule/replay and team details on demand.
+- [ ] Final acceptance requires the same feature loop to pass local data tests, browser interaction tests, mobile layout review, language review, and the public deployment check.

@@ -35,7 +35,7 @@ Implemented endpoints:
 
 ## 2:10-2:30 — Data truth
 
-Data truth is visible product behavior. Live, Delay, Seed, and Replay are separate states. Unknown teams remain pending confirmation. Empty odds stay empty. Historical fixtures stay in Replay. Two consecutive 2026-07-12 probes returned two World Cup fixtures; fixture 18222446 returned 40 score records and 20 official-odds records both times. Earlier empty-odds responses were never replaced with invented values.
+Data truth is visible product behavior. Live, Delay, Seed, and Replay are separate states. Unknown teams remain pending confirmation. Empty odds stay empty. Historical fixtures stay in Replay. The latest two consecutive 2026-07-12 probes returned three World Cup fixtures; fixture 18222446 returned 42 score records and zero official-odds records both times, so numerical odds are hidden rather than carried forward from an older snapshot.
 
 Official match video rights are separate from TxLINE. The product links only to official FIFA+ archive and highlights pages, with territory and rights limitations disclosed.
 
@@ -53,6 +53,8 @@ World Cup Live Pulse is deployed, functional, documented, and repeatable for jud
 - Keep browser zoom at 100 percent and capture at 1280 × 720.
 - Do not show `.env.local`, API tokens, JWTs, private keys, wallet screens, or browser developer tools.
 - Show the Match Center score challenge before secondary details.
+- Show one event-driven AI brief and play its spoken version.
+- Open the labeled season demonstration only after showing the user's separate real challenge history.
 - Show the Replay label and final score clearly.
 - Show the exact TxLINE endpoints in a caption card.
 - Keep the final video below five minutes.

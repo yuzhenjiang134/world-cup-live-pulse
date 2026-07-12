@@ -2,8 +2,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { dataConsistencyState } from "./data/matchCalendar";
 import { teamAtlas } from "./data/fanGuide";
 import { replayMatches } from "./data/replayMatch";
+import { demoSeasonHistory, demoSeasonSummary } from "./data/demoSeasonHistory";
 import { officialVideoSources } from "./data/videoSources";
 import { tournamentCopy } from "./data/tournamentCopy";
+import { localizeTeamName } from "./data/teamNames";
 import { txlineArchiveMatches } from "./data/txlineArchive";
 import { canLockScorePick, emptyChallengeStats, getFanLevel, settleScorePick, updateChallengeStats } from "./lib/challenge";
 import type { ChallengeStats } from "./lib/challenge";
@@ -123,19 +125,19 @@ const ui: Record<Language, UiCopy> = {
     navReplay: "Schedule & replay",
     navTeams: "Teams",
     navSettings: "Settings",
-    source: "Data source",
+    source: "Match status",
     refresh: "Refresh",
     loading: "Loading verified match data",
     live: "Live",
     delayed: "Delayed",
     replay: "Replay",
-    seed: "Seed",
+    seed: "Upcoming",
     fallback: "Fallback",
     verifiedAt: "Checked",
-    officialFeed: "TxLINE score feed",
+    officialFeed: "Official match data",
     publicFeed: "Public scoreboard",
-    replayFeed: "Verified 2026 TxLINE historical replay",
-    noLiveFeed: "No live feed in this view",
+    replayFeed: "Verified 2026 match replay",
+    noLiveFeed: "No match is live right now",
     scorePulse: "Score pulse",
     matchCenter: "Match center",
     liveNow: "Live now",
@@ -148,18 +150,18 @@ const ui: Record<Language, UiCopy> = {
     yellow: "Yellow",
     red: "Red",
     extraTime: "ET / added time",
-    fanPulse: "Fan pulse",
-    dataQuality: "Data quality",
+    fanPulse: "Match momentum",
+    dataQuality: "Status",
     officialOdds: "Official odds snapshot",
-    derivedPulse: "Score-derived pulse",
-    replaySnapshot: "Replay market snapshot",
-    next: "Next signal",
+    derivedPulse: "Match momentum",
+    replaySnapshot: "Post-match momentum",
+    next: "Coming up",
     summary: "Match summary",
-    aiCommentary: "AI-style fan commentary",
+    aiCommentary: "AI match brief",
     schedule: "Schedule",
     advancement: "Stage and progression",
-    scoreChallenge: "Fan score challenge",
-    testPoints: "Test points",
+    scoreChallenge: "Score challenge",
+    testPoints: "Challenge points",
     pointsNote: "Local-only points. No cash value, wallet, or betting.",
     currentPoints: "Current points",
     pickCost: "Pick cost",
@@ -188,9 +190,9 @@ const ui: Record<Language, UiCopy> = {
     chooseReplay: "Open a fixed, judgeable match story",
     teams: "Teams and players",
     players: "Key players",
-    sourceTeams: "Teams in the current source",
-    referenceTeams: "Reference team atlas",
-    teamPending: "Team pending source confirmation",
+    sourceTeams: "Tournament teams",
+    referenceTeams: "More team profiles",
+    teamPending: "Player details updating",
     coach: "Coach",
     watch: "Watch / replay",
     officialWatch: "Open official source",
@@ -201,18 +203,18 @@ const ui: Record<Language, UiCopy> = {
     settings: "Settings",
     close: "Close",
     language: "Language",
-    dataConnection: "Live data connection",
-    authDescription: "Authentication is kept here so the main fan view stays focused. Tokens remain local and are never displayed.",
+    dataConnection: "Match data",
+    authDescription: "Refresh the match or view its connection status here.",
     securityNote: "TxLINE token, JWT and wallet signatures stay local and are never rendered in the main interface or committed to GitHub Pages.",
     openHelper: "Open TxLINE activation helper",
     localOnly: "Local .env.local only",
-    advancedHidden: "Advanced data connection",
-    connectionReady: "Authenticated source configured",
-    connectionFallback: "Replay / public fallback active",
-    refreshData: "Refresh verified feed",
+    advancedHidden: "Technical information",
+    connectionReady: "Match data is up to date",
+    connectionFallback: "Showing verified replay data",
+    refreshData: "Refresh match",
     languageNote: "UI labels are translated; team and player names remain source-of-truth names.",
-    dataRules: "Truth rules",
-    onlyVerified: "Only verified score, event, and fixture data is labeled live.",
+    dataRules: "About this data",
+    onlyVerified: "Only confirmed scores and events are shown.",
   },
   zh: {
     brandKicker: "以球迷为先的比赛情报",
@@ -221,19 +223,19 @@ const ui: Record<Language, UiCopy> = {
     navReplay: "赛程与回放",
     navTeams: "球队与球员",
     navSettings: "设置",
-    source: "数据来源",
+    source: "比赛状态",
     refresh: "刷新",
     loading: "正在加载已核验比赛数据",
     live: "实时",
     delayed: "延迟",
     replay: "回放",
-    seed: "赛程种子",
+    seed: "未开赛",
     fallback: "兜底",
     verifiedAt: "核验时间",
-    officialFeed: "TxLINE 比分源",
+    officialFeed: "官方比赛数据",
     publicFeed: "公开比分源",
-    replayFeed: "2026 TxLINE 已核验历史回放",
-    noLiveFeed: "当前视图没有实时源",
+    replayFeed: "2026 已确认比赛回放",
+    noLiveFeed: "当前没有正在进行的比赛",
     scorePulse: "比分脉冲",
     matchCenter: "比赛中心",
     liveNow: "正在进行",
@@ -246,18 +248,18 @@ const ui: Record<Language, UiCopy> = {
     yellow: "黄牌",
     red: "红牌",
     extraTime: "加时 / 补时",
-    fanPulse: "球迷脉冲",
-    dataQuality: "数据质量",
+    fanPulse: "比赛热度",
+    dataQuality: "状态",
     officialOdds: "官方赔率快照",
-    derivedPulse: "由比分推导的脉冲",
-    replaySnapshot: "回放市场快照",
-    next: "下一个信号",
+    derivedPulse: "比赛走势",
+    replaySnapshot: "赛后走势",
+    next: "接下来",
     summary: "比赛摘要",
-    aiCommentary: "AI 风格球迷解说",
+    aiCommentary: "AI 比赛解读",
     schedule: "赛程",
     advancement: "阶段与晋级",
-    scoreChallenge: "积分比分挑战",
-    testPoints: "测试积分",
+    scoreChallenge: "比分挑战",
+    testPoints: "挑战积分",
     pointsNote: "仅本地积分，无现金价值，不连接钱包，不是下注。",
     currentPoints: "当前积分",
     pickCost: "本次消耗",
@@ -286,9 +288,9 @@ const ui: Record<Language, UiCopy> = {
     chooseReplay: "打开固定、可复现的比赛故事",
     teams: "球队与球员",
     players: "关键球员",
-    sourceTeams: "当前数据球队",
-    referenceTeams: "参考球队资料",
-    teamPending: "队伍待官方确认",
+    sourceTeams: "参赛球队",
+    referenceTeams: "更多球队资料",
+    teamPending: "球员资料更新中",
     coach: "教练",
     watch: "观看 / 回放",
     officialWatch: "打开官方来源",
@@ -299,18 +301,18 @@ const ui: Record<Language, UiCopy> = {
     settings: "设置",
     close: "关闭",
     language: "语言",
-    dataConnection: "实时数据连接",
-    authDescription: "认证流程放在这里，让主视图专注看比赛。Token 只保存在本地，不会在页面显示。",
+    dataConnection: "比赛数据",
+    authDescription: "在这里更新比赛，或查看数据是否已更新。",
     securityNote: "TxLINE token、JWT 和钱包签名只保留在本地，不会显示在主界面，也不会提交到 GitHub Pages。",
     openHelper: "打开 TxLINE 激活助手",
     localOnly: "仅限本地 .env.local",
-    advancedHidden: "高级数据连接",
-    connectionReady: "已配置认证数据源",
-    connectionFallback: "当前使用回放 / 公开兜底",
-    refreshData: "刷新已核验数据",
+    advancedHidden: "技术信息",
+    connectionReady: "比赛数据已更新",
+    connectionFallback: "正在显示已确认回放",
+    refreshData: "更新比赛",
     languageNote: "界面标签会翻译；球队和球员名称保持数据源原名。",
-    dataRules: "数据规则",
-    onlyVerified: "只有比分、事件和赛程经过核验时才会标记为实时。",
+    dataRules: "数据说明",
+    onlyVerified: "只显示已确认的比分、事件和赛程。",
   },
   es: {
     brandKicker: "Inteligencia de partido para fans",
@@ -319,7 +321,7 @@ const ui: Record<Language, UiCopy> = {
     navReplay: "Calendario y repetición",
     navTeams: "Equipos",
     navSettings: "Ajustes",
-    source: "Fuente",
+    source: "Estado del partido",
     refresh: "Actualizar",
     loading: "Cargando datos verificados",
     live: "En vivo",
@@ -328,10 +330,10 @@ const ui: Record<Language, UiCopy> = {
     seed: "Calendario",
     fallback: "Respaldo",
     verifiedAt: "Revisado",
-    officialFeed: "Feed de TxLINE",
+    officialFeed: "Datos oficiales del partido",
     publicFeed: "Marcador público",
-    replayFeed: "Repetición histórica 2026 verificada por TxLINE",
-    noLiveFeed: "Sin feed en vivo en esta vista",
+    replayFeed: "Repetición verificada de 2026",
+    noLiveFeed: "No hay un partido en directo ahora",
     scorePulse: "Pulso del marcador",
     matchCenter: "Centro del partido",
     liveNow: "Ahora",
@@ -344,18 +346,18 @@ const ui: Record<Language, UiCopy> = {
     yellow: "Amarillas",
     red: "Rojas",
     extraTime: "Prórroga / añadido",
-    fanPulse: "Pulso fan",
-    dataQuality: "Calidad",
+    fanPulse: "Ritmo del partido",
+    dataQuality: "Estado",
     officialOdds: "Cuotas oficiales",
-    derivedPulse: "Pulso derivado del marcador",
-    replaySnapshot: "Mercado de repetición",
-    next: "Siguiente señal",
+    derivedPulse: "Ritmo del partido",
+    replaySnapshot: "Ritmo final",
+    next: "A continuación",
     summary: "Resumen del partido",
-    aiCommentary: "Comentario de fan estilo IA",
+    aiCommentary: "Resumen del partido con IA",
     schedule: "Calendario",
     advancement: "Fase y clasificación",
     scoreChallenge: "Reto de marcador",
-    testPoints: "Puntos de prueba",
+    testPoints: "Puntos del reto",
     pointsNote: "Solo local. Sin valor monetario ni apuestas.",
     currentPoints: "Puntos actuales",
     pickCost: "Coste de la jugada",
@@ -384,9 +386,9 @@ const ui: Record<Language, UiCopy> = {
     chooseReplay: "Abrir una historia fija y reproducible",
     teams: "Equipos y jugadores",
     players: "Jugadores clave",
-    sourceTeams: "Equipos de la fuente",
-    referenceTeams: "Atlas de referencia",
-    teamPending: "Equipo pendiente de confirmación",
+    sourceTeams: "Equipos del torneo",
+    referenceTeams: "Más equipos",
+    teamPending: "Actualizando jugadores",
     coach: "Entrenador",
     watch: "Ver / repetir",
     officialWatch: "Abrir fuente oficial",
@@ -397,18 +399,18 @@ const ui: Record<Language, UiCopy> = {
     settings: "Ajustes",
     close: "Cerrar",
     language: "Idioma",
-    dataConnection: "Conexión de datos en vivo",
-    authDescription: "La autenticación vive aquí para mantener limpia la vista del fan.",
+    dataConnection: "Datos del partido",
+    authDescription: "Actualiza el partido o revisa aquí su estado.",
     securityNote: "El token de TxLINE, el JWT y las firmas de la cartera permanecen locales y nunca se muestran ni se publican.",
     openHelper: "Abrir asistente de TxLINE",
     localOnly: "Solo .env.local",
-    advancedHidden: "Conexión avanzada",
-    connectionReady: "Fuente autenticada configurada",
-    connectionFallback: "Repetición / respaldo público",
-    refreshData: "Actualizar feed verificado",
+    advancedHidden: "Información técnica",
+    connectionReady: "Datos actualizados",
+    connectionFallback: "Mostrando repetición verificada",
+    refreshData: "Actualizar partido",
     languageNote: "Las etiquetas se traducen; nombres de equipos y jugadores siguen la fuente.",
-    dataRules: "Reglas de datos",
-    onlyVerified: "Solo los datos verificados se marcan como en vivo.",
+    dataRules: "Sobre estos datos",
+    onlyVerified: "Solo se muestran marcadores y eventos confirmados.",
   },
   pt: {
     brandKicker: "Inteligência de jogo para torcedores",
@@ -417,7 +419,7 @@ const ui: Record<Language, UiCopy> = {
     navReplay: "Calendrier et reprise",
     navTeams: "Times",
     navSettings: "Configurações",
-    source: "Fonte",
+    source: "Estado do jogo",
     refresh: "Atualizar",
     loading: "Carregando dados verificados",
     live: "Ao vivo",
@@ -426,10 +428,10 @@ const ui: Record<Language, UiCopy> = {
     seed: "Calendário",
     fallback: "Reserva",
     verifiedAt: "Verificado",
-    officialFeed: "Feed TxLINE",
+    officialFeed: "Dados oficiais do jogo",
     publicFeed: "Placar público",
-    replayFeed: "Replay histórico 2026 verificado pela TxLINE",
-    noLiveFeed: "Sem feed ao vivo nesta visão",
+    replayFeed: "Replay verificado de 2026",
+    noLiveFeed: "Nenhum jogo ao vivo agora",
     scorePulse: "Pulso do placar",
     matchCenter: "Central da partida",
     liveNow: "Agora",
@@ -442,18 +444,18 @@ const ui: Record<Language, UiCopy> = {
     yellow: "Amarelos",
     red: "Vermelhos",
     extraTime: "Prorrogação / acréscimos",
-    fanPulse: "Pulso dos fãs",
-    dataQuality: "Qualidade",
+    fanPulse: "Ritmo do jogo",
+    dataQuality: "Estado",
     officialOdds: "Odds oficiais",
-    derivedPulse: "Pulso derivado do placar",
-    replaySnapshot: "Mercado da reprise",
-    next: "Próximo sinal",
+    derivedPulse: "Ritmo do jogo",
+    replaySnapshot: "Ritmo final",
+    next: "A seguir",
     summary: "Resumo da partida",
-    aiCommentary: "Comentário de fã com estilo de IA",
+    aiCommentary: "Resumo da partida com IA",
     schedule: "Calendário",
     advancement: "Fase e classificação",
     scoreChallenge: "Desafio de placar",
-    testPoints: "Pontos de teste",
+    testPoints: "Pontos do desafio",
     pointsNote: "Somente local. Sem valor em dinheiro ou apostas.",
     currentPoints: "Pontos atuais",
     pickCost: "Custo da escolha",
@@ -482,9 +484,9 @@ const ui: Record<Language, UiCopy> = {
     chooseReplay: "Abrir uma história fixa e reproduzível",
     teams: "Times e jogadores",
     players: "Jogadores-chave",
-    sourceTeams: "Times da fonte",
-    referenceTeams: "Atlas de referência",
-    teamPending: "Equipe pendente de confirmação",
+    sourceTeams: "Equipes do torneio",
+    referenceTeams: "Mais equipes",
+    teamPending: "Atualizando jogadores",
     coach: "Técnico",
     watch: "Assistir / reprise",
     officialWatch: "Abrir fonte oficial",
@@ -495,18 +497,18 @@ const ui: Record<Language, UiCopy> = {
     settings: "Configurações",
     close: "Fechar",
     language: "Idioma",
-    dataConnection: "Conexão de dados ao vivo",
-    authDescription: "A autenticação fica aqui para manter a visão do torcedor limpa.",
+    dataConnection: "Dados do jogo",
+    authDescription: "Atualize o jogo ou confira aqui o estado dos dados.",
     securityNote: "O token TxLINE, o JWT e as assinaturas da carteira ficam locais e nunca são exibidos nem publicados.",
     openHelper: "Abrir assistente TxLINE",
     localOnly: "Somente .env.local",
-    advancedHidden: "Conexão avançada",
-    connectionReady: "Fonte autenticada configurada",
-    connectionFallback: "Reprise / reserva pública",
-    refreshData: "Atualizar feed verificado",
+    advancedHidden: "Informações técnicas",
+    connectionReady: "Dados atualizados",
+    connectionFallback: "Exibindo replay verificado",
+    refreshData: "Atualizar jogo",
     languageNote: "Os rótulos são traduzidos; nomes seguem a fonte original.",
-    dataRules: "Regras de dados",
-    onlyVerified: "Somente dados verificados são marcados ao vivo.",
+    dataRules: "Sobre estes dados",
+    onlyVerified: "Apenas placares e eventos confirmados são exibidos.",
   },
   fr: {
     brandKicker: "Intelligence de match pour les fans",
@@ -515,7 +517,7 @@ const ui: Record<Language, UiCopy> = {
     navReplay: "Spielplan und Replay",
     navTeams: "Équipes",
     navSettings: "Réglages",
-    source: "Source",
+    source: "État du match",
     refresh: "Actualiser",
     loading: "Chargement des données vérifiées",
     live: "Direct",
@@ -524,10 +526,10 @@ const ui: Record<Language, UiCopy> = {
     seed: "Calendrier",
     fallback: "Secours",
     verifiedAt: "Vérifié",
-    officialFeed: "Flux TxLINE",
+    officialFeed: "Données officielles du match",
     publicFeed: "Score public",
-    replayFeed: "Replay historique 2026 vérifié par TxLINE",
-    noLiveFeed: "Aucun flux direct ici",
+    replayFeed: "Replay 2026 vérifié",
+    noLiveFeed: "Aucun match en direct maintenant",
     scorePulse: "Pouls du score",
     matchCenter: "Centre du match",
     liveNow: "En cours",
@@ -540,18 +542,18 @@ const ui: Record<Language, UiCopy> = {
     yellow: "Jaunes",
     red: "Rouges",
     extraTime: "Prolongation / arrêts",
-    fanPulse: "Pouls des fans",
-    dataQuality: "Qualité",
+    fanPulse: "Rythme du match",
+    dataQuality: "État",
     officialOdds: "Cotes officielles",
-    derivedPulse: "Pouls dérivé du score",
-    replaySnapshot: "Marché du replay",
-    next: "Prochain signal",
+    derivedPulse: "Rythme du match",
+    replaySnapshot: "Rythme final",
+    next: "À suivre",
     summary: "Résumé du match",
-    aiCommentary: "Commentaire fan de style IA",
+    aiCommentary: "Résumé du match par IA",
     schedule: "Calendrier",
     advancement: "Phase et qualification",
     scoreChallenge: "Défi de score",
-    testPoints: "Points de test",
+    testPoints: "Points du défi",
     pointsNote: "Local uniquement. Sans valeur monétaire ni pari.",
     currentPoints: "Points actuels",
     pickCost: "Coût du choix",
@@ -580,9 +582,9 @@ const ui: Record<Language, UiCopy> = {
     chooseReplay: "Ouvrir une histoire fixe et reproductible",
     teams: "Équipes et joueurs",
     players: "Joueurs clés",
-    sourceTeams: "Équipes de la source",
-    referenceTeams: "Atlas de référence",
-    teamPending: "Équipe en attente de confirmation",
+    sourceTeams: "Équipes du tournoi",
+    referenceTeams: "Plus d'équipes",
+    teamPending: "Mise à jour des joueurs",
     coach: "Entraîneur",
     watch: "Regarder / replay",
     officialWatch: "Ouvrir la source officielle",
@@ -593,18 +595,18 @@ const ui: Record<Language, UiCopy> = {
     settings: "Réglages",
     close: "Fermer",
     language: "Langue",
-    dataConnection: "Connexion live",
-    authDescription: "L’authentification est ici pour garder la vue fan claire.",
+    dataConnection: "Données du match",
+    authDescription: "Actualisez le match ou vérifiez son état ici.",
     securityNote: "Le token TxLINE, le JWT et les signatures du portefeuille restent locaux et ne sont jamais affichés ni publiés.",
     openHelper: "Ouvrir l’assistant TxLINE",
     localOnly: "Local .env.local uniquement",
-    advancedHidden: "Connexion avancée",
-    connectionReady: "Source authentifiée configurée",
-    connectionFallback: "Replay / secours public",
-    refreshData: "Actualiser le flux vérifié",
+    advancedHidden: "Informations techniques",
+    connectionReady: "Données à jour",
+    connectionFallback: "Replay vérifié affiché",
+    refreshData: "Actualiser le match",
     languageNote: "Les libellés sont traduits; les noms suivent la source.",
-    dataRules: "Règles de données",
-    onlyVerified: "Seules les données vérifiées sont marquées en direct.",
+    dataRules: "À propos des données",
+    onlyVerified: "Seuls les scores et événements confirmés sont affichés.",
   },
   de: {
     brandKicker: "Spieldaten für Fans",
@@ -613,7 +615,7 @@ const ui: Record<Language, UiCopy> = {
     navReplay: "Spielplan & Wiederholung",
     navTeams: "Teams",
     navSettings: "Einstellungen",
-    source: "Datenquelle",
+    source: "Spielstatus",
     refresh: "Aktualisieren",
     loading: "Verifizierte Spieldaten werden geladen",
     live: "Live",
@@ -622,10 +624,10 @@ const ui: Record<Language, UiCopy> = {
     seed: "Spielplan",
     fallback: "Ersatz",
     verifiedAt: "Geprüft",
-    officialFeed: "TxLINE Feed",
+    officialFeed: "Offizielle Spieldaten",
     publicFeed: "Öffentliche Anzeige",
-    replayFeed: "Verifiziertes TxLINE-Replay aus 2026",
-    noLiveFeed: "Keine Livequelle in dieser Ansicht",
+    replayFeed: "Verifiziertes Replay 2026",
+    noLiveFeed: "Aktuell läuft kein Spiel",
     scorePulse: "Torpuls",
     matchCenter: "Spielzentrum",
     liveNow: "Jetzt",
@@ -638,18 +640,18 @@ const ui: Record<Language, UiCopy> = {
     yellow: "Gelb",
     red: "Rot",
     extraTime: "Verlängerung / Nachspielzeit",
-    fanPulse: "Fanpuls",
-    dataQuality: "Datenqualität",
+    fanPulse: "Spieldynamik",
+    dataQuality: "Status",
     officialOdds: "Offizielle Quoten",
-    derivedPulse: "Aus dem Spielstand abgeleitet",
-    replaySnapshot: "Replay-Markt",
-    next: "Nächstes Signal",
+    derivedPulse: "Spieldynamik",
+    replaySnapshot: "Dynamik nach Abpfiff",
+    next: "Als Nächstes",
     summary: "Spielzusammenfassung",
-    aiCommentary: "Fan-Kommentar im KI-Stil",
+    aiCommentary: "KI-Spielanalyse",
     schedule: "Spielplan",
     advancement: "Phase und Weiterkommen",
     scoreChallenge: "Tippspiel für Fans",
-    testPoints: "Testpunkte",
+    testPoints: "Challenge-Punkte",
     pointsNote: "Nur lokal. Kein Geldwert und keine Wette.",
     currentPoints: "Aktuelle Punkte",
     pickCost: "Tippkosten",
@@ -678,9 +680,9 @@ const ui: Record<Language, UiCopy> = {
     chooseReplay: "Eine feste, reproduzierbare Geschichte öffnen",
     teams: "Teams und Spieler",
     players: "Schlüsselspieler",
-    sourceTeams: "Teams aus der Quelle",
-    referenceTeams: "Referenzatlas",
-    teamPending: "Team wartet auf Bestätigung",
+    sourceTeams: "Turnierteams",
+    referenceTeams: "Weitere Teams",
+    teamPending: "Spielerdaten werden aktualisiert",
     coach: "Trainer",
     watch: "Ansehen / Replay",
     officialWatch: "Offizielle Quelle öffnen",
@@ -691,18 +693,18 @@ const ui: Record<Language, UiCopy> = {
     settings: "Einstellungen",
     close: "Schließen",
     language: "Sprache",
-    dataConnection: "Live-Datenverbindung",
-    authDescription: "Die Authentifizierung bleibt hier, damit die Fanansicht klar bleibt.",
+    dataConnection: "Spieldaten",
+    authDescription: "Spiel aktualisieren oder Datenstatus prüfen.",
     securityNote: "TxLINE-Token, JWT und Wallet-Signaturen bleiben lokal und werden weder angezeigt noch veröffentlicht.",
     openHelper: "TxLINE-Assistent öffnen",
     localOnly: "Nur lokales .env.local",
-    advancedHidden: "Erweiterte Verbindung",
-    connectionReady: "Authentifizierte Quelle konfiguriert",
-    connectionFallback: "Replay / öffentliche Reserve",
-    refreshData: "Verifizierten Feed aktualisieren",
+    advancedHidden: "Technische Informationen",
+    connectionReady: "Spieldaten sind aktuell",
+    connectionFallback: "Verifiziertes Replay wird gezeigt",
+    refreshData: "Spiel aktualisieren",
     languageNote: "Labels werden übersetzt; Namen folgen der Quelle.",
-    dataRules: "Datenregeln",
-    onlyVerified: "Nur verifizierte Daten werden als live markiert.",
+    dataRules: "Über diese Daten",
+    onlyVerified: "Nur bestätigte Spielstände und Ereignisse werden gezeigt.",
   },
   ja: {
     brandKicker: "ファン向け試合インテリジェンス",
@@ -711,7 +713,7 @@ const ui: Record<Language, UiCopy> = {
     navReplay: "日程とリプレイ",
     navTeams: "チーム",
     navSettings: "設定",
-    source: "データソース",
+    source: "試合状況",
     refresh: "更新",
     loading: "検証済みデータを読み込み中",
     live: "ライブ",
@@ -720,10 +722,10 @@ const ui: Record<Language, UiCopy> = {
     seed: "予定",
     fallback: "フォールバック",
     verifiedAt: "確認",
-    officialFeed: "TxLINE スコア",
+    officialFeed: "公式試合データ",
     publicFeed: "公開スコア",
-    replayFeed: "TxLINE検証済み2026年履歴リプレイ",
-    noLiveFeed: "この表示にライブデータはありません",
+    replayFeed: "確認済み2026年リプレイ",
+    noLiveFeed: "現在ライブ中の試合はありません",
     scorePulse: "スコアパルス",
     matchCenter: "試合センター",
     liveNow: "進行中",
@@ -736,18 +738,18 @@ const ui: Record<Language, UiCopy> = {
     yellow: "イエロー",
     red: "レッド",
     extraTime: "延長 / アディショナル",
-    fanPulse: "ファンパルス",
-    dataQuality: "データ品質",
+    fanPulse: "試合の流れ",
+    dataQuality: "状況",
     officialOdds: "公式オッズ",
-    derivedPulse: "スコアから算出したパルス",
-    replaySnapshot: "リプレイ市場スナップショット",
-    next: "次のシグナル",
+    derivedPulse: "試合の流れ",
+    replaySnapshot: "試合後の流れ",
+    next: "次に見る",
     summary: "試合概要",
-    aiCommentary: "AIスタイルのファン解説",
+    aiCommentary: "AI試合解説",
     schedule: "日程",
     advancement: "ステージと進出",
     scoreChallenge: "ファンスコアチャレンジ",
-    testPoints: "テストポイント",
+    testPoints: "チャレンジポイント",
     pointsNote: "ローカル専用。金銭価値・賭けなし。",
     currentPoints: "現在のポイント",
     pickCost: "予想コスト",
@@ -776,9 +778,9 @@ const ui: Record<Language, UiCopy> = {
     chooseReplay: "固定された再現可能な試合を開く",
     teams: "チームと選手",
     players: "注目選手",
-    sourceTeams: "ソース内のチーム",
-    referenceTeams: "参考チーム一覧",
-    teamPending: "チーム情報を確認中",
+    sourceTeams: "大会参加チーム",
+    referenceTeams: "その他のチーム",
+    teamPending: "選手情報を更新中",
     coach: "監督",
     watch: "視聴 / リプレイ",
     officialWatch: "公式ソースを開く",
@@ -789,18 +791,18 @@ const ui: Record<Language, UiCopy> = {
     settings: "設定",
     close: "閉じる",
     language: "言語",
-    dataConnection: "ライブデータ接続",
-    authDescription: "認証はここにまとめ、ファン画面をシンプルに保ちます。",
+    dataConnection: "試合データ",
+    authDescription: "試合の更新とデータ状況を確認できます。",
     securityNote: "TxLINEトークン、JWT、ウォレット署名はローカルに保持し、画面表示や公開ビルドへの混入を防ぎます。",
     openHelper: "TxLINE ヘルパーを開く",
     localOnly: "ローカル .env.local のみ",
-    advancedHidden: "高度なデータ接続",
-    connectionReady: "認証済みソース設定済み",
-    connectionFallback: "リプレイ / 公開フォールバック",
-    refreshData: "検証済みフィードを更新",
+    advancedHidden: "技術情報",
+    connectionReady: "試合データは最新です",
+    connectionFallback: "確認済みリプレイを表示中",
+    refreshData: "試合を更新",
     languageNote: "UIラベルは翻訳し、チーム名・選手名はソース名を維持します。",
-    dataRules: "データルール",
-    onlyVerified: "検証済みデータだけをライブと表示します。",
+    dataRules: "データについて",
+    onlyVerified: "確認済みのスコアとイベントだけを表示します。",
   },
   ar: {
     brandKicker: "ذكاء المباراة للمشجعين",
@@ -809,7 +811,7 @@ const ui: Record<Language, UiCopy> = {
     navReplay: "الجدول والإعادة",
     navTeams: "الفرق",
     navSettings: "الإعدادات",
-    source: "مصدر البيانات",
+    source: "حالة المباراة",
     refresh: "تحديث",
     loading: "جار تحميل البيانات الموثقة",
     live: "مباشر",
@@ -818,10 +820,10 @@ const ui: Record<Language, UiCopy> = {
     seed: "الجدول",
     fallback: "بديل",
     verifiedAt: "تم التحقق",
-    officialFeed: "مصدر TxLINE",
+    officialFeed: "بيانات المباراة الرسمية",
     publicFeed: "نتيجة عامة",
-    replayFeed: "إعادة تاريخية موثقة من TxLINE لعام 2026",
-    noLiveFeed: "لا يوجد مصدر مباشر هنا",
+    replayFeed: "إعادة موثقة لعام 2026",
+    noLiveFeed: "لا توجد مباراة مباشرة الآن",
     scorePulse: "نبض النتيجة",
     matchCenter: "مركز المباراة",
     liveNow: "الآن",
@@ -834,18 +836,18 @@ const ui: Record<Language, UiCopy> = {
     yellow: "بطاقات صفراء",
     red: "بطاقات حمراء",
     extraTime: "وقت إضافي",
-    fanPulse: "نبض المشجعين",
-    dataQuality: "جودة البيانات",
+    fanPulse: "إيقاع المباراة",
+    dataQuality: "الحالة",
     officialOdds: "أسعار رسمية",
-    derivedPulse: "نبض مشتق من النتيجة",
-    replaySnapshot: "لقطة سوق الإعادة",
-    next: "الإشارة التالية",
+    derivedPulse: "إيقاع المباراة",
+    replaySnapshot: "إيقاع ما بعد المباراة",
+    next: "التالي",
     summary: "ملخص المباراة",
-    aiCommentary: "تعليق جماهيري بأسلوب الذكاء الاصطناعي",
+    aiCommentary: "ملخص المباراة بالذكاء الاصطناعي",
     schedule: "الجدول",
     advancement: "المرحلة والتأهل",
     scoreChallenge: "تحدي نتيجة المشجع",
-    testPoints: "نقاط اختبار",
+    testPoints: "نقاط التحدي",
     pointsNote: "محلية فقط. بلا قيمة نقدية أو مراهنة.",
     currentPoints: "النقاط الحالية",
     pickCost: "تكلفة الاختيار",
@@ -874,9 +876,9 @@ const ui: Record<Language, UiCopy> = {
     chooseReplay: "افتح قصة مباراة ثابتة قابلة للتكرار",
     teams: "الفرق واللاعبون",
     players: "اللاعبون الأساسيون",
-    sourceTeams: "فرق المصدر",
-    referenceTeams: "الأطلس المرجعي",
-    teamPending: "الفريق بانتظار التأكيد",
+    sourceTeams: "فرق البطولة",
+    referenceTeams: "المزيد من الفرق",
+    teamPending: "جار تحديث بيانات اللاعبين",
     coach: "المدرب",
     watch: "مشاهدة / إعادة",
     officialWatch: "فتح المصدر الرسمي",
@@ -887,18 +889,18 @@ const ui: Record<Language, UiCopy> = {
     settings: "الإعدادات",
     close: "إغلاق",
     language: "اللغة",
-    dataConnection: "اتصال البيانات المباشرة",
-    authDescription: "توجد المصادقة هنا للحفاظ على واجهة المشجع بسيطة.",
+    dataConnection: "بيانات المباراة",
+    authDescription: "حدّث المباراة أو تحقق من حالة البيانات هنا.",
     securityNote: "يبقى رمز TxLINE وJWT وتواقيع المحفظة محلية ولا تُعرض أو تُنشر أبدًا.",
     openHelper: "فتح مساعد TxLINE",
     localOnly: "ملف .env.local المحلي فقط",
-    advancedHidden: "اتصال متقدم",
-    connectionReady: "المصدر الموثق جاهز",
-    connectionFallback: "إعادة / مصدر عام بديل",
-    refreshData: "تحديث المصدر الموثق",
+    advancedHidden: "معلومات تقنية",
+    connectionReady: "بيانات المباراة محدثة",
+    connectionFallback: "عرض إعادة موثقة",
+    refreshData: "تحديث المباراة",
     languageNote: "تترجم العناوين، بينما تبقى أسماء الفرق واللاعبين من المصدر.",
-    dataRules: "قواعد البيانات",
-    onlyVerified: "البيانات الموثقة فقط تظهر كمباشرة.",
+    dataRules: "حول هذه البيانات",
+    onlyVerified: "تظهر النتائج والأحداث المؤكدة فقط.",
   },
 };
 
@@ -912,6 +914,17 @@ const languages: Array<{ code: Language; label: string; region: string }> = [
   { code: "ja", label: "日本語", region: "Japan" },
   { code: "ar", label: "العربية", region: "Jordan / Algeria / MENA" },
 ];
+
+const seasonDemoCopy: Record<Language, { title: string; note: string; myHistory: string; matches: string; correct: string; exact: string }> = {
+  en: { title: "Demo season", note: "Sample picks over verified 2026 match results. This does not affect your points.", myHistory: "My challenge history", matches: "matches", correct: "correct", exact: "exact" },
+  zh: { title: "赛季演示", note: "预测为演示，赛果来自 2026 已确认比赛，不影响你的积分。", myHistory: "我的挑战记录", matches: "场", correct: "命中", exact: "精确比分" },
+  es: { title: "Temporada demo", note: "Pronósticos de ejemplo sobre resultados confirmados de 2026. No afectan tus puntos.", myHistory: "Mi historial", matches: "partidos", correct: "aciertos", exact: "exactos" },
+  pt: { title: "Temporada demo", note: "Palpites de exemplo sobre resultados confirmados de 2026. Não alteram seus pontos.", myHistory: "Meu histórico", matches: "jogos", correct: "acertos", exact: "exatos" },
+  fr: { title: "Saison démo", note: "Pronostics d'exemple sur des résultats confirmés de 2026. Sans effet sur vos points.", myHistory: "Mon historique", matches: "matchs", correct: "réussis", exact: "exacts" },
+  de: { title: "Demo-Saison", note: "Beispieltipps zu bestätigten Ergebnissen 2026. Ohne Einfluss auf deine Punkte.", myHistory: "Mein Verlauf", matches: "Spiele", correct: "richtig", exact: "exakt" },
+  ja: { title: "デモシーズン", note: "2026年の確認済み結果を使ったサンプル予想です。ポイントには影響しません。", myHistory: "自分の履歴", matches: "試合", correct: "的中", exact: "完全的中" },
+  ar: { title: "موسم تجريبي", note: "توقعات نموذجية على نتائج مؤكدة لعام 2026 ولا تؤثر في نقاطك.", myHistory: "سجلي", matches: "مباريات", correct: "صحيحة", exact: "مطابقة" },
+};
 
 const replayDurationMs = 46_000;
 const replaySpeeds = [0.5, 1, 2, 4] as const;
@@ -1153,8 +1166,8 @@ function safeVideoUrl(raw: string | undefined) {
   }
 }
 
-function teamName(team: Team) {
-  return team.name || team.code;
+function teamName(team: Team, language: Language = "en") {
+  return localizeTeamName(team.code, team.name, language);
 }
 
 function teamGroupLabel(group: string | undefined, copy: UiCopy, language: Language) {
@@ -1463,7 +1476,7 @@ export default function MatchdayApp() {
     : nextEvent
       ? `${minuteLabel(nextEvent)} ${localizedEventLabel(nextEvent, copy, language)}`
       : copy.replay;
-  const aiCommentary = isScheduled ? `${teamName(match.home)} vs ${teamName(match.away)}: ${copy.scheduled}.` : localizeCommentary(language, match, frame);
+  const aiCommentary = isScheduled ? `${teamName(match.home, language)} vs ${teamName(match.away, language)}: ${copy.scheduled}.` : localizeCommentary(language, match, frame);
   const aiInsight = isScheduled ? copy.scheduled : localizeInsight(language, match, frame);
 
   function startLive() {
@@ -1585,7 +1598,7 @@ export default function MatchdayApp() {
         <header className="top-bar">
           <div>
             <p className="overline">{view === "tournament" ? copy.schedule : view === "teams" ? copy.teams : copy.matchCenter}</p>
-            <h1>{view === "tournament" ? tournamentCopy[language].title : view === "teams" ? copy.teams : <>{teamName(match.home)} <span>vs</span> {teamName(match.away)}</>}</h1>
+            <h1>{view === "tournament" ? tournamentCopy[language].title : view === "teams" ? copy.teams : <>{teamName(match.home, language)} <span>vs</span> {teamName(match.away, language)}</>}</h1>
           </div>
           <div className="top-actions">
             <span className={`source-pill ${sourceState.tone}`}><span className={`status-dot ${sourceState.tone}`} />{sourceState.label}</span>
@@ -1617,6 +1630,10 @@ export default function MatchdayApp() {
                 <div className="pulse-track"><span style={{ width: `${frame.market.sentiment}%` }} /></div>
                 <span>{copy.next}: {nextSignal}</span>
               </div>
+              <div className="hero-ai-brief">
+                <div><span>{copy.aiCommentary}</span><strong aria-live="polite">{aiCommentary}</strong></div>
+                <button className="commentary-audio" type="button" onClick={toggleCommentaryAudio} title={isSpeaking ? copy.stopCommentary : copy.listenCommentary}>{isSpeaking ? copy.stopCommentary : copy.listenCommentary}</button>
+              </div>
               <div className="hero-actions">
                 <button className="primary-button" type="button" onClick={() => setView("match")}>
                   {mode === "replay" ? (isPlaying ? "❚❚" : "▶") : copy.navMatch}
@@ -1647,11 +1664,7 @@ export default function MatchdayApp() {
 
             <section className="match-context-grid">
               <section className="section-block match-summary-block">
-                <div className="summary-heading-row">
-                  <SectionHeading eyebrow={copy.summary} title={copy.aiCommentary} />
-                  <button className="commentary-audio" type="button" onClick={toggleCommentaryAudio} title={isSpeaking ? copy.stopCommentary : copy.listenCommentary}>{isSpeaking ? copy.stopCommentary : copy.listenCommentary}</button>
-                </div>
-                 <p className="ai-commentary">{aiCommentary}</p>
+                <SectionHeading eyebrow={copy.summary} title={stageLabel(match.stage, match.competition, copy, language)} />
                  <div className="summary-metrics">
                    <Metric label={copy.next} value={aiInsight} />
                   <Metric label={copy.fanPulse} value={`${Math.round(frame.market.sentiment)}/100`} />
@@ -1721,7 +1734,7 @@ export default function MatchdayApp() {
           <strong className="truth-title">{sourceState.detail}</strong>
            <p>{copy.onlyVerified}</p>
           <div className="truth-meta"><span>{copy.verifiedAt}</span><strong>{formatCheckedAt(source?.checkedAtIso, language)}</strong></div>
-          <div className="truth-meta"><span>{copy.refreshData}</span><strong>15s / 60s</strong></div>
+          <div className="truth-meta"><span>{copy.refresh}</span><strong>15s</strong></div>
           <details>
             <summary>{copy.dataRules}</summary>
             <p>{copy.onlyVerified}</p>
@@ -1746,7 +1759,7 @@ function NavButton({ active, onClick, label, icon }: { active: boolean; onClick:
 }
 
 function TeamSide({ team, score, align = "left", copy, language }: { team: Team; score: number | string; align?: "left" | "right"; copy: UiCopy; language: Language }) {
-  return <div className={`team-side ${align}`}><span className="team-code" style={{ backgroundColor: team.color }}>{team.code}</span><strong>{teamName(team)}</strong><small>{teamGroupLabel(team.group, copy, language)}</small><b>{score}</b></div>;
+  return <div className={`team-side ${align}`}><span className="team-code" style={{ backgroundColor: team.color }}>{team.code}</span><strong>{teamName(team, language)}</strong><small>{teamGroupLabel(team.group, copy, language)}</small><b>{score}</b></div>;
 }
 
 function Signal({ label, value, tone }: { label: string; value: string | number; tone: string }) {
@@ -1784,6 +1797,7 @@ function ScoreChallenge({ copy, language, match, picks, homeScore, awayScore, se
   const actionLabel = settled ? copy.alreadySettled : locked ? copy.locked : canLock ? copy.lockPick : copy.pickClosed;
   const level = getFanLevel(stats);
   const levelDetail = level.ceiling ? `${copy.nextLevel} · ${level.xp}/${level.ceiling} XP` : `${level.xp} XP`;
+  const demoText = seasonDemoCopy[language];
   return (
     <section className="challenge-block">
       <div className="challenge-heading-row">
@@ -1807,7 +1821,8 @@ function ScoreChallenge({ copy, language, match, picks, homeScore, awayScore, se
         </div>
       </div>
       {settlement ? <p className="challenge-result">{settlement}</p> : null}
-      {picks.length ? <details className="challenge-history" open><summary>{copy.scoreChallenge} · {picks.length}</summary><div className="challenge-history-list">{picks.slice(0, 4).map((pick) => <div key={pick.matchId}><strong>{pick.homeCode} {pick.homeScore}:{pick.awayScore} {pick.awayCode}</strong><span>{pick.settled && Number.isFinite(pick.finalHomeScore) && Number.isFinite(pick.finalAwayScore) ? `${copy.final} ${pick.finalHomeScore}:${pick.finalAwayScore} · +${pick.award ?? 0}` : copy.locked}</span><small>{copy.verifiedAt} {formatCheckedAt(pick.sourceCheckedAtIso, language)}</small></div>)}</div></details> : null}
+      {picks.length ? <details className="challenge-history" open><summary>{demoText.myHistory} · {picks.length}</summary><div className="challenge-history-list">{picks.slice(0, 4).map((pick) => <div key={pick.matchId}><strong>{pick.homeCode} {pick.homeScore}:{pick.awayScore} {pick.awayCode}</strong><span>{pick.settled && Number.isFinite(pick.finalHomeScore) && Number.isFinite(pick.finalAwayScore) ? `${copy.final} ${pick.finalHomeScore}:${pick.finalAwayScore} · +${pick.award ?? 0}` : copy.locked}</span><small>{copy.verifiedAt} {formatCheckedAt(pick.sourceCheckedAtIso, language)}</small></div>)}</div></details> : null}
+      <details className="challenge-history demo-history"><summary>{demoText.title} · {demoSeasonSummary.played} {demoText.matches} · {demoSeasonSummary.correct} {demoText.correct} · {demoSeasonSummary.exact} {demoText.exact} · {demoSeasonSummary.netPoints >= 0 ? "+" : ""}{demoSeasonSummary.netPoints} pts</summary><p className="muted-copy">{demoText.note}</p><div className="challenge-history-list">{demoSeasonHistory.map((pick) => <div key={pick.matchId}><strong>{pick.homeCode} {pick.homeScore}:{pick.awayScore} {pick.awayCode}</strong><span>{copy.final} {pick.finalHomeScore}:{pick.finalAwayScore} · +{pick.award}</span><small>{pick.kickoffIso ? formatKickoffLabel(pick.kickoffIso, language) : copy.replay}</small></div>)}</div></details>
     </section>
   );
 }
@@ -1854,7 +1869,7 @@ function TournamentView({ language, copy, onOpenReplay }: { language: Language; 
       <BracketLane title={text.champion} matches={[]} waiting={text.waiting} champion />
     </div></div></section>
 
-    {selectedTeam ? <section className="tournament-band team-detail-panel"><div className="team-detail-heading"><div className="profile-top"><span className="team-code" style={{ backgroundColor: selectedTeam.color }}>{selectedTeam.code}</span><div><p className="overline">{text.teamDetail}</p><h2>{selectedTeam.name}</h2></div></div><div className="team-switcher">{[...teams.values()].map((team) => <button className={team.code === selectedCode ? "active" : ""} type="button" key={team.code} onClick={() => setSelectedCode(team.code)}>{team.code}</button>)}</div></div><div className="team-detail-grid"><div><span>{copy.schedule}</span><strong>{selectedMatches.length}</strong><p>{selectedMatches.map((item) => `${item.home.code} ${item.events.at(-1)?.homeScore ?? 0}-${item.events.at(-1)?.awayScore ?? 0} ${item.away.code}`).join(" · ")}</p></div><div><span>{text.sourcePlayers}</span><strong>{selectedTeam.keyPlayers?.length ?? 0}</strong><p>{selectedTeam.keyPlayers?.length ? selectedTeam.keyPlayers.map((player) => `${player.name} · ${player.role}`).join(" · ") : copy.teamPending}</p></div><div><span>{copy.dataQuality}</span><strong>{text.verified}</strong><p>{selectedTeam.profile}</p></div></div></section> : null}
+    {selectedTeam ? <section className="tournament-band team-detail-panel"><div className="team-detail-heading"><div className="profile-top"><span className="team-code" style={{ backgroundColor: selectedTeam.color }}>{selectedTeam.code}</span><div><p className="overline">{text.teamDetail}</p><h2>{teamName(selectedTeam, language)}</h2></div></div><div className="team-switcher">{[...teams.values()].map((team) => <button className={team.code === selectedCode ? "active" : ""} type="button" key={team.code} onClick={() => setSelectedCode(team.code)}>{team.code}</button>)}</div></div><div className="team-detail-grid"><div><span>{copy.schedule}</span><strong>{selectedMatches.length}</strong><p>{selectedMatches.map((item) => `${teamName(item.home, language)} ${item.events.at(-1)?.homeScore ?? 0}-${item.events.at(-1)?.awayScore ?? 0} ${teamName(item.away, language)}`).join(" · ")}</p></div><div><span>{text.sourcePlayers}</span><strong>{selectedTeam.keyPlayers?.length ?? 0}</strong><p>{selectedTeam.keyPlayers?.length ? selectedTeam.keyPlayers.map((player) => language === "en" ? `${player.name} · ${player.role}` : player.name).join(" · ") : copy.teamPending}</p></div><div><span>{copy.dataQuality}</span><strong>{text.verified}</strong><p>{copy.onlyVerified}</p></div></div></section> : null}
   </section>;
 }
 
@@ -1872,14 +1887,14 @@ function localizedStage(stage: string | undefined, text: (typeof tournamentCopy)
 }
 
 function currentFixtureNote(language: Language) {
-  if (language === "zh") return "对阵与开球时间已核验；当前快照未明确阶段名称。";
-  if (language === "es") return "Rivales y hora verificados; la fase no figura en la instantánea.";
-  if (language === "pt") return "Confronto e horário verificados; a fase não consta no snapshot.";
-  if (language === "fr") return "Affiche et horaire vérifiés ; la phase n'est pas indiquée dans le snapshot.";
-  if (language === "de") return "Paarung und Anstoß verifiziert; die Runde fehlt im Snapshot.";
-  if (language === "ja") return "対戦と開始時刻は検証済み。スナップショットにラウンド名はありません。";
-  if (language === "ar") return "تم التحقق من المواجهة والموعد؛ اسم المرحلة غير موجود في اللقطة.";
-  return "Fixture and kickoff verified; the snapshot does not assert a stage label.";
+  if (language === "zh") return "对阵与开赛时间已确认。";
+  if (language === "es") return "Rivales y hora confirmados.";
+  if (language === "pt") return "Confronto e horário confirmados.";
+  if (language === "fr") return "Affiche et horaire confirmés.";
+  if (language === "de") return "Paarung und Anstoß bestätigt.";
+  if (language === "ja") return "対戦と開始時刻を確認済み。";
+  if (language === "ar") return "تم تأكيد المواجهة والموعد.";
+  return "Fixture and kickoff confirmed.";
 }
 
 function TeamsView({ copy, language, match, schedule }: { copy: UiCopy; language: Language; match: MatchData; schedule: MatchScheduleItem[] }) {
@@ -1894,13 +1909,14 @@ function TeamsView({ copy, language, match, schedule }: { copy: UiCopy; language
   addTeam(match.home, match.dataStatus);
   addTeam(match.away, match.dataStatus);
   schedule.forEach((item) => {
+    if (item.id.startsWith("wc-demo-")) return;
     addTeam(item.home, item.dataStatus);
     addTeam(item.away, item.dataStatus);
   });
   return <section className="teams-view"><SectionHeading eyebrow={copy.teams} title={copy.sourceTeams} /><p className="muted-copy">{copy.onlyVerified}</p><div className="atlas-grid source-atlas">{[...sourceTeams.values()].map(({ team, status }) => {
     const fixtures = schedule.filter((item) => item.home.code === team.code || item.away.code === team.code);
     const opponents = [...new Set(fixtures.map((item) => item.home.code === team.code ? item.away.code : item.home.code))];
-    return <article className="team-guide-card source-team-card" key={team.code}><div className="profile-top"><span className="team-code" style={{ backgroundColor: team.color }}>{team.code}</span><div><h2>{team.name}</h2></div></div><div className="source-team-facts"><span><small>{copy.schedule}</small><strong>{fixtures.length}</strong></span><span><small>{copy.next}</small><strong>{opponents.slice(0, 3).join(" · ") || "--"}</strong></span></div><div className="team-guide-status"><span>{copy.dataQuality}</span><strong>{dataStatusLabel(status, copy)}</strong></div>{team.keyPlayers?.length ? <details><summary>{copy.players}</summary><div className="source-player-list">{team.keyPlayers.map((player) => <span key={player.name}><strong>{player.name}</strong><small>{language === "en" ? `${player.position} · ${player.role}` : player.position}</small></span>)}</div></details> : <p>{copy.teamPending}</p>}</article>;
+    return <article className="team-guide-card source-team-card" key={team.code}><div className="profile-top"><span className="team-code" style={{ backgroundColor: team.color }}>{team.code}</span><div><h2>{teamName(team, language)}</h2></div></div><div className="source-team-facts"><span><small>{copy.schedule}</small><strong>{fixtures.length}</strong></span><span><small>{copy.next}</small><strong>{opponents.slice(0, 3).map((code) => localizeTeamName(code, code, language)).join(" · ") || "--"}</strong></span></div><div className="team-guide-status"><span>{copy.dataQuality}</span><strong>{dataStatusLabel(status, copy)}</strong></div>{team.keyPlayers?.length ? <details><summary>{copy.players}</summary><div className="source-player-list">{team.keyPlayers.map((player) => <span key={player.name}><strong>{player.name}</strong>{language === "en" ? <small>{player.position} · {player.role}</small> : null}</span>)}</div></details> : <p>{copy.teamPending}</p>}</article>;
   })}</div><details className="reference-atlas"><summary>{copy.referenceTeams}</summary><p className="muted-copy">{copy.replaySnapshot}</p><div className="atlas-grid">{teamAtlas.map((guide) => <article className="team-guide-card" key={guide.code}><div className="profile-top"><span className="team-code" style={{ backgroundColor: guide.colors[0] }}>{guide.code}</span><div><h2>{guide.name}</h2>{language === "en" ? <span>{guide.region}</span> : null}</div></div>{language === "en" ? <p>{guide.style}</p> : null}<div className="team-guide-status"><span>{copy.dataQuality}</span><strong>{teamGuideStatusLabel(guide.status, copy)}</strong></div><details><summary>{copy.players}</summary><p>{guide.keyPlayers.join(" · ")}</p>{language === "en" ? <p>{guide.watchFor}</p> : null}</details></article>)}</div></details></section>;
 }
 
@@ -1952,7 +1968,7 @@ function TeamProfile({ copy, team }: { copy: UiCopy; team: Team }) {
 
 function SettingsDrawer({ copy, language, setLanguage, helperUrl, source, onRefresh, onResetPoints, onClose }: { copy: UiCopy; language: Language; setLanguage: (language: Language) => void; helperUrl: string; source: DataSourceState | null; onRefresh: () => void; onResetPoints: () => void; onClose: () => void }) {
   const ready = source?.kind === "live-ready";
-  return <div className="drawer-backdrop" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}><aside className="settings-drawer" aria-label={copy.settings}><header><div><p className="overline">WORLD CUP LIVE PULSE</p><h2>{copy.settings}</h2></div><button className="icon-button" type="button" onClick={onClose} aria-label={copy.close}>×</button></header><section className="drawer-section"><label htmlFor="language-select">{copy.language}</label><select id="language-select" value={language} onChange={(event) => setLanguage(event.target.value as Language)}>{languages.map((option) => <option key={option.code} value={option.code}>{option.label} · {option.region}</option>)}</select><p className="muted-copy">{copy.languageNote}</p></section><details className="drawer-section" open><summary>{copy.dataConnection}</summary><p className="muted-copy">{copy.authDescription}</p><div className={`connection-status ${ready ? "ready" : "fallback"}`}><span className="status-dot" /><strong>{ready ? copy.connectionReady : copy.connectionFallback}</strong><small>{copy.localOnly}</small></div><div className="drawer-actions"><button className="primary-button" type="button" onClick={onRefresh}>{copy.refreshData}</button><a className="secondary-button" href={helperUrl} target="_blank" rel="noreferrer">{copy.openHelper}</a></div><p className="security-note">{copy.securityNote}</p></details><details className="drawer-section"><summary>{copy.testPoints}</summary><p className="muted-copy">{copy.pointsNote}</p><button className="secondary-button" type="button" onClick={onResetPoints}>{copy.resetPoints}</button></details><details className="drawer-section"><summary>{copy.advancedHidden}</summary><p className="muted-copy">{copy.onlyVerified}</p><p className="muted-copy">{copy.replaySnapshot}</p></details></aside></div>;
+  return <div className="drawer-backdrop" role="presentation" onMouseDown={(event) => { if (event.currentTarget === event.target) onClose(); }}><aside className="settings-drawer" aria-label={copy.settings}><header><div><p className="overline">WORLD CUP LIVE PULSE</p><h2>{copy.settings}</h2></div><button className="icon-button" type="button" onClick={onClose} aria-label={copy.close}>×</button></header><section className="drawer-section"><label htmlFor="language-select">{copy.language}</label><select id="language-select" value={language} onChange={(event) => setLanguage(event.target.value as Language)}>{languages.map((option) => <option key={option.code} value={option.code}>{option.label} · {option.region}</option>)}</select><p className="muted-copy">{copy.languageNote}</p></section><details className="drawer-section"><summary>{copy.dataConnection}</summary><p className="muted-copy">{copy.authDescription}</p><div className={`connection-status ${ready ? "ready" : "fallback"}`}><span className="status-dot" /><strong>{ready ? copy.connectionReady : copy.connectionFallback}</strong><small>{copy.localOnly}</small></div><div className="drawer-actions"><button className="primary-button" type="button" onClick={onRefresh}>{copy.refreshData}</button><a className="secondary-button" href={helperUrl} target="_blank" rel="noreferrer">{copy.openHelper}</a></div><p className="security-note">{copy.securityNote}</p></details><details className="drawer-section"><summary>{copy.testPoints}</summary><p className="muted-copy">{copy.pointsNote}</p><button className="secondary-button" type="button" onClick={onResetPoints}>{copy.resetPoints}</button></details><details className="drawer-section"><summary>{copy.advancedHidden}</summary><p className="muted-copy">{copy.onlyVerified}</p><p className="muted-copy">{copy.replaySnapshot}</p></details></aside></div>;
 }
 
 function minuteLabelForFrame(match: MatchData, minute: number, isFinal: boolean, copy: UiCopy) {

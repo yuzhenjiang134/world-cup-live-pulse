@@ -152,8 +152,8 @@ function collectPlayers(records: NormalizedTxlineScore[], participant: number): 
     roles.get(id)?.add(role);
   }
   return [...roles.entries()].slice(0, 6).map(([id, playerRoles]) => ({
-    name: `Player #${id}`,
-    position: "TxLINE source ID",
+    name: `#${id}`,
+    position: "Player ID",
     role: [...playerRoles].join(" / "),
     note: "The historical feed exposes a player ID but not a verified display name, so the product does not guess one.",
   }));

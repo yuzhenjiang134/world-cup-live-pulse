@@ -76,6 +76,7 @@ The safest pattern for this project is the same: GitHub Pages remains a static r
 - The selected World Cup fixture was `18213979` (Norway vs England), with 2 score records in both probes.
 - `GET /api/odds/snapshot/18213979` returned 0 records in the first probe and 27 in the second. Consumer clients therefore need an explicit empty/temporarily unavailable state rather than stale or synthetic odds.
 - On 2026-07-12, two consecutive probes returned 2 World Cup fixtures. Fixture `18222446` returned 40 score records and 20 official-odds records in both probes.
+- A later pair on 2026-07-12 returned 3 World Cup fixtures. The same fixture returned 42 score records and 0 official-odds records in both probes. This confirms that score and odds collections can evolve independently and that a consumer client must not reuse an older non-empty odds snapshot as current truth.
 - Leaving `VITE_TXLINE_FIXTURE_ID` blank is the correct production default; it follows the current World Cup fixture instead of pinning a completed match.
 - The broader fixture snapshot can include `CompetitionId 430` Friendlies beside `CompetitionId 72` World Cup data. The product now applies both the query parameter and a response-side competition filter.
 - The token, guest JWT, and local environment values were not printed by the probe.

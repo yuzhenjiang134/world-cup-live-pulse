@@ -51,7 +51,7 @@ Authenticated probing on 2026-07-11 returned these current `CompetitionId 72` Wo
 - Fixture `18222446`: Argentina vs Switzerland.
 - Fixture `18237038`: France vs Spain.
 
-The latest pair on 2026-07-12 returned 2 current World Cup fixtures. Fixture `18222446` returned 40 score records and 20 official-odds records in both runs. Production leaves `VITE_TXLINE_FIXTURE_ID` blank so the adapter follows the current source snapshot.
+The latest pair on 2026-07-12 returned 3 current World Cup fixtures. Fixture `18222446` returned 42 score records and 0 official-odds records in both runs. Production leaves `VITE_TXLINE_FIXTURE_ID` blank so the adapter follows the current source snapshot and hides numerical odds when the payload is empty.
 
 The same broad feed also contained International Friendlies under `CompetitionId 430`. The adapter now defaults the request to `competitionId=72` and filters the returned payload again. A configured fixture ID is accepted only if it exists inside that filtered World Cup set.
 

@@ -34,6 +34,8 @@ const requiredFiles = [
   "src/lib/txlineScoreNormalizer.ts",
   "src/lib/shareCard.ts",
   "src/data/replayMatch.ts",
+  "src/data/demoSeasonHistory.ts",
+  "src/data/teamNames.ts",
   "src/data/matchCalendar.ts",
   "src/data/fanGuide.ts",
   "scripts/validate-fixtures.mjs",
@@ -41,6 +43,7 @@ const requiredFiles = [
   "scripts/test-score-challenge.mjs",
   "scripts/test-world-cup-scope.mjs",
   "scripts/test-txline-score-normalization.mjs",
+  "scripts/test-ai-match-brief.mjs",
   "scripts/test-vercel-txline-proxy.mjs",
   "scripts/e2e-matchday.mjs",
   "scripts/security-scan.mjs",
@@ -165,10 +168,10 @@ if (packageJson.scripts?.check && packageJson.scripts?.build) {
   fail("package scripts must include check and build");
 }
 
-if (packageJson.scripts?.validate && packageJson.scripts?.fixtures && packageJson.scripts?.audit && packageJson.scripts?.challenge && packageJson.scripts?.scope && packageJson.scripts?.["scores:test"] && packageJson.scripts?.["archive:test"] && packageJson.scripts?.["proxy:test"] && packageJson.scripts?.security && packageJson.scripts?.["e2e:matchday"]) {
-  pass("package scripts include validate, fixtures, audit, challenge, scope, score normalization, proxy, browser E2E, and security");
+if (packageJson.scripts?.validate && packageJson.scripts?.fixtures && packageJson.scripts?.audit && packageJson.scripts?.challenge && packageJson.scripts?.scope && packageJson.scripts?.["scores:test"] && packageJson.scripts?.["ai:test"] && packageJson.scripts?.["archive:test"] && packageJson.scripts?.["proxy:test"] && packageJson.scripts?.security && packageJson.scripts?.["e2e:matchday"]) {
+  pass("package scripts include validate, fixtures, audit, challenge, scope, score normalization, AI brief, proxy, browser E2E, and security");
 } else {
-  fail("package scripts must include validate, fixtures, audit, challenge, scope, score normalization, proxy, browser E2E, and security");
+  fail("package scripts must include validate, fixtures, audit, challenge, scope, score normalization, AI brief, proxy, browser E2E, and security");
 }
 
 if (packageJson.scripts?.["txline:probe"]) {

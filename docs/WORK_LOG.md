@@ -92,3 +92,14 @@ npm run txline:probe
 - Removed duplicate points UI and mixed-language source-rule content from the right rail.
 - Rechecked the official listing: 26 public submissions on 2026-07-12; requirements and five judging criteria are unchanged.
 - Repeated the real TxLINE probe twice: 2 World Cup fixtures, 40 score records, and 20 official-odds records for fixture `18222446` in both runs. Removed the default fixture pin so deployment follows the latest source fixture.
+
+## 2026-07-12: Requirement-plus product depth and consumer-language pass
+
+- Recorded a permanent acceptance rule: each official requirement is the minimum and must become two or three connected, testable fan benefits; decorative or source-unsupported feature count does not qualify.
+- Added one localized team-name boundary for Match Center, scheduled-match copy, tournament/team details, and AI summaries across English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic.
+- Expanded the AI brief from a generic sentence into event-driven coverage for goals, yellow/red cards, score review, half-time, full-time, and momentum changes, with factual score guards and browser speech playback.
+- Added an isolated season demonstration over eight verified 2026 archive finals. It shows repeat challenge value but is explicitly separate from the user's actual fixture ledger and points.
+- Removed remaining developer-facing wording from the main fan surface and kept authentication, endpoint, proxy, cache, and diagnostics inside collapsed Settings and technical documentation.
+- Passed TypeScript, 8-language/96-key UTF-8 validation, event-driven AI tests, and the product/data truth audit after this pass.
+- Re-ran the authenticated TxLINE probe twice after the UI pass: both runs returned 3 World Cup fixtures, 42 score records for fixture `18222446`, and 0 official-odds records. The app's empty-odds boundary remains correct.
+- Re-opened the official track page twice: its syncing submission counter moved from 25 to 27 while the 16,000 USDT prize split and July 29 announcement stayed unchanged. Dynamic listing counts are no longer treated as fixed product facts.

@@ -90,6 +90,11 @@ const requiredAppMarkers = [
   ["1,000 local starting points", "1000"],
   ["score challenge component", "function ScoreChallenge"],
   ["fan challenge levels", "getFanLevel"],
+  ["fixture-keyed challenge ledger", "pickLedgerKey"],
+  ["single-settlement guard", "settlementGuardRef"],
+  ["verified demo season", "demoSeasonHistory"],
+  ["focus-triggered refresh", 'addEventListener("focus"'],
+  ["event-driven AI live region", 'className="hero-ai-brief"'],
   ["schedule moment summaries", "schedule-moments"],
   ["source-first team facts", "source-team-facts"],
   ["localized event descriptions", "localizeEventDescription"],
@@ -99,6 +104,11 @@ const requiredAppMarkers = [
 for (const [label, marker] of requiredAppMarkers) {
   if (appSource.includes(marker)) pass(`App contains ${label}`);
   else fail(`App is missing ${label}`);
+}
+
+for (const forbidden of ["比分源", "赛程种子", "下一个信号", "当前数据球队", "数据规则"]) {
+  if (appSource.includes(`"${forbidden}"`)) fail(`User interface still contains developer wording: ${forbidden}`);
+  else pass(`User interface removes developer wording: ${forbidden}`);
 }
 
 const requiredAdapterMarkers = [

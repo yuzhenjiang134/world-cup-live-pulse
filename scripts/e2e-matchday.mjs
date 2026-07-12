@@ -44,7 +44,7 @@ try {
   await cdp.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await wait(2200);
   await evaluate(cdp, "localStorage.clear(); location.reload(); true");
-  await wait(2200);
+  await waitForCondition(cdp, "Boolean(document.querySelector('.challenge-block'))", 30_000);
 
   const desktopLayout = await evaluate(cdp, `({
     viewport: document.documentElement.clientWidth,
@@ -88,7 +88,9 @@ try {
   const settledText = await blockText(cdp, ".challenge-block");
   assert.match(settledText, /1,200\s+pts/);
   assert.match(settledText, /已结算/);
-  assert.equal(await elementCount(cdp, ".challenge-history-list > div"), 1);
+  assert.equal(await elementCount(cdp, ".challenge-history:not(.demo-history) .challenge-history-list > div"), 1);
+  assert.equal(await elementCount(cdp, ".demo-history .challenge-history-list > div"), 8);
+  assert.match(settledText, /赛季演示/);
   assert.match(settledText, /FRA 2:0 MAR/);
 
   await cdp.send("Page.reload", { ignoreCache: true });
@@ -96,9 +98,12 @@ try {
   const restoredText = await blockText(cdp, ".challenge-block");
   assert.match(restoredText, /1,200\s+pts/);
   assert.match(restoredText, /已结算/);
-  assert.equal(await elementCount(cdp, ".challenge-history-list > div"), 1);
+  assert.equal(await elementCount(cdp, ".challenge-history:not(.demo-history) .challenge-history-list > div"), 1);
+  assert.equal(await elementCount(cdp, ".demo-history .challenge-history-list > div"), 8);
   assert.equal(await elementCount(cdp, ".challenge-block .secondary-button"), 1);
   assert.equal(await elementCount(cdp, ".commentary-audio"), 1);
+  assert.match(await blockText(cdp, ".hero-ai-brief"), /法国 2-0 摩洛哥/);
+  assert.doesNotMatch(await blockText(cdp, ".hero-ai-brief"), /France|Morocco/);
   const desktopCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
   await fs.writeFile(path.resolve("demo-assets/desktop-final.png"), Buffer.from(desktopCapture.data, "base64"));
 
@@ -173,8 +178,7 @@ try {
   await evaluate(cdp, "document.querySelectorAll('.primary-nav button')[2].click(); true");
   await wait(300);
   const teamsText = await blockText(cdp, ".teams-view");
-  assert.doesNotMatch(teamsText, /Vietnam|Myanmar|Australia|Brazil/);
-  assert.doesNotMatch(teamsText, /Jordan|Algeria|Austria/);
+  assert.doesNotMatch(teamsText, /TBD|undefined|待定队伍/);
   assert.ok((await elementCount(cdp, ".source-team-card")) >= 2);
   const teamsCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
   await fs.writeFile(path.resolve("demo-assets/teams-final.png"), Buffer.from(teamsCapture.data, "base64"));
@@ -202,6 +206,7 @@ try {
     return true;
   })()`);
   assert.doesNotMatch(await evaluate(cdp, "document.body.innerText"), /VITE_TXLINE_API_TOKEN|Bearer\s+[A-Za-z0-9_-]+/);
+  assert.deepEqual(runtimeIssues, []);
 
   console.log("PASS browser challenge, verified 2026 tournament/replays, World Cup-only teams, eight languages, settings safety, and desktop/mobile layouts");
 } finally {

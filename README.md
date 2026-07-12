@@ -16,7 +16,8 @@ This project is not a betting product. It does not place bets, recommend trades,
 - TxLINE fixture scope is locked to World Cup `CompetitionId 72` in both request and response validation; Friendlies `CompetitionId 430` cannot enter the World Cup UI.
 - Eight credential-free 2026 TxLINE historical sequences keep the complete workflow judgeable when no current match is active. Two deterministic 2022 editorial stories remain secondary legacy examples.
 - Schedule cards show stage, localized kickoff, source status, score, and verified event/goal/extra-time summaries. The source-first Teams view shows current fixture count and opponents before an optional collapsed historical atlas.
-- Spoken AI-style commentary uses the browser speech engine and remains tied to normalized match facts rather than an external hallucinated narrative.
+- Event-driven AI commentary turns verified goals, cards, score reviews, half-time, full-time, and momentum changes into a concise multilingual match brief. Browser speech playback makes the same grounded brief accessible without introducing an unverified external narrative.
+- A clearly labeled season demonstration shows how eight verified 2026 replay results would settle score picks over time. It is separate from the user's real local challenge history and never changes the user's points.
 - Eight complete UI languages are validated: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic.
 - Official FIFA+ archive/highlight links are the legal watch path. No unofficial stream is scraped or embedded.
 - Automated gates cover TypeScript, fixture truth, i18n parity, product/data audit, World Cup scope, challenge rules, security, build, and real-browser mobile behavior.
@@ -42,7 +43,7 @@ Use the same visible fan workflow that a normal user sees:
 
 ## Data truth model
 
-- TxLINE scope: two consecutive authenticated checks on 2026-07-12 returned 2 World Cup fixtures under `CompetitionId 72`; fixture `18222446` returned 40 score records and 20 official-odds records both times. The adapter rejected Friendlies `CompetitionId 430`.
+- TxLINE scope: the latest two consecutive authenticated checks on 2026-07-12 returned 3 World Cup fixtures under `CompetitionId 72`; fixture `18222446` returned 42 score records and 0 official-odds records both times. The UI therefore hides numerical odds instead of carrying forward an older snapshot. The adapter rejected Friendlies `CompetitionId 430`.
 - Live: only shown after authenticated TxLINE scores, events, and odds are loaded, or after a confirmed public scoreboard event is loaded and labeled with its real source.
 - Delay: used for polling delivery or any feed not confirmed as a true stream. Official docs distinguish mainnet Level 1 (60-second delay), mainnet Level 12 (real-time), and the current devnet Level 1 matrix row (`samplingIntervalSec = 0`).
 - Public scoreboard: ESPN FIFA World Cup scoreboard is a free no-token backup for score, status, events, teams, venue, and public freshness when TxLINE token access is blocked.
@@ -117,10 +118,10 @@ VITE_TXLINE_API_BASE=https://txline-dev.txodds.com
 VITE_TXLINE_PROXY_BASE=
 VITE_TXLINE_API_TOKEN=your_txline_x_api_token_here
 VITE_TXLINE_SESSION_JWT=
-  VITE_TXLINE_FIXTURE_ID=
+VITE_TXLINE_FIXTURE_ID=
 VITE_TXLINE_FINAL_SCORE_SEQ=
 VITE_TXLINE_START_EPOCH_DAY=
-  VITE_TXLINE_COMPETITION_ID=72
+VITE_TXLINE_COMPETITION_ID=72
 VITE_TXLINE_AS_OF_MS=
 VITE_AUTHORIZED_VIDEO_EMBED_URL=
 ```

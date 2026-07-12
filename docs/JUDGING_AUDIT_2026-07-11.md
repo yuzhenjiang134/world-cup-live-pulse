@@ -4,7 +4,7 @@ Updated: 2026-07-11
 
 Official criteria source: https://superteam.fun/earn/listing/consumer-and-fan-experiences
 
-Fresh listing snapshot checked 2026-07-12: 26 public submissions, 16,000 USDT track prizes, July 19 2026 23:59 UTC close, and July 29 2026 15:00 UTC scheduled announcement.
+Fresh listing check on 2026-07-12: the syncing public counter changed from 25 to 27 across consecutive fetches. The page still lists 16,000 USDT track prizes (10,000 / 4,000 / 2,000) and a July 29, 2026 winner announcement; the dynamic count and close timer must be rechecked before submission.
 
 This audit measures the current product against the five published Consumer and Fan Experiences criteria. It separates code-complete evidence from external submission gates so the final demo never overclaims.
 
@@ -19,6 +19,7 @@ Evidence:
 - Eight UI languages share one typed key set, including localized tournament copy and RTL support for Arabic.
 - Browser E2E confirms zero horizontal overflow at 390 x 844 and keeps both teams, score controls, points, and top actions inside the viewport.
 - The score challenge now spans the full match column, keeps a per-fixture prediction ledger, and automatically settles verified finals exactly once after refresh or reload.
+- Product labels, current teams, scheduled-match briefs, and AI score summaries use one eight-language team-name boundary so the primary fan flow no longer mixes English team names into localized copy when a verified translation exists.
 
 Remaining gate: final manual checks on one additional narrow phone and one large desktop after the online build is updated.
 
@@ -31,10 +32,10 @@ Evidence:
 - TxLINE integration covers fixtures, score events, odds snapshots, and the documented final-score proof request.
 - The app shows source status and checked time; it does not silently promote Seed or Replay to Live.
 - Repeated real probes returned 3 World Cup fixtures and 2 score records for fixture `18213979`. Official odds varied from 0 to 27 records across checks; the final local pair returned 3 then 5, and the empty state remained empty rather than receiving synthetic values.
-- The latest pair on 2026-07-12 returned 2 World Cup fixtures; fixture `18222446` returned 40 score records and 20 official-odds records in both runs. The deployed default is unpinned so the current World Cup fixture is selected automatically.
+- The latest pair on 2026-07-12 returned 3 World Cup fixtures; fixture `18222446` returned 42 score records and 0 official-odds records in both runs. The deployed default is unpinned, and the UI hides numerical odds when the current official payload is empty.
 - The adapter sends `competitionId=72` and filters the response again so Friendlies `CompetitionId 430` cannot leak into the World Cup product.
 
-Remaining gate: a server-side token proxy is required if authenticated TxLINE data must be visible on the public static deployment.
+Remaining gate: the read-only server-side TxLINE proxy is implemented with an allowlist, origin check, World Cup scope guard, and no-store headers; it still needs deployment and public end-to-end verification before authenticated data can be claimed online.
 
 ## 3. Originality and value creation
 
@@ -46,6 +47,8 @@ Evidence:
 - Eight completed 2026 TxLINE historical sequences make the judgeable replay demonstrably sponsor-powered rather than a fictional 2022-only mock.
 - Schedule & Replay visualizes current pairings, verified Round-of-16 and quarter-final results, the incomplete knockout path, and team/source-player details without guessing unknown advancement.
 - AI text is generated from normalized score, event, and source state; it is not an ungrounded external prediction.
+- The AI layer covers goals, red and yellow cards, score reviews, half-time, full-time, and momentum shifts, then exposes the same grounded text through browser speech playback.
+- A separate season demonstration applies deterministic score-pick rules to eight verified 2026 archive finals. It demonstrates repeat engagement without pretending the user historically submitted those picks or changing the user's real local ledger.
 
 Remaining gate: the final demo must show the interaction loop, not just static screens.
 
