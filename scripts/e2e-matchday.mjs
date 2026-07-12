@@ -103,6 +103,12 @@ try {
   assert.equal(await elementCount(cdp, ".demo-history .challenge-history-list > div"), 8);
   assert.equal(await elementCount(cdp, ".challenge-block .secondary-button"), 1);
   assert.equal(await elementCount(cdp, ".commentary-audio"), 1);
+  assert.ok((await elementCount(cdp, ".key-event-strip button")) >= 1);
+  await evaluate(cdp, "document.querySelector('.key-event-strip button').click(); true");
+  await wait(120);
+  assert.ok(Number(await evaluate(cdp, "document.querySelector('.timeline-slider').value")) < 90);
+  await evaluate(cdp, `(() => { const slider = document.querySelector('.timeline-slider'); const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; setter.call(slider, '90'); slider.dispatchEvent(new Event('input', { bubbles: true })); return true; })()`);
+  await wait(120);
   assert.match(await blockText(cdp, ".hero-ai-brief"), /法国 2-0 摩洛哥/);
   assert.doesNotMatch(await blockText(cdp, ".hero-ai-brief"), /France|Morocco/);
   assert.equal(await elementCount(cdp, ".follow-button"), 1);
@@ -178,6 +184,22 @@ try {
   const tournamentCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
   await fs.writeFile(path.resolve("demo-assets/tournament-final.png"), Buffer.from(tournamentCapture.data, "base64"));
 
+  assert.equal(await elementCount(cdp, ".spoiler-toggle input"), 1);
+  await evaluate(cdp, "document.querySelector('.spoiler-toggle input').click(); true");
+  await wait(120);
+  assert.equal(await elementCount(cdp, ".archive-match-card.spoilered"), 8);
+  assert.equal(await elementCount(cdp, ".archive-match-card p"), 0);
+  assert.equal(await elementCount(cdp, ".bracket-section"), 0);
+  assert.equal(await elementCount(cdp, ".team-detail-panel"), 0);
+  assert.equal(await evaluate(cdp, "[...document.querySelectorAll('.archive-score-row strong')].every((item) => item.textContent.trim() === 'vs')"), true);
+  const spoilerCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
+  await fs.writeFile(path.resolve("demo-assets/tournament-spoiler-final.png"), Buffer.from(spoilerCapture.data, "base64"));
+  await evaluate(cdp, "document.querySelector('.archive-match-card .archive-open').click(); true");
+  await waitForCondition(cdp, "Boolean(document.querySelector('.timeline-slider'))", 30_000);
+  assert.equal(await evaluate(cdp, "document.querySelector('.timeline-slider').value"), "1");
+  await evaluate(cdp, "document.querySelectorAll('.primary-nav button')[1].click(); true");
+  await waitForCondition(cdp, "Boolean(document.querySelector('.tournament-view'))", 30_000);
+
   await cdp.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   await wait(120);
   const tournamentMobile = await evaluate(cdp, `({ viewport: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth, cards: document.querySelectorAll('.archive-match-card').length })`);
@@ -220,7 +242,7 @@ try {
   assert.doesNotMatch(await evaluate(cdp, "document.body.innerText"), /VITE_TXLINE_API_TOKEN|Bearer\s+[A-Za-z0-9_-]+/);
   assert.deepEqual(runtimeIssues, []);
 
-  console.log("PASS browser challenge, followed-match toggle, official watch links, verified 2026 tournament/replays, World Cup-only teams, eight languages, settings safety, and desktop/mobile layouts");
+  console.log("PASS browser challenge, key-event shortcuts, spoiler-free replay, followed-match toggle, official watch links, verified 2026 tournament/replays, World Cup-only teams, eight languages, settings safety, and desktop/mobile layouts");
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.close();
   const edgeExit = once(edge, "exit").catch(() => undefined);

@@ -97,6 +97,8 @@ const requiredAppMarkers = [
   ["active tournament schedule", "schedule={schedule}"],
   ["focus-triggered refresh", 'addEventListener("focus"'],
   ["event-driven AI live region", 'className="hero-ai-brief"'],
+  ["key-event shortcut strip", "key-event-strip"],
+  ["spoiler-free replay control", "spoiler-toggle"],
   ["schedule moment summaries", "schedule-moments"],
   ["source-first team facts", "source-team-facts"],
   ["localized event descriptions", "localizeEventDescription"],

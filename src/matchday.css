@@ -614,6 +614,50 @@ summary:focus-visible {
   white-space: nowrap;
 }
 
+.key-event-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px 2px 0;
+  border-top: 1px solid var(--md-line);
+}
+
+.key-event-strip > strong {
+  flex: 0 0 auto;
+  color: var(--md-teal);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.key-event-strip > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.key-event-strip button,
+.key-event-strip span {
+  min-height: 30px;
+  padding: 6px 9px;
+  border: 1px solid var(--md-line);
+  border-radius: 5px;
+  background: var(--md-white);
+  color: var(--md-ink);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.key-event-strip button {
+  cursor: pointer;
+}
+
+.key-event-strip button:hover {
+  border-color: var(--md-teal);
+  color: var(--md-teal);
+}
+
 .match-context-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
@@ -1719,13 +1763,47 @@ details summary {
   font-size: 28px;
 }
 
-.tournament-intro > p {
+.tournament-intro-actions {
+  display: grid;
+  justify-items: end;
+  gap: 10px;
+  max-width: 360px;
+}
+
+.tournament-intro-actions > p {
   max-width: 360px;
   margin: 0;
   color: var(--md-muted);
   font-size: 12px;
   line-height: 1.5;
   text-align: right;
+}
+
+.spoiler-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--md-line);
+  border-radius: 6px;
+  background: var(--md-white);
+  color: var(--md-ink);
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.spoiler-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--md-teal);
+}
+
+.archive-match-card.spoilered .archive-score-row strong {
+  color: var(--md-muted);
+  font-size: 11px;
+  text-transform: uppercase;
 }
 
 .tournament-band {
@@ -2667,7 +2745,12 @@ details summary {
     flex-direction: column;
   }
 
-  .tournament-intro > p {
+  .tournament-intro-actions {
+    justify-items: start;
+    max-width: none;
+  }
+
+  .tournament-intro-actions > p {
     text-align: left;
   }
 

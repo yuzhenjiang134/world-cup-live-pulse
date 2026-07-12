@@ -31,7 +31,7 @@ This task list converts the market research, the user's prior requirements, and 
 - [x] Deterministic event timeline, key moments, speed control, official archive/highlight links, and replay progress.
 - [x] Fixture-keyed challenge history, level, streak, accuracy after a result exists, and share/download card.
 - [x] Clearly labeled season demonstration isolated from real user points/history.
-- [ ] Add spoiler-free replay entry so a fan can start a completed match at minute 1 without seeing the final score first.
+- [x] Add spoiler-free replay entry so a fan can start a completed match at minute 1 without seeing the final score first.
 - [ ] Add a local favorite-team preference that prioritizes confirmed fixtures without hiding other matches.
 
 ## P1: trust and commercial proof
@@ -43,7 +43,7 @@ This task list converts the market research, the user's prior requirements, and 
 ## Release, video, and submission
 
 - [x] Complete local browser and screenshot acceptance after P0 changes.
-- [ ] Run full validation/build/security on the exact release worktree.
+- [x] Run full validation/build/security on the exact release worktree.
 - [ ] Commit, push, confirm CI/Pages on the same SHA, and run online E2E.
 - [ ] Record and review the final demo video twice; keep it under five minutes.
 - [ ] Upload and verify the final video without login.

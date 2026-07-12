@@ -205,6 +205,15 @@ Do not push or record the final video until all three local rounds pass on the s
 - [x] Remove the duplicated right-rail points card and replace the mixed-language data rule with localized source guidance.
 - [x] Browser-test pending-fixture handling, automatic settlement, no duplicate award after reload, history visibility, focus-triggered refresh, and 390px layout on the same final worktree.
 
+## 2026-07-12 fan research and catch-up gate
+
+- [x] Complete three separate research passes for live match centers, schedule/progression/replay, and AI/personalization/retention.
+- [x] Convert each research pass into a product decision or an explicit decision not to build unsupported UI.
+- [x] Add a compact key-event shortcut strip for verified goals, cards, score reviews, half-time, and full-time.
+- [x] Add spoiler-free replay that masks score, winner, event totals, bracket results, and team-result detail before starting at minute 1.
+- [x] Preserve the no-source/no-field rule and improve contrast for source-provided team colors that are too light for accessible badges.
+- [x] Pass three release-candidate rounds: complete validation and real-data probes, production build/security, and full desktop/mobile browser flow.
+
 ## Product depth standard
 
 Every official requirement must be implemented as a useful, testable product loop rather than a checkbox. Extend one required capability into two or three user benefits only when every added detail remains source-backed and understandable:

@@ -1,5 +1,21 @@
 # World Cup Live Pulse Work Log
 
+## 2026-07-12: Three-research, three-test, two-demo release contract
+
+- Re-locked the fan value order as trustworthy score/state, complete key events, readable schedule/progression, fast replay catch-up, then score challenge and AI interaction.
+- Added three independent research passes: live match center, tournament/replay, and AI/personalization/retention. Each pass must produce a product decision or an explicit decision not to build unsupported UI.
+- Added a minimum three-pass acceptance contract on one release candidate: data truth and refresh, complete fan flow and localization, then online/security/mobile.
+- Added a two-demo contract: record two sub-five-minute versions, watch each version twice, audit every claim and secret boundary, and submit only the stronger cut.
+
+## 2026-07-12: Research-driven key moments and spoiler-free replay
+
+- Completed three independent market checks covering live match products, schedule/progression/catch-up, and AI/personalization/retention. Evidence and explicit build/no-build decisions are recorded in `docs/THREE_ROUND_MARKET_RESEARCH_2026-07-12.md`.
+- Added a compact verified key-event strip. Replay buttons jump directly to goals, cards, score reviews, half-time, and full-time; live mode keeps the moments visible without rewinding the live source state.
+- Added spoiler-free replay. Enabling it masks final scores, winners, event totals, bracket results, and team-result detail; selecting a match opens the deterministic timeline at minute 1.
+- Added dynamic badge contrast so extremely light source team colors remain readable without changing the team identity or underlying data.
+- Re-ran the exact candidate through three release rounds: full validation/security, production build, and browser E2E for challenge settlement, key-event jumps, spoiler-free replay, follow state, official links, tournament, teams, eight languages, RTL, and 390px layout.
+- Repeated the authenticated TxLINE probe twice during this pass. Both checks returned 3 World Cup fixtures, 42 score records for fixture `18222446`, and 0 official-odds records; no token value was printed.
+
 ## 2026-07-12: Single controlling task plan
 
 - Consolidated the user's full product, data, UX, language, safety, local-release, online-release, demo-video, and submission requirements into `docs/ROUND_MASTER_TASKS_2026-07-12.md`.

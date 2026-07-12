@@ -17,6 +17,7 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Eight credential-free 2026 TxLINE historical sequences keep the complete workflow judgeable when no current match is active. Two deterministic 2022 editorial stories remain secondary legacy examples.
 - Schedule cards show stage, localized kickoff, source status, score, and verified event/goal/extra-time summaries. The source-first Teams view shows current fixture count and opponents before an optional collapsed historical atlas.
 - Event-driven AI commentary turns verified goals, cards, score reviews, half-time, full-time, and momentum changes into a concise multilingual match brief. Browser speech playback makes the same grounded brief accessible without introducing an unverified external narrative.
+- Verified key-event shortcuts reduce the path to goals, cards, reviews, half-time, and full-time. Spoiler-free replay masks the outcome and starts the selected match at minute 1.
 - A clearly labeled season demonstration shows how eight verified 2026 replay results would settle score picks over time. It is separate from the user's real local challenge history and never changes the user's points.
 - Eight complete UI languages are validated: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic.
 - Official FIFA+ archive/highlight links are the legal watch path. No unofficial stream is scraped or embedded.
