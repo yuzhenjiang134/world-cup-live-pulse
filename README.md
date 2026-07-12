@@ -203,6 +203,7 @@ src/
 - `docs/SUBMISSION_DRAFT.md`: Superteam submission draft
 - `docs/DEMO_SCRIPT.md`: under-5-minute demo video script
 - `docs/SUBMISSION_CHECKLIST.md`: final submission checklist
+- `docs/FINAL_RELEASE_TASKS.md`: controlling local, online, video, audit, and final-upload release checklist
 - `docs/submission-draft.md`: Superteam submission draft
 - `docs/demo-script.md`: 3 to 5 minute demo video script
 - `docs/technical-writeup.md`: architecture and TxLINE integration plan

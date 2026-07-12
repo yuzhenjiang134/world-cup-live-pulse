@@ -1,6 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { dataConsistencyState } from "./data/matchCalendar";
-import { teamAtlas } from "./data/fanGuide";
 import { replayMatches } from "./data/replayMatch";
 import { demoSeasonHistory, demoSeasonSummary } from "./data/demoSeasonHistory";
 import { officialVideoSources } from "./data/videoSources";
@@ -47,6 +45,7 @@ type UiCopy = {
   latest: string;
   noEvents: string;
   goals: string;
+  wins: string;
   yellow: string;
   red: string;
   extraTime: string;
@@ -92,11 +91,11 @@ type UiCopy = {
   teams: string;
   players: string;
   sourceTeams: string;
-  referenceTeams: string;
-  teamPending: string;
-  coach: string;
   watch: string;
   officialWatch: string;
+  officialUpdates: string;
+  followMatch: string;
+  unfollowMatch: string;
   archiveLink: string;
   highlightsLink: string;
   noWatch: string;
@@ -147,6 +146,7 @@ const ui: Record<Language, UiCopy> = {
     latest: "Latest moment",
     noEvents: "No verified events in this window.",
     goals: "Goals",
+    wins: "Wins",
     yellow: "Yellow",
     red: "Red",
     extraTime: "ET / added time",
@@ -189,13 +189,13 @@ const ui: Record<Language, UiCopy> = {
     replayLibrary: "Replay library",
     chooseReplay: "Open a fixed, judgeable match story",
     teams: "Teams and players",
-    players: "Key players",
+    players: "Player records",
     sourceTeams: "Tournament teams",
-    referenceTeams: "More team profiles",
-    teamPending: "Player details updating",
-    coach: "Coach",
     watch: "Watch / replay",
     officialWatch: "Open official source",
+    officialUpdates: "Official updates",
+    followMatch: "Follow this match",
+    unfollowMatch: "Stop following",
     archiveLink: "FIFA+ archive",
     highlightsLink: "FIFA+ highlights",
     noWatch: "Official FIFA+ archive and highlights are available when rights allow; timeline replay remains available.",
@@ -245,6 +245,7 @@ const ui: Record<Language, UiCopy> = {
     latest: "最新节点",
     noEvents: "当前时间窗没有已核验事件。",
     goals: "进球",
+    wins: "胜场",
     yellow: "黄牌",
     red: "红牌",
     extraTime: "加时 / 补时",
@@ -287,13 +288,13 @@ const ui: Record<Language, UiCopy> = {
     replayLibrary: "回放库",
     chooseReplay: "打开固定、可复现的比赛故事",
     teams: "球队与球员",
-    players: "关键球员",
+    players: "球员记录",
     sourceTeams: "参赛球队",
-    referenceTeams: "更多球队资料",
-    teamPending: "球员资料更新中",
-    coach: "教练",
     watch: "观看 / 回放",
     officialWatch: "打开官方来源",
+    officialUpdates: "官方赛况",
+    followMatch: "关注本场",
+    unfollowMatch: "取消关注",
     archiveLink: "FIFA+ 回放库",
     highlightsLink: "FIFA+ 集锦",
     noWatch: "官方 FIFA+ 回放和集锦入口会受地区与版权影响；时间线回放始终可用。",
@@ -343,6 +344,7 @@ const ui: Record<Language, UiCopy> = {
     latest: "Último momento",
     noEvents: "No hay eventos verificados en esta ventana.",
     goals: "Goles",
+    wins: "Victorias",
     yellow: "Amarillas",
     red: "Rojas",
     extraTime: "Prórroga / añadido",
@@ -385,13 +387,13 @@ const ui: Record<Language, UiCopy> = {
     replayLibrary: "Biblioteca de repeticiones",
     chooseReplay: "Abrir una historia fija y reproducible",
     teams: "Equipos y jugadores",
-    players: "Jugadores clave",
+    players: "Registros de jugadores",
     sourceTeams: "Equipos del torneo",
-    referenceTeams: "Más equipos",
-    teamPending: "Actualizando jugadores",
-    coach: "Entrenador",
     watch: "Ver / repetir",
     officialWatch: "Abrir fuente oficial",
+    officialUpdates: "Actualizaciones oficiales",
+    followMatch: "Seguir partido",
+    unfollowMatch: "Dejar de seguir",
     archiveLink: "Archivo FIFA+",
     highlightsLink: "Resúmenes FIFA+",
     noWatch: "El archivo y los resúmenes oficiales de FIFA+ dependen de territorio y derechos; la línea de tiempo sigue disponible.",
@@ -441,6 +443,7 @@ const ui: Record<Language, UiCopy> = {
     latest: "Último momento",
     noEvents: "Nenhum evento verificado nesta janela.",
     goals: "Gols",
+    wins: "Vitórias",
     yellow: "Amarelos",
     red: "Vermelhos",
     extraTime: "Prorrogação / acréscimos",
@@ -483,13 +486,13 @@ const ui: Record<Language, UiCopy> = {
     replayLibrary: "Biblioteca de reprises",
     chooseReplay: "Abrir uma história fixa e reproduzível",
     teams: "Times e jogadores",
-    players: "Jogadores-chave",
+    players: "Registros de jogadores",
     sourceTeams: "Equipes do torneio",
-    referenceTeams: "Mais equipes",
-    teamPending: "Atualizando jogadores",
-    coach: "Técnico",
     watch: "Assistir / reprise",
     officialWatch: "Abrir fonte oficial",
+    officialUpdates: "Atualizações oficiais",
+    followMatch: "Seguir partida",
+    unfollowMatch: "Deixar de seguir",
     archiveLink: "Arquivo FIFA+",
     highlightsLink: "Destaques FIFA+",
     noWatch: "O arquivo e os destaques oficiais do FIFA+ dependem do território e dos direitos; a linha do tempo continua disponível.",
@@ -539,6 +542,7 @@ const ui: Record<Language, UiCopy> = {
     latest: "Dernier moment",
     noEvents: "Aucun événement vérifié dans cette fenêtre.",
     goals: "Buts",
+    wins: "Victoires",
     yellow: "Jaunes",
     red: "Rouges",
     extraTime: "Prolongation / arrêts",
@@ -581,13 +585,13 @@ const ui: Record<Language, UiCopy> = {
     replayLibrary: "Bibliothèque replay",
     chooseReplay: "Ouvrir une histoire fixe et reproductible",
     teams: "Équipes et joueurs",
-    players: "Joueurs clés",
+    players: "Fiches joueurs",
     sourceTeams: "Équipes du tournoi",
-    referenceTeams: "Plus d'équipes",
-    teamPending: "Mise à jour des joueurs",
-    coach: "Entraîneur",
     watch: "Regarder / replay",
     officialWatch: "Ouvrir la source officielle",
+    officialUpdates: "Actualités officielles",
+    followMatch: "Suivre le match",
+    unfollowMatch: "Ne plus suivre",
     archiveLink: "Archives FIFA+",
     highlightsLink: "Temps forts FIFA+",
     noWatch: "Les archives et temps forts officiels de FIFA+ dépendent du territoire et des droits; la timeline reste disponible.",
@@ -637,6 +641,7 @@ const ui: Record<Language, UiCopy> = {
     latest: "Letzter Moment",
     noEvents: "Keine verifizierten Ereignisse in diesem Fenster.",
     goals: "Tore",
+    wins: "Siege",
     yellow: "Gelb",
     red: "Rot",
     extraTime: "Verlängerung / Nachspielzeit",
@@ -679,13 +684,13 @@ const ui: Record<Language, UiCopy> = {
     replayLibrary: "Replay-Bibliothek",
     chooseReplay: "Eine feste, reproduzierbare Geschichte öffnen",
     teams: "Teams und Spieler",
-    players: "Schlüsselspieler",
+    players: "Spieleraufzeichnungen",
     sourceTeams: "Turnierteams",
-    referenceTeams: "Weitere Teams",
-    teamPending: "Spielerdaten werden aktualisiert",
-    coach: "Trainer",
     watch: "Ansehen / Replay",
     officialWatch: "Offizielle Quelle öffnen",
+    officialUpdates: "Offizielle Updates",
+    followMatch: "Spiel folgen",
+    unfollowMatch: "Nicht mehr folgen",
     archiveLink: "FIFA+ Archiv",
     highlightsLink: "FIFA+ Highlights",
     noWatch: "Offizielle FIFA+ Archive und Highlights hängen von Gebiet und Rechten ab; die Timeline bleibt verfügbar.",
@@ -735,6 +740,7 @@ const ui: Record<Language, UiCopy> = {
     latest: "最新の瞬間",
     noEvents: "この時間帯に検証済みイベントはありません。",
     goals: "ゴール",
+    wins: "勝利",
     yellow: "イエロー",
     red: "レッド",
     extraTime: "延長 / アディショナル",
@@ -777,13 +783,13 @@ const ui: Record<Language, UiCopy> = {
     replayLibrary: "リプレイライブラリ",
     chooseReplay: "固定された再現可能な試合を開く",
     teams: "チームと選手",
-    players: "注目選手",
+    players: "選手記録",
     sourceTeams: "大会参加チーム",
-    referenceTeams: "その他のチーム",
-    teamPending: "選手情報を更新中",
-    coach: "監督",
     watch: "視聴 / リプレイ",
     officialWatch: "公式ソースを開く",
+    officialUpdates: "公式アップデート",
+    followMatch: "試合をフォロー",
+    unfollowMatch: "フォロー解除",
     archiveLink: "FIFA+ アーカイブ",
     highlightsLink: "FIFA+ ハイライト",
     noWatch: "FIFA+公式アーカイブとハイライトは地域・権利により異なります。タイムラインは利用できます。",
@@ -833,6 +839,7 @@ const ui: Record<Language, UiCopy> = {
     latest: "آخر لحظة",
     noEvents: "لا توجد أحداث موثقة في هذه النافذة.",
     goals: "أهداف",
+    wins: "انتصارات",
     yellow: "بطاقات صفراء",
     red: "بطاقات حمراء",
     extraTime: "وقت إضافي",
@@ -875,13 +882,13 @@ const ui: Record<Language, UiCopy> = {
     replayLibrary: "مكتبة الإعادة",
     chooseReplay: "افتح قصة مباراة ثابتة قابلة للتكرار",
     teams: "الفرق واللاعبون",
-    players: "اللاعبون الأساسيون",
+    players: "سجلات اللاعبين",
     sourceTeams: "فرق البطولة",
-    referenceTeams: "المزيد من الفرق",
-    teamPending: "جار تحديث بيانات اللاعبين",
-    coach: "المدرب",
     watch: "مشاهدة / إعادة",
     officialWatch: "فتح المصدر الرسمي",
+    officialUpdates: "التحديثات الرسمية",
+    followMatch: "متابعة المباراة",
+    unfollowMatch: "إلغاء المتابعة",
     archiveLink: "أرشيف FIFA+",
     highlightsLink: "ملخصات FIFA+",
     noWatch: "يتوفر أرشيف وملخصات FIFA+ الرسمية حسب المنطقة والحقوق؛ الخط الزمني متاح دائمًا.",
@@ -1179,10 +1186,6 @@ function teamGroupLabel(group: string | undefined, copy: UiCopy, language: Langu
   return group;
 }
 
-function scheduleTeamLabel(code: string, copy: UiCopy) {
-  return code.endsWith("XX") ? copy.teamPending : code;
-}
-
 function dataStatusLabel(status: MatchData["dataStatus"], copy: UiCopy) {
   if (status === "Live") return copy.live;
   if (status === "Delay") return copy.delayed;
@@ -1234,8 +1237,10 @@ export default function MatchdayApp() {
   const [pickLedger, setPickLedger] = useState(readPickLedger);
   const [settlementMatches, setSettlementMatches] = useState<MatchData[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [followedMatchId, setFollowedMatchId] = useState(() => window.localStorage.getItem("wclp-followed-match"));
   const loadedMatchIdRef = useRef<string | null>(null);
   const settlementGuardRef = useRef(new Set(readPickLedger().filter((pick) => pick.settled).map((pick) => pick.matchId)));
+  const notifiedEventRef = useRef<string | null>(null);
 
   const copy = ui[language];
   const helperUrl = `${import.meta.env.BASE_URL}tools/txline-subscribe/index.html?v=2026-07-10`;
@@ -1261,6 +1266,11 @@ export default function MatchdayApp() {
   useEffect(() => {
     window.localStorage.setItem(pickLedgerKey, JSON.stringify(pickLedger));
   }, [pickLedger]);
+
+  useEffect(() => {
+    if (followedMatchId) window.localStorage.setItem("wclp-followed-match", followedMatchId);
+    else window.localStorage.removeItem("wclp-followed-match");
+  }, [followedMatchId]);
 
   useEffect(() => {
     if (!match || loadedMatchIdRef.current !== match.id) return;
@@ -1440,6 +1450,24 @@ export default function MatchdayApp() {
 
   const frame = useMemo(() => (match ? buildPulseFrame(match, minute) : null), [match, minute]);
 
+  useEffect(() => {
+    if (!match || !frame || mode !== "live" || followedMatchId !== match.id || match.status === "scheduled") return;
+    const event = frame.latestEvent;
+    if (!event || notifiedEventRef.current === event.id) return;
+    if (notifiedEventRef.current === null) {
+      notifiedEventRef.current = event.id;
+      return;
+    }
+    notifiedEventRef.current = event.id;
+    if (!("Notification" in window) || Notification.permission !== "granted") return;
+    const title = `${teamName(match.home, language)} vs ${teamName(match.away, language)}`;
+    try {
+      new Notification(title, { body: localizeEventDescription(language, event), tag: `wclp-${match.id}-${event.id}` });
+    } catch {
+      // Following remains useful in-page even when the browser blocks notification delivery.
+    }
+  }, [followedMatchId, frame, language, match, mode]);
+
   if (!match || !frame) {
     return (
       <main className="matchday-app loading-screen">
@@ -1550,6 +1578,24 @@ export default function MatchdayApp() {
     setIsSpeaking(true);
   }
 
+  async function toggleMatchFollow() {
+    if (!match) return;
+    if (followedMatchId === match.id) {
+      setFollowedMatchId(null);
+      notifiedEventRef.current = null;
+      return;
+    }
+    setFollowedMatchId(match.id);
+    notifiedEventRef.current = latestEvent?.id ?? null;
+    if ("Notification" in window && Notification.permission === "default") {
+      try {
+        await Notification.requestPermission();
+      } catch {
+        // The in-page followed state still works when browser notifications are unavailable.
+      }
+    }
+  }
+
   function resetPoints() {
     window.localStorage.setItem("wclp-points-version", "v4");
     window.localStorage.setItem("wclp-test-points", "1000");
@@ -1602,6 +1648,7 @@ export default function MatchdayApp() {
           </div>
           <div className="top-actions">
             <span className={`source-pill ${sourceState.tone}`}><span className={`status-dot ${sourceState.tone}`} />{sourceState.label}</span>
+            <button className={`icon-button follow-button ${followedMatchId === match.id ? "active" : ""}`} type="button" onClick={toggleMatchFollow} aria-label={followedMatchId === match.id ? copy.unfollowMatch : copy.followMatch} title={followedMatchId === match.id ? copy.unfollowMatch : copy.followMatch}>{followedMatchId === match.id ? "★" : "☆"}</button>
             <button className="icon-button" type="button" onClick={() => setRefreshNonce((value) => value + 1)} aria-label={copy.refresh} title={copy.refresh}>
               {isRefreshing ? "..." : "↻"}
             </button>
@@ -1654,13 +1701,13 @@ export default function MatchdayApp() {
               <ScoreChallenge copy={copy} language={language} match={match} picks={pickLedger} homeScore={pickHome} awayScore={pickAway} setHomeScore={setPickHome} setAwayScore={setPickAway} locked={pickLocked} settled={pickSettled} points={points} stats={challengeStats} settlement={settlement} onLock={lockPick} onDownload={downloadPickCard} canLock={canLockPick} />
             </section>
 
-            <div className="signal-row" aria-label={copy.events}>
+            {!isScheduled && activeEvents.length ? <div className="signal-row" aria-label={copy.events}>
               <Signal label={copy.goals} value={goalCount} tone="goal" />
               <Signal label={copy.yellow} value={yellowCount} tone="yellow" />
               <Signal label={copy.red} value={redCount} tone="red" />
-              <Signal label={copy.extraTime} value={extraTime ? "YES" : "--"} tone="neutral" />
+              <Signal label={copy.extraTime} value={extraTime ? "YES" : "0"} tone="neutral" />
                <div className="signal-next"><span>{copy.latest}</span><strong>{latestEvent ? `${minuteLabel(latestEvent)} ${localizedEventLabel(latestEvent, copy, language)}${latestEvent.player ? ` · ${latestEvent.player}` : ""}` : copy.noEvents}</strong></div>
-            </div>
+            </div> : null}
 
             <section className="match-context-grid">
               <section className="section-block match-summary-block">
@@ -1708,6 +1755,7 @@ export default function MatchdayApp() {
                    <div className="official-video-links">
                      <a href={officialVideoSources[0].url} target="_blank" rel="noreferrer">{copy.archiveLink}<span>↗</span></a>
                      <a href={officialVideoSources[1].url} target="_blank" rel="noreferrer">{copy.highlightsLink}<span>↗</span></a>
+                     <a href={officialVideoSources[2].url} target="_blank" rel="noreferrer">{copy.officialUpdates}<span>↗</span></a>
                    </div>
                    <p className="muted-copy">{copy.noWatch}</p>
                   <div className="replay-progress"><span style={{ width: `${Math.min(100, (minute / maxMinute) * 100)}%` }} /></div>
@@ -1722,9 +1770,9 @@ export default function MatchdayApp() {
             </section>
           </>
         ) : view === "tournament" ? (
-          <TournamentView language={language} copy={copy} onOpenReplay={startReplay} />
+          <TournamentView language={language} copy={copy} schedule={schedule} onOpenReplay={startReplay} />
         ) : (
-          <TeamsView copy={copy} language={language} match={match} schedule={schedule} />
+          <TeamsView copy={copy} language={language} match={match} schedule={schedule} onOpenReplay={startReplay} />
         )}
       </section>
 
@@ -1788,12 +1836,14 @@ function OddsContext({ copy, label, match, market }: { copy: UiCopy; label: stri
     { label: copy.result, value: market.draw },
     { label: match.away.code, value: market.awayWin },
   ];
-  return <section className="odds-context"><SectionHeading eyebrow={copy.fanPulse} title={label} /><div className="odds-grid">{values.map((item) => <div className="odds-cell" key={item.label}><span>{item.label}</span><strong>{Number.isFinite(item.value) && item.value > 0 ? `x${item.value.toFixed(2)}` : "--"}</strong></div>)}</div><p className="muted-copy">{copy.noBetting}</p></section>;
+  const visibleValues = values.filter((item) => Number.isFinite(item.value) && item.value > 0);
+  if (!visibleValues.length) return null;
+  return <section className="odds-context"><SectionHeading eyebrow={copy.fanPulse} title={label} /><div className="odds-grid">{visibleValues.map((item) => <div className="odds-cell" key={item.label}><span>{item.label}</span><strong>{`x${item.value.toFixed(2)}`}</strong></div>)}</div><p className="muted-copy">{copy.noBetting}</p></section>;
 }
 
 function ScoreChallenge({ copy, language, match, picks, homeScore, awayScore, setHomeScore, setAwayScore, locked, settled, points, stats, settlement, onLock, onDownload, canLock }: { copy: UiCopy; language: Language; match: MatchData; picks: StoredPick[]; homeScore: number; awayScore: number; setHomeScore: (value: number) => void; setAwayScore: (value: number) => void; locked: boolean; settled: boolean; points: number; stats: ChallengeStats; settlement: string | null; onLock: () => void; onDownload: () => void; canLock: boolean }) {
   const matchState = match.status === "finished" ? copy.final : match.status === "live" ? copy.live : copy.scheduled;
-  const accuracy = stats.played ? `${Math.round((stats.correct / stats.played) * 100)}%` : "--";
+  const accuracy = stats.played ? `${Math.round((stats.correct / stats.played) * 100)}%` : null;
   const actionLabel = settled ? copy.alreadySettled : locked ? copy.locked : canLock ? copy.lockPick : copy.pickClosed;
   const level = getFanLevel(stats);
   const levelDetail = level.ceiling ? `${copy.nextLevel} · ${level.xp}/${level.ceiling} XP` : `${level.xp} XP`;
@@ -1812,7 +1862,7 @@ function ScoreChallenge({ copy, language, match, picks, homeScore, awayScore, se
             <div className="challenge-level-track"><span style={{ width: `${level.progress}%` }} /></div>
           </div>
           <div className="challenge-meta"><div><span>{copy.pickCost}</span><strong>{pointsPerPick} pts</strong></div><div><span>{copy.settlementRule}</span><strong>{locked ? copy.locked : matchState}</strong></div></div>
-          <div className="challenge-stats"><span>{copy.streak} <b>{stats.streak}</b> <small>{copy.bestStreak} {stats.bestStreak}</small></span><span>{copy.accuracy} <b>{accuracy}</b> <small>{stats.correct}/{stats.played}</small></span></div>
+          <div className="challenge-stats"><span>{copy.streak} <b>{stats.streak}</b> <small>{copy.bestStreak} {stats.bestStreak}</small></span>{accuracy ? <span>{copy.accuracy} <b>{accuracy}</b> <small>{stats.correct}/{stats.played}</small></span> : null}</div>
         </div>
         <div className="challenge-play-column">
           <div className="challenge-score"><ScoreInput label={match.home.code} value={homeScore} disabled={locked} onChange={setHomeScore} /><span>:</span><ScoreInput label={match.away.code} value={awayScore} disabled={locked} onChange={setAwayScore} /></div>
@@ -1831,7 +1881,7 @@ function ScoreInput({ label, value, disabled, onChange }: { label: string; value
   return <label className="score-input"><span>{label}</span><div className="score-stepper"><button type="button" disabled={disabled || value <= 0} onClick={() => onChange(Math.max(0, value - 1))} aria-label={`${label} -`}>-</button><input type="number" min="0" max="20" value={value} disabled={disabled} onChange={(event) => onChange(Math.max(0, Math.min(20, Number(event.target.value) || 0)))} /><button type="button" disabled={disabled || value >= 20} onClick={() => onChange(Math.min(20, value + 1))} aria-label={`${label} +`}>+</button></div></label>;
 }
 
-function TournamentView({ language, copy, onOpenReplay }: { language: Language; copy: UiCopy; onOpenReplay: (id: string) => void }) {
+function TournamentView({ language, copy, schedule, onOpenReplay }: { language: Language; copy: UiCopy; schedule: MatchScheduleItem[]; onOpenReplay: (id: string) => void }) {
   const text = tournamentCopy[language];
   const teams = useMemo(() => {
     const map = new Map<string, Team>();
@@ -1846,12 +1896,12 @@ function TournamentView({ language, copy, onOpenReplay }: { language: Language; 
   const selectedMatches = txlineArchiveMatches.filter((match) => match.home.code === selectedCode || match.away.code === selectedCode);
   const round16 = txlineArchiveMatches.filter((match) => match.stage === "Round of 16");
   const quarter = txlineArchiveMatches.filter((match) => match.stage === "Quarter-final");
-  const currentFixtures = dataConsistencyState.today.filter((item) => item.dataStatus !== "Replay").slice(0, 4);
+  const currentFixtures = schedule.filter((item) => item.status === "scheduled" && !item.home.code.endsWith("XX") && !item.away.code.endsWith("XX")).slice(0, 4);
 
   return <section className="tournament-view">
     <header className="tournament-intro"><div><p className="overline">{text.verified}</p><h2>{text.subtitle}</h2></div><p>{text.sourceRule}</p></header>
 
-    <section className="tournament-band current-fixtures"><SectionHeading eyebrow={copy.schedule} title={text.current} /><div className="current-fixture-grid">{currentFixtures.map((item) => <article key={item.id}><div><span className="data-chip seed">{dataStatusLabel(item.dataStatus, copy)}</span><small>{formatKickoffLabel(item.kickoffIso, language)}</small></div><strong>{item.homeCode} <b>vs</b> {item.awayCode}</strong><p>{currentFixtureNote(language)}</p></article>)}</div></section>
+    {currentFixtures.length ? <section className="tournament-band current-fixtures"><SectionHeading eyebrow={copy.schedule} title={text.current} /><div className="current-fixture-grid">{currentFixtures.map((item) => <article key={item.id}><div><span className="data-chip seed">{dataStatusLabel(item.dataStatus, copy)}</span>{item.kickoffIso ? <small>{formatKickoffLabel(item.kickoffIso, language)}</small> : null}</div><strong>{teamName(item.home, language)} <b>vs</b> {teamName(item.away, language)}</strong><p>{currentFixtureNote(language)}</p></article>)}</div></section> : null}
 
     <section className="tournament-band"><SectionHeading eyebrow="2026" title={text.archive} /><div className="archive-match-grid">{txlineArchiveMatches.map((archive) => {
       const finalEvent = archive.events.filter((event) => event.type === "fulltime").at(-1) ?? archive.events.at(-1);
@@ -1869,12 +1919,12 @@ function TournamentView({ language, copy, onOpenReplay }: { language: Language; 
       <BracketLane title={text.champion} matches={[]} waiting={text.waiting} champion />
     </div></div></section>
 
-    {selectedTeam ? <section className="tournament-band team-detail-panel"><div className="team-detail-heading"><div className="profile-top"><span className="team-code" style={{ backgroundColor: selectedTeam.color }}>{selectedTeam.code}</span><div><p className="overline">{text.teamDetail}</p><h2>{teamName(selectedTeam, language)}</h2></div></div><div className="team-switcher">{[...teams.values()].map((team) => <button className={team.code === selectedCode ? "active" : ""} type="button" key={team.code} onClick={() => setSelectedCode(team.code)}>{team.code}</button>)}</div></div><div className="team-detail-grid"><div><span>{copy.schedule}</span><strong>{selectedMatches.length}</strong><p>{selectedMatches.map((item) => `${teamName(item.home, language)} ${item.events.at(-1)?.homeScore ?? 0}-${item.events.at(-1)?.awayScore ?? 0} ${teamName(item.away, language)}`).join(" · ")}</p></div><div><span>{text.sourcePlayers}</span><strong>{selectedTeam.keyPlayers?.length ?? 0}</strong><p>{selectedTeam.keyPlayers?.length ? selectedTeam.keyPlayers.map((player) => language === "en" ? `${player.name} · ${player.role}` : player.name).join(" · ") : copy.teamPending}</p></div><div><span>{copy.dataQuality}</span><strong>{text.verified}</strong><p>{copy.onlyVerified}</p></div></div></section> : null}
+    {selectedTeam ? <section className="tournament-band team-detail-panel"><div className="team-detail-heading"><div className="profile-top"><span className="team-code" style={{ backgroundColor: selectedTeam.color }}>{selectedTeam.code}</span><div><p className="overline">{text.teamDetail}</p><h2>{teamName(selectedTeam, language)}</h2></div></div><div className="team-switcher">{[...teams.values()].map((team) => <button className={team.code === selectedCode ? "active" : ""} type="button" key={team.code} onClick={() => setSelectedCode(team.code)}>{team.code}</button>)}</div></div><div className="team-detail-grid"><div><span>{copy.schedule}</span><strong>{selectedMatches.length}</strong><p>{selectedMatches.map((item) => `${teamName(item.home, language)} ${item.events.at(-1)?.homeScore ?? 0}-${item.events.at(-1)?.awayScore ?? 0} ${teamName(item.away, language)}`).join(" · ")}</p></div>{selectedTeam.keyPlayers?.length ? <div><span>{text.sourcePlayers}</span><strong>{selectedTeam.keyPlayers.length}</strong><p>{selectedTeam.keyPlayers.map((player) => language === "en" ? `${player.name} · ${player.role}` : player.name).join(" · ")}</p></div> : null}<div><span>{copy.dataQuality}</span><strong>{text.verified}</strong><p>{copy.onlyVerified}</p></div></div></section> : null}
   </section>;
 }
 
 function BracketLane({ title, matches, waiting, onOpen, champion = false }: { title: string; matches: MatchData[]; waiting: string; onOpen?: (id: string) => void; champion?: boolean }) {
-  return <section className={`bracket-lane ${champion ? "champion" : ""}`}><header><span>{title}</span><b>{matches.length || "--"}</b></header><div>{matches.length ? matches.map((match) => {
+  return <section className={`bracket-lane ${champion ? "champion" : ""}`}><header><span>{title}</span><b>{matches.length}</b></header><div>{matches.length ? matches.map((match) => {
     const finalEvent = match.events.filter((event) => event.type === "fulltime").at(-1) ?? match.events.at(-1);
     return <button type="button" key={match.id} onClick={() => onOpen?.(match.id)}><span>{match.home.code} <b>{finalEvent?.homeScore ?? 0}</b></span><span>{match.away.code} <b>{finalEvent?.awayScore ?? 0}</b></span></button>;
   }) : <p>{waiting}</p>}</div></section>;
@@ -1897,7 +1947,7 @@ function currentFixtureNote(language: Language) {
   return "Fixture and kickoff confirmed.";
 }
 
-function TeamsView({ copy, language, match, schedule }: { copy: UiCopy; language: Language; match: MatchData; schedule: MatchScheduleItem[] }) {
+function TeamsView({ copy, language, match, schedule, onOpenReplay }: { copy: UiCopy; language: Language; match: MatchData; schedule: MatchScheduleItem[]; onOpenReplay: (id: string) => void }) {
   const sourceTeams = new Map<string, { team: Team; status: MatchData["dataStatus"] }>();
   const statusPriority = { Live: 4, Delay: 3, Replay: 2, Seed: 1 } as const;
   const addTeam = (team: Team, status: MatchData["dataStatus"]) => {
@@ -1916,16 +1966,47 @@ function TeamsView({ copy, language, match, schedule }: { copy: UiCopy; language
   return <section className="teams-view"><SectionHeading eyebrow={copy.teams} title={copy.sourceTeams} /><p className="muted-copy">{copy.onlyVerified}</p><div className="atlas-grid source-atlas">{[...sourceTeams.values()].map(({ team, status }) => {
     const fixtures = schedule.filter((item) => item.home.code === team.code || item.away.code === team.code);
     const opponents = [...new Set(fixtures.map((item) => item.home.code === team.code ? item.away.code : item.home.code))];
-    return <article className="team-guide-card source-team-card" key={team.code}><div className="profile-top"><span className="team-code" style={{ backgroundColor: team.color }}>{team.code}</span><div><h2>{teamName(team, language)}</h2></div></div><div className="source-team-facts"><span><small>{copy.schedule}</small><strong>{fixtures.length}</strong></span><span><small>{copy.next}</small><strong>{opponents.slice(0, 3).map((code) => localizeTeamName(code, code, language)).join(" · ") || "--"}</strong></span></div><div className="team-guide-status"><span>{copy.dataQuality}</span><strong>{dataStatusLabel(status, copy)}</strong></div>{team.keyPlayers?.length ? <details><summary>{copy.players}</summary><div className="source-player-list">{team.keyPlayers.map((player) => <span key={player.name}><strong>{player.name}</strong>{language === "en" ? <small>{player.position} · {player.role}</small> : null}</span>)}</div></details> : <p>{copy.teamPending}</p>}</article>;
-  })}</div><details className="reference-atlas"><summary>{copy.referenceTeams}</summary><p className="muted-copy">{copy.replaySnapshot}</p><div className="atlas-grid">{teamAtlas.map((guide) => <article className="team-guide-card" key={guide.code}><div className="profile-top"><span className="team-code" style={{ backgroundColor: guide.colors[0] }}>{guide.code}</span><div><h2>{guide.name}</h2>{language === "en" ? <span>{guide.region}</span> : null}</div></div>{language === "en" ? <p>{guide.style}</p> : null}<div className="team-guide-status"><span>{copy.dataQuality}</span><strong>{teamGuideStatusLabel(guide.status, copy)}</strong></div><details><summary>{copy.players}</summary><p>{guide.keyPlayers.join(" · ")}</p>{language === "en" ? <p>{guide.watchFor}</p> : null}</details></article>)}</div></details></section>;
+    const archive = summarizeArchiveTeam(team.code);
+    const sourcePlayers = archive.matches.flatMap((item) => item.home.code === team.code ? item.home.keyPlayers ?? [] : item.away.keyPlayers ?? []);
+    const uniquePlayers = [...new Map(sourcePlayers.map((player) => [player.name, player])).values()];
+    return <article className="team-guide-card source-team-card" key={team.code}>
+      <div className="profile-top"><span className="team-code" style={{ backgroundColor: team.color }}>{team.code}</span><div><h2>{teamName(team, language)}</h2></div></div>
+      <div className="source-team-facts"><span><small>{copy.schedule}</small><strong>{fixtures.length}</strong></span>{opponents.length ? <span><small>{copy.next}</small><strong>{opponents.slice(0, 3).map((code) => localizeTeamName(code, code, language)).join(" · ")}</strong></span> : null}</div>
+      <div className="team-guide-status"><span>{copy.dataQuality}</span><strong>{dataStatusLabel(status, copy)}</strong></div>
+      {archive.matches.length ? <section className="source-team-record">
+        <div className="source-record-heading"><strong>2026</strong><span>{copy.replayFeed}</span></div>
+        <div className="source-record-stats">
+          <span><small>{copy.replay}</small><b>{archive.matches.length}</b></span>
+          <span><small>{copy.wins}</small><b>{archive.wins}</b></span>
+          <span><small>{copy.goals}</small><b>{archive.goalsFor}:{archive.goalsAgainst}</b></span>
+          <span><small>{copy.yellow} / {copy.red}</small><b>{archive.yellow}:{archive.red}</b></span>
+        </div>
+        <details><summary>{copy.replayLibrary} · {archive.matches.length}</summary><div className="team-archive-list">{archive.matches.map((archiveMatch) => {
+          const finalEvent = archiveMatch.events.filter((event) => event.type === "fulltime").at(-1) ?? archiveMatch.events.at(-1);
+          return <button className="team-archive-match" type="button" key={archiveMatch.id} onClick={() => onOpenReplay(archiveMatch.id)}><span>{archiveMatch.home.code} {finalEvent?.homeScore ?? 0}:{finalEvent?.awayScore ?? 0} {archiveMatch.away.code}</span><small>{localizedStage(archiveMatch.stage, tournamentCopy[language])}</small><b>→</b></button>;
+        })}</div></details>
+      </section> : null}
+      {uniquePlayers.length ? <details><summary>{copy.players} · {uniquePlayers.length}</summary><div className="source-player-list">{uniquePlayers.map((player) => <span key={player.name}><strong>{player.name}</strong><small>{player.role}</small></span>)}</div></details> : null}
+    </article>;
+  })}</div></section>;
 }
 
-function teamGuideStatusLabel(status: string, copy: UiCopy) {
-  const normalized = status.toLowerCase();
-  if (normalized.includes("replay") && normalized.includes("schedule")) return `${copy.replay} + ${copy.seed}`;
-  if (normalized.includes("replay")) return copy.replay;
-  if (normalized.includes("txline")) return copy.officialFeed;
-  return copy.seed;
+function summarizeArchiveTeam(code: string) {
+  const matches = txlineArchiveMatches.filter((item) => item.home.code === code || item.away.code === code);
+  return matches.reduce((summary, item) => {
+    const isHome = item.home.code === code;
+    const finalEvent = item.events.filter((event) => event.type === "fulltime").at(-1) ?? item.events.at(-1);
+    const goalsFor = finalEvent ? (isHome ? finalEvent.homeScore : finalEvent.awayScore) : 0;
+    const goalsAgainst = finalEvent ? (isHome ? finalEvent.awayScore : finalEvent.homeScore) : 0;
+    return {
+      matches,
+      wins: summary.wins + (goalsFor > goalsAgainst ? 1 : 0),
+      goalsFor: summary.goalsFor + goalsFor,
+      goalsAgainst: summary.goalsAgainst + goalsAgainst,
+      yellow: summary.yellow + item.events.filter((event) => event.type === "yellow_card" && event.team === code).length,
+      red: summary.red + item.events.filter((event) => event.type === "red_card" && event.team === code).length,
+    };
+  }, { matches, wins: 0, goalsFor: 0, goalsAgainst: 0, yellow: 0, red: 0 });
 }
 
 function KeyPlayersStrip({ copy, match, language }: { copy: UiCopy; match: MatchData; language: Language }) {
@@ -1938,8 +2019,8 @@ function KeyPlayersStrip({ copy, match, language }: { copy: UiCopy; match: Match
 }
 
 function ScheduleBoard({ copy, items, selectedId, onOpenReplay, language }: { copy: UiCopy; items: MatchScheduleItem[]; selectedId: string; onOpenReplay: (id: string) => void; language: Language }) {
-  const visibleItems = items.slice(0, 8);
-  return <section className="section-block schedule-block"><SectionHeading eyebrow={copy.schedule} title={copy.advancement} /><div className="schedule-list">{visibleItems.length ? visibleItems.map((item) => { const isReplay = item.dataStatus === "Replay"; const status = scheduleStatusLabel(item, copy); const hasMoments = typeof item.eventCount === "number" && item.eventCount > 0; return <article className={`schedule-card ${item.id === selectedId ? "selected" : ""}`} key={item.id}><div className="schedule-card-top"><span className={`source-pill ${status.tone}`}>{status.label}</span><small>{stageLabel(item.stage, item.stage, copy, language)}</small></div><strong>{scheduleTeamLabel(item.home.code, copy)} <b>vs</b> {scheduleTeamLabel(item.away.code, copy)}</strong><span className="schedule-score">{typeof item.homeScore === "number" && typeof item.awayScore === "number" && item.status !== "scheduled" ? `${item.homeScore} - ${item.awayScore}` : "— : —"}</span><small>{item.kickoffIso ? formatKickoffLabel(item.kickoffIso, language) : copy.scheduled}</small>{hasMoments ? <div className="schedule-moments"><span>{copy.events} {item.eventCount}</span><span>{copy.goals} {item.goalCount ?? 0}</span><span>{copy.extraTime} {item.extraTime ? "✓" : "—"}</span></div> : null}<p>{scheduleNote(item, copy)}</p>{isReplay ? <button className="schedule-open" type="button" onClick={() => onOpenReplay(item.id)}>{copy.replay}<span>→</span></button> : null}</article>; }) : <p className="empty-state">{copy.noEvents}</p>}</div><div className="schedule-replay-links"><strong>{copy.replayLibrary}</strong>{replayMatches.slice(0, 3).map((candidate) => <button type="button" key={candidate.id} onClick={() => onOpenReplay(candidate.id)}>{candidate.home.code} vs {candidate.away.code}<span>→</span></button>)}</div></section>;
+  const visibleItems = items.filter((item) => !item.home.code.endsWith("XX") && !item.away.code.endsWith("XX")).slice(0, 8);
+  return <section className="section-block schedule-block"><SectionHeading eyebrow={copy.schedule} title={copy.advancement} /><div className="schedule-list">{visibleItems.length ? visibleItems.map((item) => { const isReplay = item.dataStatus === "Replay"; const status = scheduleStatusLabel(item, copy); const hasMoments = typeof item.eventCount === "number" && item.eventCount > 0; return <article className={`schedule-card ${item.id === selectedId ? "selected" : ""}`} key={item.id}><div className="schedule-card-top"><span className={`source-pill ${status.tone}`}>{status.label}</span><small>{stageLabel(item.stage, item.stage, copy, language)}</small></div><strong>{teamName(item.home, language)} <b>vs</b> {teamName(item.away, language)}</strong>{typeof item.homeScore === "number" && typeof item.awayScore === "number" && item.status !== "scheduled" ? <span className="schedule-score">{item.homeScore} - {item.awayScore}</span> : null}{item.kickoffIso ? <small>{formatKickoffLabel(item.kickoffIso, language)}</small> : null}{hasMoments ? <div className="schedule-moments"><span>{copy.events} {item.eventCount}</span><span>{copy.goals} {item.goalCount ?? 0}</span>{item.extraTime ? <span>{copy.extraTime} ✓</span> : null}</div> : null}<p>{scheduleNote(item, copy)}</p>{isReplay ? <button className="schedule-open" type="button" onClick={() => onOpenReplay(item.id)}>{copy.replay}<span>→</span></button> : null}</article>; }) : <p className="empty-state">{copy.noEvents}</p>}</div><div className="schedule-replay-links"><strong>{copy.replayLibrary}</strong>{replayMatches.slice(0, 3).map((candidate) => <button type="button" key={candidate.id} onClick={() => onOpenReplay(candidate.id)}>{candidate.home.code} vs {candidate.away.code}<span>→</span></button>)}</div></section>;
 }
 
 function scheduleNote(item: MatchScheduleItem, copy: UiCopy) {
@@ -1960,10 +2041,6 @@ function scheduleStatusLabel(item: MatchScheduleItem, copy: UiCopy) {
 
 function GroupTable({ table, home, away, title }: { table: NonNullable<MatchData["groupTable"]>; home: string; away: string; title: string }) {
   return <div className="group-table" aria-label={title}><strong>{title}</strong>{table.map((standing) => <div className={`group-row ${standing.teamCode === home || standing.teamCode === away ? "focus" : ""}`} key={standing.teamCode}><span>{standing.teamCode}</span><span>{standing.played} GP</span><b>{standing.points} pts</b><small>{standing.status}</small></div>)}</div>;
-}
-
-function TeamProfile({ copy, team }: { copy: UiCopy; team: Team }) {
-  return <article className="team-profile-card"><div className="profile-top"><span className="team-code" style={{ backgroundColor: team.color }}>{team.code}</span><div><h2>{teamName(team)}</h2><span>{team.group ?? "World Cup"}</span></div></div><dl><div><dt>{copy.coach}</dt><dd>{team.coach ?? "--"}</dd></div><div><dt>{copy.dataQuality}</dt><dd>{team.record ?? "Source profile"}</dd></div></dl><details open><summary>{copy.players}</summary><div className="player-stack">{(team.keyPlayers ?? []).map((player) => <div key={player.name}><strong>{player.name}</strong><span>{player.position} / {player.role}</span><p>{player.note}</p></div>)}</div></details></article>;
 }
 
 function SettingsDrawer({ copy, language, setLanguage, helperUrl, source, onRefresh, onResetPoints, onClose }: { copy: UiCopy; language: Language; setLanguage: (language: Language) => void; helperUrl: string; source: DataSourceState | null; onRefresh: () => void; onResetPoints: () => void; onClose: () => void }) {

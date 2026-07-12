@@ -105,6 +105,14 @@ try {
   assert.equal(await elementCount(cdp, ".commentary-audio"), 1);
   assert.match(await blockText(cdp, ".hero-ai-brief"), /法国 2-0 摩洛哥/);
   assert.doesNotMatch(await blockText(cdp, ".hero-ai-brief"), /France|Morocco/);
+  assert.equal(await elementCount(cdp, ".follow-button"), 1);
+  await evaluate(cdp, "document.querySelector('.follow-button').click(); true");
+  await waitForCondition(cdp, "Boolean(localStorage.getItem('wclp-followed-match'))", 5_000);
+  assert.equal(await elementCount(cdp, ".follow-button.active"), 1);
+  await evaluate(cdp, "document.querySelector('.follow-button').click(); true");
+  await waitForCondition(cdp, "!localStorage.getItem('wclp-followed-match')", 5_000);
+  assert.equal(await elementCount(cdp, ".follow-button.active"), 0);
+  assert.equal(await elementCount(cdp, ".official-video-links a"), 3);
   const desktopCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
   await fs.writeFile(path.resolve("demo-assets/desktop-final.png"), Buffer.from(desktopCapture.data, "base64"));
 
@@ -155,13 +163,14 @@ try {
     archiveCards: document.querySelectorAll('.archive-match-card').length,
     bracketLanes: document.querySelectorAll('.bracket-lane').length,
     currentCards: document.querySelectorAll('.current-fixture-grid article').length,
+    currentBand: Boolean(document.querySelector('.current-fixtures')),
     detail: Boolean(document.querySelector('.team-detail-panel')),
     text: document.querySelector('.tournament-view')?.innerText ?? '',
   })`);
   assert.equal(tournamentLayout.scrollWidth, tournamentLayout.viewport);
   assert.equal(tournamentLayout.archiveCards, 8);
   assert.equal(tournamentLayout.bracketLanes, 6);
-  assert.ok(tournamentLayout.currentCards >= 3);
+  assert.equal(tournamentLayout.currentBand, tournamentLayout.currentCards > 0);
   assert.equal(tournamentLayout.detail, true);
   assert.match(tournamentLayout.text, /FRA|法国|France/);
   assert.match(tournamentLayout.text, /2-0/);
@@ -179,8 +188,10 @@ try {
   await evaluate(cdp, "document.querySelectorAll('.primary-nav button')[2].click(); true");
   await wait(300);
   const teamsText = await blockText(cdp, ".teams-view");
-  assert.doesNotMatch(teamsText, /TBD|undefined|待定队伍/);
+  assert.doesNotMatch(teamsText, /TBD|undefined|待定队伍|资料更新|待补充/);
   assert.ok((await elementCount(cdp, ".source-team-card")) >= 2);
+  assert.ok((await elementCount(cdp, ".source-team-record")) >= 1);
+  assert.ok((await elementCount(cdp, ".team-archive-match")) >= 1);
   const teamsCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
   await fs.writeFile(path.resolve("demo-assets/teams-final.png"), Buffer.from(teamsCapture.data, "base64"));
 
@@ -209,7 +220,7 @@ try {
   assert.doesNotMatch(await evaluate(cdp, "document.body.innerText"), /VITE_TXLINE_API_TOKEN|Bearer\s+[A-Za-z0-9_-]+/);
   assert.deepEqual(runtimeIssues, []);
 
-  console.log("PASS browser challenge, verified 2026 tournament/replays, World Cup-only teams, eight languages, settings safety, and desktop/mobile layouts");
+  console.log("PASS browser challenge, followed-match toggle, official watch links, verified 2026 tournament/replays, World Cup-only teams, eight languages, settings safety, and desktop/mobile layouts");
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.close();
   const edgeExit = once(edge, "exit").catch(() => undefined);

@@ -304,6 +304,12 @@ summary:focus-visible {
   font-size: 20px;
 }
 
+.follow-button.active {
+  border-color: #d6a91c;
+  background: #fff3c4;
+  color: #6f5200;
+}
+
 .settings-button,
 .secondary-button {
   display: inline-flex;
@@ -2012,6 +2018,105 @@ details summary {
   overflow-wrap: anywhere;
   color: var(--md-ink);
   font-size: 11px;
+}
+
+.source-team-record {
+  display: grid;
+  gap: 9px;
+  padding: 10px;
+  border: 1px solid #dce8e3;
+  border-radius: 6px;
+  background: #f7faf8;
+}
+
+.source-record-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.source-record-heading strong {
+  color: var(--md-teal);
+  font-size: 11px;
+}
+
+.source-record-heading span {
+  color: var(--md-muted);
+  font-size: 9px;
+  text-align: right;
+}
+
+.source-record-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.source-record-stats > span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 7px 5px;
+  border-radius: 5px;
+  background: #eaf2ee;
+  text-align: center;
+}
+
+.source-record-stats small {
+  overflow: hidden;
+  color: var(--md-muted);
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.source-record-stats b {
+  color: var(--md-ink);
+  font-size: 12px;
+}
+
+.source-team-record summary {
+  color: var(--md-teal);
+  font-size: 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.team-archive-list {
+  display: grid;
+  gap: 5px;
+  margin-top: 7px;
+}
+
+.team-archive-match {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 7px 8px;
+  border: 1px solid #dce8e3;
+  border-radius: 5px;
+  background: #fff;
+  color: var(--md-ink);
+  font: inherit;
+  font-size: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.team-archive-match small {
+  color: var(--md-muted);
+  font-size: 8px;
+}
+
+.team-archive-match b {
+  color: var(--md-teal);
+}
+
+.team-archive-match:hover {
+  border-color: var(--md-teal);
 }
 
 .source-player-list {

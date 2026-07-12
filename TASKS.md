@@ -2,6 +2,10 @@
 
 Updated: 2026-07-12
 
+Current round's single controlling checklist: `docs/ROUND_MASTER_TASKS_2026-07-12.md`.
+Concise final release gate: `docs/FINAL_RELEASE_TASKS.md`.
+Current fan-first research and implementation list: `docs/FAN_PRODUCT_RESEARCH_2026-07-12.md` and `docs/FAN_FIRST_ITERATION_TASKS.md`.
+
 ## Done locally
 
 - [x] Create clean Vite + React + TypeScript project
@@ -217,6 +221,9 @@ Every official requirement must be implemented as a useful, testable product loo
 - [x] Treat every published judging requirement as the minimum, then extend it into two or three connected fan benefits that can be demonstrated and tested.
 - [x] Reject decorative feature count: every extension must either shorten the fan's path, improve freshness/trust, deepen a match story, or increase repeat engagement.
 - [x] Keep source truth stronger than visual richness: confirmed details may be expanded; missing player names, stages, winners, odds, or video rights stay blank or explicitly pending.
+- [x] Do not render an empty field or "updating / pending" placeholder when no source exists; omit the field entirely until a verified value is available.
+- [x] Build 2026 team records only from authenticated archive finals and events: matches, wins, goals for/against, cards, source player IDs, and replay links.
+- [x] Drive the current tournament schedule from the active adapter response; never keep a past static fixture in the current-match lane.
 - [x] Keep the primary view immediately understandable to a non-technical fan; endpoint, token, cache, proxy, and diagnostics remain collapsed in Settings or documentation.
 - [x] Make depth progressive: score challenge and current match first, verified events and AI brief second, schedule/replay and team details on demand.
 - [ ] Final acceptance requires the same feature loop to pass local data tests, browser interaction tests, mobile layout review, language review, and the public deployment check.

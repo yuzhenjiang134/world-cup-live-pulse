@@ -93,18 +93,29 @@ const requiredAppMarkers = [
   ["fixture-keyed challenge ledger", "pickLedgerKey"],
   ["single-settlement guard", "settlementGuardRef"],
   ["verified demo season", "demoSeasonHistory"],
+  ["source-derived 2026 team records", "summarizeArchiveTeam"],
+  ["active tournament schedule", "schedule={schedule}"],
   ["focus-triggered refresh", 'addEventListener("focus"'],
   ["event-driven AI live region", 'className="hero-ai-brief"'],
   ["schedule moment summaries", "schedule-moments"],
   ["source-first team facts", "source-team-facts"],
   ["localized event descriptions", "localizeEventDescription"],
   ["official video sources", "officialVideoSources"],
+  ["followed-match persistence", "wclp-followed-match"],
+  ["verified event browser alerts", "Notification.permission"],
+  ["official tournament updates entry", "officialUpdates"],
   ["replay mode boundary", 'setMode("replay")'],
 ];
 for (const [label, marker] of requiredAppMarkers) {
   if (appSource.includes(marker)) pass(`App contains ${label}`);
   else fail(`App is missing ${label}`);
 }
+
+if (!appSource.includes("teamPending")) pass("Fan UI removes unsourced team placeholders");
+else fail("Fan UI still contains unsourced team placeholders");
+
+if (!appSource.includes('|| "--"')) pass("Fan UI omits unsourced fallback fields");
+else fail("Fan UI still renders an unsourced double-dash fallback");
 
 for (const forbidden of ["比分源", "赛程种子", "下一个信号", "当前数据球队", "数据规则"]) {
   if (appSource.includes(`"${forbidden}"`)) fail(`User interface still contains developer wording: ${forbidden}`);

@@ -1,5 +1,24 @@
 # World Cup Live Pulse Work Log
 
+## 2026-07-12: Single controlling task plan
+
+- Consolidated the user's full product, data, UX, language, safety, local-release, online-release, demo-video, and submission requirements into `docs/ROUND_MASTER_TASKS_2026-07-12.md`.
+- Fixed the release order as local three-round acceptance, fresh official-requirements audit, same-SHA online verification, final demo recording, then submission.
+- Made the no-source/no-field rule a release blocker: no guessed values, empty placeholders, stale current fixtures, invented odds, or unsupported player/team detail may reach the fan UI.
+- Preserved the score challenge as the highest-weight fan interaction while keeping it local-only, non-cash, wallet-free, fixture-keyed, and verified-final-settled.
+- Added the new master task plan and fan research documents to automated preflight coverage.
+
+## 2026-07-12: Followed-match and final local evidence pass
+
+- Added a persistent follow / unfollow control for the selected match. It establishes the current event as a baseline and only attempts a browser notification for a later verified normalized event.
+- Kept following useful when notification permission is unavailable: the in-page state persists locally and notification failures never interrupt the match experience.
+- Added the third official FIFA tournament-updates entry beside the FIFA+ archive and highlights links.
+- Extended browser E2E to verify follow persistence, unfollow cleanup, all three official links, challenge settlement persistence, tournament/archive content, source-derived team records, eight languages, RTL, and zero horizontal overflow at 390px.
+- Reviewed the generated desktop, mobile, tournament, and team screenshots. The main hierarchy, mobile framing, dynamic current schedule, 2026 archive cards, and source-derived team records remain readable without placeholder fields.
+- Ran two authenticated TxLINE probes on the final local data pass. Both returned 3 World Cup fixture records, 42 score records for fixture `18222446`, and 0 official odds records. No token value was printed, and empty official odds remain hidden.
+- Re-ran the exact release worktree sequentially after one parallel-test socket interruption: full validation, production build, browser E2E, `git diff --check`, and the security scan all passed without runtime errors.
+- Re-opened the official track on 2026-07-12. It remains open with 16,000 USDT total prizes, an up-to-five-minute demo as an initial-screening requirement, working application/public repository/technical endpoint documentation/API feedback requirements, and the same five judging criteria. The syncing submission counter returned 30 and then 25 in consecutive reads, so the project continues to treat it as dynamic rather than a stable fact.
+
 ## 2026-07-10: Match center and legal watch path
 
 This iteration keeps the product aligned to the Consumer and Fan Experiences submission goal.
@@ -103,3 +122,6 @@ npm run txline:probe
 - Passed TypeScript, 8-language/96-key UTF-8 validation, event-driven AI tests, and the product/data truth audit after this pass.
 - Re-ran the authenticated TxLINE probe twice after the UI pass: both runs returned 3 World Cup fixtures, 42 score records for fixture `18222446`, and 0 official-odds records. The app's empty-odds boundary remains correct.
 - Re-opened the official track page twice: its syncing submission counter moved from 25 to 27 while the 16,000 USDT prize split and July 29 announcement stayed unchanged. Dynamic listing counts are no longer treated as fixed product facts.
+- Enforced a no-source/no-field rule in the fan UI: removed pending player/coach placeholders, old 2022 team reference profiles, empty official-odds cells, scheduled-match event counters, and empty accuracy fields.
+- Replaced the tournament page's static current-fixture lane with the active adapter schedule, so past fallback fixtures cannot remain labeled as upcoming.
+- Added source-derived 2026 team records with verified archive appearances, wins, goals for/against, cards, source player IDs, and direct replay entry points.
