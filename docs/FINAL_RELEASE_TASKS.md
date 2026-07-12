@@ -39,20 +39,22 @@ Current fan-product research and iteration plan: `docs/FAN_PRODUCT_RESEARCH_2026
 
 ## Online release
 
-- [ ] Commit and push the exact locally accepted worktree.
-- [ ] Confirm GitHub CI and GitHub Pages both succeed on the same commit SHA.
-- [ ] Run the full browser E2E against the deployed GitHub Pages subpath.
-- [ ] Verify public mobile width, score settlement persistence, eight languages, replay navigation, official links, and absence of runtime errors.
-- [ ] Verify the public bundle contains no private token or credential.
-- [ ] Keep authenticated TxLINE credentials local until a separately authorized secure server deployment is available; never expose them through GitHub Pages.
+- [x] Commit and push the exact locally accepted worktree.
+- [x] Confirm GitHub CI and GitHub Pages both succeed on commit `547986f5a20327faeaf219a21a04deeb1441a1c6`.
+- [x] Run the full browser E2E against the deployed GitHub Pages subpath.
+- [x] Verify public mobile width, score settlement persistence, eight languages, replay navigation, official links, and absence of runtime errors.
+- [x] Verify the public bundle contains no private token or credential.
+- [x] Keep authenticated TxLINE credentials local until a separately authorized secure server deployment is available; never expose them through GitHub Pages.
+
+Online acceptance record: `https://yuzhenjiang134.github.io/world-cup-live-pulse/`, verified 2026-07-13 00:55 Asia/Shanghai. Public assets: `assets/index-BF7xqFN2.js` and `assets/index-Cmfaox4S.css`.
 
 ## Demo video
 
-- [ ] Record only after the final online build passes every audit.
-- [ ] Keep the video under five minutes and show the normal fan UI, not developer tools.
-- [ ] Show the score challenge first, one locked pick, verified settlement, replay events, AI brief and speech, tournament path, team record, language switch, and source freshness.
-- [ ] Show TxLINE endpoint usage and security/data boundaries through captions or the documented technical section; never reveal `.env.local`, token, JWT, wallet, or browser storage.
-- [ ] Review the full video twice for accuracy, legibility, audio, pacing, and accidental secret exposure.
+- [x] Record only after the final online build passes every audit.
+- [x] Keep both candidate videos under five minutes and show the normal fan UI, not developer tools.
+- [x] Show the score challenge first, verified settlement, replay events, AI brief, tournament path, team records, global/mobile usability, and source freshness.
+- [x] Show TxLINE endpoint usage and security/data boundaries through captions and English narration; never reveal `.env.local`, token, JWT, wallet, or browser storage.
+- [x] Review both A/B candidates twice for media integrity, accuracy, legibility, audio, pacing, narration clipping, and accidental secret exposure; select B as the final candidate.
 - [ ] Upload the final video to the selected public host and verify playback without login.
 
 ## Submission audit and upload

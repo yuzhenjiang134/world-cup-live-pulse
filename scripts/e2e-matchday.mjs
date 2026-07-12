@@ -252,11 +252,12 @@ try {
 }
 
 async function waitForTarget(debugPort, browserProcess) {
-  const deadline = Date.now() + 15_000;
+  const deadline = Date.now() + 30_000;
   while (Date.now() < deadline) {
     try {
       const targets = await fetch(`http://127.0.0.1:${debugPort}/json`).then((response) => response.json());
-      const target = targets.find((item) => item.type === "page");
+      const target = targets.find((item) => item.type === "page" && /^https?:/.test(item.url))
+        ?? targets.find((item) => item.type === "page" && item.url !== "about:blank");
       if (target) return target;
     } catch {
       // Edge is still starting.
@@ -339,7 +340,8 @@ async function removeProfileWithRetry(profilePath) {
       await fs.rm(profilePath, { recursive: true, force: true });
       return;
     } catch (error) {
-      if (error?.code !== "EBUSY" || attempt === 4) throw error;
+      const retryable = new Set(["EBUSY", "ENOTEMPTY", "EPERM"]);
+      if (!retryable.has(error?.code) || attempt === 4) throw error;
       await wait(500 * (attempt + 1));
     }
   }

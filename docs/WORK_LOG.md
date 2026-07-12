@@ -1,5 +1,22 @@
 # World Cup Live Pulse Work Log
 
+## 2026-07-13: Two-version demo and double review
+
+- Rebuilt the demo story from the accepted 2026 release instead of reusing the stale July 1 draft. Variant A is the fan journey; variant B maps the same product to judging, data trust, and commercial value.
+- Generated current 1280x720 captioned screenshots from the final E2E artifacts and produced English-narrated H.264/AAC MP4 candidates without opening credentials, wallet UI, browser storage, or personal accounts.
+- Candidate A is 3:00 and 41,736,152 bytes. Candidate B is 3:20 and 46,130,372 bytes. Both remain below the five-minute limit.
+- Ran two complete audio/video decode passes for each final candidate. All four passes completed with zero corrupt/decode-error markers.
+- Audited every narration segment against its scene duration and corrected the first cut's clipped opening/closing margins. The final A/B narration sets have zero clipping-risk scenes.
+- Inspected representative opening, product, data-boundary, commercial-value, and closing frames. Variant B is the stronger submission candidate because it explicitly covers the five judging dimensions while preserving the fan-first product story.
+
+## 2026-07-13: Same-SHA online acceptance
+
+- Published release candidate `547986f5a20327faeaf219a21a04deeb1441a1c6` to `https://yuzhenjiang134.github.io/world-cup-live-pulse/`.
+- Confirmed both `CI` and `Deploy GitHub Pages` completed successfully for that same commit.
+- Re-ran the complete public-site E2E against the GitHub Pages subpath: score challenge and persistence, key-event shortcuts, spoiler-free replay, follow toggle, official links, tournament, teams, eight languages, Arabic RTL, and the 390px layout all passed without runtime errors.
+- Re-fetched the public assets and completed a second secret/feature audit. `assets/index-BF7xqFN2.js` and `assets/index-Cmfaox4S.css` contain the current key-event and spoiler-free controls and no detected private token, JWT, wallet secret, or `.env.local` content.
+- Closed the online release gate and moved the project into the two-version demo recording and double-review phase.
+
 ## 2026-07-12: Three-research, three-test, two-demo release contract
 
 - Re-locked the fan value order as trustworthy score/state, complete key events, readable schedule/progression, fast replay catch-up, then score challenge and AI interaction.

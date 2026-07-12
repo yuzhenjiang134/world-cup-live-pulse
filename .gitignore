@@ -8,4 +8,8 @@ demo-assets/screenshots/
 demo-assets/*.png
 demo-assets/*.webm
 demo-assets/*.mp4
+demo-assets/*.wav
+demo-assets/render-*/
+demo-assets/narration-*/
 demo-assets/video-status.json
+scripts/__pycache__/

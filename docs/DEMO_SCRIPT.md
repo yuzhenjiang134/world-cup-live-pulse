@@ -1,60 +1,51 @@
-# Demo Video Script
+# Final Demo Script
 
-Target length: 3:06. Maximum allowed: 5:00.
+Selected version: B, judging and data-trust cut. Target duration: 3:20. Maximum: 5:00. Both reviewed candidates remain below five minutes.
 
-## 0:00-0:14 — Problem and product
+## 0:00-0:14 - Product
 
-World Cup Live Pulse is a fan-first second screen for the Consumer and Fan Experiences track. It turns verified match data into a score challenge, live pulse, and replayable match story that ordinary fans can understand at a glance.
+World Cup Live Pulse combines real-time responsiveness, original fan interaction, commercial value, and complete execution in one working fan product.
 
-## 0:14-0:38 — Match Center and score challenge
+## 0:14-0:42 - Fan hierarchy
 
-The first view answers three questions: what is happening, where did the data come from, and what can the fan do now? The score hero shows source state and checked time. Directly below it, every local session starts with 1,000 test points. A score pick costs 50 points and is settled only from a verified final score. It has no cash value and never connects a wallet.
+The first viewport answers what happened, when it was checked, what the AI can explain, and what the fan can do next. The score challenge follows the score hero and settles only from a verified final result. Developer diagnostics stay outside the fan path.
 
-## 0:38-1:04 — Judgeable replay
+## 0:42-1:06 - Trust rules
 
-Because review may happen when no match is live, Replay preserves the complete product flow without mislabeling history as current data. The Argentina–France story exposes goals, cards, extra time, pulse changes, final-score settlement, and AI-style commentary. The same timeline works with authenticated TxLINE events during a current fixture.
+The adapter enforces World Cup CompetitionId 72, rejects Friendlies 430, refreshes every 15 seconds and on focus, handles overturned provisional goals, and uses only `game_finalised` for challenge settlement. Empty odds stay hidden.
 
-## 1:04-1:24 — Teams and players
+## 1:06-1:28 - Judgeable 2026 replay
 
-Team and player context remains one click away instead of crowding the match view. The atlas currently contains 12 source-aware profiles, while compact key-player context appears inside Match Center when the loaded source provides it.
+Eight credential-free 2026 TxLINE replay sequences preserve the score, event, AI, challenge, schedule, and progression flow when no match is live. Archive data is never labeled as live.
 
-## 1:24-1:46 — Settings and global usability
+## 1:28-1:46 - Spoiler-free catch-up
 
-Language, local-point reset, refresh, and TxLINE diagnostics stay in Settings. The interface validates a shared set of labels across English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic. Credentials remain local and are never rendered in the fan interface or committed to GitHub Pages.
+Spoiler-free replay masks scores, winners, event totals, bracket outcomes, and team-result detail, then begins at minute one so missed matches remain enjoyable.
 
-## 1:46-2:10 — TxLINE backend
+## 1:46-2:04 - Source-gated depth
 
-TxLINE powers the live input. The adapter starts a guest session, loads the fixture snapshot, then requests score and odds snapshots for the selected fixture. Those responses are normalized into one MatchData model for the score hero, event timeline, AI-style explanation, and score challenge.
+Team and player records are derived from confirmed events. Unsupported lineups, injuries, xG, and placeholder statistics do not render.
 
-Implemented endpoints:
+## 2:04-2:22 - Global and mobile
 
-- `POST /auth/guest/start`
-- `GET /api/fixtures/snapshot`
-- `GET /api/scores/snapshot/{fixtureId}`
-- `GET /api/odds/snapshot/{fixtureId}`
+The same flow works at 390 pixels across eight complete languages, including Arabic RTL, with keyboard focus and reduced-motion support.
 
-## 2:10-2:30 — Data truth
+## 2:22-2:44 - Commercial path
 
-Data truth is visible product behavior. Live, Delay, Seed, and Replay are separate states. Unknown teams remain pending confirmation. Empty odds stay empty. Historical fixtures stay in Replay. The latest two consecutive 2026-07-12 probes returned three World Cup fixtures; fixture 18222446 returned 42 score records and zero official-odds records both times, so numerical odds are hidden rather than carried forward from an older snapshot.
+The local score challenge creates repeat use. The trusted second-screen shell can serve fan communities, publishers, venue screens, broadcasters, and localized sponsor activations without becoming wagering.
 
-Official match video rights are separate from TxLINE. The product links only to official FIFA+ archive and highlights pages, with territory and rights limitations disclosed.
+## 2:44-3:06 - Submission evidence
 
-## 2:30-2:50 — Commercial value
+Three market-research rounds, three local acceptance rounds, same-SHA CI and Pages success, public E2E, secret scanning, endpoint documentation, and API feedback support every submission claim.
 
-The score challenge creates a repeat-use loop for fan communities. The same source-aware second-screen shell can be licensed or embedded by sports media, Telegram communities, venues, and sponsors. A future shared leaderboard can add identity and social competition without turning the product into wagering.
+## 3:06-3:20 - Close
 
-## 2:50-3:06 — Close
+World Cup Live Pulse is a complete fan product: deployed, multilingual, source-aware, and repeatable outside live match hours. It has no betting, trading, wallet custody, or private token in the public build.
 
-World Cup Live Pulse is deployed, functional, documented, and repeatable for judges. It uses TxLINE as the live data boundary and remains a safe fan experience: no betting, no trade advice, no prediction market, no custody, and no private token in the public build.
+## Final upload checks
 
-## Recording checklist
-
-- Use the latest deployed asset, not an older cached Pages build.
-- Keep browser zoom at 100 percent and capture at 1280 × 720.
-- Do not show `.env.local`, API tokens, JWTs, private keys, wallet screens, or browser developer tools.
-- Show the Match Center score challenge before secondary details.
-- Show one event-driven AI brief and play its spoken version.
-- Open the labeled season demonstration only after showing the user's separate real challenge history.
-- Show the Replay label and final score clearly.
-- Show the exact TxLINE endpoints in a caption card.
-- Keep the final video below five minutes.
+- Upload `demo-assets/world-cup-live-pulse-demo-b-narrated.mp4`.
+- Confirm duration is 3:20 and playback works without login.
+- Confirm the host did not recompress text into unreadable output.
+- Recheck the first frame, one product frame, one TxLINE/trust frame, and the final safety frame.
+- Put the verified URL in `docs/SUBMISSION_DRAFT.md` and the Superteam form.

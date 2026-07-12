@@ -55,6 +55,10 @@ const requiredFiles = [
   "scripts/txline-probe.mjs",
   "scripts/sync-txline-archive.mjs",
   "scripts/test-txline-archive.mjs",
+  "scripts/record-demo-video.mjs",
+  "scripts/render-demo-video.py",
+  "scripts/render-demo-narration.ps1",
+  "scripts/render-demo-package.ps1",
 ];
 
 const forbiddenFiles = [".env", ".env.local"];
@@ -194,6 +198,12 @@ if (packageJson.scripts?.["txline:probe"]) {
   pass("package scripts include txline:probe");
 } else {
   fail("package scripts must include txline:probe");
+}
+
+if (packageJson.scripts?.["demo:video"]) {
+  pass("package scripts include reproducible A/B demo generation");
+} else {
+  fail("package scripts must include reproducible A/B demo generation");
 }
 
 if (failed) {

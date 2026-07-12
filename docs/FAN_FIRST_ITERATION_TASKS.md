@@ -44,8 +44,8 @@ This task list converts the market research, the user's prior requirements, and 
 
 - [x] Complete local browser and screenshot acceptance after P0 changes.
 - [x] Run full validation/build/security on the exact release worktree.
-- [ ] Commit, push, confirm CI/Pages on the same SHA, and run online E2E.
-- [ ] Record and review the final demo video twice; keep it under five minutes.
+- [x] Commit, push, confirm CI/Pages on the same SHA, and run online E2E.
+- [x] Record A/B demo candidates, review each twice, and keep both under five minutes; B is the final upload candidate.
 - [ ] Upload and verify the final video without login.
 - [ ] Run final judging audit, endpoint/document audit, claim audit, and secret audit.
 - [ ] Submit the live URL, repo, video, technical overview, TxLINE endpoints, and API feedback before the official close.

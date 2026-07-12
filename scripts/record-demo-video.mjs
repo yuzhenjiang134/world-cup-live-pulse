@@ -1,19 +1,29 @@
 import http from "node:http";
 import fs from "node:fs";
 import fsp from "node:fs/promises";
+import { spawn } from "node:child_process";
+import os from "node:os";
 import path from "node:path";
 
 const root = process.cwd();
 const demoDir = path.join(root, "demo-assets");
 const screenshotDir = path.join(demoDir, "screenshots");
 const statusPath = path.join(demoDir, "video-status.json");
-const outputPath = path.join(demoDir, "world-cup-live-pulse-demo.webm");
+const variant = (process.argv.find((arg) => arg.startsWith("--variant="))?.split("=")[1] ?? "A").toUpperCase();
+if (!new Set(["A", "B"]).has(variant)) throw new Error("Demo variant must be A or B.");
+const outputPath = path.join(demoDir, `world-cup-live-pulse-demo-${variant.toLowerCase()}.webm`);
+const autoOpen = process.argv.includes("--auto");
 
 if (process.argv.includes("--help") || process.argv.includes("-h")) {
   console.log(`Usage: npm run demo:video
 
-Starts a local 127.0.0.1 recorder page that generates:
-  demo-assets/world-cup-live-pulse-demo.webm
+Starts a local 127.0.0.1 recorder page that generates variant A by default:
+  demo-assets/world-cup-live-pulse-demo-a.webm
+
+Use -- --variant=B for the judging/data-story cut:
+  demo-assets/world-cup-live-pulse-demo-b.webm
+
+Add --auto to launch the isolated recorder browser automatically.
 
 The browser must open the printed local URL and wait until demo-assets/video-status.json reports "complete".
 
@@ -21,81 +31,156 @@ The output video is ignored by git and should be uploaded to Loom, YouTube, or a
   process.exit(0);
 }
 
-const scenes = [
-  {
-    kind: "card",
-    seconds: 14,
-    title: "World Cup Live Pulse",
-    kicker: "Superteam Earn x TxODDS / Consumer and Fan Experiences",
-    subtitle: "A fan-first second screen that turns verified match data into a score challenge, live pulse, and replayable story.",
-    bullets: ["Working deployed product", "TxLINE-powered data boundary", "Public repo", "Demo under 5 minutes"]
-  },
-  {
-    image: "01-match-center.png",
-    seconds: 24,
-    title: "1. Match Center puts the fan decision first",
-    subtitle: "Score, source state, checked time, AI-style read, and the 1,000-point score challenge are visible before secondary detail.",
-    badges: ["1,000 local points", "Verified source state", "No wagering"]
-  },
-  {
-    image: "02-replay-final.png",
-    seconds: 26,
-    title: "2. Replay makes the full product judgeable anytime",
-    subtitle: "A fixed historical match exposes goals, cards, extra time, pulse changes, final-score settlement, and AI-style commentary without pretending it is live.",
-    badges: ["Historical replay label", "Event timeline", "Final-score settlement"]
-  },
-  {
-    image: "03-teams.png",
-    seconds: 20,
-    title: "3. Team and player depth stays one click away",
-    subtitle: "The primary match workflow stays compact while the team atlas preserves player context and source-aware reference detail.",
-    badges: ["12 team profiles", "Key players", "Source names preserved"]
-  },
-  {
-    image: "04-settings.png",
-    seconds: 22,
-    title: "4. Global controls and authentication stay out of the way",
-    subtitle: "Eight languages, local-point reset, refresh, and TxLINE diagnostics live in Settings. Secrets are never rendered in the main interface.",
-    badges: ["8 languages", "Local-only credentials", "Clean fan view"]
-  },
-  {
-    kind: "card",
-    seconds: 24,
-    title: "TxLINE powers the live input",
-    kicker: "Official integration verified 2026-07-11",
-    subtitle: "One adapter normalizes fixtures, score snapshots, match events, and odds into the same fan-facing MatchData model.",
-    bullets: [
-      "POST /auth/guest/start",
-      "GET /api/fixtures/snapshot",
-      "GET /api/scores/snapshot/{fixtureId}",
-      "GET /api/odds/snapshot/{fixtureId}"
-    ]
-  },
-  {
-    kind: "card",
-    seconds: 20,
-    title: "Data truth is a product feature",
-    kicker: "Live / Delay / Seed / Replay",
-    subtitle: "Unknown teams stay pending, empty odds stay empty, historical fixtures stay in Replay, and every checked state carries a timestamp.",
-    bullets: ["7 fixture records verified", "41 score records verified", "0 odds means no invented odds", "Official FIFA+ links only"]
-  },
-  {
-    kind: "card",
-    seconds: 20,
-    title: "Built for fans and buyers",
-    kicker: "Original interaction + commercial path",
-    subtitle: "The score challenge creates repeat use; the same trusted second-screen shell can serve media sites, communities, venues, and sponsors.",
-    bullets: ["Fan retention loop", "Community leaderboard path", "Media embed path", "Sponsor-safe data presentation"]
-  },
-  {
-    kind: "card",
-    seconds: 16,
-    title: "Submission-ready, safe, and repeatable",
-    kicker: "Consumer and Fan Experiences",
-    subtitle: "No wallet custody, no trade advice, no prediction market, no private API token in the public build.",
-    bullets: ["Deployed GitHub Pages", "Public repository", "Technical docs + API feedback", "Repeatable demo flow"]
-  }
-];
+const sharedClose = {
+  kind: "card",
+  seconds: 14,
+  title: "A complete fan product, not a data demo",
+  kicker: "World Cup Live Pulse",
+  subtitle: "Deployed, documented, multilingual, source-aware, and repeatable for judges outside live match hours.",
+  bullets: ["No betting or trading", "No wallet custody", "No private token in the public build", "Official viewing links only"]
+};
+
+const sceneSets = {
+  A: [
+    {
+      kind: "card",
+      seconds: 14,
+      title: "World Cup Live Pulse",
+      kicker: "Fan journey cut / Consumer and Fan Experiences",
+      subtitle: "A fan-first second screen for the four jobs that matter: follow the score, catch key events, understand the road ahead, and recover what you missed.",
+      bullets: ["Working public product", "Verified match boundaries", "Score challenge", "Replay catch-up"]
+    },
+    {
+      image: "01-current-match-center.png",
+      seconds: 30,
+      title: "1. The match and the fan decision share one screen",
+      subtitle: "Verified score and status lead. The 1,000-point local challenge sits directly below, settles once from a confirmed final score, and never uses cash or a wallet.",
+      badges: ["1,000 local points", "One verified settlement", "No wagering"]
+    },
+    {
+      kind: "card",
+      seconds: 18,
+      title: "Key moments become the fastest way back into a match",
+      kicker: "Goals / cards / score review / half-time / full-time",
+      subtitle: "Compact event shortcuts jump to the exact replay minute. AI text and optional spoken commentary stay grounded in the same normalized score and event stream.",
+      bullets: ["No missed event context", "One-tap catch-up", "Event-grounded AI", "Follow verified changes"]
+    },
+    {
+      image: "02-current-tournament.png",
+      seconds: 24,
+      title: "2. Schedule, results, and progression are readable at a glance",
+      subtitle: "Current source-backed fixtures stay separate from eight verified 2026 replays. Stage, score, winner, and event totals appear only when the source confirms them.",
+      badges: ["Current schedule", "8 verified replays", "6 progression stages"]
+    },
+    {
+      image: "03-current-spoiler.png",
+      seconds: 20,
+      title: "3. Spoiler-free replay protects the catch-up experience",
+      subtitle: "One control masks final scores, winners, event totals, bracket outcomes, and team-result detail, then opens the replay at minute one.",
+      badges: ["No final score", "Start at 1'", "Reveal through events"]
+    },
+    {
+      image: "04-current-teams.png",
+      seconds: 20,
+      title: "4. Team and source-player detail remains one click away",
+      subtitle: "The atlas derives appearances, wins, goals, cards, opponents, and replay links from confirmed archive records instead of filling unsupported roster fields.",
+      badges: ["Source-derived records", "No placeholder lineups", "Direct replay links"]
+    },
+    {
+      image: "05-current-mobile.png",
+      seconds: 18,
+      title: "5. The same match flow works on a phone",
+      subtitle: "Responsive navigation, score, AI brief, challenge, replay, and eight-language support keep the essential fan path usable at 390 pixels.",
+      badges: ["390px verified", "8 languages", "Arabic RTL"]
+    },
+    {
+      kind: "card",
+      seconds: 22,
+      title: "TxLINE powers the authenticated live boundary",
+      kicker: "CompetitionId 72 / World Cup only",
+      subtitle: "The local secure adapter loads fixtures, score history, and official odds when supplied. Empty odds stay hidden, and historical data never masquerades as live.",
+      bullets: ["POST /auth/guest/start", "GET /api/fixtures/snapshot", "GET /api/scores/snapshot/{fixtureId}", "GET /api/odds/snapshot/{fixtureId}"]
+    },
+    sharedClose
+  ],
+  B: [
+    {
+      kind: "card",
+      seconds: 14,
+      title: "World Cup Live Pulse",
+      kicker: "Judging and data-trust cut",
+      subtitle: "Real-time responsiveness, original fan interaction, commercial value, and complete execution in one working product.",
+      bullets: ["Public site", "Public repository", "TxLINE integration", "Repeatable 2026 replay"]
+    },
+    {
+      image: "01-current-match-center.png",
+      seconds: 28,
+      title: "Fan accessibility starts with hierarchy",
+      subtitle: "The first viewport answers what happened, when it was checked, what the AI can explain, and what the fan can do next. Developer diagnostics stay outside this path.",
+      badges: ["Score first", "Challenge second", "Secondary detail later"]
+    },
+    {
+      kind: "card",
+      seconds: 24,
+      title: "Real-time behavior has explicit trust rules",
+      kicker: "15-second refresh + focus refresh + final-state guard",
+      subtitle: "CompetitionId 72 is enforced, Friendlies 430 is rejected, provisional goals can be overturned, and only game_finalised settles a score challenge.",
+      bullets: ["No stale-current fallback", "No invented odds", "No duplicate settlement", "Checked time shown"]
+    },
+    {
+      image: "02-current-tournament.png",
+      seconds: 22,
+      title: "A complete product remains judgeable between matches",
+      subtitle: "Eight credential-free 2026 TxLINE replay sequences preserve the score, events, AI, challenge, schedule, and progression story without labeling archive data as live.",
+      badges: ["2026 archive", "Verified finals", "Repeatable judging"]
+    },
+    {
+      image: "03-current-spoiler.png",
+      seconds: 18,
+      title: "Original fan value: spoiler-free catch-up",
+      subtitle: "Fans can replay from minute one while every outcome-bearing field remains masked. This turns match data into a deliberate viewing experience, not another score table.",
+      badges: ["Outcome mask", "Minute-one start", "Event reveal"]
+    },
+    {
+      image: "04-current-teams.png",
+      seconds: 18,
+      title: "Depth is source-gated, not decorative",
+      subtitle: "Team and player records are derived only from confirmed events. Lineups, injuries, xG, and unsupported stats do not render until a verified endpoint supplies them.",
+      badges: ["No-source means no-field", "Replay evidence", "Clean team detail"]
+    },
+    {
+      image: "05-current-mobile.png",
+      seconds: 18,
+      title: "Global and mobile by design",
+      subtitle: "Eight complete language packs, Arabic RTL, keyboard focus, reduced motion, and a verified 390-pixel layout support mainstream non-technical fans.",
+      badges: ["8 complete languages", "RTL", "Responsive"]
+    },
+    {
+      kind: "card",
+      seconds: 22,
+      title: "Commercial value follows the same trusted core",
+      kicker: "Free fan layer / community / publisher widget / broadcaster",
+      subtitle: "The local score challenge creates repeat use. The same source-aware match story can serve fan communities, media products, venue screens, and localized sponsor activations.",
+      bullets: ["Retention loop", "Community path", "Embeddable media path", "Localization path"]
+    },
+    {
+      kind: "card",
+      seconds: 22,
+      title: "Submission evidence is built into the release",
+      kicker: "Same-SHA release acceptance",
+      subtitle: "Three research rounds, three local acceptance rounds, successful CI and Pages on one commit, public E2E, secret scanning, endpoint documentation, and API feedback.",
+      bullets: ["CI + Pages success", "Public bundle scanned", "No runtime errors", "Claims backed by tests or docs"]
+    },
+    sharedClose
+  ]
+};
+
+const scenes = sceneSets[variant];
+
+if (process.argv.includes("--print-manifest")) {
+  console.log(JSON.stringify({ variant, scenes }, null, 2));
+  process.exit(0);
+}
 
 await fsp.mkdir(demoDir, { recursive: true });
 await fsp.writeFile(
@@ -300,15 +385,25 @@ function html() {
         statusEl.textContent = "Uploading generated video...";
         const response = await fetch("/upload", { method: "POST", headers: { "Content-Type": mime }, body: blob });
         if (!response.ok) throw new Error("Upload failed");
-        statusEl.textContent = "Complete: demo-assets/world-cup-live-pulse-demo.webm";
+        statusEl.textContent = ${JSON.stringify(`Complete: demo-assets/world-cup-live-pulse-demo-${variant.toLowerCase()}.webm`)};
         window.__demoComplete = true;
       };
       recorder.start(1000);
       const started = performance.now();
+      let lastReportedSecond = -1;
       function tick(now) {
         const elapsed = Math.min(totalMs, now - started);
         drawFrame(elapsed);
         statusEl.textContent = "Recording captioned demo... " + Math.floor(elapsed / 1000) + " / " + Math.ceil(totalMs / 1000) + "s";
+        const elapsedSecond = Math.floor(elapsed / 1000);
+        if (elapsedSecond !== lastReportedSecond) {
+          lastReportedSecond = elapsedSecond;
+          fetch("/progress", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ elapsedSecond, totalSecond: Math.ceil(totalMs / 1000) })
+          }).catch(() => {});
+        }
         if (elapsed < totalMs) requestAnimationFrame(tick);
         else recorder.stop();
       }
@@ -366,6 +461,22 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (req.method === "POST" && url.pathname === "/progress") {
+    const chunks = [];
+    req.on("data", (chunk) => chunks.push(chunk));
+    req.on("end", () => {
+      try {
+        const progress = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+        writeStatus({ state: "recording", variant, ...progress });
+      } catch {
+        writeStatus({ state: "recording", variant });
+      }
+      res.writeHead(204);
+      res.end();
+    });
+    return;
+  }
+
   if (req.method === "POST" && url.pathname === "/failed") {
     const chunks = [];
     req.on("data", (chunk) => chunks.push(chunk));
@@ -386,8 +497,39 @@ server.listen(0, "127.0.0.1", () => {
   const address = server.address();
   const recorderUrl = `http://127.0.0.1:${address.port}/`;
   writeStatus({ state: "ready", recorderUrl, outputPath });
-  console.log(`Demo recorder ready: ${recorderUrl}`);
+  console.log(`Demo ${variant} recorder ready: ${recorderUrl}`);
   console.log(`Output: ${outputPath}`);
+
+  if (autoOpen) {
+    const edgePath = process.env.EDGE_PATH ?? "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\144.0.3719.115\\msedge.exe";
+    const profileDir = path.join(os.tmpdir(), `wclp-demo-${variant.toLowerCase()}-${Date.now()}`);
+    const browser = spawn(edgePath, [
+      "--headless=new",
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--no-first-run",
+      "--autoplay-policy=no-user-gesture-required",
+      "--disable-background-timer-throttling",
+      "--disable-renderer-backgrounding",
+      "--disable-backgrounding-occluded-windows",
+      `--user-data-dir=${profileDir}`,
+      recorderUrl
+    ], { stdio: ["ignore", "ignore", "pipe"] });
+    let diagnostics = "";
+    browser.stderr.on("data", (chunk) => {
+      diagnostics = `${diagnostics}${chunk}`.slice(-4000);
+    });
+    browser.on("exit", async (code) => {
+      if (fs.existsSync(outputPath)) return;
+      writeStatus({ state: "failed", variant, error: `Recorder browser exited ${code}.`, diagnostics });
+      await fsp.rm(profileDir, { recursive: true, force: true }).catch(() => {});
+      server.close();
+    });
+    server.on("close", async () => {
+      browser.kill();
+      await fsp.rm(profileDir, { recursive: true, force: true }).catch(() => {});
+    });
+  }
 });
 
 setTimeout(() => {

@@ -37,7 +37,7 @@ This is the checklist for the current matchday shell. Older Source Board / Judge
 - [x] Official odds are displayed only when the TxLINE odds payload is present; derived and replay snapshots are labeled separately.
 - [x] Unknown source team codes are shown as pending confirmation instead of being invented as real teams.
 - [x] TxLINE fixture requests default to World Cup `CompetitionId 72`, and a second adapter-side filter rejects Friendlies `CompetitionId 430` before selection, schedule rendering, or team extraction.
-- [x] The bundled Argentina-France and Germany-Japan fixtures are explicitly historical 2022 replay demos.
+- [x] Legacy 2022 demos are absent from the primary fan path; the active replay library uses verified 2026 TxLINE sequences.
 - [x] The primary replay library uses eight authenticated, sanitized 2026 TxLINE historical sequences with `game_finalised` results.
 - [x] `npm run audit` checks replay dates, event scores, market values, team identities, video domains, feature markers, and data boundaries.
 - [x] Repeated `npm run txline:probe` checks on 2026-07-11 kept 3 World Cup fixtures and 2 score records for fixture `18213979` stable. Official odds varied between 0 and 27 records across checks; the final local pair returned 3 then 5. Empty odds are shown honestly and never backfilled with invented values.
@@ -76,8 +76,9 @@ Local-first rule: no push and no final video until the data-truth, complete-prod
 - [x] Five-criterion evidence audit: `docs/JUDGING_AUDIT_2026-07-11.md`.
 - [x] Official track requirements are reflected: working app/API access, public repo, specific TxLINE endpoint list, API feedback, TxLINE live input, and Solana sign-up path.
 - [x] GitHub Pages workflow is configured and the public URL returns HTTP 200.
-- [ ] Confirm Pages has switched to the latest pushed asset hash before recording the final demo.
-- [ ] Record a demo under 5 minutes showing Match Center, score challenge, source status, Replay, Teams, Settings, and official video links.
+- [x] Confirm Pages has switched to release `547986f5a20327faeaf219a21a04deeb1441a1c6` and the accepted public asset hashes before recording the final demo.
+- [x] Generate A/B narrated demos under 5 minutes and review each twice; final candidate B is 3:20 at 1280x720 with H.264 video and AAC audio.
+- [ ] Upload candidate B to a public host and verify playback without login.
 - [ ] Re-check the live Superteam listing and submit before the stated deadline if unchanged.
 
 ## Required Track Language
