@@ -7,7 +7,7 @@ import path from "node:path";
 
 const edgePath = process.env.EDGE_PATH ?? "C:\\Program Files (x86)\\Microsoft\\EdgeCore\\144.0.3719.115\\msedge.exe";
 const appUrl = process.env.MATCHDAY_URL ?? "http://127.0.0.1:5180/?mode=replay&replay=txline-archive-18209181&minute=90";
-const baseUrl = new URL(appUrl).origin;
+const baseEntryUrl = new URL(".", appUrl).toString();
 const port = 9300 + Math.floor(Math.random() * 500);
 const profileDir = path.join(os.tmpdir(), `wclp-e2e-${Date.now()}`);
 let edgeDiagnostics = "";
@@ -42,8 +42,9 @@ try {
   await cdp.send("Page.enable");
   await cdp.send("Log.enable");
   await cdp.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
-  await wait(2200);
-  await evaluate(cdp, "localStorage.clear(); location.reload(); true");
+  await waitForCondition(cdp, "Boolean(document.querySelector('#root'))", 30_000);
+  await cdp.send("Storage.clearDataForOrigin", { origin: new URL(appUrl).origin, storageTypes: "local_storage" });
+  await cdp.send("Page.reload", { ignoreCache: true });
   await waitForCondition(cdp, "Boolean(document.querySelector('.challenge-block'))", 30_000);
 
   const desktopLayout = await evaluate(cdp, `({
@@ -94,7 +95,7 @@ try {
   assert.match(settledText, /FRA 2:0 MAR/);
 
   await cdp.send("Page.reload", { ignoreCache: true });
-  await wait(2200);
+  await waitForCondition(cdp, "Boolean(document.querySelector('.challenge-block'))", 30_000);
   const restoredText = await blockText(cdp, ".challenge-block");
   assert.match(restoredText, /1,200\s+pts/);
   assert.match(restoredText, /已结算/);
@@ -108,7 +109,7 @@ try {
   await fs.writeFile(path.resolve("demo-assets/desktop-final.png"), Buffer.from(desktopCapture.data, "base64"));
 
   await cdp.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
-  await cdp.send("Page.navigate", { url: `${baseUrl}/` });
+  await cdp.send("Page.navigate", { url: baseEntryUrl });
   await waitForCondition(cdp, "Boolean(document.querySelector('.score-line'))", 30_000);
   const mobileLayout = await evaluate(cdp, `(() => {
     const rect = (selector, index = 0) => {
