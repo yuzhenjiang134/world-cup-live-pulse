@@ -33,12 +33,12 @@ This project is not a betting product. It does not place bets, recommend trades,
 - The main screen includes a browser-only 1,000-point fan score challenge. Points have no cash value and never touch wallets, tokens, or transactions.
 - The product stays informational only and avoids betting, wagering, trading, prediction-market, wallet, custody, private-key, seed-phrase, verification-code, or token handling.
 
-## Judge demo path (recording paused until the product quality gate passes)
+## Judge demo path
 
 Use the same visible fan workflow that a normal user sees:
 
 1. Open Match Center and show source, freshness, current fixture, and the score challenge.
-2. Lock one score pick, play the historical Argentina-France replay, and settle exactly once.
+2. Lock one score pick, play a verified 2026 TxLINE replay, and settle exactly once.
 3. Jump through goals, cards, extra time, pulse changes, and spoken AI-style commentary.
 4. Open current source teams, then Settings for language and hidden TxLINE diagnostics.
 
@@ -77,21 +77,21 @@ npm run validate
 
 ## Demo video
 
-The reproducible local demo-video package is documented in `docs/DEMO_VIDEO_PACKAGE.md`. Final generation is intentionally paused until the current product and submission quality gates are complete.
+The reproducible A/B demo package is documented in `docs/DEMO_VIDEO_PACKAGE.md`. Both candidates were generated only after local and same-SHA online acceptance; candidate B is the selected judging cut.
 
-After refreshing screenshots, run:
+After refreshing the final E2E screenshots, run:
 
-```bash
-node scripts/record-demo-video.mjs
+```powershell
+npm run demo:video
 ```
 
-Then open the printed local recorder URL. The generated captioned WebM is written to:
+The command renders both captioned videos and adds English narration. The selected final file is:
 
 ```text
-demo-assets/world-cup-live-pulse-demo.webm
+demo-assets/world-cup-live-pulse-demo-b-narrated.mp4
 ```
 
-The current public draft is served from:
+The public no-login video page is served from:
 
 ```text
 https://yuzhenjiang134.github.io/world-cup-live-pulse/demo/

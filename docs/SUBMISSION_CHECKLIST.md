@@ -78,7 +78,7 @@ Local-first rule: no push and no final video until the data-truth, complete-prod
 - [x] GitHub Pages workflow is configured and the public URL returns HTTP 200.
 - [x] Confirm Pages has switched to release `547986f5a20327faeaf219a21a04deeb1441a1c6` and the accepted public asset hashes before recording the final demo.
 - [x] Generate A/B narrated demos under 5 minutes and review each twice; final candidate B is 3:20 at 1280x720 with H.264 video and AAC audio.
-- [ ] Upload candidate B to a public host and verify playback without login.
+- [ ] Confirm the final GitHub Pages deployment serves candidate B and verify MP4 playback without login.
 - [ ] Re-check the live Superteam listing and submit before the stated deadline if unchanged.
 
 ## Required Track Language

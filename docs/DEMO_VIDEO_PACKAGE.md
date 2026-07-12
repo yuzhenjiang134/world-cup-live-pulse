@@ -36,6 +36,10 @@ The renderer uses the local Jianying/FFmpeg H.264 encoder and Windows English sp
 - Opening, product, replay, data-boundary, commercial, and closing frames inspected.
 - No `.env.local`, token, JWT, wallet, browser storage, or personal account content appears.
 
-## Remaining external action
+## Public playback
 
-Upload candidate B to a host that plays without login, then verify the public URL in a clean browser session. Add that URL to `docs/SUBMISSION_DRAFT.md` and the Superteam form.
+The selected B candidate is published with GitHub Pages at:
+
+`https://yuzhenjiang134.github.io/world-cup-live-pulse/demo/`
+
+Verify this URL in a clean browser session after the final Pages workflow succeeds, then add it to the Superteam form. A secondary YouTube/Loom mirror is optional, not required for judge access.
