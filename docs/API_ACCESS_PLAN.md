@@ -38,7 +38,7 @@ Ask TxODDS / TxLINE support for:
 - Whether browser-side CORS demos are allowed, or whether a server-side proxy is required.
 - Allowed fixture IDs, endpoints, and competition filters for the World Cup hackathon.
 - Rate limits and recommended polling interval.
-- Whether Free Tier data is live or delayed for each fixture. Current TxLINEChat evidence indicates service level 1 is a 60-second delayed feed for World Cup and International Friendlies.
+- The effective delivery interval for each fixture and network. Official docs distinguish mainnet Level 1 (60-second delay), mainnet Level 12 (real-time), and the current devnet Level 1 pricing row (`samplingIntervalSec = 0`).
 - SSE stream requirements, resume behavior, and heartbeat handling.
 
 ## Sponsor Contact Status
@@ -65,7 +65,7 @@ On 2026-07-05, TxLINEChat clarified the current hackathon free-tier route:
 - Call `/api/token/activate` with the signed activation payload.
 - If it still fails, share only the wallet public key and subscribe transaction signature with TxLINEChat.
 - A TxLINEChat follow-up said devnet activation was retested with a fresh wallet and `/api/token/activate` returned 200.
-- A 2026-07-10 video review showed TxLINEChat guidance that service level 1 provides 60-second delayed World Cup and International Friendlies data.
+- Official documentation rechecked 2026-07-11 supersedes the earlier generalized chat note and documents network-specific service-level behavior.
 
 This supersedes the earlier 2026-07-03 devnet outage note for our working plan. Mainnet Level 12 remains a later production option only if the sponsor explicitly confirms it for the final public demo.
 

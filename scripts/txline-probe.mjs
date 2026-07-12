@@ -12,7 +12,7 @@ const fixtureId = Number(envValue("VITE_TXLINE_FIXTURE_ID") ?? "17588325");
 const finalScoreSeq = optionalNumber(envValue("VITE_TXLINE_FINAL_SCORE_SEQ"));
 const asOf = optionalNumber(envValue("VITE_TXLINE_AS_OF_MS"));
 const startEpochDay = optionalNumber(envValue("VITE_TXLINE_START_EPOCH_DAY"));
-const competitionId = optionalNumber(envValue("VITE_TXLINE_COMPETITION_ID"));
+const competitionId = optionalNumber(envValue("VITE_TXLINE_COMPETITION_ID")) ?? 72;
 
 if (proxyBase) {
   await probeProxyMode();
@@ -31,12 +31,15 @@ const authHeaders = {
   "X-Api-Token": apiToken,
 };
 
-const fixtures = await requestJson(apiBase, "/api/fixtures/snapshot", authHeaders, {
+const fixturesPayload = await requestJson(apiBase, "/api/fixtures/snapshot", authHeaders, {
   startEpochDay,
   competitionId,
 });
-const scores = await requestJson(apiBase, `/api/scores/snapshot/${fixtureId}`, authHeaders, { asOf });
-const odds = await requestJson(apiBase, `/api/odds/snapshot/${fixtureId}`, authHeaders, { asOf });
+const fixtures = worldCupFixtures(fixturesPayload);
+const liveFixtureId = selectFixtureId(fixtures, fixtureId);
+if (!liveFixtureId) throw new Error("No CompetitionId 72 fixture was returned by TxLINE.");
+const scores = await requestJson(apiBase, `/api/scores/snapshot/${liveFixtureId}`, authHeaders, { asOf });
+const odds = await requestJson(apiBase, `/api/odds/snapshot/${liveFixtureId}`, authHeaders, { asOf });
 const finalScoreProof = finalScoreSeq
   ? await requestJson(apiBase, "/api/scores/stat-validation", authHeaders, {
       fixtureId,
@@ -48,8 +51,8 @@ const finalScoreProof = finalScoreSeq
 console.log("PASS TxLINE guest JWT resolved.");
 console.log(`PASS TxLINE API base: ${apiBase}`);
 console.log(`PASS fixtures snapshot records: ${countRecords(fixtures)}`);
-console.log(`PASS score snapshot records for fixture ${fixtureId}: ${countRecords(scores)}`);
-console.log(`PASS odds snapshot records for fixture ${fixtureId}: ${countRecords(odds)}`);
+console.log(`PASS score snapshot records for fixture ${liveFixtureId}: ${countRecords(scores)}`);
+console.log(`PASS odds snapshot records for fixture ${liveFixtureId}: ${countRecords(odds)}`);
 if (finalScoreSeq) {
   console.log(`PASS final-score stat-validation proof payload: ${countRecords(finalScoreProof)}`);
 } else {
@@ -59,12 +62,15 @@ console.log("TxLINE probe complete. No token values were printed.");
 
 async function probeProxyMode() {
   const health = await requestJson(proxyBase, "/__health");
-  const fixtures = await requestJson(proxyBase, "/api/fixtures/snapshot", undefined, {
+  const fixturesPayload = await requestJson(proxyBase, "/api/fixtures/snapshot", undefined, {
     startEpochDay,
     competitionId,
   });
-  const scores = await requestJson(proxyBase, `/api/scores/snapshot/${fixtureId}`, undefined, { asOf });
-  const odds = await requestJson(proxyBase, `/api/odds/snapshot/${fixtureId}`, undefined, { asOf });
+  const fixtures = worldCupFixtures(fixturesPayload);
+  const liveFixtureId = selectFixtureId(fixtures, fixtureId);
+  if (!liveFixtureId) throw new Error("No CompetitionId 72 fixture was returned by the TxLINE proxy.");
+  const scores = await requestJson(proxyBase, `/api/scores/snapshot/${liveFixtureId}`, undefined, { asOf });
+  const odds = await requestJson(proxyBase, `/api/odds/snapshot/${liveFixtureId}`, undefined, { asOf });
   const finalScoreProof = finalScoreSeq
     ? await requestJson(proxyBase, "/api/scores/stat-validation", undefined, {
         fixtureId,
@@ -76,8 +82,8 @@ async function probeProxyMode() {
   console.log("PASS TxLINE proxy health check.");
   console.log(`PASS proxy token configured: ${Boolean(health?.hasToken)}`);
   console.log(`PASS proxy fixtures snapshot records: ${countRecords(fixtures)}`);
-  console.log(`PASS proxy score snapshot records for fixture ${fixtureId}: ${countRecords(scores)}`);
-  console.log(`PASS proxy odds snapshot records for fixture ${fixtureId}: ${countRecords(odds)}`);
+  console.log(`PASS proxy score snapshot records for fixture ${liveFixtureId}: ${countRecords(scores)}`);
+  console.log(`PASS proxy odds snapshot records for fixture ${liveFixtureId}: ${countRecords(odds)}`);
   if (finalScoreSeq) {
     console.log(`PASS proxy final-score stat-validation proof payload: ${countRecords(finalScoreProof)}`);
   } else {
@@ -183,4 +189,28 @@ function countRecords(payload) {
   }
 
   return 0;
+}
+
+function worldCupFixtures(payload) {
+  const fixtures = Array.isArray(payload) ? payload : [];
+  return fixtures.filter((fixture) =>
+    typeof fixture?.CompetitionId === "number"
+      ? fixture.CompetitionId === 72
+      : /\bworld cup\b/i.test(fixture?.Competition ?? ""),
+  );
+}
+
+function selectFixtureId(fixtures, configuredFixtureId) {
+  const configured = fixtures.find((fixture) => fixture?.FixtureId === configuredFixtureId);
+  if (configured?.FixtureId) return configured.FixtureId;
+
+  const now = Date.now();
+  return [...fixtures]
+    .filter((fixture) => Number.isFinite(fixture?.FixtureId))
+    .sort((a, b) => Math.abs(toTimestamp(a?.StartTime) - now) - Math.abs(toTimestamp(b?.StartTime) - now))[0]?.FixtureId;
+}
+
+function toTimestamp(value) {
+  if (!Number.isFinite(value)) return 0;
+  return value < 10_000_000_000 ? value * 1000 : value;
 }

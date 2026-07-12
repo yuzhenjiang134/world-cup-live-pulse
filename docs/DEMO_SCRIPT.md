@@ -1,97 +1,58 @@
 # Demo Video Script
 
-Target length: under 5 minutes.
+Target length: 3:06. Maximum allowed: 5:00.
 
-## 0:00-0:25 Open and position
+## 0:00-0:14 — Problem and product
 
-Open the deployed GitHub Pages site.
+World Cup Live Pulse is a fan-first second screen for the Consumer and Fan Experiences track. It turns verified match data into a score challenge, live pulse, and replayable match story that ordinary fans can understand at a glance.
 
-Say: World Cup Live Pulse is a fan-first match dashboard for the Consumer and Fan Experiences track. It explains score, match events, market mood, and momentum without becoming a betting or trading product.
+## 0:14-0:38 — Match Center and score challenge
 
-Show that the default Fan Mode opens directly on the match pulse, not on documentation. Point to the compact match hero, rolling ticker, match focus nav, watch-now panel, AI readout, and local fan score pick.
+The first view answers three questions: what is happening, where did the data come from, and what can the fan do now? The score hero shows source state and checked time. Directly below it, every local session starts with 1,000 test points. A score pick costs 50 points and is settled only from a verified final score. It has no cash value and never connects a wallet.
 
-Use the score buttons to change the local fan score pick once, then use a quick pick button. Download the fan pick card. Say: This is a local fan conversation feature only. It does not place bets, create a prediction market, connect wallets, or store secrets.
+## 0:38-1:04 — Judgeable replay
 
-Use the focus nav once: jump to Timeline, Mood, and Teams. Show that the Teams button reveals the team atlas instead of being a decorative link.
+Because review may happen when no match is live, Replay preserves the complete product flow without mislabeling history as current data. The Argentina–France story exposes goals, cards, extra time, pulse changes, final-score settlement, and AI-style commentary. The same timeline works with authenticated TxLINE events during a current fixture.
 
-Scroll to the compact matchday hub and show the difference between Replay Available cards and official TxLINE schedule snapshot cards that still require token-gated live data. Point out the checked timestamp in the source banner.
+## 1:04-1:24 — Teams and players
 
-## 0:45-1:35 Data consistency
+Team and player context remains one click away instead of crowding the match view. The atlas currently contains 12 source-aware profiles, while compact key-player context appears inside Match Center when the loaded source provides it.
 
-Open Settings and switch to Judge Mode.
+## 1:24-1:46 — Settings and global usability
 
-Show the Source Board and Trust & Accuracy Center.
+Language, local-point reset, refresh, and TxLINE diagnostics stay in Settings. The interface validates a shared set of labels across English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic. Credentials remain local and are never rendered in the fan interface or committed to GitHub Pages.
 
-Say: The app does not invent live data. The Source Board uses a TxLINE schedule snapshot observed for 2026-06-28 UTC, including Jordan vs Argentina and Algeria vs Austria, but it keeps them as Seed / Token Required until authenticated live score, event, and odds feeds are loaded. Replay stays available so judges can evaluate the match flow even if no live fixture is open during review.
+## 1:46-2:10 — TxLINE backend
 
-Point to Data Audit, Live Readiness, API Access Plan, and the endpoint status cards. Explain mapped, token-gated, secure-proxy, and planned feeds in one sentence.
+TxLINE powers the live input. The adapter starts a guest session, loads the fixture snapshot, then requests score and odds snapshots for the selected fixture. Those responses are normalized into one MatchData model for the score hero, event timeline, AI-style explanation, and score challenge.
 
-Briefly show that Judge Mode opens the Operation Manual, Fixture Briefing, judging criteria, and Path to 100 note, while Fan Mode can collapse them again.
+Implemented endpoints:
 
-Say: The page is designed for a first-time fan. It tells the user what is happening now, lets them make a safe local score pick, and makes source truth visible when they need it.
+- `POST /auth/guest/start`
+- `GET /api/fixtures/snapshot`
+- `GET /api/scores/snapshot/{fixtureId}`
+- `GET /api/odds/snapshot/{fixtureId}`
 
-## 1:35-2:35 Judge Demo chapters
+## 2:10-2:30 — Data truth
 
-Use the Judge Demo chapter buttons.
+Data truth is visible product behavior. Live, Delay, Seed, and Replay are separate states. Unknown teams remain pending confirmation. Empty odds stay empty. Historical fixtures stay in Replay. Two consecutive 2026-07-12 probes returned two World Cup fixtures; fixture 18222446 returned 40 score records and 20 official-odds records both times. Earlier empty-odds responses were never replaced with invented values.
 
-Show:
+Official match video rights are separate from TxLINE. The product links only to official FIFA+ archive and highlights pages, with territory and rights limitations disclosed.
 
-- Data integrity chapter
-- Goal swing chapter
-- Late volatility chapter
-- Upset context chapter
-- Scoreline
-- Latest beat
-- AI-style commentary
-- Pressure map
-- Market mood panel
-- Timeline progress
+## 2:30-2:50 — Commercial value
 
-Say: The built-in chapters make the demo repeatable for judges and video recording.
+The score challenge creates a repeat-use loop for fan communities. The same source-aware second-screen shell can be licensed or embedded by sports media, Telegram communities, venues, and sponsors. A future shared leaderboard can add identity and social competition without turning the product into wagering.
 
-## 2:35-3:20 Match Intelligence and Match Center
+## 2:50-3:06 — Close
 
-Show:
-
-- Country Team Atlas
-- Phase summary
-- Event stack
-- Player impact
-- Kickoff time
-- Referee
-- Data status
-- Qualification note
-- Discipline events
-- Team profiles and key players
-
-Use the upset-context chapter to show the Japan vs Germany group table.
-
-## 3:20-3:55 Settings and optional modules
-
-Open Settings and switch between Fan Mode, Analyst Mode, and Judge Mode. Then show the eight-language selector: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic.
-
-Say: Presets keep the page useful for ordinary fans, data reviewers, and hackathon judges without cluttering the main match view. Language switching is important for a global World Cup fan experience and for demo clarity across audiences.
-
-Turn on Authorized Video Sync.
-
-Say: Match video rights are separate from TxLINE data. This panel only accepts a rights-cleared official embed URL, and the public build shows a rights-required state instead of using unofficial streams.
-
-## 3:55-4:30 TxLINE boundary
-
-Switch to Live mode.
-
-Say: Live mode is already routed through the TxLINE adapter. Without credentials it shows a token-needed state instead of pretending replay data is live. With a local token, the adapter calls TxLINE fixtures, score snapshots, and odds snapshots, then maps them into the same MatchData model.
-
-## 4:30-4:55 Share and safety
-
-Switch to Analyst or Judge Mode, then show the share card preview and export button.
-
-Close with: The product is informational only. It does not place bets, recommend trades, operate prediction markets, handle wallets, or store secrets.
+World Cup Live Pulse is deployed, functional, documented, and repeatable for judges. It uses TxLINE as the live data boundary and remains a safe fan experience: no betting, no trade advice, no prediction market, no custody, and no private token in the public build.
 
 ## Recording checklist
 
-- Browser zoom at 100 percent.
-- Use the deployed URL.
-- Use the Judge Demo chapters instead of manually hunting for moments.
-- Do not show `.env.local`, tokens, private keys, seed phrases, verification codes, or wallet screens.
-- Keep the final video under 5 minutes.
+- Use the latest deployed asset, not an older cached Pages build.
+- Keep browser zoom at 100 percent and capture at 1280 × 720.
+- Do not show `.env.local`, API tokens, JWTs, private keys, wallet screens, or browser developer tools.
+- Show the Match Center score challenge before secondary details.
+- Show the Replay label and final score clearly.
+- Show the exact TxLINE endpoints in a caption card.
+- Keep the final video below five minutes.

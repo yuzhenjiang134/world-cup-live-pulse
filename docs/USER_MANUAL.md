@@ -1,133 +1,98 @@
-# World Cup Live Pulse User Manual
+# User Manual
 
-## Purpose
+Updated: 2026-07-11
 
-World Cup Live Pulse is a fan-facing dashboard. It helps ordinary fans understand a match through score, key events, market mood, local AI prediction / evaluation / commentary, source status, and replay chapters.
+## Start here
 
-It is informational only. It does not place bets, give trading advice, connect wallets, or handle secrets.
+Open World Cup Live Pulse. Match Center is the first screen and attempts the current source before falling back honestly.
 
-## Quick Start
+The top of Match Center shows:
 
-1. Open the public site.
-2. Check the source banner first.
-3. Read score, latest beat, AI prediction, AI evaluation, AI commentary, event feed, market mood, and timeline together.
-4. Use the local fan score pick to choose a conversation scoreline. This stays local and is not a bet.
-5. Download the fan pick card if you want a shareable local SVG.
-6. Open team cards or match details only when you want deeper context.
-7. Use replay controls or key moments to move through the match.
-8. Check the matchday hub for playable replay fixtures and official schedule seed matches.
-9. Open Settings and switch to Analyst Mode for source verification, or Judge Mode for demo chapters.
-10. Export the match pulse share card only after checking the data state.
+- selected fixture and source status
+- teams, score, clock, and latest match signal
+- checked time
+- fan pulse
+- the score challenge
 
-## Matchday Shell
+## Score challenge
 
-The current main view is intentionally split into three working areas:
+1. Start with 1,000 local test points.
+2. Choose a home and away score before the challenge closes.
+3. Lock the score for 50 points.
+4. After a verified final score is available, settle once.
+5. Review points, streak, best streak, and accuracy.
+6. Download the prediction card when useful.
 
-- Left rail: Live, Replay, Match Center, Teams, and Settings.
-- Center: score, verified source, match clock, fan pulse, event timeline, and local score challenge.
-- Right rail: local test points, source truth, replay library, and an authorized watch entry if one is configured.
+Exact scores award 250 points; a correct win/draw/loss result awards 100; a miss awards 0. Points remain in this browser and have no cash value. The challenge never connects a wallet or places a bet.
 
-The first screen does not expose wallet controls, JWT fields, program IDs, raw endpoint tables, or long operator instructions. Those are advanced implementation details and belong in Settings. Every interactive control on the main view has a concrete result: it changes mode, refreshes verified data, opens a replay, opens team context, or updates the local score challenge.
+## Match Center
 
-The score challenge starts with 1,000 local test points in the browser. It costs 50 local points to lock a score and may award local points after a verified final score. These points have no cash value, are not transferable, are not a wager, and never touch Solana or TxLINE.
+Use the focus tabs to move between the match overview, score challenge, timeline, market context, and teams. Available source events can include goals, yellow/red cards, substitutions, halftime, fulltime, added time, extra time, and score changes.
 
-## Data States
+AI-style commentary is based on the same normalized match frame. Use the Listen button to read it with the browser speech engine. It is an explanation aid, not a verified source quote or betting recommendation.
 
-| State | Meaning |
-|---|---|
-| Live | Authenticated TxLINE score/event/odds data loaded successfully. |
-| Delay | Live-like data that is delayed or not guaranteed second-by-second. |
-| Replay | Fixed historical scenario for demo and judging. |
-| Seed | Official schedule or static context, not a live feed. |
+## Replay
 
-The app must never invent live games. If credentials are missing, the public build stays in Replay + Seed mode.
+Replay contains fixed historical stories for evaluation when no current World Cup match is active. Replay uses the same score challenge, event timeline, pulse, and commentary components as the current Match Center.
 
-Always check the source banner before reading a match. It shows the data state, the checked timestamp, and whether the current view is a replay fixture, a schedule snapshot, or authenticated live data.
+Historical replay is always labeled Replay and is never presented as 2026 live data.
+
+## Current source teams
+
+The Teams view first shows participants from the selected match and current TxLINE schedule. Open the reference atlas only when deeper seeded context is needed. Source teams are not replaced by static profiles.
 
 ## Settings
 
-- Language: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic labels for the current fan regions represented in the demo. Team and player names remain source-of-truth names.
-- Live data connection: a compact advanced section shows whether the authenticated source is ready and links to the self-serve helper. It never renders the API token, guest JWT, private key, or wallet signature.
-- Refresh verified feed: reruns the adapter without exposing request headers or secrets.
-- Viewing preset: Fan Mode keeps the main screen focused on the match, Analyst Mode reveals data-verification panels, and Judge Mode reveals the demo chapters, judging-criteria score map, Path to 100 note, and review path.
-- Operation manual: show or hide the matchday guide.
-- Fixture briefing: show or hide fixture-specific data rules.
-- Country team atlas: show or hide team profiles and watch notes.
-- Authorized video sync: show or hide the rights-cleared video integration status.
+Settings contains:
 
-The main page keeps secondary material collapsed by default. Presets apply sensible module visibility automatically, and the module switches let you override that layout when needed.
+- language selection
+- source refresh
+- local test-point reset
+- TxLINE connection status and activation helper
+- advanced data-boundary notes
 
-Authentication is deliberately not a first-screen action. For local development, credentials stay in the ignored `.env.local` file. For GitHub Pages, use a server-side proxy because Vite `VITE_` values are public after build. The public page remains useful through Replay and a no-token public scoreboard fallback, with the actual source state shown next to the score.
+The supported UI languages are English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic. Team and player proper names remain source names.
 
-## Fan Score Pick
+## Source labels
 
-The score pick controls are local UI only. The score steppers and quick pick buttons help fans discuss a match outcome while watching the pulse, but they do not submit a wager, connect a wallet, store a prediction, or create a prediction market.
+| Label | Meaning |
+|---|---|
+| Live | Current authenticated source data. |
+| Delay | Delayed/free-tier or named public scoreboard data. |
+| Seed | Schedule/reference context without verified current score events. |
+| Replay | Fixed historical judgeable data. |
 
-The pick is intentionally shown beside source status and market mood context so users can compare their read with the current match pulse without treating the percentages as financial advice.
+Never interpret Seed or Replay as a current live match. The checked timestamp shows when the source was last evaluated.
 
-The fan pick card download is generated entirely in the browser as an SVG. It is a local share artifact, not a submitted prediction and not a stored account record.
+## Watch and replay links
 
-## AI Match Lab
+The product opens official FIFA+ archive/highlight pages. Availability depends on rights and territory. The in-app event timeline is always the deterministic replay path. No unofficial stream is embedded.
 
-The AI Match Lab is an informational local rule engine. It converts score, event type, market mood, cards, goals, and timeline volatility into three fan-facing reads: AI prediction, AI evaluation, and AI commentary.
+## Local TxLINE verification
 
-It is not a gambling model, trading signal, stored forecast, or prediction market. If a live TxLINE feed is unavailable, the AI reads are generated from the clearly labeled Replay or Seed state only.
+Keep credentials only in ignored `.env.local`, then run:
 
-## Matchday Hub
-
-The compact matchday hub separates playable Replay fixtures from official TxLINE schedule snapshot matches. Seed cards are useful for schedule awareness, but they stay labeled as token-required until authenticated score, event, and odds data are loaded.
-
-## Authorized Video Sync
-
-The watch card opens an official FIFA+ archive/highlights page by default. Availability depends on territory and rights, so the app does not call it a guaranteed live stream. A team-owned rights-cleared `https://` source may be supplied through `VITE_AUTHORIZED_VIDEO_EMBED_URL` when an authorized provider grants it.
-
-The public build does not include match video, scrape streams, or embed unofficial sources. The deterministic in-app timeline replay remains available even when no exact video is available.
-
-## Country Team Atlas
-
-The atlas contains seeded team profiles for teams represented in the replay fixtures, TxLINE schedule seed, and host/reference teams. These profiles are fan context, not official final rosters.
-
-When a valid TxLINE fixture is loaded, live fixture data should override seed context where available.
-
-## Local TxLINE Verification
-
-Analyst Mode and Judge Mode show an API Access Plan panel:
-
-- Implemented now: adapter, endpoint mapping, local probe, and replay fallback are present.
-- Token gate: Live data needs a devnet free-tier token activated through the TxLINE self-serve flow.
-- Online proxy mode: public Live should use a secure proxy, not a token inside the GitHub Pages bundle.
-- Judgeable fallback: Replay / Seed remains usable and labeled when no live match or token exists.
-
-Only put credentials in `.env.local`:
-
-```bash
-VITE_TXLINE_API_BASE=https://txline-dev.txodds.com
-VITE_TXLINE_PROXY_BASE=
-VITE_TXLINE_API_TOKEN=your_txline_x_api_token_here
-VITE_TXLINE_SESSION_JWT=
-VITE_TXLINE_FIXTURE_ID=17588325
-VITE_TXLINE_FINAL_SCORE_SEQ=
-VITE_AUTHORIZED_VIDEO_EMBED_URL=
-```
-
-Then run:
-
-```bash
+```text
 npm run txline:probe
 ```
 
-The probe verifies guest JWT, fixture snapshot, score snapshot, and odds snapshot access without printing token values.
+The default World Cup configuration is:
 
-Do not commit `.env.local`, API tokens, private keys, seed phrases, verification codes, or wallet material.
+```text
+VITE_TXLINE_API_BASE=https://txline-dev.txodds.com
+VITE_TXLINE_FIXTURE_ID=
+VITE_TXLINE_COMPETITION_ID=72
+```
 
-## Demo Flow
+Never paste a private key, seed phrase, JWT, or API token into the public app or repository.
 
-1. Show Source Board and the source banner.
-2. Open Trust & Accuracy Center.
-3. Show the local fan score pick and the watch-now event feed.
-4. Open Settings only when showing optional modules.
-5. Use Judge Demo chapters.
-6. Show Match Intelligence and Country Team Atlas.
-7. Switch to Live mode and explain token-gated data.
-8. Export the share card.
-9. Close with the safety boundary.
+## Judge review path
+
+1. Open Match Center and check source/freshness.
+2. Enter and lock a score prediction.
+3. Open Argentina vs France Replay and jump through goals, cards, and extra time.
+4. Settle the prediction once and show reload persistence.
+5. Listen to AI-style commentary and download the share card.
+6. Open current source teams.
+7. Switch one language in Settings and show the hidden TxLINE status.
+8. Close on the safety and official video-rights boundary.

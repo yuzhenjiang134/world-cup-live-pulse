@@ -26,15 +26,27 @@ const requiredFiles = [
   "docs/SUBMISSION_DRAFT.md",
   "docs/DEMO_SCRIPT.md",
   "docs/SUBMISSION_CHECKLIST.md",
+  "docs/JUDGING_AUDIT_2026-07-11.md",
+  "api/txline/[...path].mjs",
   "src/lib/txlineAdapter.ts",
+  "src/lib/challenge.ts",
+  "src/lib/worldCupScope.ts",
+  "src/lib/txlineScoreNormalizer.ts",
   "src/lib/shareCard.ts",
   "src/data/replayMatch.ts",
   "src/data/matchCalendar.ts",
   "src/data/fanGuide.ts",
   "scripts/validate-fixtures.mjs",
   "scripts/audit-product-data.mjs",
+  "scripts/test-score-challenge.mjs",
+  "scripts/test-world-cup-scope.mjs",
+  "scripts/test-txline-score-normalization.mjs",
+  "scripts/test-vercel-txline-proxy.mjs",
+  "scripts/e2e-matchday.mjs",
   "scripts/security-scan.mjs",
   "scripts/txline-probe.mjs",
+  "scripts/sync-txline-archive.mjs",
+  "scripts/test-txline-archive.mjs",
 ];
 
 const forbiddenFiles = [".env", ".env.local"];
@@ -47,29 +59,33 @@ const requiredText = [
   ["docs/submission-pack.md", "World Cup Live Pulse"],
   ["docs/api-mapping-template.md", "Endpoint inventory"],
   ["docs/TECHNICAL_OVERVIEW.md", "Data consistency model"],
-  ["docs/TECHNICAL_OVERVIEW.md", "Trust & Accuracy Center"],
+  ["docs/TECHNICAL_OVERVIEW.md", "Source truth model"],
   ["docs/TXLINE_ENDPOINTS.md", "Implemented endpoint mapping"],
   ["docs/TXLINE_ENDPOINTS.md", "GET /api/fixtures/snapshot"],
   ["docs/TXLINE_ENDPOINTS.md", "POST /auth/guest/start"],
   ["docs/TXLINE_ENDPOINTS.md", "X-Api-Token"],
   ["docs/API_FEEDBACK.md", "no-match-day"],
-  ["docs/USER_MANUAL.md", "Country Team Atlas"],
+  ["docs/USER_MANUAL.md", "Current source teams"],
   ["docs/USER_MANUAL.md", "npm run txline:probe"],
   ["docs/PUBLIC_RESEARCH_SUMMARY.md", "Authorized Video Sync"],
   ["docs/PUBLIC_RESEARCH_SUMMARY.md", "Demo video up to 5 minutes"],
-  ["docs/SUBMISSION_DRAFT.md", "TxLINE World Cup Schedule snapshot"],
+  ["docs/SUBMISSION_DRAFT.md", "CompetitionId 72"],
   ["docs/SUBMISSION_DRAFT.md", "Consumer and Fan Experiences"],
-  ["docs/DEMO_SCRIPT.md", "under 5 minutes"],
-  ["docs/SUBMISSION_CHECKLIST.md", "Trust & Accuracy Center"],
+  ["docs/DEMO_SCRIPT.md", "below five minutes"],
+  ["docs/SUBMISSION_CHECKLIST.md", "visible source state"],
   ["docs/SUBMISSION_CHECKLIST.md", "Final submission"],
+  ["docs/JUDGING_AUDIT_2026-07-11.md", "Fan accessibility and user experience"],
+  ["docs/JUDGING_AUDIT_2026-07-11.md", "Commercial and monetization path"],
   [".github/workflows/pages.yml", "Deploy GitHub Pages"],
   ["vite.config.ts", "github-pages"],
   ["src/lib/txlineAdapter.ts", "Live activation pending"],
   ["src/lib/txlineAdapter.ts", "/api/scores/snapshot"],
+  ["src/lib/txlineAdapter.ts", "filterTxlineWorldCupFixtures"],
+  ["src/lib/worldCupScope.ts", "txlineWorldCupCompetitionId = 72"],
+  ["api/txline/[...path].mjs", "origin_not_allowed"],
+  ["api/txline/[...path].mjs", "competitionId"],
   ["src/data/replayMatch.ts", "replayMatches"],
   ["src/data/matchCalendar.ts", "never invents live games"],
-  ["src/App.tsx", "Trust & Accuracy"],
-  ["src/App.tsx", "Country Team Atlas"],
   ["src/data/fanGuide.ts", "teamAtlas"],
   ["scripts/security-scan.mjs", "Security scan complete"],
 ];
@@ -149,10 +165,10 @@ if (packageJson.scripts?.check && packageJson.scripts?.build) {
   fail("package scripts must include check and build");
 }
 
-if (packageJson.scripts?.validate && packageJson.scripts?.fixtures && packageJson.scripts?.audit && packageJson.scripts?.security) {
-  pass("package scripts include validate, fixtures, audit, and security");
+if (packageJson.scripts?.validate && packageJson.scripts?.fixtures && packageJson.scripts?.audit && packageJson.scripts?.challenge && packageJson.scripts?.scope && packageJson.scripts?.["scores:test"] && packageJson.scripts?.["archive:test"] && packageJson.scripts?.["proxy:test"] && packageJson.scripts?.security && packageJson.scripts?.["e2e:matchday"]) {
+  pass("package scripts include validate, fixtures, audit, challenge, scope, score normalization, proxy, browser E2E, and security");
 } else {
-  fail("package scripts must include validate, fixtures, audit, and security");
+  fail("package scripts must include validate, fixtures, audit, challenge, scope, score normalization, proxy, browser E2E, and security");
 }
 
 if (packageJson.scripts?.["txline:probe"]) {

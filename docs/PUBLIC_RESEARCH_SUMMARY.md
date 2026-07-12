@@ -18,7 +18,7 @@ What is happening in this match, and why does it feel different now?
 
 From the saved public track brief:
 
-- Current public listing snapshot: 20 submissions; Consumer and Fan Experiences track prize pool is 16,000 USDT (10,000 / 4,000 / 2,000), within the 50,000 USDT World Cup pool.
+- Current public listing snapshot checked 2026-07-12: 26 submissions; Consumer and Fan Experiences track prize pool is 16,000 USDT (10,000 / 4,000 / 2,000), within the 50,000 USDT World Cup pool.
 - Submission window closes July 19, 2026 at 23:59 UTC; winner announcement is scheduled for July 29, 2026 at 15:00 UTC.
 - Demo video up to 5 minutes is an absolute requirement for initial screening.
 - The submission needs a working app link or functional API endpoint.

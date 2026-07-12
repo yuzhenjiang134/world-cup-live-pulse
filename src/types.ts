@@ -157,6 +157,10 @@ export type MatchScheduleItem = {
   homeScore?: number;
   awayScore?: number;
   advancementNote?: string;
+  eventCount?: number;
+  goalCount?: number;
+  cardCount?: number;
+  extraTime?: boolean;
 };
 
 export type PulseFrame = {

@@ -2,7 +2,7 @@
 
 Updated: 2026-07-11
 
-Official listing snapshot checked 2026-07-11: 20 public submissions; this track lists 16,000 USDT total prizes (10,000 / 4,000 / 2,000), with a July 19, 2026 23:59 UTC close and July 29, 2026 15:00 UTC announcement. The overall World Cup hackathon pool is listed as 50,000 USDT.
+Official listing snapshot checked 2026-07-12: 26 public submissions; this track lists 16,000 USDT total prizes (10,000 / 4,000 / 2,000), with a July 19, 2026 23:59 UTC close and July 29, 2026 15:00 UTC announcement. The overall World Cup hackathon pool is listed as 50,000 USDT.
 
 This is the checklist for the current matchday shell. Older Source Board / Judge Demo prototype labels are retired from the primary interface and must not be described as visible product features.
 
@@ -12,12 +12,15 @@ This is the checklist for the current matchday shell. Older Source Board / Judge
 - [x] Score challenge is the first interaction block below the score hero.
 - [x] New local sessions receive 1,000 test points; points persist locally and can be reset in Settings.
 - [x] The challenge visibly explains current points, per-pick cost, and final-score settlement before the user enters a score.
+- [x] Fan level and XP progress reward correct and exact historical results without turning points into money or a transferable asset.
 - [x] Challenge settlement uses the verified final score in Replay or Live data; it has no cash value, wallet flow, betting, or trading advice.
+- [x] Multi-match picks persist by fixture ID, pending fixtures are rechecked in the background, and each verified final can award points only once.
 - [x] Match events show goals, yellow cards, red cards, substitutions, halftime, fulltime, added time, and score changes when the source provides them.
 - [x] AI-style fan commentary is source-state aware and does not claim certainty.
 - [x] Schedule and progression are inside Match Center, with historical replay shortcuts.
 - [x] Replay is deterministic and separate from current 2026 Match Center data.
 - [x] Teams and players are available as a separate atlas, with compact key-player context in Match Center.
+- [x] Schedule cards expose stage, kickoff, status, verified score, and event/goal/extra-time summaries; current source team cards expose fixture count and opponents.
 - [x] Settings contains language, local points reset, refresh, and hidden TxLINE connection controls.
 - [x] Chinese, English, Spanish, Portuguese, French, German, Japanese, and Arabic UI keys are validated as a shared set.
 
@@ -29,9 +32,12 @@ This is the checklist for the current matchday shell. Older Source Board / Judge
 - [x] Current/upcoming fixtures are source-checked schedule data; they do not receive synthetic scores or kickoff events.
 - [x] Official odds are displayed only when the TxLINE odds payload is present; derived and replay snapshots are labeled separately.
 - [x] Unknown source team codes are shown as pending confirmation instead of being invented as real teams.
+- [x] TxLINE fixture requests default to World Cup `CompetitionId 72`, and a second adapter-side filter rejects Friendlies `CompetitionId 430` before selection, schedule rendering, or team extraction.
 - [x] The bundled Argentina-France and Germany-Japan fixtures are explicitly historical 2022 replay demos.
+- [x] The primary replay library uses eight authenticated, sanitized 2026 TxLINE historical sequences with `game_finalised` results.
 - [x] `npm run audit` checks replay dates, event scores, market values, team identities, video domains, feature markers, and data boundaries.
-- [x] `npm run txline:probe` passed twice on 2026-07-11: 7 fixture records, 41 score records for fixture `17588325`, and 0 odds records for that fixture.
+- [x] Repeated `npm run txline:probe` checks on 2026-07-11 kept 3 World Cup fixtures and 2 score records for fixture `18213979` stable. Official odds varied between 0 and 27 records across checks; the final local pair returned 3 then 5. Empty odds are shown honestly and never backfilled with invented values.
+- [x] The 2026-07-12 probe pair returned 2 World Cup fixtures; fixture `18222446` returned 40 score records and 20 official-odds records both times. Production leaves the fixture override blank to follow the current source fixture.
 
 ## Video
 
@@ -46,10 +52,12 @@ This is the checklist for the current matchday shell. Older Source Board / Judge
 - [x] `npm run i18n`
 - [x] `npm run fixtures`
 - [x] `npm run audit`
+- [x] `npm run scope`
 - [x] `npm run validate`
 - [x] `npm run build`
 - [x] `npm run security`
 - [x] Browser smoke test: Match Center, Replay, Teams, Settings, 1,000 points, official video links.
+- [x] Browser E2E: one charge, one final-score settlement, no duplicate reward, reload persistence, TTS/share controls, and 390px responsive layout.
 - [x] Local proxy returns HTTP 200 for the app and TxLINE fixtures endpoint.
 - [x] Production bundle contains no JWT-shaped credential values.
 
@@ -57,8 +65,11 @@ This is the checklist for the current matchday shell. Older Source Board / Judge
 
 Final submission gate: do not submit until the latest Pages asset hash and final demo URL are verified.
 
+Local-first rule: no push and no final video until the data-truth, complete-product-flow, and release-quality rounds all pass on the same local worktree. Then recheck the live official listing and perform a fresh requirement-by-requirement gap audit before any online push.
+
 - [x] Public GitHub repository: `https://github.com/yuzhenjiang134/world-cup-live-pulse`
 - [x] README, technical overview, endpoint mapping, API feedback, user manual, submission draft, and demo script.
+- [x] Five-criterion evidence audit: `docs/JUDGING_AUDIT_2026-07-11.md`.
 - [x] Official track requirements are reflected: working app/API access, public repo, specific TxLINE endpoint list, API feedback, TxLINE live input, and Solana sign-up path.
 - [x] GitHub Pages workflow is configured and the public URL returns HTTP 200.
 - [ ] Confirm Pages has switched to the latest pushed asset hash before recording the final demo.
@@ -67,4 +78,4 @@ Final submission gate: do not submit until the latest Pages asset hash and final
 
 ## Required Track Language
 
-The submission must explicitly explain the Consumer and Fan Experiences value: fast fan accessibility, observable real-time responsiveness, score-challenge interaction, replay judgeability, commercial embedding potential, and a complete working flow. The Trust & Accuracy Center is represented by the visible source state, checked timestamp, data-status labels, and hidden connection diagnostics.
+The submission must explicitly explain the Consumer and Fan Experiences value: fast fan accessibility, observable real-time responsiveness, score-challenge interaction, replay judgeability, commercial embedding potential, and a complete working flow. Source truth is represented by the visible source state, checked timestamp, data-status labels, and hidden connection diagnostics.

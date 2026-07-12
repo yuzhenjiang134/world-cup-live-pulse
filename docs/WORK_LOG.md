@@ -65,4 +65,30 @@ npm run txline:probe
 - Added two official FIFA+ entry links in the watch surface: archive and highlights/replays. The product does not promise a free live stream; rights and territory can vary, and the in-app timeline is the deterministic fallback.
 - Added `npm run audit` as a data and product-boundary audit. It checks deterministic replay identity, event/score consistency, market ranges, team identity coverage, official video domains, localized feature markers, and Live/Delay/Seed/Replay boundaries.
 - Reconciled `docs/SUBMISSION_CHECKLIST.md` and `TASKS.md` with the current Match Center shell so retired prototype panels are not presented as the primary product.
-- TxLINE probe snapshot on 2026-07-11 passed twice: 7 fixture records, 41 score records for fixture `17588325`, and 0 odds records. No odds are invented when the official odds payload is empty.
+- Repeated TxLINE probes on 2026-07-11 kept 3 World Cup fixtures and 2 score records for fixture `18213979` stable. Official odds varied between 0 and 27 records across checks; the final local pair returned 3 then 5. No odds are invented when the payload is empty.
+- Strengthened the core challenge with fan level and XP progress derived from played, correct, and exact results; points remain local and non-cash.
+- Enriched schedule cards with stage, kickoff, status, verified score, and event/goal/extra-time summaries, and enriched current source team cards with fixture counts and opponents.
+- Removed stale Jordan/Algeria/Austria schedule seeds and placeholder roster entries from the reference atlas. It now contains only four clearly historical 2022 replay profiles.
+- Added a two-stage World Cup scope guard: every fixture request defaults to `CompetitionId 72`, then `filterTxlineWorldCupFixtures()` rejects Friendlies `CompetitionId 430` before fixture selection, schedule rendering, or team extraction.
+- Added Norway and Switzerland identity mappings so real TxLINE participants render as `NOR` and `SUI` rather than generated placeholders.
+- Added pure scope tests, score-challenge tests, and browser E2E coverage for one-time settlement, reload persistence, TTS/share controls, and 390px mobile layout.
+
+## 2026-07-11: Verified 2026 tournament archive and progression view
+
+- Added `GET /api/scores/historical/{fixtureId}` to the local and secure public read-only proxy allowlists.
+- Added a credential-safe sync command that captured eight completed 2026 World Cup fixtures from TxLINE CompetitionId 72 without storing the API token, guest JWT, wallet, or private key.
+- Added a tested PascalCase/camelCase score normalizer so `FixtureId`, `Action`, `Score`, `Seq`, and `game_finalised` feed the same internal model.
+- Replaced the primary 2022 demo replay with 2026 TxLINE historical replay. Legacy 2022 editorial demos remain secondary only.
+- Added a dedicated Schedule & Replay product view: current fixtures, eight verified result cards, six-stage knockout path, replay launch, and team/source-player detail.
+- Calibrated replay minutes from TxLINE match clock, carried score state across records with no `Score` object, and removed overturned provisional goals from confirmed-goal counts.
+- Removed synthetic numerical odds from derived/replay context. The UI displays official x-prices only when an official odds payload exists; otherwise it displays score-derived fan pulse.
+- Extended browser E2E to verify the 2-0 final frame, exact-score settlement, eight archive cards, six bracket lanes, localized current-fixture copy, and zero page overflow at 1440px and 390px.
+# 2026-07-12 - Score challenge reliability and hierarchy
+
+- Promoted the score challenge to a full-width primary interaction directly below the match score.
+- Added large points balance, score steppers, stronger primary action, and compact prediction history.
+- Added a fixture-keyed browser ledger with legacy-pick migration, automatic verified-final settlement, one-award idempotency, final score, award, and source timestamps.
+- Kept the selected fixture on 15-second refresh and added 60-second background checks for other pending picks.
+- Removed duplicate points UI and mixed-language source-rule content from the right rail.
+- Rechecked the official listing: 26 public submissions on 2026-07-12; requirements and five judging criteria are unchanged.
+- Repeated the real TxLINE probe twice: 2 World Cup fixtures, 40 score records, and 20 official-odds records for fixture `18222446` in both runs. Removed the default fixture pin so deployment follows the latest source fixture.

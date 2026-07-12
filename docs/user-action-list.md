@@ -32,7 +32,7 @@ Endpoint docs are already mapped. Give Codex only the safe integration materials
 - [ ] Rate limit notes
 - [ ] Whether browser CORS is allowed or a server-side proxy is required
 - [ ] Whether the hackathon token is issued directly or activated through Solana sign-up / wallet signature
-- [ ] Whether each World Cup fixture is real-time or 60-second delayed on the free tier
+- [ ] Confirm the effective delivery interval for the selected network, service level, and fixture before final recording
 - [ ] Example response payloads with secrets removed
 
 Keep private:
@@ -50,7 +50,7 @@ VITE_TXLINE_API_BASE=https://txline-dev.txodds.com
 VITE_TXLINE_PROXY_BASE=
 VITE_TXLINE_API_TOKEN=your_real_x_api_token
 VITE_TXLINE_SESSION_JWT=
-VITE_TXLINE_FIXTURE_ID=17588325
+VITE_TXLINE_FIXTURE_ID=
 VITE_TXLINE_FINAL_SCORE_SEQ=
 ```
 

@@ -74,7 +74,7 @@ VITE_TXLINE_API_BASE=https://txline-dev.txodds.com
 VITE_TXLINE_PROXY_BASE=
 VITE_TXLINE_API_TOKEN=your_real_x_api_token
 VITE_TXLINE_SESSION_JWT=your_guest_jwt_if_you_have_one
-VITE_TXLINE_FIXTURE_ID=17588325
+VITE_TXLINE_FIXTURE_ID=
 ```
 
 Then run:

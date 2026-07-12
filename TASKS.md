@@ -124,7 +124,7 @@ Updated: 2026-06-28
 - [ ] Confirm browser CORS behavior with real token
 - [x] Add live API empty-state copy from real no-match-day response, if provided
 - [x] Add endpoint feedback to submission draft after real token testing
-- [ ] Replace static Source Board schedule snapshot with real TxLINE calendar response when token and CORS are verified
+- [x] Replace the retired Source Board snapshot path with real TxLINE World Cup fixture responses in the current Match Center and Teams views
 
 ## Matchday shell completion
 
@@ -154,13 +154,49 @@ Updated: 2026-06-28
 
 ## 2026-07-11 Current release truth
 
-- [x] Official listing rechecked: 20 public submissions; Consumer and Fan Experiences prize pool is 16,000 USDT, inside the 50,000 USDT World Cup pool; close is 2026-07-19 23:59 UTC and announcement is scheduled for 2026-07-29 15:00 UTC.
+- [x] Official listing rechecked on 2026-07-12: 26 public submissions; Consumer and Fan Experiences prize pool is 16,000 USDT, inside the 50,000 USDT World Cup pool; close is 2026-07-19 23:59 UTC and announcement is scheduled for 2026-07-29 15:00 UTC.
 - [x] Match Center is the primary fan workflow: verified score state first, then the score challenge, events, AI-style commentary, market context, and schedule/replay entry points.
 - [x] The score challenge starts each local session with 1,000 browser-only test points. It settles from the verified final score and never touches cash, wallets, tokens, wagering, or trading.
-- [x] Current 2026 data is kept separate from the fixed Argentina-France and Germany-Japan 2022 replay stories. Replay is for repeatable judging; it is never labeled as a current match.
+- [x] Primary Replay now uses eight authenticated TxLINE 2026 historical sequences. The two 2022 editorial stories remain secondary legacy examples and are never presented as current data.
 - [x] Data states are explicit: Live, Delay, Seed, Replay, or public fallback. Unknown source teams remain pending confirmation instead of being guessed.
 - [x] Official FIFA+ archive and highlights/replay links are available from the match view. No unofficial stream is scraped or embedded; rights and territory availability remain visible.
 - [x] `npm run audit` checks replay dates, score/event consistency, market ranges, team identities, official video domains, localization markers, and source-boundary markers.
-- [x] Verification snapshot on 2026-07-11: `npm run txline:probe` passed twice; 7 fixture records, 41 score records for fixture `17588325`, and 0 odds records for that fixture.
+- [x] Repeated 2026-07-11 verification: strict `CompetitionId 72` probing kept 3 World Cup fixtures and 2 score records for fixture `18213979` stable. Official odds varied between 0 and 27 records; the final local pair returned 3 then 5, and empty odds were never fabricated.
+- [x] Repeated 2026-07-12 verification: strict `CompetitionId 72` probing returned 2 World Cup fixtures; fixture `18222446` returned 40 score records and 20 official-odds records in both probes. The default fixture override is now blank so deployment follows the current source fixture instead of pinning yesterday's match.
+- [x] Browser E2E verifies one-charge/one-settlement challenge rules, persistence after reload, commentary/share controls, and a 390px layout with zero horizontal overflow.
 - [x] The current submission checklist is `docs/SUBMISSION_CHECKLIST.md`; it is the source of truth for the final demo, Pages asset hash, and submission package.
 - [ ] External gates remain external: final TxLINE production/CORS confirmation, latest GitHub Pages asset hash, authorized video availability, final demo recording, and Superteam submission.
+
+## Local-first release gate
+
+Do not push or record the final video until all three local rounds pass on the same worktree:
+
+- [x] Round 1 - data truth: strict World Cup scope test and two real TxLINE probes passed; only `CompetitionId 72`, stable fixture selection, honest odds volatility, and no Friendlies in Match Center or Teams.
+- [x] Round 2 - product flow: challenge levels/rules and browser E2E passed for one charge, one settlement, reload persistence, Replay, current source teams, all eight language selections, commentary/share controls, and Settings.
+- [x] Round 3 - release quality: full validation, production build, security scan, desktop/mobile layout checks, screenshot review, and `git diff --check` passed.
+- [x] After all three local rounds pass, re-open the current official track listing, recheck every submission requirement and judging criterion, compare them against the final local product, and fix every discovered omission.
+- [ ] Only after the local rounds and the fresh official-requirements audit both pass: commit, push, wait for GitHub Pages, verify the online asset and flows, then prepare the final demo video.
+
+## 2026-07-11 tournament and replay gate
+
+- [x] Normalize PascalCase and camelCase TxLINE score payloads at one tested adapter boundary.
+- [x] Sync eight credential-free 2026 historical sequences through `GET /api/scores/historical/{fixtureId}`.
+- [x] Use `game_finalised` for the displayed final score and retain source fixture ID, sequence, endpoint, and capture time.
+- [x] Treat an overturned provisional goal as a score review, not as a confirmed goal count.
+- [x] Add a dedicated Schedule & Replay view with current fixtures, 2026 archive cards, Round of 32 / 16 / 8 / 4 / Final / Champion lanes, and team/source-player detail.
+- [x] Leave unconfirmed stage names, advancement, winners, and player display names blank or source-ID-only.
+- [x] Hide numerical odds when no official TxLINE odds payload exists; show score-derived fan pulse instead.
+- [x] Browser-test eight archive cards, six bracket lanes, current fixtures, team detail, 1440px and 390px widths.
+- [x] Re-run the complete three-round local gate after the documentation and audit updates in this worktree.
+
+## 2026-07-12 score challenge reliability gate
+
+- [x] Make the score challenge the full-width primary interaction directly below the verified score hero.
+- [x] Replace compact number fields with accessible minus/plus score steppers and a large points balance.
+- [x] Persist predictions by fixture ID in a multi-match ledger and migrate prior per-fixture browser picks.
+- [x] Auto-settle each locked pick exactly once from a verified final score; store final score, award, source check time, and settlement time.
+- [x] Refresh the selected match every 15 seconds and recheck other pending fixtures every 60 seconds without exposing credentials.
+- [x] Refresh immediately when the deployed page regains focus or becomes visible, and send no-store headers from the server proxy so CDN/browser caches cannot freeze match state.
+- [x] Keep points local, non-transferable, wallet-free, and without cash value; this remains a fan challenge rather than wagering.
+- [x] Remove the duplicated right-rail points card and replace the mixed-language data rule with localized source guidance.
+- [x] Browser-test pending-fixture handling, automatic settlement, no duplicate award after reload, history visibility, focus-triggered refresh, and 390px layout on the same final worktree.

@@ -17,7 +17,10 @@ function fail(message) {
 
 async function loadTsModule(relativePath) {
   const filePath = path.join(root, relativePath);
-  const source = await readFile(filePath, "utf8");
+  let source = await readFile(filePath, "utf8");
+  if (relativePath === "src/data/replayMatch.ts") {
+    source = source.replace('import { txlineArchiveMatches } from "./txlineArchive";', "const txlineArchiveMatches = [];");
+  }
   const result = ts.transpileModule(source, {
     compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 },
     fileName: relativePath,
@@ -86,6 +89,9 @@ for (const source of videoSources ?? []) {
 const requiredAppMarkers = [
   ["1,000 local starting points", "1000"],
   ["score challenge component", "function ScoreChallenge"],
+  ["fan challenge levels", "getFanLevel"],
+  ["schedule moment summaries", "schedule-moments"],
+  ["source-first team facts", "source-team-facts"],
   ["localized event descriptions", "localizeEventDescription"],
   ["official video sources", "officialVideoSources"],
   ["replay mode boundary", 'setMode("replay")'],
@@ -101,6 +107,8 @@ const requiredAdapterMarkers = [
   ["odds endpoint", "/api/odds/snapshot"],
   ["official odds boundary", 'payload.odds.length ? "official-odds"'],
   ["seed boundary", 'hasLivePayload ? "Delay" : "Seed"'],
+  ["strict World Cup fixture scope", "filterTxlineWorldCupFixtures"],
+  ["official World Cup competition id", "txlineWorldCupCompetitionId"],
 ];
 for (const [label, marker] of requiredAdapterMarkers) {
   if (adapterSource.includes(marker)) pass(`Adapter contains ${label}`);

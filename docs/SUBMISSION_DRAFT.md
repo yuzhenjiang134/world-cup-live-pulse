@@ -24,28 +24,29 @@ World Cup Live Pulse gives fans one place to understand whether a match is worth
 
 The current build includes:
 
-- Match-first command center: score, match clock, latest beat, tune-in signal, source freshness, and AI-style commentary.
-- Local fan score pick: entertainment-only prediction controls with a downloadable card; no wallet, no stake, no market.
-- Match pulse timeline: replay controls, key moments, market mood, goal swings, and player impact.
+- Match-first command center: score, match clock, latest beat, tune-in signal, source freshness, and spoken AI-style commentary.
+- Local fan score challenge: 1,000 starting points, 50-point picks, one-time verified settlement, fan level/XP/streak/accuracy stats, and a downloadable card; no wallet, no stake, no market.
+- Match pulse timeline: replay controls, key moments, market mood, goal swings, player impact, and schedule cards with verified event/goal/extra-time summaries.
 - Data adapters: TxLINE fixtures/scores/odds through local token or secure proxy, plus a free no-token ESPN public World Cup scoreboard fallback for score, status, teams, venue, and events.
-- Data truth system: every screen labels Replay, Seed, Delay, or Live, with a Trust & Accuracy Center explaining why.
-- Settings and secondary context: languages, optional operation guide, fixture briefing, country/team atlas, and authorized-video status are available without crowding the main match view.
+- Data truth system: every screen labels Replay, Seed, Delay, or Live, with checked time and source diagnostics explaining why.
+- Settings and secondary context: eight languages, local-point reset, current source teams, a collapsed reference atlas, and authorized-video status stay available without crowding the main match view.
 - Submission support: README, technical overview, endpoint notes, API feedback, demo-video package, and Superteam copy are included.
 
 ## TxODDS / TxLINE usage
 
 The app is designed around the TxLINE integration boundary in `src/lib/txlineAdapter.ts`. The public build uses Replay and Seed data because a private TxLINE token is not deployed to GitHub Pages. Local builds can use `.env.local` to call the official TxLINE endpoints.
 
-Current TxLINEChat evidence indicates hackathon service level 1 is a 60-second delayed feed for World Cup and International Friendlies. Therefore authenticated free-tier payloads are labeled `Delay` unless TxLINE grants a higher live tier.
+Official TxLINE documentation distinguishes mainnet Level 1 (60-second delay), mainnet Level 12 (real-time), and the current devnet Level 1 matrix row (`samplingIntervalSec = 0`). The app polls every 15 seconds and labels polling delivery `Delay` unless a true live stream is confirmed.
 
 If TxLINE token access is unavailable during judging, Live mode still loads the no-token ESPN FIFA World Cup public scoreboard by default. That source is labeled separately and treated as `Delay`, not as official TxLINE data.
 
-The Source Board uses a TxLINE World Cup Schedule snapshot checked on 2026-06-28. The snapshot observed fixtures for 2026-06-28 UTC:
+The 2026-07-11 authenticated snapshot returned three `CompetitionId 72` World Cup fixtures:
 
-- Fixture `17588325`: Jordan vs Argentina.
-- Fixture `17588326`: Algeria vs Austria.
+- Fixture `18213979`: Norway vs England.
+- Fixture `18222446`: Argentina vs Switzerland.
+- Fixture `18237038`: France vs Spain.
 
-These schedule entries are shown as Seed / Token Required. They are not presented as Live until authenticated score, event, and odds feeds are loaded.
+The adapter sends `competitionId=72` and applies a second response-side filter, preventing `CompetitionId 430` Friendlies from entering the World Cup Match Center or Teams view. Two consecutive probes on 2026-07-12 returned two current fixtures; fixture `18222446` returned 40 score records and 20 official-odds records in both runs. The production fixture override stays blank so selection follows the latest source response. Empty odds remain empty instead of being fabricated.
 
 Implemented TxLINE endpoint mapping:
 
@@ -53,14 +54,16 @@ Implemented TxLINE endpoint mapping:
 - `GET /api/fixtures/snapshot`
 - `GET /api/scores/snapshot/{fixtureId}`
 - `GET /api/odds/snapshot/{fixtureId}`
-- `GET /api/scores/stream` and `GET /api/odds/stream` as future SSE upgrades
-- Team, player, referee, and standings context where available from fixtures, score events, seed data, or future context endpoints
+- `GET /api/scores/stat-validation` for the documented final-score proof path
+- Team and player context only where supplied by fixtures, score events, or clearly labeled reference data
 
 Live deployment note:
 
 - The public GitHub Pages build does not ship a private TxLINE token.
 - Local verification uses `.env.local` and `npm run txline:probe`.
 - Public Live mode is designed to use `VITE_TXLINE_PROXY_BASE`, where a secure proxy stores `TXLINE_API_TOKEN` server-side and forwards only the allowlisted fixture, score, and odds endpoints.
+
+The authenticated token used in local verification was activated through the official Solana devnet flow: wallet subscription transaction, guest JWT, signed activation message, and `/api/token/activate`. No wallet secret is used by the fan product.
 
 Video is handled separately from TxLINE data. The public build does not embed match video. If a rights-cleared official broadcaster, FIFA, YouTube Live, or other authorized embed URL is configured locally, the optional Authorized Video Sync panel can display it and align the viewing context with match clock or replay minute.
 
@@ -76,13 +79,19 @@ World Cup matches are not available every day. The app does not invent live game
 - It creates a clear path for fan communities, Telegram groups, and sports media embeds.
 - It avoids wallet, custody, betting, and prediction-market risk.
 
+## Commercial path
+
+- Free fan experience: match pulse, score challenge, replay, source trust, and official watch links.
+- Community edition: branded challenges, group leaderboards, notifications, and share cards for supporter communities.
+- Media/B2B edition: embeddable localized match-pulse widgets, sponsor placements, and engagement analytics for publishers and broadcasters.
+
 ## Demo flow
 
 1. Open the deployed app on the match-first view.
 2. Show the score, latest beat, tune-in signal, source label, and free-tier delay label.
 3. Use local fan score pick, then export the prediction card.
 4. Jump through the timeline to show goal swing, late volatility, and final whistle.
-5. Open Trust & Accuracy Center and explain Replay / Seed / Delay / Live.
+5. Point out the checked timestamp and explain Replay / Seed / Delay / Live.
 6. Switch to Live mode and show either the TxLINE token/proxy path or the free public scoreboard fallback if TxLINE access is still blocked.
 7. Open Settings only to show language support and optional modules.
 8. Close with safety: no betting, no custody, no private token in the public build.

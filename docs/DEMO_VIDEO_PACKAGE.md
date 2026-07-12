@@ -1,6 +1,6 @@
 # Demo Video Package
 
-Updated: 2026-07-01
+Updated: 2026-07-11
 
 ## Local artifact
 
@@ -20,7 +20,7 @@ Upload the same video to Loom, YouTube, or another public video host before fina
 
 ## Generate a fresh video
 
-1. Capture current screenshots into `demo-assets/screenshots/`.
+1. Capture the current Match Center, final replay, Teams, and Settings views into `demo-assets/screenshots/`.
 2. Run the recorder server:
 
 ```bash
@@ -35,12 +35,12 @@ The recorder produces a captioned WebM video under 5 minutes. It uses the real a
 ## Story covered
 
 - Official hackathon requirement and judging lens.
-- Fan-first main match view.
-- Settings, language, and review presets.
-- Judge mode and data consistency.
-- Trust / Source / Operator Kit buyer value.
-- Live mode token-needed boundary.
-- TxLINE endpoint mapping.
+- Fan-first Match Center and the 1,000-point score challenge.
+- Historical replay with final-score settlement, event timeline, and AI-style commentary.
+- Team/player depth and eight-language Settings.
+- TxLINE fixture, score, event, and odds endpoint mapping.
+- Live / Delay / Seed / Replay truth rules and official FIFA+ links.
+- Commercial path for communities, media embeds, venues, and sponsors.
 - Safety boundary: no betting, no trading advice, no wallets, no token leakage.
 
 ## Final upload note

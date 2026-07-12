@@ -1,6 +1,12 @@
 import { dataConsistencyState } from "../data/matchCalendar";
 import { getReplayMatch, replayMatches } from "../data/replayMatch";
 import type { MatchData, MatchEvent, MatchEventType, MatchLoadResult, MatchScheduleItem, MarketSnapshot, Team } from "../types";
+import { filterTxlineWorldCupFixtures, txlineWorldCupCompetitionId } from "./worldCupScope";
+import {
+  normalizeTxlineScoreRecord,
+  type NormalizedTxlineScore as TxlineScore,
+  type TxlineSoccerTotalScore,
+} from "./txlineScoreNormalizer";
 
 const defaultApiBase = "https://txline-dev.txodds.com";
 const requestTimeoutMs = 12_000;
@@ -33,86 +39,6 @@ type TxlineFixture = {
   Participant1IsHome?: boolean;
 };
 
-type TxlineScore = {
-  fixtureId?: number;
-  gameState?: string;
-  startTime?: number;
-  participant1IsHome?: boolean;
-  participant1Id?: number;
-  participant2Id?: number;
-  action?: string;
-  id?: number;
-  ts?: number;
-  seq?: number;
-  statusSoccerId?: unknown;
-  scoreSoccer?: TxlineSoccerFixtureScore;
-  dataSoccer?: TxlineSoccerData;
-  stats?: Record<string, unknown>;
-  participant?: number;
-  possession?: number;
-  possessionType?: unknown;
-  parti1StateSoccer?: TxlineSoccerPartiState;
-  parti2StateSoccer?: TxlineSoccerPartiState;
-  possibleEventSoccer?: TxlineSoccerNeutralEvent;
-};
-
-type TxlineSoccerFixtureScore = {
-  Participant1?: TxlineSoccerTotalScore;
-  Participant2?: TxlineSoccerTotalScore;
-};
-
-type TxlineSoccerTotalScore = {
-  H1?: TxlineSoccerScore;
-  HT?: TxlineSoccerScore;
-  H2?: TxlineSoccerScore;
-  ET1?: TxlineSoccerScore;
-  ET2?: TxlineSoccerScore;
-  PE?: TxlineSoccerScore;
-  ETTotal?: TxlineSoccerScore;
-  Total?: TxlineSoccerScore;
-};
-
-type TxlineSoccerScore = {
-  Goals?: number;
-  YellowCards?: number;
-  RedCards?: number;
-  Corners?: number;
-};
-
-type TxlineSoccerData = {
-  Action?: string;
-  Color?: string;
-  Goal?: boolean;
-  Minutes?: number;
-  Penalty?: boolean;
-  PlayerId?: number;
-  PlayerInId?: number;
-  PlayerOutId?: number;
-  RedCard?: boolean;
-  StatusId?: number;
-  Type?: string;
-  YellowCard?: boolean;
-  New?: {
-    Minutes?: number;
-    PlayerId?: number;
-    PlayerInId?: number;
-    PlayerOutId?: number;
-  };
-};
-
-type TxlineSoccerPartiState = {
-  PossibleEvent?: {
-    Goal?: boolean;
-    Penalty?: boolean;
-    Corner?: boolean;
-  };
-};
-
-type TxlineSoccerNeutralEvent = {
-  RedCard?: boolean;
-  YellowCard?: boolean;
-  VAR?: boolean;
-};
 
 type TxlineOdds = {
   FixtureId?: number;
@@ -306,13 +232,13 @@ export async function loadMatchData(
 
     const fixtureQuery = {
       startEpochDay: parseOptionalInteger(options.startEpochDay),
-      competitionId: parseOptionalInteger(options.competitionId),
+      competitionId: parseOptionalInteger(options.competitionId) ?? txlineWorldCupCompetitionId,
     };
-    const fixtures = toArray<TxlineFixture>(
-      await requestJson(apiBase, "/api/fixtures/snapshot", headers, fixtureQuery),
+    const fixtures = filterTxlineWorldCupFixtures(
+      toArray<TxlineFixture>(await requestJson(apiBase, "/api/fixtures/snapshot", headers, fixtureQuery)),
     );
     const selectedFixture = selectFixture(fixtures, fixtureId);
-    const liveFixtureId = selectedFixture?.FixtureId ?? fixtureId;
+    const liveFixtureId = selectedFixture?.FixtureId;
 
     if (!liveFixtureId) {
       throw new Error(
@@ -328,7 +254,9 @@ export async function loadMatchData(
       requestJson(apiBase, oddsPath, headers, snapshotQuery),
     ]);
 
-    const scores = scoreResult.status === "fulfilled" ? toArray<TxlineScore>(scoreResult.value) : [];
+    const scores = scoreResult.status === "fulfilled"
+      ? toArray<unknown>(scoreResult.value).map(normalizeTxlineScoreRecord)
+      : [];
     const odds = oddsResult.status === "fulfilled" ? toArray<TxlineOdds>(oddsResult.value) : [];
     const match = normalizeTxlineMatch({
       fixture: selectedFixture,
@@ -421,13 +349,13 @@ async function loadViaProxy(
   try {
     const fixtureQuery = {
       startEpochDay: parseOptionalInteger(options.startEpochDay),
-      competitionId: parseOptionalInteger(options.competitionId),
+      competitionId: parseOptionalInteger(options.competitionId) ?? txlineWorldCupCompetitionId,
     };
-    const fixtures = toArray<TxlineFixture>(
-      await requestProxyJson(proxyBase, "/api/fixtures/snapshot", fixtureQuery),
+    const fixtures = filterTxlineWorldCupFixtures(
+      toArray<TxlineFixture>(await requestProxyJson(proxyBase, "/api/fixtures/snapshot", fixtureQuery)),
     );
     const selectedFixture = selectFixture(fixtures, fixtureId);
-    const liveFixtureId = selectedFixture?.FixtureId ?? fixtureId;
+    const liveFixtureId = selectedFixture?.FixtureId;
 
     if (!liveFixtureId) {
       throw new Error(
@@ -442,7 +370,9 @@ async function loadViaProxy(
       requestProxyJson(proxyBase, scorePath, snapshotQuery),
       requestProxyJson(proxyBase, oddsPath, snapshotQuery),
     ]);
-    const scores = scoreResult.status === "fulfilled" ? toArray<TxlineScore>(scoreResult.value) : [];
+    const scores = scoreResult.status === "fulfilled"
+      ? toArray<unknown>(scoreResult.value).map(normalizeTxlineScoreRecord)
+      : [];
     const odds = oddsResult.status === "fulfilled" ? toArray<TxlineOdds>(oddsResult.value) : [];
     const match = normalizeTxlineMatch({
       fixture: selectedFixture,
@@ -816,7 +746,7 @@ function normalizeTxlineMatch(payload: TxlineLivePayload): MatchData {
     marketSource: payload.odds.length ? "official-odds" : "derived-from-score",
     qualificationNote:
       "TxLINE data is used as fan context only. This product does not place bets, give trading advice, or handle wallet secrets.",
-    kickoffLabel: hasLivePayload ? "TxLINE 60s delayed feed" : "TxLINE fixture seed",
+    kickoffLabel: hasLivePayload ? "TxLINE authenticated polling feed" : "TxLINE fixture seed",
     home,
     away,
     events,
@@ -827,6 +757,9 @@ function normalizeTxlineMatch(payload: TxlineLivePayload): MatchData {
 
 function toScheduleItem(match: MatchData, sourceLabel: string): MatchScheduleItem {
   const finalEvent = match.events.at(-1);
+  const goalCount = match.events.filter((event) => event.type === "goal").length;
+  const cardCount = match.events.filter((event) => event.type === "yellow_card" || event.type === "red_card").length;
+  const extraTime = match.events.some((event) => event.minute > 90);
   return {
     id: match.id,
     home: match.home,
@@ -839,6 +772,10 @@ function toScheduleItem(match: MatchData, sourceLabel: string): MatchScheduleIte
     homeScore: finalEvent?.homeScore,
     awayScore: finalEvent?.awayScore,
     advancementNote: match.groupTable?.length ? "Group table available" : match.qualificationNote,
+    eventCount: match.events.length,
+    goalCount,
+    cardCount,
+    extraTime,
   };
 }
 
@@ -1233,12 +1170,7 @@ function selectFixture(fixtures: TxlineFixture[], configuredFixtureId?: number) 
   }
 
   const now = Date.now();
-  const worldCupFixtures = fixtures.filter((fixture) =>
-    (fixture.Competition ?? "").toLowerCase().includes("world cup"),
-  );
-  const candidates = worldCupFixtures.length ? worldCupFixtures : fixtures;
-
-  return candidates
+  return fixtures
     .filter((fixture) => typeof fixture.FixtureId === "number")
     .sort((first, second) => Math.abs(toTimestamp(first.StartTime) - now) - Math.abs(toTimestamp(second.StartTime) - now))[0];
 }
@@ -1275,15 +1207,15 @@ function extractSoccerGoals(totalScore?: TxlineSoccerTotalScore) {
 function inferScoreEventType(score: TxlineScore): MatchEventType | null {
   const action = `${score.action ?? ""} ${score.dataSoccer?.Action ?? ""} ${score.dataSoccer?.Type ?? ""}`.toLowerCase();
 
-  if (score.dataSoccer?.Goal || score.parti1StateSoccer?.PossibleEvent?.Goal || score.parti2StateSoccer?.PossibleEvent?.Goal) {
+  if (score.dataSoccer?.Goal || score.parti1StateSoccer?.PossibleEvent?.Goal || score.parti2StateSoccer?.PossibleEvent?.Goal || action.includes("goal")) {
     return "goal";
   }
 
-  if (score.dataSoccer?.RedCard || score.possibleEventSoccer?.RedCard) {
+  if (score.dataSoccer?.RedCard || score.possibleEventSoccer?.RedCard || action.includes("red_card") || action.includes("red card")) {
     return "red_card";
   }
 
-  if (score.dataSoccer?.YellowCard || score.possibleEventSoccer?.YellowCard) {
+  if (score.dataSoccer?.YellowCard || score.possibleEventSoccer?.YellowCard || action.includes("yellow_card") || action.includes("yellow card")) {
     return "yellow_card";
   }
 
@@ -1295,7 +1227,7 @@ function inferScoreEventType(score: TxlineScore): MatchEventType | null {
     return "halftime";
   }
 
-  if (action.includes("full") || action.includes("finish") || action.includes("ended")) {
+  if (action.includes("full") || action.includes("finish") || action.includes("final") || action.includes("ended")) {
     return "fulltime";
   }
 
@@ -1368,7 +1300,7 @@ function extractPlayerLabel(score: TxlineScore) {
 function inferMatchStatus(score: TxlineScore | undefined, kickoffIso: string | undefined, eventCount: number): MatchData["status"] {
   const state = `${score?.gameState ?? ""} ${score?.action ?? ""} ${score?.dataSoccer?.Action ?? ""}`.toLowerCase();
 
-  if (state.includes("finish") || state.includes("full") || state.includes("ended")) {
+  if (state.includes("finish") || state.includes("full") || state.includes("final") || state.includes("ended")) {
     return "finished";
   }
 
@@ -1394,7 +1326,7 @@ function buildLiveReadyMessage(
   oddsCount: number,
   partialErrors: string[],
 ) {
-  const base = `Authenticated TxLINE fixture ${fixtureId} loaded with ${scoresCount} score records and ${oddsCount} odds records. Free-tier data is labeled as delayed unless upgraded.`;
+  const base = `Authenticated TxLINE fixture ${fixtureId} loaded with ${scoresCount} score records and ${oddsCount} odds records. The UI labels polling delivery as delayed unless a true live stream is confirmed.`;
 
   if (!partialErrors.length) {
     return base;
@@ -1724,7 +1656,9 @@ const teamNamesByCode: Record<string, string> = {
   JOR: "Jordan",
   JPN: "Japan",
   MEX: "Mexico",
+  NOR: "Norway",
   POR: "Portugal",
+  SUI: "Switzerland",
   ESP: "Spain",
   USA: "United States",
 };
@@ -1741,7 +1675,9 @@ const teamColorsByCode: Record<string, string> = {
   JOR: "#0f766e",
   JPN: "#d62839",
   MEX: "#0f5132",
+  NOR: "#ba0c2f",
   POR: "#be123c",
+  SUI: "#d52b1e",
   ESP: "#f59e0b",
   USA: "#2563eb",
 };

@@ -18,6 +18,7 @@ function txlineDevProxy(env: Record<string, string>): Plugin {
         const allowed =
           upstreamPath === "/api/fixtures/snapshot" ||
           /^\/api\/(scores|odds)\/snapshot\/.+/.test(upstreamPath) ||
+          /^\/api\/scores\/historical\/\d+$/.test(upstreamPath) ||
           upstreamPath.startsWith("/api/scores/stat-validation");
 
         if (!allowed) {

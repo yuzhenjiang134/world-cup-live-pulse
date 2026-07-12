@@ -1,170 +1,109 @@
 # Technical Overview
 
-## Goal
+Updated: 2026-07-11
 
-World Cup Live Pulse is a fan-facing World Cup match dashboard for the Superteam Earn / TxODDS Consumer and Fan Experiences track. The product turns match state, key events, market mood, and local AI prediction / evaluation / commentary into a readable fan pulse without exposing betting, trading, wallet, or custody flows.
+World Cup Live Pulse is a Vite, React, and TypeScript consumer match companion for the Superteam Earn / TxODDS World Cup Hackathon, Consumer and Fan Experiences track.
 
-## Architecture
+## Product architecture
 
 ```text
-TxLINE API, free public scoreboard, or replay fixtures
--> src/lib/txlineAdapter.ts
--> normalized MatchData
--> src/lib/pulse.ts
--> React dashboard
--> share card and demo video
+TxLINE or public scoreboard
+  -> source adapter and competition guard
+  -> normalized MatchData
+  -> pulse frame and grounded commentary
+  -> Match Center, challenge, timeline, teams, and replay
 ```
 
-The UI reads one normalized `MatchData` model. Replay data and live TxLINE data use the same adapter boundary so the product can be judged today and tested locally with real credentials without changing the dashboard surface.
+The production entry point renders `src/MatchdayApp.tsx`. It has four product surfaces:
 
-## Hackathon submission fit
+- Match Center: source state, score, fan pulse, score challenge, event timeline, AI-style commentary, odds context, schedule, and official watch links.
+- Replay: fixed historical matches using the same Match Center components.
+- Teams: teams from the selected match and current source first, followed by a collapsed reference atlas.
+- Settings: language, local points reset, refresh, and advanced TxLINE diagnostics.
 
-The final submission package is optimized for the official Consumer and Fan Experiences criteria:
+## TxLINE integration
 
-- Fan Accessibility and UX: a polished dashboard for ordinary fans, not a trader terminal.
-- Real-Time Responsiveness: the adapter and pulse model are ready to react to live score, event, and market updates from TxLINE.
-- Originality and Value Creation: fan command center, local score pick, Judge Demo chapters, fan commentary, and share cards turn raw feed changes into understandable match moments.
-- Commercial and Monetization Path: the same surface can support fan communities, match media embeds, and premium club or creator dashboards without betting mechanics.
-- Completeness and Execution: the public app is functional now in Replay + Seed mode, with a concrete TxLINE free-tier path for devnet activation, local probing, and later secure public Live mode.
+`src/lib/txlineAdapter.ts` owns all raw TxLINE payload knowledge. The UI only receives normalized `MatchLoadResult` data.
 
-The competition requires a working deployed app or endpoint, public repo, demo video under 5 minutes, technical documentation, endpoint usage notes, and API feedback. This repository keeps those files in `docs/` so product work and submission work stay synchronized.
+Implemented requests:
+
+- `POST /auth/guest/start`
+- `GET /api/fixtures/snapshot?competitionId=72`
+- `GET /api/scores/snapshot/{fixtureId}`
+- `GET /api/scores/historical/{fixtureId}`
+- `GET /api/odds/snapshot/{fixtureId}`
+- `GET /api/scores/stat-validation?fixtureId=<id>&seq=<seq>&statKeys=1,2`
+
+The browser never receives a committed credential. Local development uses the Vite `/__txline` proxy with ignored `.env.local` values. A public authenticated build must use a server-side proxy through `VITE_TXLINE_PROXY_BASE`.
+
+## Competition scope guard
+
+The TxLINE feed can contain multiple competitions. `src/lib/worldCupScope.ts` defines World Cup `CompetitionId 72` as the product boundary.
+
+Protection is applied twice:
+
+1. The fixture request defaults to `competitionId=72`.
+2. The response is filtered again before fixture selection, schedule rendering, or team extraction.
+
+If a record has a numeric competition ID, only `72` is accepted. This blocks observed Friendlies `CompetitionId 430`, even if a configured fixture ID points to one of those records.
 
 ## Data consistency model
 
-The app separates four data states:
+- `Live`: use only when the named source provides a current authenticated live payload.
+- `Delay`: delayed/free-tier or named public scoreboard payload.
+- `Seed`: schedule or reference context without verified current score/events.
+- `Replay`: deterministic historical data for review outside match hours.
 
-| State | Meaning | Current use |
-|---|---|---|
-| Live | Data pulled from TxLINE with configured credentials and a confirmed live tier, or a public scoreboard event loaded with its real source label | Supported by the adapter |
-| Delay | Authenticated or public data that is near-live but not guaranteed real time | Used for hackathon service level 1 / 60-second delayed feeds and the no-token public scoreboard fallback |
-| Replay | Fixed historical replay data for judging and demo recording | Implemented |
-| Seed | Official schedule/context or static background data such as teams, players, referee, standings, and schedule labels | Implemented |
+Scheduled fixtures display no synthetic score or kickoff event. Empty official odds remain empty. Unknown facts are hidden or marked pending instead of inferred.
 
-This matters because World Cup matches are not played every day. The public build must never invent a live match. If there is no confirmed live fixture or the TxLINE token is missing, the UI shows Replay and Seed labels instead of pretending to be live.
+The bundled judgeable replay archive contains eight sanitized 2026 TxLINE historical sequences. Every result is resolved from `Action = game_finalised`; provisional goals that are later removed are shown as review/correction events and are excluded from confirmed goal counts. The archive retains fixture IDs, source endpoint, record sequence, and capture time but contains no credentials.
 
-The public Source Board includes a TxLINE World Cup Schedule snapshot checked on 2026-06-28. That snapshot observed Jordan vs Argentina and Algeria vs Austria for 2026-06-28 UTC. They are shown as `Seed / Token Required` in the public build because GitHub Pages is not deployed with a private TxLINE token.
+For knockout final results, the documented proof path starts from the TxLINE record where `Action = "game_finalised"`, then requests participant total-goal proof with `statKeys=1,2`.
 
-Snapshot-only facts must be re-checked before final submission. The app treats the checked timestamp as a user-facing product signal rather than hidden metadata.
+## Score challenge
 
-## Current implementation
+The fan challenge is local entertainment only:
 
-- `src/data/replayMatch.ts`: two replay fixtures with score events, market snapshots, team profiles, key players, referee, kickoff time, and optional group table.
-- `src/data/matchCalendar.ts`: public Source Board state with official schedule snapshot fixtures and Token Required behavior.
-- `src/lib/txlineAdapter.ts`: single integration boundary for replay fallback, authenticated TxLINE mode, secure TxLINE proxy mode, and the free no-token ESPN public scoreboard fallback.
-- `src/lib/pulse.ts`: deterministic pulse frame builder for score, latest event, commentary, pressure, and market mood.
-- `src/lib/shareCard.ts`: SVG export for match pulse share cards and local fan score-pick cards.
-- `src/App.tsx`: dashboard UI with Replay/Live mode, source trust strip, rolling match ticker, fan command center, localized AI prediction / evaluation / commentary, live signal summary, visual local score-pick controls, details-on-demand reveal buttons, Source Board, Daily Brief, Data Audit, Live Readiness, endpoint status cards, Judge Demo chapters, multilingual judging-criteria score map, Path to 100 note, Match Intelligence, Match Center, team profiles, group table, eight-language settings, and safety copy.
-- `src/MatchdayApp.tsx`: focused matchday shell used by the production entry point. It keeps score, source truth, event timeline, pulse, replay selection, teams, and local score challenge in the primary workflow while moving TxLINE authentication into a settings-only advanced section.
-- `src/matchday.css`: responsive three-column layout with mobile navigation, compact source status, data-quality labels, and no raw credential fields on the main view.
+- 1,000 starting points.
+- 50 points per locked score.
+- Exact score: +250 points.
+- Correct result: +100 points.
+- Miss: +0 points.
+- One charge and one settlement per stored match state.
+- Streak, best streak, accuracy, reload persistence, and SVG share card.
 
-## Authentication and surface boundary
+It has no cash value, wallet, token, transaction, wager, prediction market, or trading advice.
 
-Authentication is an implementation dependency, not a fan feature. The main view only exposes a source chip, checked time, and a truthful Live / Delay / Replay / Seed state. The settings drawer contains the advanced connection state and a link to the TxLINE activation helper. It does not accept or display private keys, seed phrases, JWTs, API tokens, or raw transaction payloads.
+## AI-style commentary
 
-The local flow is:
+Commentary, evaluation, and prediction labels are generated from normalized score, events, market snapshot, match status, and source state. Browser speech synthesis can read the current commentary aloud. No external LLM is required for the judgeable flow, and the UI does not present generated text as verified source data.
 
-```text
-ignored .env.local -> Vite /__txline dev proxy -> guest JWT / X-Api-Token headers -> normalized MatchData -> source chip
-```
+## Localization
 
-The browser never receives the local token or JWT. The Vite dev proxy allowlists only fixtures, score snapshots, odds snapshots, and stat-validation paths. A production deployment must provide the same behavior through an external server-side proxy; GitHub Pages itself cannot keep a private token.
+The typed UI dictionary supports English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic. The validator requires the same shared keys in every language and checks UTF-8 text. Tournament navigation and current-fixture truth notes have matching localized copy, and Arabic switches the document to RTL. Team and player proper names remain source names.
 
-The GitHub Pages flow is:
+## Video boundary
 
-```text
-secure server-side proxy -> TxLINE headers -> safe JSON endpoints -> same normalized MatchData
-```
+TxLINE supplies match data, not video rights. The product opens HTTPS FIFA+ archive and highlight pages and can accept an optional rights-cleared URL through `VITE_AUTHORIZED_VIDEO_EMBED_URL`. It does not scrape, mirror, or embed unofficial streams.
 
-If neither path is available, the adapter uses the public scoreboard or fixed Replay fixture and labels it. This prevents the polished interface from overstating freshness or pretending that an unauthenticated response is sponsor-verified.
+## Failure behavior
 
-The local score challenge initializes with 1,000 browser-only points and uses no wallet, token, transaction, or remote persistence. It is a fan engagement mechanic for the Consumer and Fan Experiences track, not a wagering or prediction-market system.
-
-## Product surfaces
-
-- Source Board: makes No Match Day, checked timestamp, snapshot source, and token-required states visible.
-- Match data ticker: keeps score, clock, source state, next beat, market mood, and safety visible without adding another heavy panel.
-- Match focus nav: one-tap access to Watch, Pick, Timeline, Mood, and Teams, based on common live-score app navigation patterns.
-- Matchday hub: compact replay and schedule seed strip that distinguishes playable replay fixtures from token-gated official schedule seed matches.
-- Source trust strip: shows current mode, data status, canonical source, and freshness near the match hero so Replay, Seed, and Live are never confused.
-- Fan command center: keeps the watch-now read, AI prediction, AI match evaluation, AI commentary, live signal summary, recent event feed, local score pick, source status, and team / fixture detail entry points in the primary fan view.
-- Local score pick: score steppers, visual implied-probability bars derived from decimal odds, visible market prices, and a downloadable SVG fan pick card update a local fan selection only; no wallet, persistence, odds execution, wager, or prediction-market mechanic is attached.
-- Trust & Accuracy Center: explains official schedule seed, live token gate, replay truth, Free Tier delay behavior, and scan-friendly endpoint coverage cards.
-- Judge Demo chapters and criteria score map: repeatable path for data integrity, goal swing, late volatility, upset-context review, explicit evidence against the five judging criteria, and the external proof still required for a true 100/100 submission.
-- Match Intelligence: phase summary, event stack, and player impact derived from replay events.
-- Match Center: kickoff, referee, data status, qualification note, discipline, team profiles, key players, and group context.
-- Local AI match lab: computes informational fan lean, confidence, volatility, and commentary from normalized score, event, and market-mood frames. It is deterministic and local in the public build; it does not call an LLM or create betting advice.
-- Global fan language setting: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic. Dynamic event titles, event descriptions, AI reads, source rules, judge criteria, and controls use the same typed localization layer.
-- Useful-content rendering: optional or unavailable fields are hidden instead of replaced by filler text, so the primary match surface stays focused on score, pulse, source truth, prediction context, and timeline.
-
-## TxLINE integration boundary
-
-The adapter maps external TxLINE responses into:
-
-- `MatchData`
-- `MatchEvent`
-- `MarketSnapshot`
-- `DataSourceState`
-
-Live responses must include enough metadata to keep the UI honest: fixture date, match status, data freshness, event IDs, and whether the feed is live or delayed.
-
-Current mapped endpoint families:
-
-- `POST /auth/guest/start` for guest JWT bootstrap.
-- `GET /api/fixtures/snapshot` for schedule snapshots and Source Board reconciliation.
-- `GET /api/scores/snapshot/{fixtureId}` for score clock and match events.
-- `GET /api/odds/snapshot/{fixtureId}` for market snapshots.
-- `GET /api/scores/stat-validation?fixtureId=<FixtureId>&seq=<Seq>&statKeys=1,2` as the final-score proof path after selecting the score record where `Action = "game_finalised"`.
-- `GET /api/scores/stream` and `GET /api/odds/stream` remain future SSE streaming upgrades.
-
-The official OpenAPI spec requires `Authorization: Bearer <guest JWT>` and `X-Api-Token: <API token>` for the authenticated data endpoints. The public GitHub Pages build does not include these secrets; local testing uses `.env.local`.
-
-For the hackathon free tier, the working access route is:
-
-```text
-funded devnet wallet -> service level 1 / 4 week subscribe txSig -> guest JWT -> /api/token/activate -> local X-Api-Token
-```
-
-The default local API base is therefore `https://txline-dev.txodds.com`. Mainnet production access should be configured explicitly only after sponsor confirmation.
-
-For public Live mode, the adapter also supports `VITE_TXLINE_PROXY_BASE`. In that mode the static frontend calls a secure proxy, and the proxy attaches the TxLINE credentials server-side. This is required for GitHub Pages because frontend `VITE_` variables are compiled into the public bundle.
-
-If no TxLINE token or proxy is available, the adapter now calls:
-
-```text
-https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard
-```
-
-This endpoint was checked on 2026-07-10 and returned FIFA World Cup scoreboard JSON with browser-safe CORS. The app maps it into the same `MatchData` model for score, teams, venue, status, public events, and a conservative `Delay` data label. This is not a replacement for the sponsor source, but it makes the public build useful while TxLINE activation is blocked.
-
-Included proxy template:
-
-- `examples/txline-proxy-worker.mjs`: Fetch-compatible allowlisted proxy for fixtures, score snapshots, and odds snapshots.
-
-## Safety boundary
-
-The product is informational only. It does not:
-
-- Place bets
-- Recommend trades
-- Operate a prediction market
-- Handle wallets
-- Request private keys, seed phrases, verification codes, or API tokens in the UI
-- Store secrets in the repository
+- No TxLINE credential: try the named public FIFA World Cup scoreboard fallback.
+- TxLINE/public source failure: show an honest source error and retain deterministic Replay.
+- No current event: show scheduled/no-match state without invented activity.
+- Empty odds: hide official odds or show unavailable; never substitute derived values under an official label.
 
 ## Verification
 
-Run:
-
-```bash
-npm.cmd run check
-npm.cmd run fixtures
-npm.cmd run preflight
-npm.cmd run security
-npm.cmd run build
+```text
+npm run validate
+npm run build
+npm run txline:probe
+npm run e2e:matchday
 ```
 
-For the full local gate:
+The validation suite covers TypeScript, replay fixtures, eight-language parity, data truth, challenge rules, World Cup scope, eight 2026 archive finals, submission files, secret scanning, and the TxLINE subscribe helper. Browser E2E covers one-time challenge settlement, reload persistence, tournament progression, team detail, controls, and 1440px/390px layouts.
 
-```bash
-npm.cmd run validate
-```
+## Source truth model
+
+Every claim visible in the fan interface must be traceable to the selected source, replay fixture, or clearly labeled reference context. Checked time and data state are product features, not debug decoration.

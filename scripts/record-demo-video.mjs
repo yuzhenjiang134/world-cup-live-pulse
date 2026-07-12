@@ -24,75 +24,76 @@ The output video is ignored by git and should be uploaded to Loom, YouTube, or a
 const scenes = [
   {
     kind: "card",
-    seconds: 11,
+    seconds: 14,
     title: "World Cup Live Pulse",
     kicker: "Superteam Earn x TxODDS / Consumer and Fan Experiences",
-    subtitle: "A fan-first second screen: score, events, market mood, AI-style read, source truth.",
-    bullets: ["Working app", "Public repo", "Demo under 5 minutes", "TxLINE live boundary"]
+    subtitle: "A fan-first second screen that turns verified match data into a score challenge, live pulse, and replayable story.",
+    bullets: ["Working deployed product", "TxLINE-powered data boundary", "Public repo", "Demo under 5 minutes"]
   },
   {
-    image: "01-fan-home.png",
-    seconds: 18,
-    title: "1. Fan opens the match pulse",
-    subtitle: "The first screen answers: what is happening now, should I keep watching, and where did the data come from?",
-    badges: ["Replay ready", "Source timestamp", "No betting"]
+    image: "01-match-center.png",
+    seconds: 24,
+    title: "1. Match Center puts the fan decision first",
+    subtitle: "Score, source state, checked time, AI-style read, and the 1,000-point score challenge are visible before secondary detail.",
+    badges: ["1,000 local points", "Verified source state", "No wagering"]
   },
   {
-    image: "02-settings-language.png",
-    seconds: 15,
-    title: "2. Settings stay out of the main view",
-    subtitle: "Language, presets, and optional modules move into Settings so the live match surface stays clean.",
-    badges: ["8 languages", "Fan / Analyst / Judge", "Optional modules"]
+    image: "02-replay-final.png",
+    seconds: 26,
+    title: "2. Replay makes the full product judgeable anytime",
+    subtitle: "A fixed historical match exposes goals, cards, extra time, pulse changes, final-score settlement, and AI-style commentary without pretending it is live.",
+    badges: ["Historical replay label", "Event timeline", "Final-score settlement"]
   },
   {
-    image: "03-judge-mode.png",
-    seconds: 18,
-    title: "3. Judge mode makes the demo repeatable",
-    subtitle: "Reviewers can see operation guide, fixture context, demo chapters, and evaluation mapping without waiting for a live match.",
-    badges: ["Judgeable anytime", "Replay chapters", "Complete flow"]
+    image: "03-teams.png",
+    seconds: 20,
+    title: "3. Team and player depth stays one click away",
+    subtitle: "The primary match workflow stays compact while the team atlas preserves player context and source-aware reference detail.",
+    badges: ["12 team profiles", "Key players", "Source names preserved"]
   },
   {
-    image: "04-data-panels.png",
-    seconds: 18,
-    title: "4. Data consistency is visible",
-    subtitle: "Replay, Seed, Delay, and Live are separate states. The app does not invent live games on no-match days.",
-    badges: ["Source Board", "Data Audit", "Live Readiness"]
-  },
-  {
-    image: "05-trust-operator.png",
-    seconds: 18,
-    title: "5. Buyer value is explicit",
-    subtitle: "Operator Kit explains why venues, communities, and media pages could license this after real live data is connected.",
-    badges: ["Venue screen", "Community layer", "Media embed"]
-  },
-  {
-    image: "06-live-token-boundary.png",
-    seconds: 18,
-    title: "6. Live mode is honest",
-    subtitle: "Without official credentials, Live shows a token-needed state instead of pretending replay data is real-time.",
-    badges: ["Needs TxLINE token", "Secure proxy planned", "No token in browser"]
+    image: "04-settings.png",
+    seconds: 22,
+    title: "4. Global controls and authentication stay out of the way",
+    subtitle: "Eight languages, local-point reset, refresh, and TxLINE diagnostics live in Settings. Secrets are never rendered in the main interface.",
+    badges: ["8 languages", "Local-only credentials", "Clean fan view"]
   },
   {
     kind: "card",
-    seconds: 18,
-    title: "TxLINE backend mapping",
-    kicker: "Official docs rechecked 2026-07-01",
-    subtitle: "The adapter maps official payloads into one MatchData model for the UI.",
+    seconds: 24,
+    title: "TxLINE powers the live input",
+    kicker: "Official integration verified 2026-07-11",
+    subtitle: "One adapter normalizes fixtures, score snapshots, match events, and odds into the same fan-facing MatchData model.",
     bullets: [
       "POST /auth/guest/start",
       "GET /api/fixtures/snapshot",
       "GET /api/scores/snapshot/{fixtureId}",
-      "GET /api/odds/snapshot/{fixtureId}",
-      "SSE streams planned for real-time updates"
+      "GET /api/odds/snapshot/{fixtureId}"
     ]
   },
   {
     kind: "card",
-    seconds: 12,
-    title: "Submission-ready posture",
-    kicker: "Safe fan experience, not a betting product",
-    subtitle: "No wallet custody, no trading advice, no prediction market, no private API token in the public build.",
-    bullets: ["Deployed GitHub Pages", "Public repo", "Technical docs", "API feedback path", "Video draft generated"]
+    seconds: 20,
+    title: "Data truth is a product feature",
+    kicker: "Live / Delay / Seed / Replay",
+    subtitle: "Unknown teams stay pending, empty odds stay empty, historical fixtures stay in Replay, and every checked state carries a timestamp.",
+    bullets: ["7 fixture records verified", "41 score records verified", "0 odds means no invented odds", "Official FIFA+ links only"]
+  },
+  {
+    kind: "card",
+    seconds: 20,
+    title: "Built for fans and buyers",
+    kicker: "Original interaction + commercial path",
+    subtitle: "The score challenge creates repeat use; the same trusted second-screen shell can serve media sites, communities, venues, and sponsors.",
+    bullets: ["Fan retention loop", "Community leaderboard path", "Media embed path", "Sponsor-safe data presentation"]
+  },
+  {
+    kind: "card",
+    seconds: 16,
+    title: "Submission-ready, safe, and repeatable",
+    kicker: "Consumer and Fan Experiences",
+    subtitle: "No wallet custody, no trade advice, no prediction market, no private API token in the public build.",
+    bullets: ["Deployed GitHub Pages", "Public repository", "Technical docs + API feedback", "Repeatable demo flow"]
   }
 ];
 

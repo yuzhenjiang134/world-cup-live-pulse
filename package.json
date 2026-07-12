@@ -11,13 +11,20 @@
     "check": "tsc --noEmit",
     "fixtures": "node scripts/validate-fixtures.mjs",
     "audit": "node scripts/audit-product-data.mjs",
+    "challenge": "node scripts/test-score-challenge.mjs",
+    "scope": "node scripts/test-world-cup-scope.mjs",
+    "scores:test": "node scripts/test-txline-score-normalization.mjs",
+    "proxy:test": "node scripts/test-vercel-txline-proxy.mjs",
+    "e2e:matchday": "node scripts/e2e-matchday.mjs",
     "i18n": "node scripts/validate-i18n.mjs",
     "preflight": "node scripts/preflight.mjs",
     "security": "node scripts/security-scan.mjs",
     "txline:probe": "node scripts/txline-probe.mjs",
+    "archive:sync": "node scripts/sync-txline-archive.mjs",
+    "archive:test": "node scripts/test-txline-archive.mjs",
     "txline:helper-test": "node --experimental-vm-modules scripts/test-txline-subscribe-helper.mjs",
     "demo:video": "node scripts/record-demo-video.mjs",
-    "validate": "tsc --noEmit && node scripts/validate-fixtures.mjs && node scripts/validate-i18n.mjs && node scripts/audit-product-data.mjs && node scripts/preflight.mjs && node scripts/security-scan.mjs && node --experimental-vm-modules scripts/test-txline-subscribe-helper.mjs"
+    "validate": "tsc --noEmit && node scripts/validate-fixtures.mjs && node scripts/validate-i18n.mjs && node scripts/audit-product-data.mjs && node scripts/test-score-challenge.mjs && node scripts/test-world-cup-scope.mjs && node scripts/test-txline-score-normalization.mjs && node scripts/test-txline-archive.mjs && node scripts/test-vercel-txline-proxy.mjs && node scripts/preflight.mjs && node scripts/security-scan.mjs && node --experimental-vm-modules scripts/test-txline-subscribe-helper.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.3.4",

@@ -14,7 +14,8 @@ function pass(message) {
 }
 
 async function loadReplayMatches() {
-  const source = await readFile(new URL("../src/data/replayMatch.ts", import.meta.url), "utf8");
+  const source = (await readFile(new URL("../src/data/replayMatch.ts", import.meta.url), "utf8"))
+    .replace('import { txlineArchiveMatches } from "./txlineArchive";', "const txlineArchiveMatches = [];");
   const result = ts.transpileModule(source, {
     compilerOptions: {
       target: ts.ScriptTarget.ES2022,

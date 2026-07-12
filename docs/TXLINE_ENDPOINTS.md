@@ -12,7 +12,7 @@ funded devnet wallet -> service level 1 / 4 week subscribe txSig -> guest JWT ->
 
 Do not share JWT publicly. If activation fails after a valid subscribe transaction, share only the public wallet address and subscribe tx signature with TxLINEChat.
 
-Treat service level 1 as a 60-second delayed feed for World Cup and International Friendlies unless TxLINE explicitly grants a higher live tier. The UI labels this as `Delay`, not `Live`.
+Official docs distinguish mainnet Level 1 (60-second delay), mainnet Level 12 (real-time), and the current devnet Level 1 matrix row (`samplingIntervalSec = 0`). The app polls every 15 seconds and labels polling delivery as `Delay` unless a true live stream is confirmed.
 
 ## Free public fallback source
 
@@ -45,12 +45,15 @@ The official OpenAPI spec checked on 2026-06-28 reports:
 - Odds snapshot: `GET /api/odds/snapshot/{fixtureId}`
 - Auth headers for data endpoints: `Authorization: Bearer <guest JWT>` and `X-Api-Token: <API token>`
 
-The public Source Board includes a TxLINE World Cup Schedule snapshot checked on 2026-06-28. The snapshot observed fixtures for 2026-06-28 UTC:
+Authenticated probing on 2026-07-11 returned these current `CompetitionId 72` World Cup fixtures:
 
-- Fixture `17588325`: Jordan vs Argentina, 02:00 UTC.
-- Fixture `17588326`: Algeria vs Austria, 05:00 UTC.
+- Fixture `18213979`: Norway vs England.
+- Fixture `18222446`: Argentina vs Switzerland.
+- Fixture `18237038`: France vs Spain.
 
-These are shown as `Seed / Token Required`, not `Live`, until authenticated score/event/odds payloads are loaded.
+The latest pair on 2026-07-12 returned 2 current World Cup fixtures. Fixture `18222446` returned 40 score records and 20 official-odds records in both runs. Production leaves `VITE_TXLINE_FIXTURE_ID` blank so the adapter follows the current source snapshot.
+
+The same broad feed also contained International Friendlies under `CompetitionId 430`. The adapter now defaults the request to `competitionId=72` and filters the returned payload again. A configured fixture ID is accepted only if it exists inside that filtered World Cup set.
 
 Secrets must only be placed in a local `.env.local` file:
 
@@ -59,10 +62,10 @@ VITE_TXLINE_API_BASE=https://txline-dev.txodds.com
 VITE_TXLINE_PROXY_BASE=
 VITE_TXLINE_API_TOKEN=your_txline_x_api_token_here
 VITE_TXLINE_SESSION_JWT=
-VITE_TXLINE_FIXTURE_ID=17588325
+  VITE_TXLINE_FIXTURE_ID=
 VITE_TXLINE_FINAL_SCORE_SEQ=
 VITE_TXLINE_START_EPOCH_DAY=
-VITE_TXLINE_COMPETITION_ID=
+  VITE_TXLINE_COMPETITION_ID=72
 VITE_TXLINE_AS_OF_MS=
 VITE_AUTHORIZED_VIDEO_EMBED_URL=
 ```
@@ -122,9 +125,10 @@ npm run txline:probe
 | Product need | Endpoint | Required fields | Internal target |
 |---|---|---|---|
 | Guest auth | `POST /auth/guest/start` | `token` | `Authorization: Bearer <guest JWT>` |
-| Match calendar / Source Board | `GET /api/fixtures/snapshot` | `FixtureId`, `Participant1`, `Participant2`, `Participant1IsHome`, `StartTime`, `Competition` | `MatchData` and schedule snapshot reconciliation |
+| Match calendar / Match Center | `GET /api/fixtures/snapshot?competitionId=72` | `FixtureId`, `CompetitionId`, `Participant1`, `Participant2`, `Participant1IsHome`, `StartTime`, `Competition` | World Cup-only `MatchData` and schedule reconciliation |
 | Live score | `GET /api/scores/snapshot/{fixtureId}` | home score, away score, match clock, stoppage, status | `PulseFrame` score and clock |
 | Match events | `GET /api/scores/snapshot/{fixtureId}` | `seq`, `ts`, `action`, `dataSoccer.Goal`, `YellowCard`, `RedCard`, player IDs, minute | `MatchEvent[]` |
+| Judgeable 2026 replay | `GET /api/scores/historical/{fixtureId}` | complete score update sequence for a fixture between two weeks and six hours old | sanitized local replay snapshot and tournament result cards |
 | Odds or market movement | `GET /api/odds/snapshot/{fixtureId}` | `PriceNames`, `Prices`, `Pct`, `Ts`, `SuperOddsType` | `MarketSnapshot[]` |
 | Final score proof | `GET /api/scores/stat-validation?fixtureId=<FixtureId>&seq=<Seq>&statKeys=1,2` | `game_finalised` score record, participant total goals proof payload | Trust & Accuracy note; optional `validateStatV2` proof path |
 | Score updates | `GET /api/scores/stream` | fixture id, changed score/event fields, event timestamp | future SSE live update loop |
@@ -142,7 +146,7 @@ The optional Authorized Video Sync panel only accepts a rights-cleared `https://
 ## Data consistency rules
 
 - Use `Live` only when TxLINE confirms the feed is live or a higher live tier is granted.
-- Use `Delay` for hackathon service level 1, near-live feeds, or any sponsor feed that is not guaranteed real time.
+- Use `Delay` for browser polling, mainnet Level 1, near-live feeds, or any source not confirmed as a true live stream.
 - Use `Replay` for fixed historical fixtures used in demos and judging.
 - Use `Seed` for static context such as teams, players, referee, standings, and schedule labels.
 - If no match is active today, show No Match Day / Seed state instead of filling the page with fake live data.
@@ -150,6 +154,8 @@ The optional Authorized Video Sync panel only accepts a rights-cleared `https://
 - If live API calls fail, keep Replay mode available and label the source clearly.
 - For knockout final results, use the score record where `Action = "game_finalised"` rather than an arbitrary 90-minute or in-play snapshot.
 - For final-score proof, request `statKeys=1,2` so participant 1 and participant 2 total goals are validated from the finalised record.
+- Historical responses can be delivered as SSE-style `data: {json}` lines even when the reference describes a JSON array; the sync parser supports both formats.
+- Raw score records currently use PascalCase fields such as `FixtureId`, `Action`, `Score`, and `Seq`; the adapter normalizes both PascalCase and camelCase.
 
 ## Adapter contract
 
@@ -182,6 +188,7 @@ The UI stays payload-agnostic and displays only normalized fields. If a live cal
 - Guest session auth: `https://txline.txodds.com/api-reference/authentication/start-a-new-guest-session`
 - OpenAPI spec: `https://txline.txodds.com/docs/docs.yaml`
 - Score snapshots: `https://txline.txodds.com/api-reference/scores/get-snapshots-for-each-action-in-the-latest-score-events-for-a-fixture`
+- Full historical score sequence: `https://txline.txodds.com/api-reference/scores/get-the-full-sequence-of-score-updates-for-a-single-fixture`
 - Score SSE updates: `https://txline.txodds.com/api-reference/scores/get-a-real-time-server-sent-events-stream-of-scores-updates`
 - Odds snapshots: `https://txline.txodds.com/api-reference/odds/get-snapshots-of-the-latest-odds-for-a-fixture`
 - Odds SSE updates: `https://txline.txodds.com/api-reference/odds/get-a-real-time-server-sent-events-stream-of-odds-updates`

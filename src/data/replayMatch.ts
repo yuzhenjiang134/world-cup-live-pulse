@@ -1,4 +1,5 @@
 import type { MatchData } from "../types";
+import { txlineArchiveMatches } from "./txlineArchive";
 
 export const replayMatch: MatchData = {
   id: "wc-demo-arg-fra",
@@ -388,7 +389,7 @@ export const upsetReplayMatch: MatchData = {
   ],
 };
 
-export const replayMatches = [replayMatch, upsetReplayMatch];
+export const replayMatches = [...txlineArchiveMatches, replayMatch, upsetReplayMatch];
 
 export function getReplayMatch(matchId?: string) {
   return replayMatches.find((match) => match.id === matchId) ?? replayMatch;
