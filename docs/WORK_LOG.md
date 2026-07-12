@@ -1,5 +1,13 @@
 # World Cup Live Pulse Work Log
 
+## 2026-07-13: Public final demo verification
+
+- Replaced the stale July 1 public WebM with final narrated candidate B and published it through GitHub Pages.
+- Confirmed `CI` and `Deploy GitHub Pages` succeeded on commit `b8600813749c3cd13a7f3a894fb830ebe806b525`.
+- Verified the no-login page at `https://yuzhenjiang134.github.io/world-cup-live-pulse/demo/` and re-downloaded the public MP4.
+- The remote and local files share SHA-256 `A82C0BF756A8BDFB90AB0A21D3B93D85017BDB8B10A3D1661C774F81DD90459A`.
+- The public file fully decodes as 3:20 H.264 Main 1280x720 at 24 fps with AAC stereo English narration and zero decode/corruption errors.
+
 ## 2026-07-13: Two-version demo and double review
 
 - Rebuilt the demo story from the accepted 2026 release instead of reusing the stale July 1 draft. Variant A is the fan journey; variant B maps the same product to judging, data trust, and commercial value.

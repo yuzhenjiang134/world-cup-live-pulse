@@ -55,7 +55,7 @@ Online acceptance record: `https://yuzhenjiang134.github.io/world-cup-live-pulse
 - [x] Show the score challenge first, verified settlement, replay events, AI brief, tournament path, team records, global/mobile usability, and source freshness.
 - [x] Show TxLINE endpoint usage and security/data boundaries through captions and English narration; never reveal `.env.local`, token, JWT, wallet, or browser storage.
 - [x] Review both A/B candidates twice for media integrity, accuracy, legibility, audio, pacing, narration clipping, and accidental secret exposure; select B as the final candidate.
-- [ ] Publish candidate B through the final GitHub Pages workflow and verify MP4 playback without login.
+- [x] Publish candidate B through GitHub Pages and verify no-login MP4 playback, full decode, and remote/local SHA-256 equality.
 
 ## Submission audit and upload
 
