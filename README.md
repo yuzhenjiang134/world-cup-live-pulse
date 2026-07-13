@@ -12,9 +12,11 @@ This project is not a betting product. It does not place bets, recommend trades,
 
 - Match Center is the first screen: current score state, source freshness, fan pulse, 1,000-point score challenge, events, AI-style commentary, market context, and schedule.
 - The challenge charges once, settles once from a verified final score, persists per fixture, tracks fan level/XP/streak/accuracy, exports a share card, and never touches cash or a wallet.
+- Pulse Play turns the same verified goal, penalty, card, added-time, and final-state events into a rights-safe animated pitch. Team cheers are explicitly local-only and never presented as global fan data.
+- Following a match enables persisted, configurable goal/card/full-time browser alerts while the page is open.
 - Live mode uses the official TxLINE fixture, score, odds, and final-score validation endpoints through `src/lib/txlineAdapter.ts`.
 - TxLINE fixture scope is locked to World Cup `CompetitionId 72` in both request and response validation; Friendlies `CompetitionId 430` cannot enter the World Cup UI.
-- Eight credential-free 2026 TxLINE historical sequences keep the complete workflow judgeable when no current match is active. Two deterministic 2022 editorial stories remain secondary legacy examples.
+- Eight credential-free 2026 TxLINE historical sequences keep the complete workflow judgeable when no current match is active. Legacy editorial fixtures are excluded from the current product replay library.
 - Schedule cards show stage, localized kickoff, source status, score, and verified event/goal/extra-time summaries. The source-first Teams view shows current fixture count and opponents before an optional collapsed historical atlas.
 - Event-driven AI commentary turns verified goals, cards, score reviews, half-time, full-time, and momentum changes into a concise multilingual match brief. Browser speech playback makes the same grounded brief accessible without introducing an unverified external narrative.
 - Verified key-event shortcuts reduce the path to goals, cards, reviews, half-time, and full-time. Spoiler-free replay masks the outcome and starts the selected match at minute 1.
@@ -39,12 +41,13 @@ Use the same visible fan workflow that a normal user sees:
 
 1. Open Match Center and show source, freshness, current fixture, and the score challenge.
 2. Lock one score pick, play a verified 2026 TxLINE replay, and settle exactly once.
-3. Jump through goals, cards, extra time, pulse changes, and spoken AI-style commentary.
-4. Open current source teams, then Settings for language and hidden TxLINE diagnostics.
+3. Switch to Pulse Play and jump through goals, cards, penalties when source-tagged, extra time, and pulse changes.
+4. Listen to grounded AI-style commentary, follow the match, and choose goal/card/full-time alerts.
+5. Open current source teams, then Settings for language and hidden TxLINE diagnostics.
 
 ## Data truth model
 
-- TxLINE scope: the latest two consecutive authenticated checks on 2026-07-12 returned 3 World Cup fixtures under `CompetitionId 72`; fixture `18222446` returned 42 score records and 0 official-odds records both times. The UI therefore hides numerical odds instead of carrying forward an older snapshot. The adapter rejected Friendlies `CompetitionId 430`.
+- TxLINE scope: two consecutive authenticated checks on 2026-07-13 returned 2 accepted World Cup fixtures under `CompetitionId 72`; fixture `18237038` returned 2 score records in both checks, while the official-odds collection changed from 4 records to 7. These are dated observations, not permanent product facts. The adapter never carries an older odds collection forward and rejects fixtures outside the World Cup scope.
 - Live: only shown after authenticated TxLINE scores, events, and odds are loaded, or after a confirmed public scoreboard event is loaded and labeled with its real source.
 - Delay: used for polling delivery or any feed not confirmed as a true stream. Official docs distinguish mainnet Level 1 (60-second delay), mainnet Level 12 (real-time), and the current devnet Level 1 matrix row (`samplingIntervalSec = 0`).
 - Public scoreboard: ESPN FIFA World Cup scoreboard is a free no-token backup for score, status, events, teams, venue, and public freshness when TxLINE token access is blocked.
@@ -77,7 +80,7 @@ npm run validate
 
 ## Demo video
 
-The reproducible A/B demo package is documented in `docs/DEMO_VIDEO_PACKAGE.md`. Both candidates were generated only after local and same-SHA online acceptance; candidate B is the selected judging cut.
+The reproducible English judging demo is documented in `docs/DEMO_VIDEO_PACKAGE.md`. It is generated only from the locally accepted product build; the public copy must be replaced only after the same commit passes Pages and online E2E.
 
 After refreshing the final E2E screenshots, run:
 
@@ -85,7 +88,7 @@ After refreshing the final E2E screenshots, run:
 npm run demo:video
 ```
 
-The command renders both captioned videos and adds English narration. The selected final file is:
+The command renders one captioned final cut and adds scene-directed English narration. The selected file is:
 
 ```text
 demo-assets/world-cup-live-pulse-demo-b-narrated.mp4
@@ -179,8 +182,10 @@ The subscribe helper uses wallet `signTransaction`; the activation helper uses w
 
 ```text
 src/
-  App.tsx                 Main dashboard UI
-  data/replayMatch.ts     Fixed replay match used for demos
+  MatchdayApp.tsx         Fan-facing matchday product shell
+  components/PulsePlay.tsx Event-driven animated match theatre
+  data/txlineArchive.ts   Verified 2026 replay adapter
+  data/replayMatch.ts     Current 2026 replay library boundary
   lib/pulse.ts            Match pulse and commentary logic
   lib/shareCard.ts        SVG share card generator
   lib/txlineAdapter.ts    TxLINE HTTP adapter and replay fallback boundary
@@ -189,29 +194,16 @@ src/
 
 ## Docs
 
-- `TASKS.md`: current task list and blocked external inputs
-- `docs/TECHNICAL_OVERVIEW.md`: architecture, data consistency, and safety boundary
-- `docs/TXLINE_ENDPOINTS.md`: TxLINE endpoint mapping plan
-- `docs/TXLINE_SUBSCRIBE_HELPER.md`: safe browser-wallet free-tier subscribe workflow
-- `docs/TXLINE_SAFE_ACTIVATION.md`: safe browser-wallet activation workflow
-- `docs/API_ACCESS_PLAN.md`: local token and secure proxy plan for real TxLINE data
-- `docs/PRODUCT_VALUE_REVIEW.md`: candid fan value and commercial-readiness review
-- `docs/COMPETITOR_REVIEW.md`: public competitor scan and number-one plan
-- `docs/OFFICIAL_SOURCE_RECHECK.md`: current official Superteam / TxLINE source check
-- `docs/DEMO_VIDEO_PACKAGE.md`: reproducible local demo-video generation notes
-- `docs/API_FEEDBACK.md`: API feedback for sponsor docs and live-data consistency
-- `docs/USER_MANUAL.md`: user-facing operation manual
-- `docs/SUBMISSION_DRAFT.md`: Superteam submission draft
-- `docs/DEMO_SCRIPT.md`: under-5-minute demo video script
-- `docs/SUBMISSION_CHECKLIST.md`: final submission checklist
-- `docs/FINAL_RELEASE_TASKS.md`: controlling local, online, video, audit, and final-upload release checklist
-- `docs/submission-draft.md`: Superteam submission draft
-- `docs/demo-script.md`: 3 to 5 minute demo video script
-- `docs/technical-writeup.md`: architecture and TxLINE integration plan
-- `docs/pre-submit-check.md`: final local and safety checks
-- `docs/user-action-list.md`: exact items the user must provide
-- `docs/submission-pack.md`: final submission packet index
-- `docs/api-mapping-template.md`: TxLINE endpoint mapping worksheet
+- `docs/TECHNICAL_SUBMISSION_2026-07-13.md`: detailed judge-facing architecture, endpoint, refresh, safety, product, and verification note
+- `docs/TECHNICAL_OVERVIEW.md`: brief technical summary for the submission form
+- `docs/TXLINE_ENDPOINTS.md`: exact TxLINE endpoint and payload mapping
+- `docs/API_FEEDBACK.md`: dated integration feedback, friction, and proposed improvements
+- `docs/OFFICIAL_REQUIREMENTS_PRODUCT_MATRIX_2026-07-13.md`: five judging criteria mapped to visible/tested evidence
+- `docs/ROUND_MASTER_TASKS_2026-07-12.md`: controlling product, Demo, deployment, and submission checklist
+- `docs/DEMO_VIDEO_PACKAGE.md`: reproducible final video package
+- `docs/DEMO_SCRIPT.md`: English under-five-minute narration and scene flow
+- `docs/SUBMISSION_DRAFT.md`: final Superteam submission copy draft
+- `docs/SUBMISSION_CHECKLIST.md`: final no-login and safety acceptance list
 
 ## Final external gates
 

@@ -2,10 +2,52 @@ import type { MatchData, MatchEvent, PulseFrame } from "../types";
 import { localizeTeamName } from "../data/teamNames";
 
 export type PulseLanguage = "en" | "zh" | "es" | "pt" | "fr" | "de" | "ja" | "ar";
+export type ScheduledBriefMode = "call" | "why" | "recap";
+
+export function localizeScheduledBrief(language: PulseLanguage, match: MatchData, mode: ScheduledBriefMode = "call") {
+  const home = localizeTeamName(match.home.code, match.home.name, language);
+  const away = localizeTeamName(match.away.code, match.away.name, language);
+  const stage = localizedScheduledStage(language, match.stage);
+  const kickoff = localizedKickoff(language, match.kickoffIso);
+  const importance = localizedStageImportance(language, match.stage);
+
+  if (mode === "why") {
+    if (language === "zh") return `${importance ?? "这是下一场已确认赛程。"}比分挑战可在开赛前修改，开赛后自动锁定。`;
+    if (language === "es") return `${importance ?? "Es el próximo partido confirmado."} Puedes editar el reto de marcador hasta el inicio; después queda bloqueado.`;
+    if (language === "pt") return `${importance ?? "Esta é a próxima partida confirmada."} O palpite pode ser alterado até o início; depois fica bloqueado.`;
+    if (language === "fr") return `${importance ?? "C'est le prochain match confirmé."} Le pronostic peut être modifié jusqu'au coup d'envoi, puis il est verrouillé.`;
+    if (language === "de") return `${importance ?? "Dies ist das nächste bestätigte Spiel."} Der Tipp kann bis zum Anpfiff geändert werden und wird dann gesperrt.`;
+    if (language === "ja") return `${importance ?? "次の確認済み試合です。"}スコア予想はキックオフまで変更でき、その後は自動的に締め切られます。`;
+    if (language === "ar") return `${importance ?? "هذه هي المباراة المؤكدة التالية."} يمكن تعديل توقع النتيجة حتى البداية، ثم يُغلق تلقائياً.`;
+    return `${importance ?? "This is the next confirmed fixture."} Edit your score challenge until kickoff; it locks automatically when the match starts.`;
+  }
+
+  if (mode === "recap") {
+    const details = [stage, kickoff].filter(Boolean).join(" · ");
+    if (language === "zh") return `赛前速览：${home}对阵${away}${details ? `，${details}` : ""}。目前没有已核验比赛事件；开赛后将跟进进球、牌和比分变化。`;
+    if (language === "es") return `Previa rápida: ${home} contra ${away}${details ? ` · ${details}` : ""}. Aún no hay eventos verificados; tras el inicio seguirán goles, tarjetas y cambios de marcador.`;
+    if (language === "pt") return `Prévia rápida: ${home} contra ${away}${details ? ` · ${details}` : ""}. Ainda não há eventos verificados; após o início entram gols, cartões e mudanças no placar.`;
+    if (language === "fr") return `Avant-match express : ${home} contre ${away}${details ? ` · ${details}` : ""}. Aucun événement vérifié pour l'instant; buts, cartons et score suivront après le coup d'envoi.`;
+    if (language === "de") return `Kurz vor dem Spiel: ${home} gegen ${away}${details ? ` · ${details}` : ""}. Noch keine verifizierten Ereignisse; nach Anpfiff folgen Tore, Karten und Spielstandsänderungen.`;
+    if (language === "ja") return `試合前30秒まとめ：${home}対${away}${details ? `・${details}` : ""}。確認済みイベントはまだなく、開始後はゴール、カード、スコア変更を追跡します。`;
+    if (language === "ar") return `ملخص ما قبل المباراة: ${home} ضد ${away}${details ? ` · ${details}` : ""}. لا توجد أحداث موثقة بعد؛ ستظهر الأهداف والبطاقات وتغييرات النتيجة بعد البداية.`;
+    return `Pre-match catch-up: ${home} vs ${away}${details ? ` · ${details}` : ""}. No verified match events yet; goals, cards and score changes will appear after kickoff.`;
+  }
+
+  const details = [stage, kickoff].filter(Boolean).join(" · ");
+  if (language === "zh") return `${home}对阵${away}${details ? `，${details}` : ""}。赛前比分挑战现已开放。`;
+  if (language === "es") return `${home} contra ${away}${details ? ` · ${details}` : ""}. El reto de marcador ya está abierto.`;
+  if (language === "pt") return `${home} contra ${away}${details ? ` · ${details}` : ""}. O desafio de placar já está aberto.`;
+  if (language === "fr") return `${home} contre ${away}${details ? ` · ${details}` : ""}. Le défi de score est ouvert.`;
+  if (language === "de") return `${home} gegen ${away}${details ? ` · ${details}` : ""}. Das Tippspiel ist jetzt geöffnet.`;
+  if (language === "ja") return `${home}対${away}${details ? `・${details}` : ""}。スコアチャレンジ受付中です。`;
+  if (language === "ar") return `${home} ضد ${away}${details ? ` · ${details}` : ""}. تحدي النتيجة مفتوح الآن.`;
+  return `${home} vs ${away}${details ? ` · ${details}` : ""}. The score challenge is open.`;
+}
 
 export function localizeCommentary(language: PulseLanguage, match: MatchData, frame: PulseFrame) {
   const event = frame.latestEvent;
-  const player = event?.player ?? teamLabel(language, event?.team) ?? localizedPlayer(language);
+  const player = readablePlayerName(event?.player) ?? teamLabel(language, event?.team) ?? localizedPlayer(language);
   const score = `${frame.homeScore}-${frame.awayScore}`;
   const home = localizeTeamName(match.home.code, match.home.name, language);
   const away = localizeTeamName(match.away.code, match.away.name, language);
@@ -87,7 +129,17 @@ export function localizeInsight(language: PulseLanguage, match: MatchData, frame
     : frame.awayScore > frame.homeScore
       ? localizeTeamName(match.away.code, match.away.name, language)
       : "";
-  if (language === "en") return frame.insight.headline;
+  if (language === "en") {
+    if (!event) return "The match is waiting for its first verified event.";
+    if (event.type === "goal" && frame.homeScore !== frame.awayScore) return `${leader} leads; the next verified response is the moment to watch.`;
+    if (event.type === "goal") return "The score is level again, so the match story has reset.";
+    if (event.type === "red_card") return "The red card changes the number of players and the tactical balance.";
+    if (event.type === "yellow_card") return "Disciplinary pressure has risen, while the score is unchanged.";
+    if (event.type === "score_update") return "The score state was reviewed; the confirmed value now takes priority.";
+    if (event.type === "halftime") return "Half-time creates a clean before-and-after checkpoint.";
+    if (event.type === "fulltime") return "The final score and event path are confirmed for replay and challenge settlement.";
+    return "Match momentum is changing; follow the verified event trail.";
+  }
   if (language === "zh") {
     if (!event) return "比赛等待第一个有效节点。";
     if (event.type === "goal" && frame.homeScore !== frame.awayScore) return `${leader}暂时领先，接下来关注双方的回应。`;
@@ -99,18 +151,155 @@ export function localizeInsight(language: PulseLanguage, match: MatchData, frame
     if (event.type === "fulltime") return "回放已完成，可作为完整的球迷故事查看。";
     return "比赛脉冲正在变化，继续查看已核验事件。";
   }
-  if (language === "es") return event?.type === "goal" ? `La energía cambia y ${leader} marca el tono.` : "El pulso cambia; sigue los eventos verificados.";
-  if (language === "pt") return event?.type === "goal" ? `A energia muda e ${leader} dita o ritmo.` : "O pulso muda; acompanhe os eventos verificados.";
-  if (language === "fr") return event?.type === "goal" ? `L'énergie change et ${leader} prend le centre du match.` : "Le pouls évolue; suivez les événements vérifiés.";
-  if (language === "de") return event?.type === "goal" ? `Die Energie kippt, ${leader} bestimmt den Spielmittelpunkt.` : "Der Puls verändert sich; folge den verifizierten Ereignissen.";
-  if (language === "ja") return event?.type === "goal" ? `流れが変わり、${leader}が試合の中心を握ります。` : "脈動が変化しています。検証済みイベントを確認してください。";
-  return event?.type === "goal" ? `تتغير الطاقة و${leader} يسيطر على مركز المباراة.` : "يتغير النبض؛ تابع الأحداث الموثقة.";
+  if (language === "es") {
+    if (!event) return "El partido espera su primer evento verificado.";
+    if (event.type === "goal") return frame.homeScore === frame.awayScore ? "El marcador vuelve a estar igualado y cambia el relato." : `${leader} toma ventaja; ahora importa la respuesta verificada.`;
+    if (event.type === "red_card") return "La roja cambia el número de jugadores y el equilibrio táctico.";
+    if (event.type === "yellow_card") return "Aumenta la presión disciplinaria, sin cambio en el marcador.";
+    if (event.type === "score_update") return "El marcador fue revisado; prevalece el valor confirmado.";
+    if (event.type === "halftime") return "El descanso marca un punto claro para comparar las dos mitades.";
+    if (event.type === "fulltime") return "Marcador y secuencia confirmados para repetición y resolución del reto.";
+    return "El pulso cambia; sigue los eventos verificados.";
+  }
+  if (language === "pt") {
+    if (!event) return "A partida aguarda o primeiro evento verificado.";
+    if (event.type === "goal") return frame.homeScore === frame.awayScore ? "O placar volta a ficar empatado e a história recomeça." : `${leader} assume a frente; agora importa a resposta verificada.`;
+    if (event.type === "red_card") return "O cartão vermelho muda o número de jogadores e o equilíbrio tático.";
+    if (event.type === "yellow_card") return "A pressão disciplinar aumenta, sem mudança no placar.";
+    if (event.type === "score_update") return "O placar foi revisado; o valor confirmado tem prioridade.";
+    if (event.type === "halftime") return "O intervalo cria um ponto claro para comparar os dois tempos.";
+    if (event.type === "fulltime") return "Placar e sequência confirmados para replay e apuração do desafio.";
+    return "O pulso muda; acompanhe os eventos verificados.";
+  }
+  if (language === "fr") {
+    if (!event) return "Le match attend son premier événement vérifié.";
+    if (event.type === "goal") return frame.homeScore === frame.awayScore ? "Le score est de nouveau à égalité et le récit repart." : `${leader} mène; la prochaine réponse vérifiée devient essentielle.`;
+    if (event.type === "red_card") return "Le carton rouge modifie le nombre de joueurs et l'équilibre tactique.";
+    if (event.type === "yellow_card") return "La pression disciplinaire augmente, sans changement de score.";
+    if (event.type === "score_update") return "Le score a été revu; la valeur confirmée prévaut.";
+    if (event.type === "halftime") return "La pause crée un repère clair entre les deux périodes.";
+    if (event.type === "fulltime") return "Score et séquence confirmés pour le replay et le défi.";
+    return "Le pouls évolue; suivez les événements vérifiés.";
+  }
+  if (language === "de") {
+    if (!event) return "Das Spiel wartet auf das erste verifizierte Ereignis.";
+    if (event.type === "goal") return frame.homeScore === frame.awayScore ? "Der Spielstand ist wieder ausgeglichen und die Geschichte beginnt neu." : `${leader} führt; jetzt zählt die nächste verifizierte Reaktion.`;
+    if (event.type === "red_card") return "Die Rote Karte verändert Spielerzahl und taktische Balance.";
+    if (event.type === "yellow_card") return "Der disziplinarische Druck steigt, der Spielstand bleibt gleich.";
+    if (event.type === "score_update") return "Der Spielstand wurde geprüft; der bestätigte Wert gilt.";
+    if (event.type === "halftime") return "Die Halbzeit setzt einen klaren Vergleichspunkt.";
+    if (event.type === "fulltime") return "Endstand und Ereignisfolge sind für Replay und Tippspiel bestätigt.";
+    return "Der Puls verändert sich; folge den verifizierten Ereignissen.";
+  }
+  if (language === "ja") {
+    if (!event) return "最初の確認済みイベントを待っています。";
+    if (event.type === "goal") return frame.homeScore === frame.awayScore ? "同点に戻り、試合の物語が組み直されました。" : `${leader}がリード。次の確認済みリアクションが焦点です。`;
+    if (event.type === "red_card") return "レッドカードで人数と戦術バランスが変わりました。";
+    if (event.type === "yellow_card") return "警告の圧力が高まりましたが、スコアは変わりません。";
+    if (event.type === "score_update") return "スコアが再確認され、確認済みの値が優先されます。";
+    if (event.type === "halftime") return "ハーフタイムは前後半を比べる明確な節目です。";
+    if (event.type === "fulltime") return "最終スコアとイベント経路がリプレイとチャレンジ判定用に確定しました。";
+    return "試合の流れが変化しています。確認済みイベントを追ってください。";
+  }
+  if (!event) return "تنتظر المباراة أول حدث موثق.";
+  if (event.type === "goal") return frame.homeScore === frame.awayScore ? "عادت النتيجة إلى التعادل وبدأت قصة المباراة من جديد." : `${leader} يتقدم؛ التركيز الآن على الرد الموثق التالي.`;
+  if (event.type === "red_card") return "تغير البطاقة الحمراء عدد اللاعبين والتوازن التكتيكي.";
+  if (event.type === "yellow_card") return "يرتفع الضغط الانضباطي بينما تبقى النتيجة كما هي.";
+  if (event.type === "score_update") return "تمت مراجعة النتيجة؛ القيمة المؤكدة هي المعتمدة.";
+  if (event.type === "halftime") return "نهاية الشوط الأول تمنح نقطة مقارنة واضحة.";
+  if (event.type === "fulltime") return "تم تأكيد النتيجة ومسار الأحداث للإعادة وحسم التحدي.";
+  return "يتغير النبض؛ تابع الأحداث الموثقة.";
+}
+
+function localizedKickoff(language: PulseLanguage, kickoffIso?: string) {
+  if (!kickoffIso) return undefined;
+  const date = new Date(kickoffIso);
+  if (!Number.isFinite(date.getTime())) return undefined;
+  const locale = language === "zh" ? "zh-CN" : language === "pt" ? "pt-BR" : language;
+  return new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(date);
+}
+
+function localizedScheduledStage(language: PulseLanguage, stage?: string) {
+  if (!stage) return undefined;
+  const normalized = stage.toLowerCase().replace(/[-_]/g, " ");
+  const key = normalized.includes("round of 32") ? "round32"
+    : normalized.includes("round of 16") ? "round16"
+      : normalized.includes("quarter") ? "quarter"
+        : normalized.includes("semi") ? "semi"
+          : /\bfinals?\b/.test(normalized) ? "final"
+            : normalized.includes("group") ? "group"
+              : undefined;
+  if (!key) return undefined;
+  const labels = {
+    en: { round32: "Round of 32", round16: "Round of 16", quarter: "Quarter-final", semi: "Semi-final", final: "Final", group: "Group stage" },
+    zh: { round32: "32 强", round16: "16 强", quarter: "四分之一决赛", semi: "半决赛", final: "决赛", group: "小组赛" },
+    es: { round32: "Dieciseisavos", round16: "Octavos", quarter: "Cuartos", semi: "Semifinal", final: "Final", group: "Fase de grupos" },
+    pt: { round32: "Fase de 32", round16: "Oitavas", quarter: "Quartas", semi: "Semifinal", final: "Final", group: "Fase de grupos" },
+    fr: { round32: "Seizièmes", round16: "Huitièmes", quarter: "Quart de finale", semi: "Demi-finale", final: "Finale", group: "Phase de groupes" },
+    de: { round32: "Runde der 32", round16: "Achtelfinale", quarter: "Viertelfinale", semi: "Halbfinale", final: "Finale", group: "Gruppenphase" },
+    ja: { round32: "ラウンド32", round16: "ベスト16", quarter: "準々決勝", semi: "準決勝", final: "決勝", group: "グループステージ" },
+    ar: { round32: "دور 32", round16: "دور 16", quarter: "ربع النهائي", semi: "نصف النهائي", final: "النهائي", group: "دور المجموعات" },
+  } as const;
+  return labels[language][key];
+}
+
+function localizedStageImportance(language: PulseLanguage, stage?: string) {
+  if (!stage) return undefined;
+  const normalized = stage.toLowerCase().replace(/[-_]/g, " ");
+  const key = /\bfinals?\b/.test(normalized) && !normalized.includes("semi") && !normalized.includes("quarter") ? "title"
+    : normalized.includes("semi") ? "final"
+      : normalized.includes("quarter") ? "semi"
+        : normalized.includes("round of 16") || normalized.includes("round of 32") ? "next"
+          : undefined;
+  if (!key) return undefined;
+  const lines = {
+    en: { title: "The World Cup title is at stake.", final: "A place in the final is at stake.", semi: "A place in the semi-final is at stake.", next: "Progress to the next knockout round is at stake." },
+    zh: { title: "世界杯冠军将在这里决出。", final: "胜者将晋级决赛。", semi: "胜者将晋级半决赛。", next: "胜者将进入下一轮淘汰赛。" },
+    es: { title: "Está en juego el título mundial.", final: "Está en juego un lugar en la final.", semi: "Está en juego un lugar en semifinales.", next: "Está en juego el pase a la siguiente ronda." },
+    pt: { title: "O título mundial está em jogo.", final: "Uma vaga na final está em jogo.", semi: "Uma vaga na semifinal está em jogo.", next: "A classificação à próxima fase está em jogo." },
+    fr: { title: "Le titre mondial est en jeu.", final: "Une place en finale est en jeu.", semi: "Une place en demi-finale est en jeu.", next: "La qualification pour le tour suivant est en jeu." },
+    de: { title: "Es geht um den WM-Titel.", final: "Ein Platz im Finale steht auf dem Spiel.", semi: "Ein Platz im Halbfinale steht auf dem Spiel.", next: "Es geht um den Einzug in die nächste Runde." },
+    ja: { title: "ワールドカップ優勝が懸かります。", final: "決勝進出が懸かります。", semi: "準決勝進出が懸かります。", next: "次の決勝トーナメント進出が懸かります。" },
+    ar: { title: "لقب كأس العالم على المحك.", final: "بطاقة التأهل إلى النهائي على المحك.", semi: "بطاقة التأهل إلى نصف النهائي على المحك.", next: "التأهل إلى الدور الإقصائي التالي على المحك." },
+  } as const;
+  return lines[language][key];
+}
+
+export function localizeRecap(language: PulseLanguage, match: MatchData, frame: PulseFrame) {
+  const events = frame.activeEvents ?? [];
+  const goals = events.filter((event) => event.type === "goal").length;
+  const cards = events.filter((event) => event.type === "yellow_card" || event.type === "red_card").length;
+  const score = `${frame.homeScore}-${frame.awayScore}`;
+  const home = localizeTeamName(match.home.code, match.home.name, language);
+  const away = localizeTeamName(match.away.code, match.away.name, language);
+  const latest = frame.latestEvent ? localizeEventDescription(language, frame.latestEvent) : localizedWaiting(language, match);
+
+  if (language === "zh") return `快速补课：${home} ${score} ${away}。已确认 ${goals} 个进球和 ${cards} 张牌。最新节点：${latest}`;
+  if (language === "es") return `Resumen rápido: ${home} ${score} ${away}. Hay ${goals} goles y ${cards} tarjetas verificadas. Último momento: ${latest}`;
+  if (language === "pt") return `Resumo rápido: ${home} ${score} ${away}. Há ${goals} gols e ${cards} cartões verificados. Último momento: ${latest}`;
+  if (language === "fr") return `Récap express : ${home} ${score} ${away}. ${goals} buts et ${cards} cartons sont vérifiés. Dernier moment : ${latest}`;
+  if (language === "de") return `Schnellüberblick: ${home} ${score} ${away}. Bestätigt sind ${goals} Tore und ${cards} Karten. Letzter Moment: ${latest}`;
+  if (language === "ja") return `30秒まとめ：${home} ${score} ${away}。確認済みはゴール${goals}件、カード${cards}件。最新：${latest}`;
+  if (language === "ar") return `ملخص سريع: ${home} ${score} ${away}. تم توثيق ${goals} أهداف و${cards} بطاقات. آخر لحظة: ${latest}`;
+  const goalLabel = goals === 1 ? "goal" : "goals";
+  const cardLabel = cards === 1 ? "card" : "cards";
+  return `Quick catch-up: ${home} ${score} ${away}. ${goals} ${goalLabel} and ${cards} ${cardLabel} are verified. Latest: ${latest}`;
 }
 
 export function localizeEventDescription(language: PulseLanguage, event: MatchEvent) {
-  const player = event.player ?? localizedPlayer(language);
+  const player = readablePlayerName(event.player) ?? teamLabel(language, event.team) ?? localizedPlayer(language);
   const score = `${event.homeScore}-${event.awayScore}`;
-  if (language === "en") return event.description;
+  if (language === "en") {
+    if (event.type === "goal") return `${player} scored; the score is now ${score}.`;
+    if (event.type === "yellow_card") return `${player} received a yellow card.`;
+    if (event.type === "red_card") return `${player} received a red card; the number of players changed.`;
+    if (event.type === "substitution") return `${player} was involved in a substitution.`;
+    if (event.type === "halftime") return `Half-time; the score is ${score}.`;
+    if (event.type === "fulltime") return `Full-time; the verified score is ${score}.`;
+    if (event.type === "odds_shift") return "The match momentum changed.";
+    if (event.type === "score_update") return `The score was reviewed and confirmed at ${score}.`;
+    return "Verified match event.";
+  }
   if (language === "zh") {
     if (event.type === "goal") return `${player}完成进球，比分更新为 ${score}。`;
     if (event.type === "yellow_card") return `${player}被出示黄牌，纪律信息已记录。`;
@@ -133,6 +322,13 @@ function localizedPlayer(language: PulseLanguage) {
   if (language === "ja") return "選手";
   if (language === "ar") return "اللاعب";
   return "Player";
+}
+
+function readablePlayerName(candidate?: string) {
+  if (!candidate) return undefined;
+  const normalized = candidate.trim();
+  if (!normalized || /^#?\d+$/.test(normalized) || /^player\s*#?\d+$/i.test(normalized)) return undefined;
+  return normalized;
 }
 
 function localizedEventByLanguage(language: PulseLanguage, event: MatchEvent, player: string, score: string) {
@@ -199,12 +395,12 @@ function localizedEventByLanguage(language: PulseLanguage, event: MatchEvent, pl
 function localizedWaiting(language: PulseLanguage, match: MatchData) {
   const home = localizeTeamName(match.home.code, match.home.name, language);
   const away = localizeTeamName(match.away.code, match.away.name, language);
-  if (language === "zh") return `${home} vs ${away} 正等待开赛，暂无已核验比赛事件。`;
-  if (language === "es") return `${home} vs ${away} espera el inicio; aún no hay eventos verificados.`;
-  if (language === "pt") return `${home} vs ${away} aguarda o início; ainda não há eventos verificados.`;
-  if (language === "fr") return `${home} vs ${away} attend le coup d'envoi; aucun événement vérifié.`;
-  if (language === "de") return `${home} vs ${away} wartet auf den Anpfiff; noch keine verifizierten Ereignisse.`;
-  if (language === "ja") return `${home} vs ${away}はキックオフ待ちです。検証済みイベントはありません。`;
+  if (language === "zh") return `${home}对阵${away}，正等待开赛，暂无已核验比赛事件。`;
+  if (language === "es") return `${home} contra ${away} espera el inicio; aún no hay eventos verificados.`;
+  if (language === "pt") return `${home} contra ${away} aguarda o início; ainda não há eventos verificados.`;
+  if (language === "fr") return `${home} contre ${away} attend le coup d'envoi; aucun événement vérifié.`;
+  if (language === "de") return `${home} gegen ${away} wartet auf den Anpfiff; noch keine verifizierten Ereignisse.`;
+  if (language === "ja") return `${home}対${away}はキックオフ待ちです。検証済みイベントはありません。`;
   if (language === "ar") return `${home} ضد ${away} بانتظار البداية؛ لا توجد أحداث موثقة بعد.`;
   return `${home} and ${away} are warming up the pulse before kickoff.`;
 }

@@ -90,11 +90,11 @@ const requiredText = [
   ["docs/JUDGING_AUDIT_2026-07-11.md", "Commercial and monetization path"],
   ["docs/FINAL_RELEASE_TASKS.md", "Demo video"],
   ["docs/FINAL_RELEASE_TASKS.md", "Submission audit and upload"],
-  ["docs/ROUND_MASTER_TASKS_2026-07-12.md", "本轮唯一执行清单"],
-  ["docs/ROUND_MASTER_TASKS_2026-07-12.md", "没有可靠来源的字段不显示"],
-  ["docs/ROUND_MASTER_TASKS_2026-07-12.md", "最终 Demo 视频"],
-  ["docs/ROUND_MASTER_TASKS_2026-07-12.md", "完成三轮独立市场调研"],
-  ["docs/ROUND_MASTER_TASKS_2026-07-12.md", "最终 Demo 录制 A/B 两版"],
+  ["docs/ROUND_MASTER_TASKS_2026-07-12.md", "这是当前唯一执行清单"],
+  ["docs/ROUND_MASTER_TASKS_2026-07-12.md", "无来源字段整段隐藏"],
+  ["docs/ROUND_MASTER_TASKS_2026-07-12.md", "最终 Demo 与发布"],
+  ["docs/ROUND_MASTER_TASKS_2026-07-12.md", "每项官方评审要求至少延展为 2 至 3 个真实可用"],
+  ["docs/ROUND_MASTER_TASKS_2026-07-12.md", "同一工作树通过数据、可用性、语言/移动端/安全三轮本地验收"],
   ["docs/FAN_PRODUCT_RESEARCH_2026-07-12.md", "Pain points translated into product decisions"],
   ["docs/FAN_FIRST_ITERATION_TASKS.md", "P0: matchday essentials"],
   ["docs/THREE_ROUND_MARKET_RESEARCH_2026-07-12.md", "Round 1: live match center and key events"],
@@ -201,9 +201,9 @@ if (packageJson.scripts?.["txline:probe"]) {
 }
 
 if (packageJson.scripts?.["demo:video"]) {
-  pass("package scripts include reproducible A/B demo generation");
+  pass("package scripts include reproducible English final-demo generation");
 } else {
-  fail("package scripts must include reproducible A/B demo generation");
+  fail("package scripts must include reproducible English final-demo generation");
 }
 
 if (failed) {

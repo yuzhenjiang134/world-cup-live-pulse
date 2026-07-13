@@ -1,5 +1,5 @@
 param(
-  [string]$FfmpegPath = "C:\Users\Administrator\AppData\Local\JianyingPro\Apps\10.8.0.14162\ffmpeg.exe"
+  [string]$FfmpegPath = $env:FFMPEG_PATH
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,9 +13,32 @@ $narrationPath = Join-Path $generatedDir "demo-narration.wav"
 $concatPath = Join-Path $generatedDir "demo-scenes.txt"
 $durationSeconds = 186
 
-if (-not (Test-Path -LiteralPath $FfmpegPath)) {
-  throw "FFmpeg was not found at $FfmpegPath"
+function Resolve-FfmpegPath {
+  param([string]$RequestedPath)
+
+  if (-not [string]::IsNullOrWhiteSpace($RequestedPath) -and (Test-Path -LiteralPath $RequestedPath)) {
+    return (Resolve-Path -LiteralPath $RequestedPath).Path
+  }
+
+  $command = Get-Command ffmpeg -ErrorAction SilentlyContinue
+  if ($command) {
+    return $command.Source
+  }
+
+  $appsRoot = if ($env:LOCALAPPDATA) { Join-Path $env:LOCALAPPDATA 'JianyingPro\Apps' } else { $null }
+  if ($appsRoot -and (Test-Path -LiteralPath $appsRoot)) {
+    $bundled = Get-ChildItem -LiteralPath $appsRoot -Filter ffmpeg.exe -File -Recurse -ErrorAction SilentlyContinue |
+      Sort-Object FullName -Descending |
+      Select-Object -First 1
+    if ($bundled) {
+      return $bundled.FullName
+    }
+  }
+
+  throw 'FFmpeg was not found. Set FFMPEG_PATH or add ffmpeg to PATH.'
 }
+
+$FfmpegPath = Resolve-FfmpegPath -RequestedPath $FfmpegPath
 
 Add-Type -AssemblyName System.Drawing
 Add-Type -AssemblyName System.Speech

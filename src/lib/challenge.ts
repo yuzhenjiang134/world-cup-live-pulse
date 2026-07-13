@@ -33,7 +33,7 @@ export const emptyChallengeStats: ChallengeStats = {
 };
 
 export function canLockScorePick(mode: MatchMode, status: MatchData["status"]) {
-  return mode === "replay" || status !== "finished";
+  return mode === "replay" || status === "scheduled";
 }
 
 export function canSettleScorePick(locked: boolean, settled: boolean, isFinal: boolean) {

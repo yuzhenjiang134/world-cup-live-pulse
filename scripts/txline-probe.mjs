@@ -13,6 +13,7 @@ const finalScoreSeq = optionalNumber(envValue("VITE_TXLINE_FINAL_SCORE_SEQ"));
 const asOf = optionalNumber(envValue("VITE_TXLINE_AS_OF_MS"));
 const startEpochDay = optionalNumber(envValue("VITE_TXLINE_START_EPOCH_DAY"));
 const competitionId = optionalNumber(envValue("VITE_TXLINE_COMPETITION_ID")) ?? 72;
+const requestTimeoutMs = optionalNumber(envValue("TXLINE_PROBE_TIMEOUT_MS")) ?? 15_000;
 
 if (proxyBase) {
   await probeProxyMode();
@@ -115,13 +116,20 @@ async function requestJson(baseUrl, endpoint, headers, query, method = "GET") {
     }
   }
 
-  const response = await fetch(url, {
-    method,
-    headers: {
-      Accept: "application/json",
-      ...(headers ?? {}),
-    },
-  });
+  let response;
+  try {
+    response = await fetch(url, {
+      method,
+      headers: {
+        Accept: "application/json",
+        ...(headers ?? {}),
+      },
+      signal: AbortSignal.timeout(requestTimeoutMs),
+    });
+  } catch (error) {
+    const reason = error?.name === "TimeoutError" ? `timed out after ${requestTimeoutMs}ms` : "could not be reached";
+    throw new Error(`TxLINE ${endpoint} ${reason}.`, { cause: error });
+  }
   const text = await response.text();
 
   if (!response.ok) {

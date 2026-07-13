@@ -37,13 +37,13 @@ async function loadReplayMatches() {
 
   const encoded = Buffer.from(result.outputText, "utf8").toString("base64");
   const fixtureModule = await import(`data:text/javascript;base64,${encoded}`);
-  return fixtureModule.replayMatches;
+  return fixtureModule.legacyReplayMatches;
 }
 
 const replayMatches = await loadReplayMatches();
 
 if (!Array.isArray(replayMatches)) {
-  fail("replayMatches must be exported as an array");
+  fail("legacyReplayMatches must be exported as an array");
 }
 
 for (const match of replayMatches) {

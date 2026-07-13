@@ -1,6 +1,8 @@
 # Technical Overview
 
-Updated: 2026-07-11
+Updated: 2026-07-13
+
+The detailed judge-facing implementation note is `docs/TECHNICAL_SUBMISSION_2026-07-13.md`. This file remains the short technical overview requested by the submission form.
 
 World Cup Live Pulse is a Vite, React, and TypeScript consumer match companion for the Superteam Earn / TxODDS World Cup Hackathon, Consumer and Fan Experiences track.
 
@@ -16,10 +18,11 @@ TxLINE or public scoreboard
 
 The production entry point renders `src/MatchdayApp.tsx`. It has four product surfaces:
 
-- Match Center: source state, score, fan pulse, score challenge, event timeline, AI-style commentary, odds context, schedule, and official watch links.
+- Match Center: source state, score, fan pulse, score challenge, event timeline, AI-style commentary, followed-match alerts, odds context, schedule, and official watch links.
+- Pulse Play: a rights-safe animated match theatre driven by the same normalized goal, penalty, card, added-time, and final-state events as Match Center.
 - Replay: fixed historical matches using the same Match Center components.
 - Teams: teams from the selected match and current source first, followed by a collapsed reference atlas.
-- Settings: language, local points reset, refresh, and advanced TxLINE diagnostics.
+- Settings: language, persisted goal/card/full-time alert choices, local points reset, refresh, and advanced TxLINE diagnostics.
 
 ## TxLINE integration
 
@@ -70,6 +73,7 @@ The fan challenge is local entertainment only:
 - Correct result: +100 points.
 - Miss: +0 points.
 - One charge and one settlement per stored match state.
+- Free edits before kickoff without another point charge.
 - Streak, best streak, accuracy, reload persistence, and SVG share card.
 
 It has no cash value, wallet, token, transaction, wager, prediction market, or trading advice.
@@ -102,7 +106,7 @@ npm run txline:probe
 npm run e2e:matchday
 ```
 
-The validation suite covers TypeScript, replay fixtures, eight-language parity, data truth, challenge rules, World Cup scope, eight 2026 archive finals, submission files, secret scanning, and the TxLINE subscribe helper. Browser E2E covers one-time challenge settlement, reload persistence, tournament progression, team detail, controls, and 1440px/390px layouts.
+The validation suite covers TypeScript, replay fixtures, eight-language parity, data truth, challenge rules, World Cup scope, eight 2026 archive finals, submission files, secret scanning, and the TxLINE subscribe helper. Browser E2E covers one-time challenge settlement, pre-kickoff edits, Pulse Play event states, local cheers, persisted alert preferences, replay, tournament progression, team detail, controls, keyboard access, and 1440px/390px layouts.
 
 ## Source truth model
 

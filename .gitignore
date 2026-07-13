@@ -9,6 +9,8 @@ demo-assets/*.png
 demo-assets/*.webm
 demo-assets/*.mp4
 demo-assets/*.wav
+demo-assets/*asr-report*.json
+demo-assets/qa-*/
 demo-assets/render-*/
 demo-assets/narration-*/
 demo-assets/video-status.json

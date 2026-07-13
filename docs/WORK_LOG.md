@@ -1,5 +1,29 @@
 # World Cup Live Pulse Work Log
 
+## 2026-07-13: Final two-round judging extension
+
+- Added persisted goal/card/full-time alert preferences for followed matches; settings remain off the primary fan surface.
+- Added Pulse Play, a rights-safe animated pitch driven by normalized score, goal, penalty, card, added-time, and final-state events.
+- Added local-only team cheers with explicit device-only labeling; no global sentiment claim is made.
+- Fixed replay-frame truth so a completed fixture does not display full time before the replay reaches its final event.
+- Removed 2022 editorial stories from the current replay library; the public product now exposes only the verified 2026 TxLINE archive.
+- Propagated source penalty metadata through TxLINE, public-scoreboard, archive, shared types, and Pulse Play.
+- Expanded E2E coverage for Pulse Play, local cheers, alert preference persistence, mobile fit, and the existing challenge/AI/replay/language flows.
+- Added `docs/TECHNICAL_SUBMISSION_2026-07-13.md` and expanded `docs/API_FEEDBACK.md` with endpoint behavior, dated probe evidence, product consequences, commercial path, and release evidence.
+- Final local three-pass acceptance and the emotional cloned-voice English Demo are complete; same-SHA online release remains pending.
+
+## 2026-07-13: Product extrapolation and voice-clone demo pass
+
+- Clarified the iteration rule: “举一反三” means extending the fan-facing web product itself, not adding unrelated submission packaging or developer controls.
+- Added a local favorite-team action to verified team cards and priority ordering in team and schedule views.
+- Extended browser E2E to verify favorite persistence, schedule priority, language settings, key-event navigation, challenge state, and desktop/mobile screenshots.
+- Located three reusable local IndexTTS2 voice profiles. The selected profile has a 12.7-second cleaned sample with a local quality score of 100, no clipping, and no remaining warnings.
+- Generated the first English voice-clone probe successfully. Structural audio checks passed; reverse transcription recovered the full sentence but misheard the brand phrase “Live Pulse,” so the final narration remains blocked until brand pronunciation is corrected and rechecked.
+- Final demo target is approximately 4:10-4:30, under the official five-minute limit, with real interaction before/after evidence and no filler.
+- Personal voice samples and local voice-profile paths remain outside the public repository.
+- Rechecked the official Consumer and Fan Experiences listing and converted the judging and submission requirements into `OFFICIAL_REQUIREMENTS_PRODUCT_MATRIX_2026-07-13.md`.
+- Expanded final candidate B to 16 scenes and 268 seconds. It now proves challenge settlement, event jumps, live trust rules, replay boundaries, spoiler protection, favorite-team priority, team depth, languages, mobile use, official viewing, TxLINE integration, commercial extension, and release evidence.
+
 ## 2026-07-13: Public final demo verification
 
 - Replaced the stale July 1 public WebM with final narrated candidate B and published it through GitHub Pages.
@@ -165,4 +189,75 @@ npm run txline:probe
 - Re-opened the official track page twice: its syncing submission counter moved from 25 to 27 while the 16,000 USDT prize split and July 29 announcement stayed unchanged. Dynamic listing counts are no longer treated as fixed product facts.
 - Enforced a no-source/no-field rule in the fan UI: removed pending player/coach placeholders, old 2022 team reference profiles, empty official-odds cells, scheduled-match event counters, and empty accuracy fields.
 - Replaced the tournament page's static current-fixture lane with the active adapter schedule, so past fallback fixtures cannot remain labeled as upcoming.
-- Added source-derived 2026 team records with verified archive appearances, wins, goals for/against, cards, source player IDs, and direct replay entry points.
+- Added source-derived 2026 team records with verified archive appearances, wins, goals for/against, cards, source-supplied player names when available, and direct replay entry points.
+
+## 2026-07-13: Fan-readable identity and interface-language pass
+
+- Replaced the accumulated round notes with one current local-product and competition acceptance checklist. Old online/video completion markers no longer count as the current release state.
+- Removed raw TxLINE player IDs from every fan-facing path. IDs remain internal event metadata only; a player card or spoken name now requires a source-supplied display name.
+- Added a second defense in the AI layer so `#102`, `Player 205`, and similar identifiers are never spoken or rendered as player names even if malformed input reaches the commentary function.
+- Replaced mixed-language scheduled-match sentences, fixed `vs` labels, `pts`, and letter-code navigation icons with language-aware matchup copy, point units, and familiar visual controls.
+- Clarified team cards: `Matches`, `Opponents`, and `Goals for:against` now describe the displayed values; the right rail is labeled as the replay library rather than a misleading next-fixture list.
+- When the current verified source has no player names, the page is truthfully titled `Teams` and omits the player section instead of showing IDs or empty placeholders.
+- Passed TypeScript, 8-language/109-key UTF-8 validation, AI fact/identity guards, product-data audit, archive final-score verification, and the complete desktop/mobile browser E2E after these changes.
+- Added six pre-generated natural commentary clips for one verified 2026 replay: live call, meaning, and catch-up in English and Chinese. The public mapping contains no voice-profile ID or local path, and browser speech remains the fallback.
+- Reverse transcription passed all six clips after Simplified/Traditional Chinese normalization; every clip also passed duration, RMS, silence, and clipping gates.
+- Fixed source-provided `FIFA World Cup, Semifinals` so Chinese and the other supported languages render the localized tournament stage instead of mixed-language source text.
+- Repaired production E2E URL and browser-target isolation, then completed two consecutive passes against the built preview at `http://127.0.0.1:5190/`.
+- The final competition Demo is English-only. The product remains eight-language; no multilingual video variants will be produced.
+- Consolidated the current video package into one 4:50 English judging cut. All 17 scenes carry explicit emotion direction, including the event-driven Pulse Play scene, and pronunciation-sensitive narration covers no-spoiler replay, T X Line, and the no-cash safety boundary.
+
+## 2026-07-13: Pre-kickoff fairness, richer AI states, and player evidence
+
+- Rechecked the official Consumer and Fan Experiences brief and current FIFA, OneFootball and FotMob product patterns. The resulting priorities are match state, key moments, progression, low-friction participation, favorites and fast catch-up rather than more panels.
+- Changed the live challenge gate so new predictions are accepted only before kickoff. Replay mode remains deterministic for judging.
+- Added a fair edit flow: the first save costs 50 local points, edits before kickoff cost no additional points, kickoff closes editing, and one fixture remains one ledger record with revision evidence.
+- Expanded scheduled AI from one repeated empty-state sentence into three distinct modes across eight languages: matchup/stage/kickoff, why the stage matters plus the challenge deadline, and a pre-match catch-up checklist.
+- Expanded live “why it matters” handling for goals, cards, score review, half-time and full-time across all supported languages.
+- Replaced source-internal player role strings with structured, source-derived goals, cards, substitutions and event minutes. If the source provides only numeric IDs, the player section remains hidden.
+- Passed TypeScript, challenge rules, eight-language AI tests, archive final-score checks, i18n validation and the product data audit before browser acceptance.
+- Marked the previous video candidate stale. The English Demo will be re-rendered only after the revised product passes local acceptance.
+
+## 2026-07-13: Final local acceptance candidate
+
+- Fixed the score challenge edit boundary end to end: one paid entry per fixture, free edits before kickoff, automatic edit closure at kickoff, one ledger row, revision evidence, and verified-final settlement only.
+- Replaced low-information status repetition with the actual kickoff time before a match and a key-moments destination after a replay ends.
+- Removed desktop and mobile truncation in challenge rules, team record metrics, and the three-item primary navigation; normalized typography spacing for more stable multilingual rendering.
+- Added an explicit 15-second timeout to the read-only TxLINE probe so an unavailable upstream cannot leave product verification hanging.
+- Ran two consecutive authenticated TxLINE probes. Both current observations returned 2 World Cup fixtures, 2 score records and 6 official odds records for fixture `18237038`; these are timestamped observations, not permanent product copy.
+- Passed the full `npm run validate` suite after the final changes: fixture integrity, eight-language keys, source-truth audit, challenge rules, World Cup scope, score normalization, AI fact guards, 2026 archive finals, proxy boundary, preflight and secret scan.
+- Passed the production build and two final browser E2E runs, one Chinese and one English, at 1440px desktop and 390px mobile with no horizontal overflow or runtime errors.
+- Browser E2E proves: 1,000 starting points, replay exact-score settlement, 50-point first entry, free pre-kickoff edit without a second deduction, reload persistence, three distinct AI modes, key-event jumps, favorites, official links, source-only player display, eight language switches and safety copy.
+- Added automated visible-control accessible-name coverage and keyboard focus entry to the production E2E, localized previously hard-coded screen-reader labels and group-table abbreviations, labeled both score inputs explicitly, and added a reduced-motion preference boundary.
+- Local product acceptance is complete. Final English video regeneration, two-pass viewing/listening review, online deployment, same-SHA verification and final Superteam submission remain pending by design.
+
+## 2026-07-13: Pulse Play, final evidence, and submission documentation
+
+- Added configurable goal/card/full-time alerts for followed matches, persisted locally and triggered only by newly verified events while the page is open.
+- Added Pulse Play, a rights-safe animated match theatre driven by the same normalized score and event frames as Match Center. It covers goals, source-marked penalties, cards, added time, final state, and clearly local-only team cheers.
+- Fixed replay-frame truth so a completed fixture does not display full time while the replay cursor is still at an earlier minute.
+- Limited the product replay library to eight verified 2026 TxLINE archives; legacy editorial stories remain compatibility fixtures and are no longer visible as current product replays.
+- Replaced replay-list team codes with complete localized team names while retaining standard codes in the compact scoreboard.
+- Added a detailed judge-facing technical submission and expanded TxLINE feedback with endpoints, authentication, data lifecycle, security boundary, failure behavior, commercial path, and dated evidence.
+- Ran two consecutive authenticated final-candidate probes: both accepted 2 World Cup fixtures and 2 score records for fixture `18237038`; official-odds records changed from 4 to 7, confirming independent collection freshness. No token or JWT was printed.
+- Passed the complete local validation suite, production build, Chinese and English browser E2E, eight-language checks, desktop and 390px mobile layout checks, accessibility names, keyboard flow, secret scan, and visual review.
+- Removed personal FFmpeg paths from public demo scripts. They now use `FFMPEG_PATH`, system `PATH`, or portable local discovery.
+- Final product worktree is accepted. The remaining release stages are same-SHA deployment, online verification, and the final submission audit.
+
+## 2026-07-14: Final English Demo acceptance
+
+- Rendered the accepted 17-scene judging cut at 4:50, 1280x720, 24 fps, H.264 Main video, and AAC stereo audio.
+- Used the owner's authorized local cloned voice without writing its profile identifier, sample name, or sample path into the repository or output metadata.
+- Regenerated the opening, Pulse Play, score challenge, key-event, and closing scenes with scene-specific emotion direction; reused only previously accepted authorized takes for the remaining scenes.
+- Reverse-transcribed all 17 narration clips. Every clip passed; minimum text similarity was 0.904 and average similarity was 0.968.
+- All narration clips passed duration, RMS, silence, and clipping gates. Full-program audio measured approximately -19.8 dB mean and -3.0 dB peak.
+- Completed a second full decode and visual pass using every scene midpoint plus representative frames for the opening, Pulse Play, challenge, key events, TxLINE boundary, and closing scene.
+- The final MP4 fully decodes with no missing audio/video stream or corruption error. Public publishing remains intentionally pending until the accepted worktree and video are committed together.
+
+## 2026-07-14: Final official-source recheck
+
+- Reopened the official Consumer and Fan Experiences listing before release. It still reports `Open`, 16,000 USDT in track prizes, and 33 public submissions at the observation time.
+- Reopened the World Cup Hackathon page. It still states 24 June through 19 July and describes the goal as wiring TxODDS real-time match data into real products.
+- The countdown widget showed an inconsistent zero value, so release decisions use the explicit `Open` state and published date range rather than the countdown rendering.
+- Reconfirmed the required package: accessible working application, public repository, sub-five-minute Demo, brief technical documentation with exact TxLINE endpoints, and API experience feedback. The repository also contains a longer judge-facing technical note and dated probe evidence.
+- Submission counts and endpoint record counts remain labeled as timestamped observations because both can change after this release.

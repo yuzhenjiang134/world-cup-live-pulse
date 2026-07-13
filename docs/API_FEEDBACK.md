@@ -57,6 +57,7 @@ The current app uses:
 - A free no-token ESPN public World Cup scoreboard fallback that keeps Live mode useful when TxLINE activation is blocked, while clearly labeling it as a non-TxLINE public signal.
 - Safe activation helper pages for the devnet free-tier subscribe and `/api/token/activate` flow.
 - Deterministic replay stories to make the same core Match Center flow repeatable for judges.
+- Pulse Play, key-moment navigation, score settlement, and followed-match alerts all consume the same normalized event contract; no second demo-only event model exists.
 - English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic UI labels for global fan testing.
 
 ## Public implementation patterns observed
@@ -81,6 +82,19 @@ The safest pattern for this project is the same: GitHub Pages remains a static r
 - The broader fixture snapshot can include `CompetitionId 430` Friendlies beside `CompetitionId 72` World Cup data. The product now applies both the query parameter and a response-side competition filter.
 - The token, guest JWT, and local environment values were not printed by the probe.
 
+## Verified token findings on 2026-07-13
+
+Two consecutive authenticated probes completed with the same current selection:
+
+- Guest JWT bootstrap resolved successfully.
+- `GET /api/fixtures/snapshot?competitionId=72` returned 2 accepted World Cup fixture records.
+- Fixture `18237038` returned 2 score snapshot records.
+- The same fixture returned 4 official-odds snapshot records in the first final-candidate probe and 7 in the second. This reinforces that score and odds collections evolve independently and must be timestamped rather than merged with stale values.
+- Final-score stat validation was intentionally skipped because no final sequence was configured; the product did not present an unrequested proof as successful.
+- No token, JWT, or local environment value was printed.
+
+These numbers are dated integration observations, not permanent World Cup facts. The final submission should describe the successful endpoint path and truth behavior without hard-coding these counts into the fan interface.
+
 ## Current endpoint mapping in the product
 
 - `POST /auth/guest/start`: guest JWT bootstrap.
@@ -88,8 +102,22 @@ The safest pattern for this project is the same: GitHub Pages remains a static r
 - `GET /api/scores/snapshot/{fixtureId}`: live score clock and event mapping.
 - `GET /api/odds/snapshot/{fixtureId}`: market mood snapshots.
 - `GET /api/scores/stat-validation?fixtureId=<FixtureId>&seq=<Seq>&statKeys=1,2`: optional final-score proof path after `Action = "game_finalised"`.
-- `GET /api/scores/stream`: future server-sent score updates.
-- `GET /api/odds/stream`: future server-sent odds updates.
+
+`/api/scores/stream` and `/api/odds/stream` are not claimed as implemented product dependencies. They remain a future server-proxy optimization after the polling build is accepted.
+
+## Detailed integration consequences
+
+The most important integration lesson is that consumer truth is a state machine, not a single score number:
+
+- Fixture scope can be broader than the requested competition, so response-side filtering is mandatory.
+- Score and odds collections can become available at different times, so an empty odds response cannot inherit an earlier value.
+- A historical fixture is finished, but a replay cursor before full time is not. The UI must separate fixture outcome from current replay-frame state.
+- A penalty flag can enrich fan presentation without inferring the event from prose.
+- Player IDs are not player names. Numeric-only identities must remain hidden.
+- A goal-like update is not enough for challenge settlement. The product needs the final action and, when configured, participant total-goal proof.
+- Browser notifications need stable event identity and user preferences to avoid duplicate or unwanted alerts.
+
+For the TxLINE developer experience, the highest-value additions would be a single typed consumer example that demonstrates fixture selection, event deduplication, delayed/freshness labeling, `game_finalised`, penalty metadata, and stat validation together. That would prevent each fan application from independently reconstructing the same safety rules.
 
 ## Final submission note
 
@@ -99,3 +127,6 @@ The final submission version should preserve:
 - What worked well in the normalized schema.
 - Any auth, CORS, freshness, rate-limit, or no-match-day friction.
 - Any bug or documentation gap reported to TxODDS support.
+- Which endpoint drove each visible product surface: Match Center, Pulse Play, score challenge settlement, schedule, teams, and official odds.
+- Dated probe evidence, with dynamic record counts clearly labeled as observations rather than permanent facts.
+- The exact public-deployment secret boundary and why a static GitHub Pages bundle requires a token-holding proxy for authenticated TxLINE Live mode.

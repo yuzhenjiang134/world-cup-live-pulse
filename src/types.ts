@@ -2,9 +2,13 @@ export type MatchMode = "live" | "replay";
 
 export type PlayerProfile = {
   name: string;
-  position: string;
-  role: string;
-  note: string;
+  position?: string;
+  role?: string;
+  note?: string;
+  goals?: number;
+  cards?: number;
+  substitutions?: number;
+  minutes?: number[];
 };
 
 export type Team = {
@@ -36,6 +40,7 @@ export type MatchEvent = {
   type: MatchEventType;
   team?: string;
   player?: string;
+  penalty?: boolean;
   title: string;
   description: string;
   homeScore: number;

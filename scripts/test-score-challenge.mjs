@@ -33,7 +33,8 @@ assert.equal(challenge.canSettleScorePick(true, false, true), true);
 assert.equal(challenge.canSettleScorePick(true, true, true), false);
 assert.equal(challenge.canSettleScorePick(true, false, false), false);
 assert.equal(challenge.canLockScorePick("live", "finished"), false);
-assert.equal(challenge.canLockScorePick("live", "live"), true);
+assert.equal(challenge.canLockScorePick("live", "live"), false);
+assert.equal(challenge.canLockScorePick("live", "scheduled"), true);
 assert.equal(challenge.canLockScorePick("replay", "finished"), true);
 
 assert.deepEqual(challenge.getFanLevel(challenge.emptyChallengeStats), {
@@ -46,4 +47,4 @@ assert.deepEqual(challenge.getFanLevel(challenge.emptyChallengeStats), {
 assert.equal(challenge.getFanLevel({ played: 1, correct: 1, exact: 1, streak: 1, bestStreak: 1 }).index, 1);
 assert.equal(challenge.getFanLevel({ played: 10, correct: 8, exact: 4, streak: 3, bestStreak: 5 }).index, 3);
 
-console.log("PASS score challenge rules, levels, single-settlement gate, streaks, and match-state gates");
+console.log("PASS score challenge rules, pre-kickoff entry gate, levels, single-settlement gate, and streaks");

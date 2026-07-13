@@ -97,6 +97,7 @@ export const replayMatch: MatchData = {
       type: "goal",
       team: "ARG",
       player: "Lionel Messi",
+      penalty: true,
       title: "Goal Argentina",
       description: "Messi converts from the spot. The stadium pulse spikes.",
       homeScore: 1,
@@ -295,6 +296,7 @@ export const upsetReplayMatch: MatchData = {
       type: "goal",
       team: "GER",
       player: "Ilkay Gundogan",
+      penalty: true,
       title: "Germany takes the lead",
       description: "A calm penalty puts Germany ahead and the market leans hard home.",
       homeScore: 1,
@@ -389,8 +391,9 @@ export const upsetReplayMatch: MatchData = {
   ],
 };
 
-export const replayMatches = [...txlineArchiveMatches, replayMatch, upsetReplayMatch];
+export const legacyReplayMatches = [replayMatch, upsetReplayMatch];
+export const replayMatches = [...txlineArchiveMatches];
 
 export function getReplayMatch(matchId?: string) {
-  return replayMatches.find((match) => match.id === matchId) ?? replayMatch;
+  return replayMatches.find((match) => match.id === matchId) ?? replayMatches[0];
 }

@@ -680,6 +680,7 @@ function normalizeEspnEvents(
       type,
       team: teamCode,
       player,
+      penalty: Boolean(detail.penaltyKick),
       title,
       description: `${title} from the public World Cup scoreboard${player ? ` involving ${player}` : ""}.`,
       homeScore,
@@ -1057,6 +1058,7 @@ function normalizeScoreEvents(
       type: eventType,
       team: teamCode,
       player: extractPlayerLabel(score),
+      penalty: Boolean(score.dataSoccer?.Penalty || score.parti1StateSoccer?.PossibleEvent?.Penalty || score.parti2StateSoccer?.PossibleEvent?.Penalty),
       title,
       description: buildEventDescription(score, title),
       homeScore: currentScore.homeScore,
@@ -1288,13 +1290,17 @@ function resolveEventTeamCode(score: TxlineScore, participant1IsHome: boolean, h
 }
 
 function extractPlayerLabel(score: TxlineScore) {
-  const playerId =
-    score.dataSoccer?.PlayerId ??
-    score.dataSoccer?.New?.PlayerId ??
-    score.dataSoccer?.PlayerInId ??
-    score.dataSoccer?.PlayerOutId;
-
-  return playerId ? `Player ${playerId}` : undefined;
+  const candidate =
+    score.dataSoccer?.PlayerName ??
+    score.dataSoccer?.New?.PlayerName ??
+    score.dataSoccer?.PlayerInName ??
+    score.dataSoccer?.New?.PlayerInName ??
+    score.dataSoccer?.PlayerOutName ??
+    score.dataSoccer?.New?.PlayerOutName;
+  if (!candidate) return undefined;
+  const normalized = candidate.trim();
+  if (!normalized || /^#?\d+$/.test(normalized) || /^player\s*#?\d+$/i.test(normalized)) return undefined;
+  return normalized;
 }
 
 function inferMatchStatus(score: TxlineScore | undefined, kickoffIso: string | undefined, eventCount: number): MatchData["status"] {

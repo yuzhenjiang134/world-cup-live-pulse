@@ -108,70 +108,185 @@ const sceneSets = {
       kind: "card",
       seconds: 14,
       title: "World Cup Live Pulse",
-      kicker: "Judging and data-trust cut",
-      subtitle: "Real-time responsiveness, original fan interaction, commercial value, and complete execution in one working product.",
-      bullets: ["Public site", "Public repository", "TxLINE integration", "Repeatable 2026 replay"]
+      kicker: "Consumer and Fan Experiences / Final judging cut",
+      subtitle: "A fan-first second screen for live scores, verified key moments, score challenges, and fast catch-up.",
+      narration: "World Cup Live Pulse is a fan-first matchday companion for live scores, verified key moments, score challenges, and fast catch-up.",
+      voiceTone: "confident and inviting",
+      voiceNote: "Open with warm energy and a clear sense of purpose. Do not sound like an advertisement.",
+      bullets: ["Working public product", "TxLINE-powered live boundary", "Repeatable 2026 replay", "No betting or wallet"]
     },
     {
-      image: "01-current-match-center.png",
-      seconds: 28,
-      title: "Fan accessibility starts with hierarchy",
-      subtitle: "The first viewport answers what happened, when it was checked, what the AI can explain, and what the fan can do next. Developer diagnostics stay outside this path.",
-      badges: ["Score first", "Challenge second", "Secondary detail later"]
+      image: "desktop-final.png",
+      seconds: 12,
+      title: "The match, the explanation, and the fan decision share one screen",
+      subtitle: "Score, state, source freshness, AI brief, replay control, and the 1,000-point challenge lead the experience.",
+      narration: "The first view answers what happened, when it was checked, what the AI can explain, and what the fan can do next.",
+      voiceTone: "clear and reassuring",
+      voiceNote: "Guide a football fan through the screen with calm confidence.",
+      badges: ["Score first", "AI grounded in events", "1,000 local points"]
+    },
+    {
+      image: "pulse-play-final.png",
+      seconds: 17,
+      title: "Verified events become a matchday mini-game",
+      subtitle: "Pulse Play turns the same score and event frames into a rights-safe animated pitch for goals, cards, penalties, added time, and local team cheers.",
+      narration: "Pulse Play turns verified goals, cards, penalties, and added time into a rights-safe animated pitch, with local team cheers that never pretend to be global statistics.",
+      voiceTone: "excited but controlled matchday energy",
+      voiceNote: "Lift the energy for the football action, then clearly stress that cheers are local-only.",
+      badges: ["Event-driven", "Rights-safe", "Local cheers"]
+    },
+    {
+      kind: "compare",
+      beforeImage: "challenge-before-final.png",
+      afterImage: "desktop-final.png",
+      seconds: 21,
+      title: "A score challenge that actually settles",
+      subtitle: "The fan spends local points once. A confirmed final score awards XP and points once, then survives refresh without duplicate settlement.",
+      narration: "Before the result, a fan locks one prediction using local points. When the final whistle is confirmed, the score record settles once, awards progress, and stays consistent after refresh.",
+      voiceTone: "energetic and precise",
+      voiceNote: "Give the score challenge a little excitement, then slow down for the settlement proof.",
+      badges: ["Before: 1,000 pts", "After: settled ledger", "No cash or wallet"]
+    },
+    {
+      image: "key-event-final.png",
+      seconds: 16,
+      title: "One tap returns a fan to the moment that matters",
+      subtitle: "Goal, card, score review, half-time, and full-time shortcuts move the replay and regenerate the same event-grounded AI brief.",
+      narration: "Key-event shortcuts jump straight to goals, cards, reviews, half-time, or full-time, while AI commentary stays grounded in the same verified event stream.",
+      voiceTone: "immediate football commentary",
+      voiceNote: "Use restrained matchday urgency on goals and cards, while keeping the explanation intelligible.",
+      badges: ["Event jump", "AI recap", "Optional spoken brief"]
     },
     {
       kind: "card",
-      seconds: 24,
+      seconds: 19,
       title: "Real-time behavior has explicit trust rules",
       kicker: "15-second refresh + focus refresh + final-state guard",
-      subtitle: "CompetitionId 72 is enforced, Friendlies 430 is rejected, provisional goals can be overturned, and only game_finalised settles a score challenge.",
+      subtitle: "World Cup CompetitionId 72 is enforced. Provisional goals may be overturned. Empty odds disappear. Only game_finalised can settle a challenge.",
+      narration: "Live mode refreshes every fifteen seconds and on focus. It rejects non-World-Cup fixtures, handles overturned goals, hides missing odds, and exposes the checked time.",
+      voiceTone: "measured and trustworthy",
+      voiceNote: "Sound factual and composed. Emphasize the safeguards rather than the technology.",
       bullets: ["No stale-current fallback", "No invented odds", "No duplicate settlement", "Checked time shown"]
     },
     {
-      image: "02-current-tournament.png",
-      seconds: 22,
-      title: "A complete product remains judgeable between matches",
-      subtitle: "Eight credential-free 2026 TxLINE replay sequences preserve the score, events, AI, challenge, schedule, and progression story without labeling archive data as live.",
-      badges: ["2026 archive", "Verified finals", "Repeatable judging"]
+      image: "tournament-final.png",
+      seconds: 18,
+      title: "Schedule, results, and progression are judgeable between matches",
+      subtitle: "Current fixtures stay separate from eight verified 2026 replay sequences and source-confirmed knockout progress.",
+      narration: "When no live match is playing, eight verified matches from the 2026 World Cup preserve scores, events, challenges, schedule, and progress. Archive data is never presented as live.",
+      voiceTone: "helpful catch-up",
+      voiceNote: "Sound empathetic to a fan who missed the match and wants to catch up quickly.",
+      badges: ["Current schedule", "8 verified replays", "Source-confirmed progression"]
     },
     {
-      image: "03-current-spoiler.png",
+      kind: "compare",
+      beforeImage: "tournament-final.png",
+      afterImage: "tournament-spoiler-final.png",
       seconds: 18,
-      title: "Original fan value: spoiler-free catch-up",
-      subtitle: "Fans can replay from minute one while every outcome-bearing field remains masked. This turns match data into a deliberate viewing experience, not another score table.",
-      badges: ["Outcome mask", "Minute-one start", "Event reveal"]
+      title: "Spoiler-free replay protects the catch-up experience",
+      subtitle: "One switch masks final scores, winners, event totals, bracket outcomes, and team records, then starts the replay at minute one.",
+      narration: "No-spoiler replay hides every field that could reveal the outcome, including scores, winners, event totals, bracket results, and team records, before playback starts at minute one.",
+      voiceTone: "considerate and clear",
+      voiceNote: "Make this feel like a thoughtful fan feature, not a technical setting.",
+      badges: ["Before: results visible", "After: outcomes masked", "Reveal through events"]
     },
     {
-      image: "04-current-teams.png",
-      seconds: 18,
-      title: "Depth is source-gated, not decorative",
-      subtitle: "Team and player records are derived only from confirmed events. Lineups, injuries, xG, and unsupported stats do not render until a verified endpoint supplies them.",
-      badges: ["No-source means no-field", "Replay evidence", "Clean team detail"]
+      kind: "compare",
+      beforeImage: "teams-final.png",
+      afterImage: "teams-favorite-final.png",
+      seconds: 16,
+      title: "A favorite team shortens the next fan task",
+      subtitle: "One local star moves that team to the front of team, schedule, and next-replay views without creating an account or an empty recommendation feed.",
+      narration: "A local favorite team moves to the front of team, schedule, and next-replay views. No account is required, and no recommendation data is invented behind the scenes.",
+      voiceTone: "friendly and practical",
+      voiceNote: "Use an easy conversational rhythm and a subtle smile.",
+      badges: ["Local preference", "Schedule priority", "No account required"]
     },
     {
-      image: "05-current-mobile.png",
+      image: "teams-favorite-final.png",
       seconds: 18,
-      title: "Global and mobile by design",
-      subtitle: "Eight complete language packs, Arabic RTL, keyboard focus, reduced motion, and a verified 390-pixel layout support mainstream non-technical fans.",
-      badges: ["8 complete languages", "RTL", "Responsive"]
+      title: "Team detail is source-gated, not decorative",
+      subtitle: "Appearances, results, goals for and against, cards, opponents, and replay links appear only when confirmed.",
+      narration: "Team stats come only from verified match records. Player names appear only when the source provides a readable name, so fans never see internal identifiers.",
+      voiceTone: "calm and transparent",
+      voiceNote: "Explain the data boundary plainly and confidently, without sounding defensive.",
+      badges: ["No-source means no-field", "Internal IDs hidden", "Replay evidence"]
+    },
+    {
+      image: "settings-language-final.png",
+      seconds: 16,
+      title: "Eight complete languages, not a half-translated shell",
+      subtitle: "English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic share the full flow; Arabic uses RTL.",
+      narration: "Eight complete language packs cover the same fan journey, including Arabic right-to-left layout, without mixing untranslated interface fragments into the selected language.",
+      voiceTone: "inclusive and assured",
+      voiceNote: "Sound globally welcoming while keeping the pace natural.",
+      badges: ["8 languages", "Arabic RTL", "Shared feature parity"]
+    },
+    {
+      image: "mobile-final.png",
+      seconds: 17,
+      title: "The full match flow works at 390 pixels",
+      subtitle: "Score, AI brief, challenge, replay, navigation, and settings remain usable without horizontal overflow.",
+      narration: "At three hundred ninety pixels, score, AI brief, challenge, replay, navigation, and settings remain usable without horizontal overflow.",
+      voiceTone: "concise and confident",
+      voiceNote: "Deliver this as a quick usability proof.",
+      badges: ["390px verified", "Keyboard focus", "Reduced motion"]
+    },
+    {
+      kind: "card",
+      seconds: 15,
+      title: "Official viewing entries, not unauthorized streams",
+      kicker: "FIFA+ archive / highlights / official updates",
+      subtitle: "The product keeps timeline replay available and opens official video or coverage only when territorial rights allow.",
+      narration: "For video, the product links only to official FIFA archive, highlights, and updates, while timeline replay remains available when territorial video rights differ.",
+      voiceTone: "responsible and reassuring",
+      voiceNote: "Keep the rights and safety statement clear, steady, and positive.",
+      bullets: ["Official links only", "Territory-aware wording", "No scraped stream", "Timeline always available"]
+    },
+    {
+      kind: "card",
+      seconds: 18,
+      title: "TxLINE powers the authenticated live boundary",
+      kicker: "CompetitionId 72 / World Cup only",
+      subtitle: "The secure adapter loads fixtures, score snapshots, score events, and official odds when supplied. The public build contains no private token.",
+      narration: "The official TxODDS data layer powers fixtures, score history, events, and official odds. Replay keeps judging repeatable, but is never presented as a live feed.",
+      voiceTone: "precise and authoritative",
+      voiceNote: "Pronounce T X Line as separate letters followed by Line. Keep the delivery technical but accessible.",
+      bullets: ["POST /auth/guest/start", "GET /api/fixtures/snapshot", "GET /api/scores/snapshot/{fixtureId}", "GET /api/odds/snapshot/{fixtureId}"]
     },
     {
       kind: "card",
       seconds: 22,
-      title: "Commercial value follows the same trusted core",
-      kicker: "Free fan layer / community / publisher widget / broadcaster",
-      subtitle: "The local score challenge creates repeat use. The same source-aware match story can serve fan communities, media products, venue screens, and localized sponsor activations.",
-      bullets: ["Retention loop", "Community path", "Embeddable media path", "Localization path"]
+      title: "Commercial value grows from the same trusted core",
+      kicker: "Fan layer / communities / publishers / venues",
+      subtitle: "The challenge creates repeat use. The source-aware match story can extend into community leaderboards, media widgets, venue screens, and localized sponsor activations.",
+      narration: "The points challenge creates repeat use. The same trusted match story can support communities, publisher widgets, venue screens, and localized sponsor activations, without bets or cash.",
+      voiceTone: "forward-looking and credible",
+      voiceNote: "Show commercial confidence without a sales pitch or exaggerated claims.",
+      bullets: ["Retention loop", "Community path", "Embeddable media", "Localization path"]
     },
     {
       kind: "card",
-      seconds: 22,
-      title: "Submission evidence is built into the release",
-      kicker: "Same-SHA release acceptance",
-      subtitle: "Three research rounds, three local acceptance rounds, successful CI and Pages on one commit, public E2E, secret scanning, endpoint documentation, and API feedback.",
-      bullets: ["CI + Pages success", "Public bundle scanned", "No runtime errors", "Claims backed by tests or docs"]
+      seconds: 18,
+      title: "Every submission claim has release evidence",
+      kicker: "Research / tests / same-SHA deployment",
+      subtitle: "Three acceptance rounds, public E2E, secret scanning, endpoint documentation, API feedback, CI, and Pages verification support the final build.",
+      narration: "Three acceptance rounds, public end-to-end tests, secret scanning, endpoint documentation, API feedback, continuous integration, and Pages verification support every final claim.",
+      voiceTone: "measured and evidential",
+      voiceNote: "Sound like a concise proof statement. Give each evidence item enough space.",
+      bullets: ["Public site and repository", "No runtime errors", "Bundle secret scan", "Claims backed by tests"]
     },
-    sharedClose
+    {
+      kind: "card",
+      seconds: 15,
+      title: "World Cup Live Pulse",
+      kicker: "A complete fan product",
+      subtitle: "Fast to understand, useful during or after a match, globally accessible, source-aware, and ready for repeat judging.",
+      narration: "World Cup Live Pulse is deployed, multilingual, source-aware, repeatable outside live match hours, and built for fans rather than developers.",
+      voiceTone: "warm and confident close",
+      voiceNote: "End with conviction and a human sense of completion, not a dramatic announcer voice.",
+      bullets: ["No betting", "No trading advice", "No wallet custody", "No private token in public"]
+    }
   ]
 };
 

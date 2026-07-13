@@ -68,7 +68,10 @@ function buildEvents(records: NormalizedTxlineScore[], participant1IsHome: boole
     if (action === "kickoff" && !events.some((candidate) => candidate.type === "kickoff")) {
       event = makeEvent(record, minute, "kickoff", undefined, "Kickoff", "TxLINE historical sequence opened.", score);
     } else if (action === "goal" && score.homeScore + score.awayScore > previousScore.homeScore + previousScore.awayScore) {
-      event = makeEvent(record, minute, "goal", team, `${team ?? "Team"} goal`, playerDescription(record, "Goal confirmed in the TxLINE sequence."), score);
+      event = {
+        ...makeEvent(record, minute, "goal", team, `${team ?? "Team"} goal`, playerDescription(record, "Goal confirmed in the TxLINE sequence."), score),
+        penalty: Boolean(record.dataSoccer?.Penalty || record.parti1StateSoccer?.PossibleEvent?.Penalty || record.parti2StateSoccer?.PossibleEvent?.Penalty),
+      };
     } else if ((action === "score_adjustment" || action === "action_discarded") && scoreChanged) {
       event = makeEvent(record, minute, "score_update", team, "Score corrected", "TxLINE sequence revised the scoreboard after review.", score);
     } else if (action === "yellow_card" && cardTotal(cards, "yellow") > cardTotal(previousCards, "yellow")) {
@@ -142,20 +145,24 @@ function buildTeam(code: string, name: string, stage: string, keyPlayers: Player
 }
 
 function collectPlayers(records: NormalizedTxlineScore[], participant: number): PlayerProfile[] {
-  const roles = new Map<number, Set<string>>();
+  const evidence = new Map<string, { goals: number; cards: number; substitutions: number; minutes: Set<number> }>();
   for (const record of records) {
     if (record.participant !== participant) continue;
-    const id = playerId(record);
-    if (!id) continue;
-    const role = record.action === "goal" ? "Goal event" : record.action === "yellow_card" ? "Card event" : record.action === "substitution" ? "Substitution" : "Score event";
-    if (!roles.has(id)) roles.set(id, new Set());
-    roles.get(id)?.add(role);
+    const name = verifiedPlayerName(record);
+    if (!name) continue;
+    const player = evidence.get(name) ?? { goals: 0, cards: 0, substitutions: 0, minutes: new Set<number>() };
+    if (record.action === "goal") player.goals += 1;
+    if (record.action === "yellow_card" || record.action === "red_card") player.cards += 1;
+    if (record.action === "substitution") player.substitutions += 1;
+    if (["goal", "yellow_card", "red_card", "substitution"].includes(record.action ?? "")) player.minutes.add(extractMinute(record));
+    evidence.set(name, player);
   }
-  return [...roles.entries()].slice(0, 6).map(([id, playerRoles]) => ({
-    name: `#${id}`,
-    position: "Player ID",
-    role: [...playerRoles].join(" / "),
-    note: "The historical feed exposes a player ID but not a verified display name, so the product does not guess one.",
+  return [...evidence.entries()].slice(0, 6).map(([name, player]) => ({
+    name,
+    goals: player.goals || undefined,
+    cards: player.cards || undefined,
+    substitutions: player.substitutions || undefined,
+    minutes: [...player.minutes].sort((left, right) => left - right),
   }));
 }
 
@@ -190,8 +197,7 @@ function playerId(record: NormalizedTxlineScore) {
 }
 
 function playerLabel(record: NormalizedTxlineScore) {
-  const id = playerId(record);
-  return id ? `Player #${id}` : undefined;
+  return verifiedPlayerName(record);
 }
 
 function playerDescription(record: NormalizedTxlineScore, fallback: string) {
@@ -201,6 +207,20 @@ function playerDescription(record: NormalizedTxlineScore, fallback: string) {
 
 function hasPlayerDetail(record: NormalizedTxlineScore) {
   return Boolean(playerId(record) || record.dataSoccer?.PlayerInId || record.dataSoccer?.PlayerOutId);
+}
+
+function verifiedPlayerName(record: NormalizedTxlineScore) {
+  const candidate =
+    record.dataSoccer?.PlayerName ??
+    record.dataSoccer?.New?.PlayerName ??
+    record.dataSoccer?.PlayerInName ??
+    record.dataSoccer?.New?.PlayerInName ??
+    record.dataSoccer?.PlayerOutName ??
+    record.dataSoccer?.New?.PlayerOutName;
+  if (!candidate) return undefined;
+  const normalized = candidate.trim();
+  if (!normalized || /^#?\d+$/.test(normalized) || /^player\s*#?\d+$/i.test(normalized)) return undefined;
+  return normalized;
 }
 
 function extractMinute(record: NormalizedTxlineScore) {

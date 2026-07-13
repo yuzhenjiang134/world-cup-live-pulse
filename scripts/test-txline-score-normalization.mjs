@@ -31,6 +31,7 @@ try {
     Seq: 1114,
     StatusId: 99,
     Participant: 1,
+    Data: { Action: "goal", Goal: true, Penalty: true, Minutes: 23, PlayerName: "Source Player" },
     Score: {
       Participant1: { Total: { Goals: 2, YellowCards: 1 } },
       Participant2: { Total: { Goals: 0 } },
@@ -46,6 +47,8 @@ try {
   assert.equal(normalized.action, "game_finalised");
   assert.equal(normalized.seq, 1114);
   assert.equal(normalized.participant, 1);
+  assert.equal(normalized.dataSoccer.Penalty, true);
+  assert.equal(normalized.dataSoccer.Minutes, 23);
   assert.equal(normalized.scoreSoccer.Participant1.Total.Goals, 2);
   assert.equal(normalized.scoreSoccer.Participant2.Total.Goals, 0);
   assert.equal(normalized.stats.Possession, 54);

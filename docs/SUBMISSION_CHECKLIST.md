@@ -76,9 +76,9 @@ Local-first rule: no push and no final video until the data-truth, complete-prod
 - [x] Five-criterion evidence audit: `docs/JUDGING_AUDIT_2026-07-11.md`.
 - [x] Official track requirements are reflected: working app/API access, public repo, specific TxLINE endpoint list, API feedback, TxLINE live input, and Solana sign-up path.
 - [x] GitHub Pages workflow is configured and the public URL returns HTTP 200.
-- [x] Confirm Pages has switched to release `547986f5a20327faeaf219a21a04deeb1441a1c6` and the accepted public asset hashes before recording the final demo.
-- [x] Generate A/B narrated demos under 5 minutes and review each twice; final candidate B is 3:20 at 1280x720 with H.264 video and AAC audio.
-- [x] Confirm GitHub Pages serves candidate B and verify no-login page access, MP4 download, 3:20 duration, H.264/AAC streams, and zero decode errors.
+- [x] Generate the final English judging cut only after local acceptance; the accepted candidate is 4:50, 1280x720, H.264/AAC, and contains 17 scenes.
+- [x] Review the final candidate twice: all 17 narration segments pass reverse transcription and audio metrics; the complete MP4 decodes and all 17 scene midpoints pass visual inspection.
+- [ ] Push the accepted worktree, confirm CI/Pages on the same SHA, then verify no-login page access, MP4 playback/download, remote hash, public E2E, and secret scan.
 - [ ] Re-check the live Superteam listing and submit before the stated deadline if unchanged.
 
 ## Required Track Language

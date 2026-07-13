@@ -1,51 +1,117 @@
 # Final Demo Script
 
-Selected version: B, judging and data-trust cut. Target duration: 3:20. Maximum: 5:00. Both reviewed candidates remain below five minutes.
+Selected version: B, final English judging cut. Target duration: 4:50, below five minutes. Hard maximum: 5:00.
 
-## 0:00-0:14 - Product
+The video uses the user's authorized local cloned voice. The voice profile ID and source sample remain local and are never written into the repository, captions, or output metadata.
 
-World Cup Live Pulse combines real-time responsiveness, original fan interaction, commercial value, and complete execution in one working fan product.
+## 0:00-0:14 - Product promise
 
-## 0:14-0:42 - Fan hierarchy
+Introduce World Cup Live Pulse as a fan-first companion for live scores, verified moments, score challenges, and fast catch-up.
 
-The first viewport answers what happened, when it was checked, what the AI can explain, and what the fan can do next. The score challenge follows the score hero and settles only from a verified final result. Developer diagnostics stay outside the fan path.
+Voice: warm, confident, inviting. Avoid an advertising tone.
 
-## 0:42-1:06 - Trust rules
+## 0:14-0:26 - Fan-first hierarchy
 
-The adapter enforces World Cup CompetitionId 72, rejects Friendlies 430, refreshes every 15 seconds and on focus, handles overturned provisional goals, and uses only `game_finalised` for challenge settlement. Empty odds stay hidden.
+Show the accepted desktop Match Center. Score, status, freshness, AI brief, replay, and the 1,000-point challenge answer the fan's first questions without exposing developer diagnostics.
 
-## 1:06-1:28 - Judgeable 2026 replay
+Voice: calm and reassuring.
 
-Eight credential-free 2026 TxLINE replay sequences preserve the score, event, AI, challenge, schedule, and progression flow when no match is live. Archive data is never labeled as live.
+## 0:26-0:43 - Pulse Play
 
-## 1:28-1:46 - Spoiler-free catch-up
+Show the event-driven animated pitch. Explain that verified goals, cards, source-marked penalties, added time, and final state drive the theatre. Local cheers stay explicitly on-device and never pretend to be global statistics.
 
-Spoiler-free replay masks scores, winners, event totals, bracket outcomes, and team-result detail, then begins at minute one so missed matches remain enjoyable.
+Voice: excited but controlled matchday energy; slow down on the local-only truth boundary.
 
-## 1:46-2:04 - Source-gated depth
+## 0:43-1:04 - Score challenge and settlement
 
-Team and player records are derived from confirmed events. Unsupported lineups, injuries, xG, and placeholder statistics do not render.
+Compare the challenge before and after settlement. The first prediction costs 50 local points, edits before kickoff are free, one fixture keeps one ledger record, and only a verified final result awards points and XP once.
 
-## 2:04-2:22 - Global and mobile
+Voice: energetic on participation, precise on settlement.
 
-The same flow works at 390 pixels across eight complete languages, including Arabic RTL, with keyboard focus and reduced-motion support.
+## 1:04-1:20 - Key-event catch-up
 
-## 2:22-2:44 - Commercial path
+Show one-tap jumps to goals, cards, score reviews, half-time, and full-time. The timeline, Pulse Play, and AI brief all use the same normalized event frame.
 
-The local score challenge creates repeat use. The trusted second-screen shell can serve fan communities, publishers, venue screens, broadcasters, and localized sponsor activations without becoming wagering.
+Voice: restrained football urgency.
 
-## 2:44-3:06 - Submission evidence
+## 1:20-1:39 - Real-time trust rules
 
-Three market-research rounds, three local acceptance rounds, same-SHA CI and Pages success, public E2E, secret scanning, endpoint documentation, and API feedback support every submission claim.
+Explain 15-second refresh, focus refresh, World Cup `CompetitionId 72`, provisional-goal reversal, independent odds freshness, checked timestamps, and `game_finalised` settlement.
 
-## 3:06-3:20 - Close
+Voice: measured and factual.
 
-World Cup Live Pulse is a complete fan product: deployed, multilingual, source-aware, and repeatable outside live match hours. It has no betting, trading, wallet custody, or private token in the public build.
+## 1:39-1:57 - Judgeable 2026 replay
+
+Show eight verified 2026 TxLINE archive matches, current schedule separation, event totals, and source-confirmed tournament progression. Replay is never labeled live.
+
+Voice: empathetic catch-up.
+
+## 1:57-2:15 - Spoiler-free replay
+
+Compare normal and spoiler-free tournament views. Scores, winners, event totals, bracket outcomes, and team records remain hidden until the fan reveals them through playback.
+
+Voice: considerate and clear.
+
+## 2:15-2:31 - Favorite-team shortcut
+
+Show a local favorite moving that team to the front of teams, schedule, and replay without an account or invented recommendation feed.
+
+Voice: friendly and practical.
+
+## 2:31-2:49 - Source-gated team and player detail
+
+Show source-derived appearances, results, goals, cards, opponents, and replay evidence. Readable player names appear only when the source supplies them; numeric IDs never become identities.
+
+Voice: transparent and confident.
+
+## 2:49-3:05 - Eight complete languages
+
+Show English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic, including Arabic RTL. The selected language covers the complete fan journey rather than a translated shell.
+
+Voice: globally welcoming.
+
+## 3:05-3:22 - Mobile and accessibility
+
+Show the 390-pixel layout with score, Pulse Play, AI, challenge, replay, navigation, keyboard focus, accessible names, and reduced motion without horizontal overflow.
+
+Voice: concise and confident.
+
+## 3:22-3:37 - Rights-safe viewing
+
+Explain that video entry points go only to official FIFA archive, highlights, and updates. Timeline replay remains available when territorial rights differ.
+
+Voice: responsible and positive.
+
+## 3:37-3:55 - TxLINE backend value
+
+Show the exact authenticated boundary: guest JWT, World Cup fixture snapshot, score snapshot and events, official odds, and optional final-score validation. No private token enters the public bundle.
+
+Voice: precise and accessible. Pronounce the sponsor as "T X Line."
+
+## 3:55-4:17 - Commercial path
+
+Connect the same trusted core to branded challenge rooms, community leaderboards, publisher widgets, venue screens, localization, and clearly labeled sponsor activations without wagers or cash.
+
+Voice: forward-looking but credible.
+
+## 4:17-4:35 - Submission evidence
+
+State that three local acceptance rounds, Chinese and English browser E2E, eight-language checks, TxLINE probes, secret scanning, endpoint documentation, detailed API feedback, CI, and same-SHA deployment support the claims.
+
+Voice: deliberate proof statement.
+
+## 4:35-4:50 - Close
+
+Close on World Cup Live Pulse as a complete fan product: useful during or after a match, multilingual, source-aware, repeatable, and built for fans rather than developers.
+
+Voice: warm and confident, with a human sense of completion.
 
 ## Final upload checks
 
-- Upload `demo-assets/world-cup-live-pulse-demo-b-narrated.mp4`.
-- Confirm duration is 3:20 and playback works without login.
-- Confirm the host did not recompress text into unreadable output.
-- Recheck the first frame, one product frame, one TxLINE/trust frame, and the final safety frame.
-- Put the verified URL in `docs/SUBMISSION_DRAFT.md` and the Superteam form.
+- Upload only `demo-assets/world-cup-live-pulse-demo-b-narrated.mp4` after it passes all checks.
+- Confirm duration is 4:50 or less and playback works without login.
+- Confirm every visible product fact matches the accepted worktree.
+- Reverse-transcribe all 17 scenes and compare them with the narration manifest.
+- Check pronunciation, loudness, clipping, silence, audio/video sync, first frame, Pulse Play, challenge settlement, TxLINE boundary, and final safety frame.
+- Watch and listen to the complete English video twice.
+- Put the verified public URL in `docs/SUBMISSION_DRAFT.md` and the Superteam form.

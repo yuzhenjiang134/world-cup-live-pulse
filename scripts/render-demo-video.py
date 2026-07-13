@@ -13,9 +13,31 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFont
 ROOT = Path(__file__).resolve().parents[1]
 DEMO_DIR = ROOT / "demo-assets"
 SCREENSHOT_DIR = DEMO_DIR / "screenshots"
-FFMPEG = Path(os.environ.get("FFMPEG_PATH", r"C:\Users\Administrator\AppData\Local\JianyingPro\Apps\10.8.0.14162\ffmpeg.exe"))
 WIDTH = 1280
 HEIGHT = 720
+
+
+def resolve_ffmpeg():
+    configured = os.environ.get("FFMPEG_PATH")
+    if configured and Path(configured).is_file():
+        return Path(configured)
+
+    command = shutil.which("ffmpeg")
+    if command:
+        return Path(command)
+
+    local_app_data = os.environ.get("LOCALAPPDATA")
+    if local_app_data:
+        apps_root = Path(local_app_data) / "JianyingPro" / "Apps"
+        if apps_root.is_dir():
+            bundled = sorted(apps_root.rglob("ffmpeg.exe"), reverse=True)
+            if bundled:
+                return bundled[0]
+
+    raise FileNotFoundError("ffmpeg not found. Set FFMPEG_PATH or add ffmpeg to PATH.")
+
+
+FFMPEG = resolve_ffmpeg()
 
 
 def font(size, bold=False):
@@ -122,6 +144,47 @@ def render_screenshot(scene, index, total):
     return image.convert("RGB")
 
 
+def render_compare(scene, index, total):
+    before_path = SCREENSHOT_DIR / scene["beforeImage"]
+    after_path = SCREENSHOT_DIR / scene["afterImage"]
+    if not before_path.exists():
+        raise FileNotFoundError(before_path)
+    if not after_path.exists():
+        raise FileNotFoundError(after_path)
+
+    image = gradient_background().convert("RGBA")
+    draw = ImageDraw.Draw(image, "RGBA")
+    draw.rounded_rectangle((34, 66, 1246, 674), radius=24, fill=(10, 24, 28, 236), outline=(255, 255, 255, 36), width=2)
+
+    panel_y = 104
+    panel_w = 568
+    panel_h = 300
+    before = crop_cover(Image.open(before_path).convert("RGB"), (panel_w, panel_h))
+    after = crop_cover(Image.open(after_path).convert("RGB"), (panel_w, panel_h))
+    image.alpha_composite(before.convert("RGBA"), (64, panel_y))
+    image.alpha_composite(after.convert("RGBA"), (648, panel_y))
+    draw = ImageDraw.Draw(image, "RGBA")
+    draw.rounded_rectangle((76, 116, 190, 154), radius=19, fill=(13, 35, 40, 232))
+    draw.text((98, 125), "BEFORE", font=font(17, True), fill="#FFFFFF")
+    draw.rounded_rectangle((660, 116, 760, 154), radius=19, fill="#FFE49A")
+    draw.text((680, 125), "AFTER", font=font(17, True), fill="#152126")
+    draw.rounded_rectangle((604, 228, 676, 282), radius=27, fill=(255, 228, 154, 244))
+    draw.text((628, 236), "→", font=font(30, True), fill="#152126")
+
+    draw_wrapped(draw, scene["title"], (70, 432), font(35, True), "#FFFFFF", 1110, spacing=5, max_lines=2)
+    draw_wrapped(draw, scene.get("subtitle", ""), (72, 520), font(21, True), "#D8E8E6", 1100, spacing=7, max_lines=2)
+    x = 72
+    for badge in scene.get("badges", []):
+        badge_font = font(17, True)
+        bbox = draw.textbbox((0, 0), badge, font=badge_font)
+        badge_width = min(330, bbox[2] - bbox[0] + 28)
+        draw.rounded_rectangle((x, 620, x + badge_width, 652), radius=16, fill="#FFE49A")
+        draw.text((x + 14, 626), badge, font=badge_font, fill="#152126")
+        x += badge_width + 10
+    draw_footer(draw, index, total, scene["seconds"])
+    return image.convert("RGB")
+
+
 def draw_footer(draw, index, total, seconds):
     label = f"World Cup Live Pulse  |  Scene {index}/{total}  |  {seconds}s"
     draw.text((42, 28), label, font=font(17, True), fill=(255, 255, 255, 215))
@@ -157,9 +220,6 @@ def main():
     parser = argparse.ArgumentParser(description="Render captioned World Cup Live Pulse demo video.")
     parser.add_argument("--variant", choices=["A", "B"], default="A")
     args = parser.parse_args()
-    if not FFMPEG.exists():
-        raise FileNotFoundError(f"ffmpeg not found: {FFMPEG}")
-
     manifest = load_manifest(args.variant)
     work_dir = DEMO_DIR / f"render-{args.variant.lower()}"
     shutil.rmtree(work_dir, ignore_errors=True)
@@ -167,7 +227,12 @@ def main():
     scenes = manifest["scenes"]
     rendered = []
     for index, scene in enumerate(scenes, start=1):
-        frame = render_screenshot(scene, index, len(scenes)) if scene.get("image") else render_card(scene, index, len(scenes))
+        if scene.get("kind") == "compare":
+            frame = render_compare(scene, index, len(scenes))
+        elif scene.get("image"):
+            frame = render_screenshot(scene, index, len(scenes))
+        else:
+            frame = render_card(scene, index, len(scenes))
         frame_path = work_dir / f"scene-{index:02d}.png"
         frame.save(frame_path, quality=95)
         rendered.append((frame_path, scene["seconds"]))

@@ -28,8 +28,11 @@ export type TxlineSoccerData = {
   Minutes?: number;
   Penalty?: boolean;
   PlayerId?: number;
+  PlayerName?: string;
   PlayerInId?: number;
+  PlayerInName?: string;
   PlayerOutId?: number;
+  PlayerOutName?: string;
   RedCard?: boolean;
   StatusId?: number;
   Type?: string;
@@ -37,8 +40,11 @@ export type TxlineSoccerData = {
   New?: {
     Minutes?: number;
     PlayerId?: number;
+    PlayerName?: string;
     PlayerInId?: number;
+    PlayerInName?: string;
     PlayerOutId?: number;
+    PlayerOutName?: string;
   };
 };
 

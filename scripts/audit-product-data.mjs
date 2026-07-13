@@ -32,20 +32,27 @@ async function loadTsModule(relativePath) {
 const replayModule = await loadTsModule("src/data/replayMatch.ts");
 const videoModule = await loadTsModule("src/data/videoSources.ts");
 const fanGuideModule = await loadTsModule("src/data/fanGuide.ts");
-const replayMatches = replayModule.replayMatches;
+const legacyReplayMatches = replayModule.legacyReplayMatches;
 const videoSources = videoModule.officialVideoSources;
 const teamAtlas = fanGuideModule.teamAtlas;
 const appSource = await readFile(path.join(root, "src/MatchdayApp.tsx"), "utf8");
 const adapterSource = await readFile(path.join(root, "src/lib/txlineAdapter.ts"), "utf8");
+const archiveSource = await readFile(path.join(root, "src/data/txlineArchive.ts"), "utf8");
+const replaySource = await readFile(path.join(root, "src/data/replayMatch.ts"), "utf8");
+const voiceClipSource = await readFile(path.join(root, "src/data/commentaryVoiceClips.ts"), "utf8");
 const calendarSource = await readFile(path.join(root, "src/data/matchCalendar.ts"), "utf8");
 
-if (!Array.isArray(replayMatches) || replayMatches.length < 2) {
-  fail("Replay library must contain at least two deterministic fixtures");
+if (!replaySource.includes("export const replayMatches = [...txlineArchiveMatches]")) {
+  fail("Current product replay library must contain only the verified TxLINE archive");
 } else {
-  pass(`Replay library contains ${replayMatches.length} deterministic fixtures`);
+  pass("Current product replay library is restricted to the verified TxLINE archive");
 }
 
-for (const match of replayMatches ?? []) {
+if (!Array.isArray(legacyReplayMatches) || legacyReplayMatches.length < 2) {
+  fail("Legacy compatibility fixtures must remain available outside the product replay library");
+}
+
+for (const match of legacyReplayMatches ?? []) {
   const year = new Date(match.kickoffIso).getUTCFullYear();
   if (!match.id.startsWith("wc-demo-") || match.dataStatus !== "Replay" || year >= 2026) {
     fail(`${match.id} must remain historical replay data before the 2026 tournament window`);
@@ -97,6 +104,9 @@ const requiredAppMarkers = [
   ["active tournament schedule", "schedule={schedule}"],
   ["focus-triggered refresh", 'addEventListener("focus"'],
   ["event-driven AI live region", 'className="hero-ai-brief"'],
+  ["three fan commentary modes", "commentaryRecap"],
+  ["prebuilt natural-voice playback", "getCommentaryVoiceClip"],
+  ["browser speech fallback", "SpeechSynthesisUtterance"],
   ["key-event shortcut strip", "key-event-strip"],
   ["spoiler-free replay control", "spoiler-toggle"],
   ["schedule moment summaries", "schedule-moments"],
@@ -104,6 +114,8 @@ const requiredAppMarkers = [
   ["localized event descriptions", "localizeEventDescription"],
   ["official video sources", "officialVideoSources"],
   ["followed-match persistence", "wclp-followed-match"],
+  ["favorite-team persistence", "wclp-favorite-team"],
+  ["favorite-team schedule priority", "favorite-team"],
   ["verified event browser alerts", "Notification.permission"],
   ["official tournament updates entry", "officialUpdates"],
   ["replay mode boundary", 'setMode("replay")'],
@@ -112,6 +124,22 @@ for (const [label, marker] of requiredAppMarkers) {
   if (appSource.includes(marker)) pass(`App contains ${label}`);
   else fail(`App is missing ${label}`);
 }
+
+for (const filename of [
+  "fra-mar-fulltime-en-call.wav",
+  "fra-mar-fulltime-en-why.wav",
+  "fra-mar-fulltime-en-recap.wav",
+  "fra-mar-fulltime-zh-call.wav",
+  "fra-mar-fulltime-zh-why.wav",
+  "fra-mar-fulltime-zh-recap.wav",
+]) {
+  const bytes = await readFile(path.join(root, "public/audio/commentary", filename));
+  if (bytes.length > 100_000) pass(`Natural commentary asset is present: ${filename}`);
+  else fail(`Natural commentary asset is missing or incomplete: ${filename}`);
+}
+
+if (/voice_\d+|[A-Z]:\\/i.test(voiceClipSource)) fail("Public commentary mapping exposes a local voice profile or absolute path");
+else pass("Public commentary mapping contains no local voice profile or absolute path");
 
 if (!appSource.includes("teamPending")) pass("Fan UI removes unsourced team placeholders");
 else fail("Fan UI still contains unsourced team placeholders");
@@ -122,6 +150,17 @@ else fail("Fan UI still renders an unsourced double-dash fallback");
 for (const forbidden of ["比分源", "赛程种子", "下一个信号", "当前数据球队", "数据规则"]) {
   if (appSource.includes(`"${forbidden}"`)) fail(`User interface still contains developer wording: ${forbidden}`);
   else pass(`User interface removes developer wording: ${forbidden}`);
+}
+
+for (const forbidden of ["`#${id}`", "`Player #${id}`", "`Player ${playerId}`"]) {
+  if (archiveSource.includes(forbidden) || adapterSource.includes(forbidden)) fail(`Player-facing data still exposes an internal identifier: ${forbidden}`);
+  else pass(`Player-facing data hides internal identifier pattern: ${forbidden}`);
+}
+
+if (archiveSource.includes("verifiedPlayerName") && adapterSource.includes("PlayerName")) {
+  pass("Player names render only through source-supplied display-name fields");
+} else {
+  fail("Player display-name boundary is missing");
 }
 
 const requiredAdapterMarkers = [

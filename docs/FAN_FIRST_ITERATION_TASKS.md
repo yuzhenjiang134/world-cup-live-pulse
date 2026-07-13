@@ -58,3 +58,13 @@ Do not build or display these until a verified endpoint supplies them:
 - [ ] Possession, shots, corners, xG, heatmaps, and player ratings.
 - [ ] Injury/suspension news and editorial headlines.
 - [ ] Official live-video embed availability by territory.
+
+## Final fan-product extrapolation
+
+- [x] Let a fan favorite one verified team locally and move that team to the front of team and schedule views.
+- [x] Reuse the favorite-team signal only where it shortens a real fan task: team list, schedule order, and the next replay entry.
+- [x] Do not create a generic personalization dashboard, account flow, or empty recommendation panel.
+- [x] Keep the final judging cut below five minutes; the accepted 17-scene cut is 4:50 of dense product evidence.
+- [x] Show working interaction before and after states rather than relying on static feature claims.
+- [x] Use the user's locally stored, authorized voice profile for English narration after reverse-transcription and audio-quality checks pass.
+- [x] Keep voice samples and voice-profile files local and excluded from Git; publish only the final mixed narration.
