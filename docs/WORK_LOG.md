@@ -1,5 +1,14 @@
 # World Cup Live Pulse Work Log
 
+## 2026-07-14: Three-pass fan-facing online audit
+
+- Pass 1 removed developer-facing refresh intervals, repeated data explanations, duplicate flow panels, and incomplete event-count summaries from the primary fan journey.
+- Reframed derived sentiment as match flow and changed trust labels to concise fan language across all eight supported languages.
+- Pass 2 verified Pulse Play at goal, card, and full-time states; team names are now shown beside codes, anonymous substitutions use readable factual copy, and local cheers remain explicitly device-only.
+- Fixed replay navigation so rewinding to an earlier goal never removes later card or full-time shortcuts.
+- Pass 3 checked Match Center, Schedule & Replay, Teams, Settings, English LTR, Arabic RTL, source boundaries, player-ID hiding, and official viewing links.
+- `npm run validate` and `npm run build` passed. Commit `80512c2` was published to GitHub Pages; both CI and Pages workflows passed, and the public page repeated the three fan-facing review passes successfully.
+
 ## 2026-07-13: Final two-round judging extension
 
 - Added persisted goal/card/full-time alert preferences for followed matches; settings remain off the primary fan surface.
