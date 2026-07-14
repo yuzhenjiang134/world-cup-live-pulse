@@ -36,6 +36,13 @@ for (const language of ["en", "zh", "es", "pt", "fr", "de", "ja", "ar"]) {
     if (language !== "en") assert.doesNotMatch(scheduled, /\bvs\b/i);
   });
   assert.match(scheduledModes[0], /2026/);
+  for (const eventType of ["goal", "yellow_card", "red_card", "score_update"]) {
+    const eventText = module.localizeCommentary(language, match, frame(eventType, 67, 1, 0, market, "Player 205"));
+    assert.match(eventText, /67/);
+    assert.match(eventText, /1-0/);
+    assert.doesNotMatch(eventText, /Player 205|#?205|undefined|�/);
+    assert.ok(eventText.length >= 24);
+  }
 }
 
 const minimalScheduled = module.localizeScheduledBrief("en", {

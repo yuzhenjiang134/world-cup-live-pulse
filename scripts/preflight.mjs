@@ -118,7 +118,7 @@ const requiredText = [
   ["docs/LOCAL_ACCEPTANCE_SUMMARY_2026-07-14.md", "本报告只接受当前本地候选"],
   [".github/workflows/pages.yml", "Deploy GitHub Pages"],
   ["vite.config.ts", "github-pages"],
-  ["src/lib/txlineAdapter.ts", "Live activation pending"],
+  ["src/lib/txlineAdapter.ts", "Live updates unavailable"],
   ["src/lib/txlineAdapter.ts", "/api/scores/snapshot"],
   ["src/lib/txlineAdapter.ts", "filterTxlineWorldCupFixtures"],
   ["src/lib/worldCupScope.ts", "txlineWorldCupCompetitionId = 72"],

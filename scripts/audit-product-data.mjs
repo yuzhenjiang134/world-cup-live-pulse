@@ -36,6 +36,7 @@ const legacyReplayMatches = replayModule.legacyReplayMatches;
 const videoSources = videoModule.officialVideoSources;
 const teamAtlas = fanGuideModule.teamAtlas;
 const appSource = await readFile(path.join(root, "src/MatchdayApp.tsx"), "utf8");
+const legacyAppSource = await readFile(path.join(root, "src/App.tsx"), "utf8");
 const adapterSource = await readFile(path.join(root, "src/lib/txlineAdapter.ts"), "utf8");
 const archiveSource = await readFile(path.join(root, "src/data/txlineArchive.ts"), "utf8");
 const replaySource = await readFile(path.join(root, "src/data/replayMatch.ts"), "utf8");
@@ -43,6 +44,7 @@ const voiceClipSource = await readFile(path.join(root, "src/data/commentaryVoice
 const calendarSource = await readFile(path.join(root, "src/data/matchCalendar.ts"), "utf8");
 const pulsePlaySource = await readFile(path.join(root, "src/components/PulsePlay.tsx"), "utf8");
 const fanStandSource = await readFile(path.join(root, "src/components/FanStand.tsx"), "utf8");
+const localizedPulseSource = await readFile(path.join(root, "src/lib/localizedPulse.ts"), "utf8");
 const matchdayCssSource = await readFile(path.join(root, "src/matchday.css"), "utf8");
 
 if (!replaySource.includes("export const replayMatches = [...txlineArchiveMatches]")) {
@@ -144,6 +146,10 @@ for (const filename of [
 if (/voice_\d+|[A-Z]:\\/i.test(voiceClipSource)) fail("Public commentary mapping exposes a local voice profile or absolute path");
 else pass("Public commentary mapping contains no local voice profile or absolute path");
 
+const fanCopySource = `${appSource}\n${localizedPulseSource}`;
+if (/["']INFO["']/.test(fanCopySource) || /Verified match event[.!]/i.test(fanCopySource)) fail("Fan-facing match copy contains a developer fallback label");
+else pass("Fan-facing match copy contains no INFO or generic verified-event fallback");
+
 if (!appSource.includes("teamPending")) pass("Fan UI removes unsourced team placeholders");
 else fail("Fan UI still contains unsourced team placeholders");
 
@@ -159,6 +165,14 @@ else fail("Fan UI still renders an unsourced double-dash fallback");
 for (const forbidden of ["比分源", "赛程种子", "下一个信号", "当前数据球队", "数据规则"]) {
   if (appSource.includes(`"${forbidden}"`)) fail(`User interface still contains developer wording: ${forbidden}`);
   else pass(`User interface removes developer wording: ${forbidden}`);
+}
+
+for (const forbidden of ["local .env.local", "devnet token"]) {
+  if ([appSource, legacyAppSource, adapterSource].some((source) => source.toLowerCase().includes(forbidden))) {
+    fail(`Fan-facing source state still contains developer setup wording: ${forbidden}`);
+  } else {
+    pass(`Fan-facing source state removes developer setup wording: ${forbidden}`);
+  }
 }
 
 for (const forbidden of ["`#${id}`", "`Player #${id}`", "`Player ${playerId}`"]) {

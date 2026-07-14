@@ -427,16 +427,16 @@ function buildNeedsTokenResult(
   return {
     match: {
       ...replayMatch,
-      kickoffLabel: "Live data gated",
+      kickoffLabel: "Live updates unavailable",
       status: "scheduled",
       dataStatus: "Seed",
     },
     schedule: buildSeedSchedule(),
     source: {
       kind: "needs-token",
-      label: "Live activation pending",
+      label: "Live updates unavailable",
       message:
-        "Live mode is wired to TxLINE's official endpoints. For the hackathon free tier, activate a devnet token first, then place it in local .env.local before loading authenticated scores and odds.",
+        "Verified replay and scheduled match information remain available while live updates are unavailable.",
       checkedAtIso,
       endpoint: "/api/fixtures/snapshot + /api/scores/snapshot/{fixtureId} + /api/odds/snapshot/{fixtureId}",
       fixtureId: fixtureId ? String(fixtureId) : undefined,

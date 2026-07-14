@@ -3960,6 +3960,16 @@ details summary {
     right: 10px;
   }
 
+  .fan-quick-prompts > div {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .fan-quick-prompts button {
+    flex: 1 1 132px;
+    white-space: normal;
+  }
+
   .fan-live-update {
     grid-template-columns: 1fr;
   }

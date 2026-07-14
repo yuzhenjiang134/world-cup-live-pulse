@@ -13,6 +13,7 @@ type FanMessage = {
 };
 
 type FanStandState = {
+  activeRoom: FanRoom;
   messages: FanMessage[];
   reactions: Record<FanRoom, Record<ReactionKind, number>>;
   momentReactions: Record<string, ReactionKind>;
@@ -29,6 +30,7 @@ type FanStandProps = {
 };
 
 const emptyState: FanStandState = {
+  activeRoom: "match",
   messages: [],
   reactions: {
     match: { celebrate: 0, applaud: 0, surprised: 0 },
@@ -58,6 +60,7 @@ function readFanStand(matchId: string): FanStandState {
       surprised: Math.max(0, Math.round(roomReactions?.[room]?.surprised ?? (room === "match" ? legacyReactions?.surprised : 0) ?? 0)),
     });
     return {
+      activeRoom: ["match", "home", "away"].includes(stored?.activeRoom ?? "") ? stored?.activeRoom as FanRoom : "match",
       messages,
       reactions: {
         match: reactionState("match"),
@@ -72,9 +75,9 @@ function readFanStand(matchId: string): FanStandState {
 }
 
 export function FanStand({ matchId, minute, homeName, awayName, momentLabel, momentDescription, copy }: FanStandProps) {
-  const [room, setRoom] = useState<FanRoom>("match");
   const [draft, setDraft] = useState("");
   const [stand, setStand] = useState<FanStandState>(() => readFanStand(matchId));
+  const room = stand.activeRoom;
   const scopeId = matchId.replace(/[^a-zA-Z0-9_-]/g, "-");
   const panelId = `fan-room-panel-${scopeId}`;
 
@@ -96,6 +99,9 @@ export function FanStand({ matchId, minute, homeName, awayName, momentLabel, mom
   const reactionMinute = Math.max(1, Math.round(minute));
   const reactionKey = `${room}:${reactionMinute}`;
   const selectedReaction = stand.momentReactions[reactionKey];
+  const quickPrompts = momentLabel
+    ? copy.momentPrompts(momentLabel, homeName, awayName)
+    : copy.prompts;
 
   const addReaction = (kind: ReactionKind) => {
     setStand((current) => {
@@ -140,7 +146,7 @@ export function FanStand({ matchId, minute, homeName, awayName, momentLabel, mom
       </header>
 
       <div className="fan-room-tabs" role="tablist" aria-label={copy.title}>
-        {rooms.map((item) => <button id={`fan-room-${scopeId}-${item.id}`} type="button" role="tab" aria-controls={panelId} aria-selected={room === item.id} className={room === item.id ? "active" : ""} key={item.id} onClick={() => setRoom(item.id)}><span>{item.label}</span>{roomCount(item.id) ? <b>{roomCount(item.id)}</b> : null}</button>)}
+        {rooms.map((item) => <button id={`fan-room-${scopeId}-${item.id}`} type="button" role="tab" aria-controls={panelId} aria-selected={room === item.id} className={room === item.id ? "active" : ""} key={item.id} onClick={() => setStand((current) => ({ ...current, activeRoom: item.id }))}><span>{item.label}</span>{roomCount(item.id) ? <b>{roomCount(item.id)}</b> : null}</button>)}
       </div>
 
       <div id={panelId} className="fan-stand-body" role="tabpanel" aria-labelledby={`fan-room-${scopeId}-${room}`}>
@@ -159,11 +165,11 @@ export function FanStand({ matchId, minute, homeName, awayName, momentLabel, mom
 
         <div className="fan-quick-prompts" aria-label={copy.quickPrompt}>
           <span>{copy.quickPrompt}</span>
-          <div>{copy.prompts.map((prompt) => <button type="button" key={prompt} onClick={() => setDraft(prompt)}>{prompt}</button>)}</div>
+          <div>{quickPrompts.map((prompt) => <button type="button" key={prompt} onClick={() => setDraft(prompt)}>{prompt}</button>)}</div>
         </div>
 
         <div className="fan-message-list" aria-live="polite">
-          {messages.length ? messages.map((message) => <article key={message.id}><header><span>{copy.yourPost} · {copy.minute} {message.minute}'</span><button type="button" onClick={() => removeMessage(message.id)} aria-label={copy.removePost} title={copy.removePost}>×</button></header><p>{message.text}</p></article>) : <p className="fan-room-empty">{copy.empty}</p>}
+          {messages.length ? messages.map((message) => <article key={message.id}><header><span>{copy.yourPost} · {copy.minute} {message.minute}'</span><button type="button" onClick={() => removeMessage(message.id)} aria-label={copy.removePost} title={copy.removePost}>×</button></header><p>{message.text}</p></article>) : <p className="fan-room-empty">{momentLabel ? copy.emptyMoment(momentLabel) : copy.empty}</p>}
         </div>
       </div>
       <small className="fan-stand-privacy">{copy.saved}</small>

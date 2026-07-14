@@ -161,3 +161,12 @@
 4. 获得明确同意后才录制新版英文 Demo，并完整观看、听审两遍。
 5. 最终公开网站、GitHub、Demo、详细技术文档和 API 反馈执行无登录访问复核。
 6. 由项目所有者在 Superteam 完成最终提交、身份和领奖步骤。
+# 2026-07-14 final pre-video gate
+
+The single source of truth for the remaining product iterations, two online QA rounds and the owner-controlled recording gate is [FINAL_PRE_VIDEO_ITERATION_GATE_2026-07-14.md](./FINAL_PRE_VIDEO_ITERATION_GATE_2026-07-14.md).
+
+- AI: eight explicit speech locales, deterministic local-voice preference, mode-aware pacing and minute/score fact guards are implemented; final listening review remains pending.
+- Pulse Play: 11 v 11, red-card 10 v 11, event actor, honest sync state and mobile/reduced-motion checks are in the final acceptance pass.
+- Community: fixture/team rooms now retain the active room and use event-aware conversation starters; fabricated profiles and fake global totals remain prohibited.
+- Release: local validation comes first, followed by one to three final iterations, one push candidate and two online QA rounds.
+- Demo: no recording before the accepted online release and explicit owner approval; final English narration must pass two full watch/listen reviews.

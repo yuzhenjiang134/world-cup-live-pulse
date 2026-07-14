@@ -6,6 +6,7 @@ import { tournamentCopy } from "./data/tournamentCopy";
 import { localizeTeamName } from "./data/teamNames";
 import { txlineArchiveMatches } from "./data/txlineArchive";
 import { getCommentaryVoiceClip } from "./data/commentaryVoiceClips";
+import { getSpeechProfile, selectSpeechVoice } from "./lib/speechVoice";
 import { PulsePlay } from "./components/PulsePlay";
 import { FanStand } from "./components/FanStand";
 import { fanStandCopy } from "./data/fanStandCopy";
@@ -236,10 +237,10 @@ const ui: Record<Language, UiCopy> = {
     language: "Language",
     dataConnection: "Match data",
     authDescription: "Refresh the match or view its connection status here.",
-    securityNote: "TxLINE token, JWT and wallet signatures stay local and are never rendered in the main interface or committed to GitHub Pages.",
-    openHelper: "Open TxLINE activation helper",
-    localOnly: "Local .env.local only",
-    advancedHidden: "Technical information",
+    securityNote: "Private connection details stay on this device and are never included in the public site.",
+    openHelper: "Manage data connection",
+    localOnly: "Private connection",
+    advancedHidden: "Data & privacy",
     connectionReady: "Match data is up to date",
     connectionFallback: "Showing verified replay data",
     refreshData: "Refresh match",
@@ -347,10 +348,10 @@ const ui: Record<Language, UiCopy> = {
     language: "语言",
     dataConnection: "比赛数据",
     authDescription: "在这里更新比赛，或查看数据是否已更新。",
-    securityNote: "TxLINE token、JWT 和钱包签名只保留在本地，不会显示在主界面，也不会提交到 GitHub Pages。",
-    openHelper: "打开 TxLINE 激活助手",
-    localOnly: "仅限本地 .env.local",
-    advancedHidden: "技术信息",
+    securityNote: "私密连接信息只保存在本设备，不会进入公开网站。",
+    openHelper: "管理数据连接",
+    localOnly: "私密连接",
+    advancedHidden: "数据与隐私",
     connectionReady: "比赛数据已更新",
     connectionFallback: "正在显示已确认回放",
     refreshData: "更新比赛",
@@ -458,10 +459,10 @@ const ui: Record<Language, UiCopy> = {
     language: "Idioma",
     dataConnection: "Datos del partido",
     authDescription: "Actualiza el partido o revisa aquí su estado.",
-    securityNote: "El token de TxLINE, el JWT y las firmas de la cartera permanecen locales y nunca se muestran ni se publican.",
-    openHelper: "Abrir asistente de TxLINE",
-    localOnly: "Solo .env.local",
-    advancedHidden: "Información técnica",
+    securityNote: "Los datos privados de conexión permanecen en este dispositivo y nunca se incluyen en el sitio público.",
+    openHelper: "Gestionar conexión de datos",
+    localOnly: "Conexión privada",
+    advancedHidden: "Datos y privacidad",
     connectionReady: "Datos actualizados",
     connectionFallback: "Mostrando repetición verificada",
     refreshData: "Actualizar partido",
@@ -569,10 +570,10 @@ const ui: Record<Language, UiCopy> = {
     language: "Idioma",
     dataConnection: "Dados do jogo",
     authDescription: "Atualize o jogo ou confira aqui o estado dos dados.",
-    securityNote: "O token TxLINE, o JWT e as assinaturas da carteira ficam locais e nunca são exibidos nem publicados.",
-    openHelper: "Abrir assistente TxLINE",
-    localOnly: "Somente .env.local",
-    advancedHidden: "Informações técnicas",
+    securityNote: "Os dados privados de conexão ficam neste dispositivo e nunca entram no site público.",
+    openHelper: "Gerenciar conexão de dados",
+    localOnly: "Conexão privada",
+    advancedHidden: "Dados e privacidade",
     connectionReady: "Dados atualizados",
     connectionFallback: "Exibindo replay verificado",
     refreshData: "Atualizar jogo",
@@ -680,10 +681,10 @@ const ui: Record<Language, UiCopy> = {
     language: "Langue",
     dataConnection: "Données du match",
     authDescription: "Actualisez le match ou vérifiez son état ici.",
-    securityNote: "Le token TxLINE, le JWT et les signatures du portefeuille restent locaux et ne sont jamais affichés ni publiés.",
-    openHelper: "Ouvrir l’assistant TxLINE",
-    localOnly: "Local .env.local uniquement",
-    advancedHidden: "Informations techniques",
+    securityNote: "Les données de connexion privées restent sur cet appareil et ne sont jamais incluses dans le site public.",
+    openHelper: "Gérer la connexion des données",
+    localOnly: "Connexion privée",
+    advancedHidden: "Données et confidentialité",
     connectionReady: "Données à jour",
     connectionFallback: "Replay vérifié affiché",
     refreshData: "Actualiser le match",
@@ -791,10 +792,10 @@ const ui: Record<Language, UiCopy> = {
     language: "Sprache",
     dataConnection: "Spieldaten",
     authDescription: "Spiel aktualisieren oder Datenstatus prüfen.",
-    securityNote: "TxLINE-Token, JWT und Wallet-Signaturen bleiben lokal und werden weder angezeigt noch veröffentlicht.",
-    openHelper: "TxLINE-Assistent öffnen",
-    localOnly: "Nur lokales .env.local",
-    advancedHidden: "Technische Informationen",
+    securityNote: "Private Verbindungsdaten bleiben auf diesem Gerät und werden nie Teil der öffentlichen Website.",
+    openHelper: "Datenverbindung verwalten",
+    localOnly: "Private Verbindung",
+    advancedHidden: "Daten & Datenschutz",
     connectionReady: "Spieldaten sind aktuell",
     connectionFallback: "Verifiziertes Replay wird gezeigt",
     refreshData: "Spiel aktualisieren",
@@ -902,10 +903,10 @@ const ui: Record<Language, UiCopy> = {
     language: "言語",
     dataConnection: "試合データ",
     authDescription: "試合の更新とデータ状況を確認できます。",
-    securityNote: "TxLINEトークン、JWT、ウォレット署名はローカルに保持し、画面表示や公開ビルドへの混入を防ぎます。",
-    openHelper: "TxLINE ヘルパーを開く",
-    localOnly: "ローカル .env.local のみ",
-    advancedHidden: "技術情報",
+    securityNote: "非公開の接続情報はこの端末だけに保存され、公開サイトには含まれません。",
+    openHelper: "データ接続を管理",
+    localOnly: "非公開接続",
+    advancedHidden: "データとプライバシー",
     connectionReady: "試合データは最新です",
     connectionFallback: "確認済みリプレイを表示中",
     refreshData: "試合を更新",
@@ -1013,10 +1014,10 @@ const ui: Record<Language, UiCopy> = {
     language: "اللغة",
     dataConnection: "بيانات المباراة",
     authDescription: "حدّث المباراة أو تحقق من حالة البيانات هنا.",
-    securityNote: "يبقى رمز TxLINE وJWT وتواقيع المحفظة محلية ولا تُعرض أو تُنشر أبدًا.",
-    openHelper: "فتح مساعد TxLINE",
-    localOnly: "ملف .env.local المحلي فقط",
-    advancedHidden: "معلومات تقنية",
+    securityNote: "تبقى بيانات الاتصال الخاصة على هذا الجهاز ولا تُضمّن في الموقع العام.",
+    openHelper: "إدارة اتصال البيانات",
+    localOnly: "اتصال خاص",
+    advancedHidden: "البيانات والخصوصية",
     connectionReady: "بيانات المباراة محدثة",
     connectionFallback: "عرض إعادة موثقة",
     refreshData: "تحديث المباراة",
@@ -1293,6 +1294,7 @@ function sourceMeta(source: DataSourceState | null, mode: MatchMode, match: Matc
 }
 
 function eventLabel(event: MatchEvent, copy: UiCopy) {
+  if (event.type === "kickoff") return "Kickoff";
   if (event.type === "goal") return copy.goals;
   if (event.type === "yellow_card") return copy.yellow;
   if (event.type === "red_card") return copy.red;
@@ -1300,7 +1302,8 @@ function eventLabel(event: MatchEvent, copy: UiCopy) {
   if (event.type === "halftime") return "HT";
   if (event.type === "substitution") return "SUB";
   if (event.type === "odds_shift") return copy.fanPulse;
-  return "INFO";
+  if (event.type === "score_update") return "Score review";
+  return "Match update";
 }
 
 function localizedEventLabel(event: MatchEvent, copy: UiCopy, language: Language) {
@@ -1345,6 +1348,17 @@ function localizedEventLabel(event: MatchEvent, copy: UiCopy, language: Language
 
 function minuteLabel(event: MatchEvent) {
   return `${event.minute}'${event.stoppage ? `+${event.stoppage}` : ""}`;
+}
+
+function eventCountLabel(count: number, language: Language) {
+  if (language === "zh") return `${count} 个比赛事件`;
+  if (language === "es") return `${count} ${count === 1 ? "evento" : "eventos"} del partido`;
+  if (language === "pt") return `${count} ${count === 1 ? "evento" : "eventos"} da partida`;
+  if (language === "fr") return `${count} ${count === 1 ? "événement" : "événements"} du match`;
+  if (language === "de") return `${count} ${count === 1 ? "Spielereignis" : "Spielereignisse"}`;
+  if (language === "ja") return `試合イベント ${count}件`;
+  if (language === "ar") return `${count} ${count === 1 ? "حدث" : "أحداث"} في المباراة`;
+  return `${count} ${count === 1 ? "match event" : "match events"}`;
 }
 
 function formatCheckedAt(iso: string | undefined, language: Language) {
@@ -1887,14 +1901,12 @@ export default function MatchdayApp() {
       return;
     }
     const utterance = new SpeechSynthesisUtterance(aiCommentary);
-    const speechLanguage = language === "zh" ? "zh-CN" : language === "pt" ? "pt-BR" : language === "en" ? "en-US" : language;
+    const profile = getSpeechProfile(language, commentaryMode);
     const voices = window.speechSynthesis.getVoices();
-    utterance.lang = speechLanguage;
-    utterance.voice = voices.find((voice) => voice.localService && voice.lang.toLowerCase().startsWith(language))
-      ?? voices.find((voice) => voice.lang.toLowerCase().startsWith(language))
-      ?? null;
-    utterance.rate = language === "zh" || language === "ja" ? 0.92 : 0.96;
-    utterance.pitch = 1.02;
+    utterance.lang = profile.locale;
+    utterance.voice = selectSpeechVoice(voices, language);
+    utterance.rate = profile.rate;
+    utterance.pitch = profile.pitch;
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
     window.speechSynthesis.cancel();
@@ -2067,7 +2079,7 @@ export default function MatchdayApp() {
             <section className="content-grid">
               <div className="feed-column">
                 <section className="section-block">
-                  <SectionHeading eyebrow={copy.events} title={`${activeEvents.length} ${copy.events.toLowerCase()}`} />
+                  <SectionHeading eyebrow={copy.events} title={eventCountLabel(activeEvents.length, language)} />
                   <div className="event-feed">
                     {recentEvents.length ? recentEvents.map((event) => <EventRow key={event.id} event={event} copy={copy} home={match.home} away={match.away} language={language} />) : <p className="empty-state">{copy.noEvents}</p>}
                   </div>

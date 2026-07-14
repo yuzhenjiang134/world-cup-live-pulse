@@ -293,3 +293,12 @@ npm run txline:probe
 - The countdown widget showed an inconsistent zero value, so release decisions use the explicit `Open` state and published date range rather than the countdown rendering.
 - Reconfirmed the required package: accessible working application, public repository, sub-five-minute Demo, brief technical documentation with exact TxLINE endpoints, and API experience feedback. The repository also contains a longer judge-facing technical note and dated probe evidence.
 - Submission counts and endpoint record counts remain labeled as timestamped observations because both can change after this release.
+# 2026-07-14 final fan-language and pre-video iteration
+
+- Added a single final pre-video gate covering completed work, three product iterations, local acceptance, two online QA rounds and the owner approval stop line.
+- Replaced developer-style kickoff fallbacks (`INFO`, generic verified-event copy) with localized fan-readable kickoff and match-continuation language.
+- Added eight-language yellow-card and score-review commentary that preserves minute and score facts while blocking internal player IDs.
+- Added explicit speech locales, language/mode pacing and deterministic local device voice preference; browser speech remains an honest fallback, not a cloned-voice claim.
+- Upgraded fan-room prompts to react to the current goal/card/match moment and both teams without fabricating profiles, comments or global counts.
+- Persisted the last active fan room and wrapped mobile discussion prompts so every action remains visible without horizontal hunting.
+- Video recording remains blocked until local acceptance, same-release online acceptance and explicit owner approval.
