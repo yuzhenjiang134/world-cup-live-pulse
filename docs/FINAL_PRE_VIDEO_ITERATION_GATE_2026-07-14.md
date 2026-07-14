@@ -72,7 +72,7 @@ Accepted online evidence:
 
 - Deployed commit: `4a033b17e5c8a676ed7b51828335a5b2fb0284b2`.
 - GitHub Actions: CI run 60 and Pages run 59 completed successfully for that commit.
-- Public JavaScript: `index-CejLFIAl.js`, SHA-256 `50066362D1656B399E2A6F05694E01E834C7AA76F8C77C7E58B8382FC03AD667`.
+- Public GitHub Pages JavaScript: `index-3aAPlqb2.js`, 503,035 bytes, SHA-256 `C0B929DF3F2F74AE29A1C2BECDC43777A1E1EE260B2530ECC13339C6DA82CFF7`.
 - Public CSS: `index-CWq-wxmX.css`, SHA-256 `83748D66C575528C6A5B63F349F008C0C3DA7BEF9273FDFBB55414037608BB86`.
 - Online English E2E: pass, including challenge settlement, replay, Pulse Play, fan rooms, AI modes, official links, accessibility and desktop/mobile layout.
 - Online Chinese E2E: pass, including localized product labels, challenge flow, community state and 390 px layout without horizontal overflow.
