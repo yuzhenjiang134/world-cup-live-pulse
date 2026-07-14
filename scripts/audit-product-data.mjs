@@ -108,8 +108,8 @@ const requiredAppMarkers = [
   ["prebuilt natural-voice playback", "getCommentaryVoiceClip"],
   ["browser speech fallback", "SpeechSynthesisUtterance"],
   ["key-event shortcut strip", "key-event-strip"],
+  ["replay key-event navigation persists", 'mode === "replay" ? match.events : activeEvents'],
   ["spoiler-free replay control", "spoiler-toggle"],
-  ["schedule moment summaries", "schedule-moments"],
   ["source-first team facts", "source-team-facts"],
   ["localized event descriptions", "localizeEventDescription"],
   ["official video sources", "officialVideoSources"],
@@ -143,6 +143,12 @@ else pass("Public commentary mapping contains no local voice profile or absolute
 
 if (!appSource.includes("teamPending")) pass("Fan UI removes unsourced team placeholders");
 else fail("Fan UI still contains unsourced team placeholders");
+
+if (!appSource.includes("schedule-moments") && !appSource.includes("item.eventCount")) {
+  pass("Schedule cards do not present incomplete event counts as fan facts");
+} else {
+  fail("Schedule cards still expose incomplete event-count summaries");
+}
 
 if (!appSource.includes('|| "--"')) pass("Fan UI omits unsourced fallback fields");
 else fail("Fan UI still renders an unsourced double-dash fallback");

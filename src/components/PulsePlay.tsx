@@ -61,9 +61,9 @@ export function PulsePlay({ match, frame, latestEvent, minute, isFinal, homeName
   return (
     <section className={`pulse-play pulse-play-${eventType} ${isPenalty ? "is-penalty" : ""} ${isExtraTime ? "is-extra-time" : ""}`} aria-label={text.title}>
       <header className="pulse-play-scoreboard">
-        <span><b>{match.home.code}</b><strong>{frame.homeScore}</strong></span>
+        <span><small>{homeName}</small><b>{match.home.code}</b><strong>{frame.homeScore}</strong></span>
         <div><small>{isFinal ? "FT" : `${Math.max(1, minute)}'`}</small><b>{text.title}</b></div>
-        <span><strong>{frame.awayScore}</strong><b>{match.away.code}</b></span>
+        <span><strong>{frame.awayScore}</strong><b>{match.away.code}</b><small>{awayName}</small></span>
       </header>
       <div className="pulse-pitch" style={{ "--ball-x": `${ballX}%`, "--ball-y": `${ballY}%` } as CSSProperties}>
         <div className="pitch-halfway" aria-hidden="true" />

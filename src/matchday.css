@@ -440,6 +440,7 @@ summary:focus-visible {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
 .pulse-play-scoreboard > span:last-child {
@@ -448,6 +449,14 @@ summary:focus-visible {
 
 .pulse-play-scoreboard strong {
   font-size: 26px;
+}
+
+.pulse-play-scoreboard > span > small {
+  overflow: hidden;
+  color: #a9c1bd;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pulse-play-scoreboard > div {
@@ -1245,22 +1254,6 @@ summary:focus-visible {
   margin: 3px 0 0;
   line-height: 1.35;
   white-space: normal;
-}
-
-.schedule-moments {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 3px;
-}
-
-.schedule-moments span {
-  padding: 4px 6px;
-  border-radius: 5px;
-  background: #edf3f0;
-  color: var(--md-muted);
-  font-size: 9px;
-  font-weight: 800;
 }
 
 .schedule-open {

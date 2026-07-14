@@ -149,10 +149,10 @@ const ui: Record<Language, UiCopy> = {
     replay: "Replay",
     seed: "Upcoming",
     fallback: "Fallback",
-    verifiedAt: "Checked",
-    officialFeed: "Official match data",
+    verifiedAt: "Updated",
+    officialFeed: "Official data",
     publicFeed: "Public scoreboard",
-    replayFeed: "Verified 2026 match replay",
+    replayFeed: "2026 match record",
     noLiveFeed: "No match is live right now",
     scorePulse: "Score pulse",
     matchCenter: "Match center",
@@ -168,11 +168,11 @@ const ui: Record<Language, UiCopy> = {
     yellow: "Yellow",
     red: "Red",
     extraTime: "ET / added time",
-    fanPulse: "Match momentum",
+    fanPulse: "Match flow",
     dataQuality: "Status",
     officialOdds: "Official odds snapshot",
     derivedPulse: "Match momentum",
-    replaySnapshot: "Post-match momentum",
+    replaySnapshot: "Match flow",
     next: "Coming up",
     summary: "Match summary",
     aiCommentary: "AI match brief",
@@ -210,7 +210,7 @@ const ui: Record<Language, UiCopy> = {
     result: "Result",
     noBetting: "Discussion game only. Never a wager or trading signal.",
     replayLibrary: "Replay library",
-    chooseReplay: "Open a fixed, judgeable match story",
+    chooseReplay: "Choose a match",
     spoilerFree: "Spoiler-free replay",
     teams: "Teams",
     players: "Player records",
@@ -242,8 +242,8 @@ const ui: Record<Language, UiCopy> = {
     connectionFallback: "Showing verified replay data",
     refreshData: "Refresh match",
     languageNote: "UI labels are translated; team and player names remain source-of-truth names.",
-    dataRules: "About this data",
-    onlyVerified: "Only confirmed scores and events are shown.",
+    dataRules: "Data and updates",
+    onlyVerified: "Scores and key events come from confirmed match records.",
   },
   zh: {
     brandKicker: "以球迷为先的比赛情报",
@@ -260,10 +260,10 @@ const ui: Record<Language, UiCopy> = {
     replay: "回放",
     seed: "未开赛",
     fallback: "兜底",
-    verifiedAt: "核验时间",
-    officialFeed: "官方比赛数据",
+    verifiedAt: "最近更新",
+    officialFeed: "官方数据",
     publicFeed: "公开比分源",
-    replayFeed: "2026 已确认比赛回放",
+    replayFeed: "2026 比赛记录",
     noLiveFeed: "当前没有正在进行的比赛",
     scorePulse: "比分脉冲",
     matchCenter: "比赛中心",
@@ -279,11 +279,11 @@ const ui: Record<Language, UiCopy> = {
     yellow: "黄牌",
     red: "红牌",
     extraTime: "加时 / 补时",
-    fanPulse: "比赛热度",
+    fanPulse: "比赛走势",
     dataQuality: "状态",
     officialOdds: "官方赔率快照",
     derivedPulse: "比赛走势",
-    replaySnapshot: "赛后走势",
+    replaySnapshot: "比赛走势",
     next: "接下来",
     summary: "比赛摘要",
     aiCommentary: "AI 比赛解读",
@@ -321,7 +321,7 @@ const ui: Record<Language, UiCopy> = {
     result: "赛果",
     noBetting: "仅用于球迷讨论，不是下注或交易信号。",
     replayLibrary: "回放库",
-    chooseReplay: "打开固定、可复现的比赛故事",
+    chooseReplay: "选择一场比赛",
     spoilerFree: "无剧透回放",
     teams: "球队",
     players: "球员记录",
@@ -353,8 +353,8 @@ const ui: Record<Language, UiCopy> = {
     connectionFallback: "正在显示已确认回放",
     refreshData: "更新比赛",
     languageNote: "界面标签会翻译；球队和球员名称保持数据源原名。",
-    dataRules: "数据说明",
-    onlyVerified: "只显示已确认的比分、事件和赛程。",
+    dataRules: "数据与更新",
+    onlyVerified: "比分和关键事件来自已确认的比赛记录。",
   },
   es: {
     brandKicker: "Inteligencia de partido para fans",
@@ -371,10 +371,10 @@ const ui: Record<Language, UiCopy> = {
     replay: "Repetición",
     seed: "Calendario",
     fallback: "Respaldo",
-    verifiedAt: "Revisado",
-    officialFeed: "Datos oficiales del partido",
+    verifiedAt: "Actualizado",
+    officialFeed: "Datos oficiales",
     publicFeed: "Marcador público",
-    replayFeed: "Repetición verificada de 2026",
+    replayFeed: "Registro de partidos 2026",
     noLiveFeed: "No hay un partido en directo ahora",
     scorePulse: "Pulso del marcador",
     matchCenter: "Centro del partido",
@@ -394,7 +394,7 @@ const ui: Record<Language, UiCopy> = {
     dataQuality: "Estado",
     officialOdds: "Cuotas oficiales",
     derivedPulse: "Ritmo del partido",
-    replaySnapshot: "Ritmo final",
+    replaySnapshot: "Ritmo del partido",
     next: "A continuación",
     summary: "Resumen del partido",
     aiCommentary: "Resumen del partido con IA",
@@ -432,7 +432,7 @@ const ui: Record<Language, UiCopy> = {
     result: "Resultado",
     noBetting: "Juego de conversación, no apuesta ni señal de trading.",
     replayLibrary: "Biblioteca de repeticiones",
-    chooseReplay: "Abrir una historia fija y reproducible",
+    chooseReplay: "Elegir un partido",
     spoilerFree: "Repetición sin spoilers",
     teams: "Equipos",
     players: "Registros de jugadores",
@@ -464,8 +464,8 @@ const ui: Record<Language, UiCopy> = {
     connectionFallback: "Mostrando repetición verificada",
     refreshData: "Actualizar partido",
     languageNote: "Las etiquetas se traducen; nombres de equipos y jugadores siguen la fuente.",
-    dataRules: "Sobre estos datos",
-    onlyVerified: "Solo se muestran marcadores y eventos confirmados.",
+    dataRules: "Datos y actualizaciones",
+    onlyVerified: "Los marcadores y eventos clave proceden de registros confirmados.",
   },
   pt: {
     brandKicker: "Inteligência de jogo para torcedores",
@@ -482,10 +482,10 @@ const ui: Record<Language, UiCopy> = {
     replay: "Reprise",
     seed: "Calendário",
     fallback: "Reserva",
-    verifiedAt: "Verificado",
-    officialFeed: "Dados oficiais do jogo",
+    verifiedAt: "Atualizado",
+    officialFeed: "Dados oficiais",
     publicFeed: "Placar público",
-    replayFeed: "Replay verificado de 2026",
+    replayFeed: "Registro de jogos de 2026",
     noLiveFeed: "Nenhum jogo ao vivo agora",
     scorePulse: "Pulso do placar",
     matchCenter: "Central da partida",
@@ -505,7 +505,7 @@ const ui: Record<Language, UiCopy> = {
     dataQuality: "Estado",
     officialOdds: "Odds oficiais",
     derivedPulse: "Ritmo do jogo",
-    replaySnapshot: "Ritmo final",
+    replaySnapshot: "Ritmo do jogo",
     next: "A seguir",
     summary: "Resumo da partida",
     aiCommentary: "Resumo da partida com IA",
@@ -543,7 +543,7 @@ const ui: Record<Language, UiCopy> = {
     result: "Resultado",
     noBetting: "Jogo de conversa, não aposta nem sinal de trading.",
     replayLibrary: "Biblioteca de reprises",
-    chooseReplay: "Abrir uma história fixa e reproduzível",
+    chooseReplay: "Escolher uma partida",
     spoilerFree: "Reprise sem spoilers",
     teams: "Times",
     players: "Registros de jogadores",
@@ -575,8 +575,8 @@ const ui: Record<Language, UiCopy> = {
     connectionFallback: "Exibindo replay verificado",
     refreshData: "Atualizar jogo",
     languageNote: "Os rótulos são traduzidos; nomes seguem a fonte original.",
-    dataRules: "Sobre estes dados",
-    onlyVerified: "Apenas placares e eventos confirmados são exibidos.",
+    dataRules: "Dados e atualizações",
+    onlyVerified: "Placares e eventos principais vêm de registros confirmados.",
   },
   fr: {
     brandKicker: "Intelligence de match pour les fans",
@@ -593,10 +593,10 @@ const ui: Record<Language, UiCopy> = {
     replay: "Replay",
     seed: "Calendrier",
     fallback: "Secours",
-    verifiedAt: "Vérifié",
-    officialFeed: "Données officielles du match",
+    verifiedAt: "Actualisé",
+    officialFeed: "Données officielles",
     publicFeed: "Score public",
-    replayFeed: "Replay 2026 vérifié",
+    replayFeed: "Historique des matchs 2026",
     noLiveFeed: "Aucun match en direct maintenant",
     scorePulse: "Pouls du score",
     matchCenter: "Centre du match",
@@ -616,7 +616,7 @@ const ui: Record<Language, UiCopy> = {
     dataQuality: "État",
     officialOdds: "Cotes officielles",
     derivedPulse: "Rythme du match",
-    replaySnapshot: "Rythme final",
+    replaySnapshot: "Rythme du match",
     next: "À suivre",
     summary: "Résumé du match",
     aiCommentary: "Résumé du match par IA",
@@ -654,7 +654,7 @@ const ui: Record<Language, UiCopy> = {
     result: "Résultat",
     noBetting: "Jeu de discussion, pas un pari ni un signal de trading.",
     replayLibrary: "Bibliothèque replay",
-    chooseReplay: "Ouvrir une histoire fixe et reproductible",
+    chooseReplay: "Choisir un match",
     spoilerFree: "Replay sans spoiler",
     teams: "Équipes",
     players: "Fiches joueurs",
@@ -686,8 +686,8 @@ const ui: Record<Language, UiCopy> = {
     connectionFallback: "Replay vérifié affiché",
     refreshData: "Actualiser le match",
     languageNote: "Les libellés sont traduits; les noms suivent la source.",
-    dataRules: "À propos des données",
-    onlyVerified: "Seuls les scores et événements confirmés sont affichés.",
+    dataRules: "Données et actualisations",
+    onlyVerified: "Scores et moments clés proviennent de comptes rendus confirmés.",
   },
   de: {
     brandKicker: "Spieldaten für Fans",
@@ -704,10 +704,10 @@ const ui: Record<Language, UiCopy> = {
     replay: "Wiederholung",
     seed: "Spielplan",
     fallback: "Ersatz",
-    verifiedAt: "Geprüft",
-    officialFeed: "Offizielle Spieldaten",
+    verifiedAt: "Aktualisiert",
+    officialFeed: "Offizielle Daten",
     publicFeed: "Öffentliche Anzeige",
-    replayFeed: "Verifiziertes Replay 2026",
+    replayFeed: "Spielprotokoll 2026",
     noLiveFeed: "Aktuell läuft kein Spiel",
     scorePulse: "Torpuls",
     matchCenter: "Spielzentrum",
@@ -727,7 +727,7 @@ const ui: Record<Language, UiCopy> = {
     dataQuality: "Status",
     officialOdds: "Offizielle Quoten",
     derivedPulse: "Spieldynamik",
-    replaySnapshot: "Dynamik nach Abpfiff",
+    replaySnapshot: "Spieldynamik",
     next: "Als Nächstes",
     summary: "Spielzusammenfassung",
     aiCommentary: "KI-Spielanalyse",
@@ -765,7 +765,7 @@ const ui: Record<Language, UiCopy> = {
     result: "Ergebnis",
     noBetting: "Diskussionsspiel, keine Wette oder Trading-Signal.",
     replayLibrary: "Replay-Bibliothek",
-    chooseReplay: "Eine feste, reproduzierbare Geschichte öffnen",
+    chooseReplay: "Spiel auswählen",
     spoilerFree: "Spoilerfreies Replay",
     teams: "Teams",
     players: "Spieleraufzeichnungen",
@@ -797,8 +797,8 @@ const ui: Record<Language, UiCopy> = {
     connectionFallback: "Verifiziertes Replay wird gezeigt",
     refreshData: "Spiel aktualisieren",
     languageNote: "Labels werden übersetzt; Namen folgen der Quelle.",
-    dataRules: "Über diese Daten",
-    onlyVerified: "Nur bestätigte Spielstände und Ereignisse werden gezeigt.",
+    dataRules: "Daten und Aktualisierungen",
+    onlyVerified: "Spielstände und Schlüsselmomente stammen aus bestätigten Spielberichten.",
   },
   ja: {
     brandKicker: "ファン向け試合インテリジェンス",
@@ -815,10 +815,10 @@ const ui: Record<Language, UiCopy> = {
     replay: "リプレイ",
     seed: "予定",
     fallback: "フォールバック",
-    verifiedAt: "確認",
-    officialFeed: "公式試合データ",
+    verifiedAt: "最終更新",
+    officialFeed: "公式データ",
     publicFeed: "公開スコア",
-    replayFeed: "確認済み2026年リプレイ",
+    replayFeed: "2026年試合記録",
     noLiveFeed: "現在ライブ中の試合はありません",
     scorePulse: "スコアパルス",
     matchCenter: "試合センター",
@@ -838,7 +838,7 @@ const ui: Record<Language, UiCopy> = {
     dataQuality: "状況",
     officialOdds: "公式オッズ",
     derivedPulse: "試合の流れ",
-    replaySnapshot: "試合後の流れ",
+    replaySnapshot: "試合の流れ",
     next: "次に見る",
     summary: "試合概要",
     aiCommentary: "AI試合解説",
@@ -876,7 +876,7 @@ const ui: Record<Language, UiCopy> = {
     result: "結果",
     noBetting: "会話型ゲームです。賭けや取引シグナルではありません。",
     replayLibrary: "リプレイライブラリ",
-    chooseReplay: "固定された再現可能な試合を開く",
+    chooseReplay: "試合を選ぶ",
     spoilerFree: "ネタバレなし再生",
     teams: "チーム",
     players: "選手記録",
@@ -908,8 +908,8 @@ const ui: Record<Language, UiCopy> = {
     connectionFallback: "確認済みリプレイを表示中",
     refreshData: "試合を更新",
     languageNote: "UIラベルは翻訳し、チーム名・選手名はソース名を維持します。",
-    dataRules: "データについて",
-    onlyVerified: "確認済みのスコアとイベントだけを表示します。",
+    dataRules: "データと更新",
+    onlyVerified: "スコアと重要イベントは確認済みの試合記録に基づきます。",
   },
   ar: {
     brandKicker: "ذكاء المباراة للمشجعين",
@@ -926,10 +926,10 @@ const ui: Record<Language, UiCopy> = {
     replay: "إعادة",
     seed: "الجدول",
     fallback: "بديل",
-    verifiedAt: "تم التحقق",
-    officialFeed: "بيانات المباراة الرسمية",
+    verifiedAt: "آخر تحديث",
+    officialFeed: "بيانات رسمية",
     publicFeed: "نتيجة عامة",
-    replayFeed: "إعادة موثقة لعام 2026",
+    replayFeed: "سجل مباريات 2026",
     noLiveFeed: "لا توجد مباراة مباشرة الآن",
     scorePulse: "نبض النتيجة",
     matchCenter: "مركز المباراة",
@@ -949,7 +949,7 @@ const ui: Record<Language, UiCopy> = {
     dataQuality: "الحالة",
     officialOdds: "أسعار رسمية",
     derivedPulse: "إيقاع المباراة",
-    replaySnapshot: "إيقاع ما بعد المباراة",
+    replaySnapshot: "إيقاع المباراة",
     next: "التالي",
     summary: "ملخص المباراة",
     aiCommentary: "ملخص المباراة بالذكاء الاصطناعي",
@@ -987,7 +987,7 @@ const ui: Record<Language, UiCopy> = {
     result: "النتيجة",
     noBetting: "لعبة نقاش فقط، وليست مراهنة أو إشارة تداول.",
     replayLibrary: "مكتبة الإعادة",
-    chooseReplay: "افتح قصة مباراة ثابتة قابلة للتكرار",
+    chooseReplay: "اختر مباراة",
     spoilerFree: "إعادة بلا حرق للنتيجة",
     teams: "الفرق",
     players: "سجلات اللاعبين",
@@ -1019,8 +1019,8 @@ const ui: Record<Language, UiCopy> = {
     connectionFallback: "عرض إعادة موثقة",
     refreshData: "تحديث المباراة",
     languageNote: "تترجم العناوين، بينما تبقى أسماء الفرق واللاعبين من المصدر.",
-    dataRules: "حول هذه البيانات",
-    onlyVerified: "تظهر النتائج والأحداث المؤكدة فقط.",
+    dataRules: "البيانات والتحديثات",
+    onlyVerified: "النتائج واللحظات الرئيسية مأخوذة من سجلات مباريات مؤكدة.",
   },
 };
 
@@ -1732,7 +1732,8 @@ export default function MatchdayApp() {
   const activeEvents = isScheduled ? frame.activeEvents.filter((event) => event.type !== "kickoff") : frame.activeEvents;
   const latestEvent = isScheduled ? undefined : frame.latestEvent;
   const recentEvents = [...activeEvents].reverse().slice(0, 8);
-  const keyEvents = activeEvents.filter((event) => ["goal", "yellow_card", "red_card", "score_review", "halftime", "fulltime"].includes(event.type)).slice(-6);
+  const keyEventSource = mode === "replay" ? match.events : activeEvents;
+  const keyEvents = keyEventSource.filter((event) => ["goal", "yellow_card", "red_card", "score_review", "halftime", "fulltime"].includes(event.type)).slice(-6);
   const goalCount = activeEvents.filter((event) => event.type === "goal").length;
   const yellowCount = activeEvents.filter((event) => event.type === "yellow_card").length;
   const redCount = activeEvents.filter((event) => event.type === "red_card").length;
@@ -1759,7 +1760,6 @@ export default function MatchdayApp() {
     recap: isScheduled ? localizeScheduledBrief(language, match, "recap") : localizeRecap(language, match, frame),
   };
   const aiCommentary = commentaryByMode[commentaryMode];
-  const aiInsight = isScheduled ? localizeScheduledBrief(language, match, "why") : localizeInsight(language, match, frame);
   const pulseText = pulsePlayCopy[language];
   const pulseMomentLabel = latestEvent
     ? `${latestEvent.penalty ? `${pulseText.penalty} · ` : ""}${localizedEventLabel(latestEvent, copy, language)}${latestEvent.team ? ` · ${latestEvent.team}` : ""}`
@@ -2044,7 +2044,7 @@ export default function MatchdayApp() {
               <section className="section-block match-summary-block">
                 <SectionHeading eyebrow={copy.summary} title={stageLabel(match.stage, match.competition, copy, language)} />
                  <div className="summary-metrics">
-                   <Metric label={copy.commentaryWhy} value={aiInsight} />
+                   <Metric label={copy.commentaryRecap} value={commentaryByMode.recap} />
                   <Metric label={copy.fanPulse} value={`${Math.round(frame.market.sentiment)}/100`} />
                 </div>
                 <div className="match-facts">
@@ -2066,15 +2066,6 @@ export default function MatchdayApp() {
                   <div className="event-feed">
                     {recentEvents.length ? recentEvents.map((event) => <EventRow key={event.id} event={event} copy={copy} home={match.home} away={match.away} language={language} />) : <p className="empty-state">{copy.noEvents}</p>}
                   </div>
-                </section>
-                <section className="section-block pulse-detail">
-                  <SectionHeading eyebrow={copy.scorePulse} title={marketLabel} />
-                  <div className="pulse-metrics">
-                    <Metric label={copy.fanPulse} value={`${Math.round(frame.market.sentiment)}/100`} />
-                    <Metric label={copy.dataQuality} value={dataStatusLabel(match.dataStatus, copy)} />
-                    <Metric label={copy.next} value={nextSignal} />
-                  </div>
-                   <p className="muted-copy">{copy.onlyVerified}</p>
                 </section>
               </div>
 
@@ -2113,12 +2104,6 @@ export default function MatchdayApp() {
           <strong className="truth-title">{sourceState.detail}</strong>
            <p>{copy.onlyVerified}</p>
           <div className="truth-meta"><span>{copy.verifiedAt}</span><strong>{formatCheckedAt(source?.checkedAtIso, language)}</strong></div>
-          <div className="truth-meta"><span>{copy.refresh}</span><strong>15s</strong></div>
-          <details>
-            <summary>{copy.dataRules}</summary>
-            <p>{copy.onlyVerified}</p>
-            <p>{copy.replaySnapshot}</p>
-          </details>
         </section>
         <section className="up-next-panel">
           <div className="panel-heading"><span>{copy.replayLibrary}</span><span className="panel-count">{prioritizedReplays.length}</span></div>
@@ -2244,8 +2229,10 @@ function TournamentView({ language, copy, schedule, onOpenReplay }: { language: 
       const finalEvent = archive.events.filter((event) => event.type === "fulltime").at(-1) ?? archive.events.at(-1);
       if (!finalEvent) return null;
       const score = `${finalEvent.homeScore}-${finalEvent.awayScore}`;
-      const winner = finalEvent && finalEvent.homeScore !== finalEvent.awayScore ? (finalEvent.homeScore > finalEvent.awayScore ? archive.home.code : archive.away.code) : text.undecided;
-      return <article className={`archive-match-card ${spoilerFree ? "spoilered" : ""}`} key={archive.id}><div className="archive-match-top"><span>{localizedStage(archive.stage, text)}</span><small>{text.verified}</small></div><div className="archive-score-row"><button type="button" onClick={() => setSelectedCode(archive.home.code)}>{archive.home.code}</button><strong>{spoilerFree ? copy.versus : score}</strong><button type="button" onClick={() => setSelectedCode(archive.away.code)}>{archive.away.code}</button></div>{spoilerFree ? null : <p>{text.winner}: <b>{winner}</b> · {archive.events.filter((event) => event.type === "goal").length} {copy.goals} · {archive.events.filter((event) => event.type === "yellow_card" || event.type === "red_card").length} {copy.events}</p>}<button className="archive-open" type="button" onClick={() => onOpenReplay(archive.id)}>{text.open}<span>→</span></button></article>;
+      const winner = finalEvent && finalEvent.homeScore !== finalEvent.awayScore ? (finalEvent.homeScore > finalEvent.awayScore ? teamName(archive.home, language) : teamName(archive.away, language)) : text.undecided;
+      const yellowCards = archive.events.filter((event) => event.type === "yellow_card").length;
+      const redCards = archive.events.filter((event) => event.type === "red_card").length;
+      return <article className={`archive-match-card ${spoilerFree ? "spoilered" : ""}`} key={archive.id}><div className="archive-match-top"><span>{localizedStage(archive.stage, text)}</span><small>{text.verified}</small></div><div className="archive-score-row"><button type="button" onClick={() => setSelectedCode(archive.home.code)}>{archive.home.code}</button><strong>{spoilerFree ? copy.versus : score}</strong><button type="button" onClick={() => setSelectedCode(archive.away.code)}>{archive.away.code}</button></div>{spoilerFree ? null : <p>{text.winner}: <b>{winner}</b>{yellowCards ? <> · {copy.yellow} {yellowCards}</> : null}{redCards ? <> · {copy.red} {redCards}</> : null}</p>}<button className="archive-open" type="button" onClick={() => onOpenReplay(archive.id)}>{text.open}<span>→</span></button></article>;
     })}</div></section>
 
     {!spoilerFree ? <section className="tournament-band bracket-section"><SectionHeading eyebrow={copy.advancement} title={text.path} /><div className="bracket-scroll"><div className="bracket-grid">
@@ -2393,14 +2380,13 @@ function ScheduleBoard({ copy, items, selectedId, onOpenReplay, language, favori
   const includesFavorite = (item: Pick<MatchScheduleItem, "home" | "away">) => Boolean(favoriteTeamCode && (item.home.code === favoriteTeamCode || item.away.code === favoriteTeamCode));
   const visibleItems = items.filter((item) => !item.home.code.endsWith("XX") && !item.away.code.endsWith("XX")).sort((left, right) => Number(includesFavorite(right)) - Number(includesFavorite(left))).slice(0, 8);
   const replayLinks = [...replayMatches].sort((left, right) => Number(includesFavorite(right)) - Number(includesFavorite(left))).slice(0, 3);
-  return <section className="section-block schedule-block"><SectionHeading eyebrow={copy.schedule} title={copy.advancement} /><div className="schedule-list">{visibleItems.length ? visibleItems.map((item) => { const isReplay = item.dataStatus === "Replay"; const status = scheduleStatusLabel(item, copy); const hasMoments = typeof item.eventCount === "number" && item.eventCount > 0; const favorite = includesFavorite(item); return <article className={`schedule-card ${item.id === selectedId ? "selected" : ""} ${favorite ? "favorite-team" : ""}`} key={item.id}><div className="schedule-card-top"><span className={`source-pill ${status.tone}`}>{status.label}</span>{favorite ? <span className="favorite-marker" title={copy.favoriteTeam}>★</span> : null}<small>{stageLabel(item.stage, item.stage, copy, language)}</small></div><strong>{teamName(item.home, language)} <b>{copy.versus}</b> {teamName(item.away, language)}</strong>{typeof item.homeScore === "number" && typeof item.awayScore === "number" && item.status !== "scheduled" ? <span className="schedule-score">{item.homeScore} - {item.awayScore}</span> : null}{item.kickoffIso ? <small>{formatKickoffLabel(item.kickoffIso, language)}</small> : null}{hasMoments ? <div className="schedule-moments"><span>{copy.events} {item.eventCount}</span><span>{copy.goals} {item.goalCount ?? 0}</span>{item.extraTime ? <span>{copy.extraTime} ✓</span> : null}</div> : null}<p>{scheduleNote(item, copy)}</p>{isReplay ? <button className="schedule-open" type="button" onClick={() => onOpenReplay(item.id)}>{copy.replay}<span>→</span></button> : null}</article>; }) : <p className="empty-state">{copy.noEvents}</p>}</div><div className="schedule-replay-links"><strong>{copy.replayLibrary}</strong>{replayLinks.map((candidate) => <button type="button" key={candidate.id} onClick={() => onOpenReplay(candidate.id)}>{teamName(candidate.home, language)} {copy.versus} {teamName(candidate.away, language)}<span>→</span></button>)}</div></section>;
+  return <section className="section-block schedule-block"><SectionHeading eyebrow={copy.schedule} title={copy.advancement} /><div className="schedule-list">{visibleItems.length ? visibleItems.map((item) => { const isReplay = item.dataStatus === "Replay"; const status = scheduleStatusLabel(item, copy); const note = scheduleNote(item, copy); const favorite = includesFavorite(item); return <article className={`schedule-card ${item.id === selectedId ? "selected" : ""} ${favorite ? "favorite-team" : ""}`} key={item.id}><div className="schedule-card-top"><span className={`source-pill ${status.tone}`}>{status.label}</span>{favorite ? <span className="favorite-marker" title={copy.favoriteTeam}>★</span> : null}<small>{stageLabel(item.stage, item.stage, copy, language)}</small></div><strong>{teamName(item.home, language)} <b>{copy.versus}</b> {teamName(item.away, language)}</strong>{typeof item.homeScore === "number" && typeof item.awayScore === "number" && item.status !== "scheduled" ? <span className="schedule-score">{item.homeScore} - {item.awayScore}</span> : null}{item.kickoffIso ? <small>{formatKickoffLabel(item.kickoffIso, language)}</small> : null}{note ? <p>{note}</p> : null}{isReplay ? <button className="schedule-open" type="button" onClick={() => onOpenReplay(item.id)}>{copy.replay}<span>→</span></button> : null}</article>; }) : <p className="empty-state">{copy.noEvents}</p>}</div><div className="schedule-replay-links"><strong>{copy.replayLibrary}</strong>{replayLinks.map((candidate) => <button type="button" key={candidate.id} onClick={() => onOpenReplay(candidate.id)}>{teamName(candidate.home, language)} {copy.versus} {teamName(candidate.away, language)}<span>→</span></button>)}</div></section>;
 }
 
 function scheduleNote(item: MatchScheduleItem, copy: UiCopy) {
-  if (item.dataStatus === "Replay") return copy.replay;
+  if (item.dataStatus === "Replay" || item.status === "finished") return null;
   if (item.dataStatus === "Delay") return copy.delayed;
   if (item.status === "scheduled") return copy.scheduled;
-  if (item.status === "finished") return copy.final;
   return copy.live;
 }
 
