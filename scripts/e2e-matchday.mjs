@@ -11,6 +11,7 @@ const configuredBaseUrl = process.env.E2E_BASE_URL
   : "http://127.0.0.1:5180/";
 const appUrl = process.env.MATCHDAY_URL ?? new URL("?mode=replay&replay=txline-archive-18209181&minute=90", configuredBaseUrl).toString();
 const baseEntryUrl = new URL(".", appUrl).toString();
+const redCardReplayUrl = new URL("?mode=replay&replay=txline-archive-18192996&minute=54", baseEntryUrl).toString();
 const initialLanguage = process.env.E2E_LANGUAGE === "en" ? "en" : "zh";
 const expectedCopy = initialLanguage === "en"
   ? { points: "pts", settled: /Settled/, season: /Demo season/, score: /France 2-0 Morocco/, otherTeamLanguage: /法国|摩洛哥/, stage: /Semi-finals/, versus: "vs", edit: /Edit score/, updated: /Pick updated/, audio: "fra-mar-fulltime-en-call.wav" }
@@ -55,6 +56,7 @@ try {
   await cdp.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await waitForCondition(cdp, "Boolean(document.querySelector('#root'))", 30_000);
   await cdp.send("Storage.clearDataForOrigin", { origin: new URL(appUrl).origin, storageTypes: "local_storage" });
+  await cdp.send("Page.addScriptToEvaluateOnNewDocument", { source: `localStorage.setItem('wclp-language', ${JSON.stringify(initialLanguage)});` });
   await evaluate(cdp, `localStorage.setItem('wclp-language', ${JSON.stringify(initialLanguage)}); true`);
   await cdp.send("Page.reload", { ignoreCache: true });
   await waitForCondition(cdp, "Boolean(document.querySelector('.challenge-block'))", 30_000);
@@ -100,7 +102,7 @@ try {
     challenge: Boolean(document.querySelector('.challenge-block')),
     level: Boolean(document.querySelector('.challenge-level')),
     timeline: Boolean(document.querySelector('.timeline-slider')),
-    scheduleMoments: document.querySelectorAll('.schedule-moments').length,
+    scheduleCards: document.querySelectorAll('.schedule-card').length,
     challengeWidth: document.querySelector('.challenge-block')?.getBoundingClientRect().width ?? 0,
     heroWidth: document.querySelector('.score-hero')?.getBoundingClientRect().width ?? 0,
     challengeTop: document.querySelector('.challenge-block')?.getBoundingClientRect().top ?? 0,
@@ -113,7 +115,7 @@ try {
   assert.equal(desktopLayout.challenge, true);
   assert.equal(desktopLayout.level, true);
   assert.equal(desktopLayout.timeline, true);
-  assert.ok(desktopLayout.scheduleMoments > 0);
+  assert.ok(desktopLayout.scheduleCards > 0);
   assert.ok(desktopLayout.challengeWidth >= desktopLayout.heroWidth * 0.98);
   assert.ok(desktopLayout.challengeTop < desktopLayout.signalTop);
   assert.equal(desktopLayout.scoreSteppers, 4);
@@ -121,8 +123,7 @@ try {
 
   assert.match(await buttonText(cdp, ".challenge-block .primary-button"), /50/);
   assert.match(await blockText(cdp, ".challenge-block"), new RegExp(`1,000\\s+${expectedCopy.points}`));
-  const challengeBeforeCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/challenge-before-final.png"), Buffer.from(challengeBeforeCapture.data, "base64"));
+  await capturePage(cdp, "demo-assets/challenge-before-final.png");
 
   await evaluate(cdp, `(() => {
     const inputs = document.querySelectorAll('.challenge-score input');
@@ -155,8 +156,7 @@ try {
   await evaluate(cdp, "document.querySelector('.key-event-strip button').click(); true");
   await wait(120);
   assert.ok(Number(await evaluate(cdp, "document.querySelector('.timeline-slider').value")) < 90);
-  const keyEventCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/key-event-final.png"), Buffer.from(keyEventCapture.data, "base64"));
+  await capturePage(cdp, "demo-assets/key-event-final.png");
   await evaluate(cdp, `(() => { const slider = document.querySelector('.timeline-slider'); const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set; setter.call(slider, '90'); slider.dispatchEvent(new Event('input', { bubbles: true })); return true; })()`);
   await wait(120);
   assert.match(await blockText(cdp, ".hero-ai-brief"), expectedCopy.score);
@@ -198,8 +198,7 @@ try {
   assert.match(quickRecap, /2-0/);
   assert.notEqual(quickRecap, whyItMatters);
   assert.doesNotMatch(quickRecap, /undefined|�/);
-  const commentaryCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/commentary-modes-final.png"), Buffer.from(commentaryCapture.data, "base64"));
+  await capturePage(cdp, "demo-assets/commentary-modes-final.png");
   await evaluate(cdp, "document.querySelectorAll('.commentary-modes button')[0].click(); true");
   assert.equal(await elementCount(cdp, ".follow-button"), 1);
   await evaluate(cdp, "document.querySelector('.follow-button').click(); true");
@@ -212,14 +211,84 @@ try {
   assert.equal(await elementCount(cdp, ".hero-view-toggle button"), 2);
   await evaluate(cdp, "document.querySelectorAll('.hero-view-toggle button')[1].click(); true");
   await waitForCondition(cdp, "Boolean(document.querySelector('.pulse-play'))", 5_000);
+  assert.equal(await elementCount(cdp, ".pulse-player"), 22);
+  assert.equal(await elementCount(cdp, ".pulse-play-scoreboard em"), 2);
+  await evaluate(cdp, `(() => {
+    const cardMoment = [...document.querySelectorAll('.key-event-strip button')].find((button) => /Yellow|黄牌|Amarilla|Amarelo|Jaune|Gelb|イエロー|صفراء/i.test(button.textContent || ''));
+    cardMoment?.click();
+    return Boolean(cardMoment);
+  })()`);
+  await wait(120);
+  assert.equal(await elementCount(cdp, ".figure-event-yellow_card"), 1);
   assert.equal(await elementCount(cdp, ".cheer-controls button"), 2);
   await evaluate(cdp, "document.querySelector('.cheer-controls button').click(); true");
   await waitForCondition(cdp, "Object.entries(localStorage).some(([key, value]) => key.startsWith('wclp-cheers-') && JSON.parse(value).home === 1)", 5_000);
-  const pulsePlayCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/pulse-play-final.png"), Buffer.from(pulsePlayCapture.data, "base64"));
+  assert.equal(await elementCount(cdp, ".fan-room-tabs [role='tab']"), 3);
+  await evaluate(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[2].click(); true");
+  await wait(80);
+  await evaluate(cdp, `(() => {
+    document.querySelector('.fan-reactions button').click();
+    const input = document.querySelector('.fan-comment-form input');
+    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+    setter.call(input, 'Strong recovery after the card.');
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    return true;
+  })()`);
+  await wait(80);
+  await evaluate(cdp, "document.querySelector('.fan-comment-form button').click(); true");
+  await wait(120);
+  assert.equal(await elementCount(cdp, ".fan-message-list article"), 1);
+  assert.equal(await blockText(cdp, ".fan-reactions button b"), "1");
+  assert.equal(await evaluate(cdp, "document.querySelector('.fan-reactions button').getAttribute('aria-pressed')"), "true");
+  await evaluate(cdp, "document.querySelector('.fan-reactions button').click(); true");
+  await wait(80);
+  assert.equal(await blockText(cdp, ".fan-reactions button b"), "1");
+  await evaluate(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[1].click(); true");
+  await wait(80);
+  assert.equal(await elementCount(cdp, ".fan-message-list article"), 0);
+  assert.equal(await blockText(cdp, ".fan-reactions button b"), "0");
+  await evaluate(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[2].click(); true");
+  await wait(80);
+  assert.match(await blockText(cdp, ".fan-message-list"), /Strong recovery after the card\./);
+  assert.equal(await evaluate(cdp, `(() => {
+    const entry = Object.entries(localStorage).find(([key]) => key.startsWith('wclp-fan-stand-'));
+    if (!entry) return false;
+    const state = JSON.parse(entry[1]);
+    return state.messages.some((message) => message.room === 'away' && message.text === 'Strong recovery after the card.')
+      && state.reactions.away.celebrate === 1
+      && state.reactions.home.celebrate === 0
+      && Object.values(state.momentReactions).includes('celebrate');
+  })()`), true);
+  await evaluate(cdp, "document.querySelector('.fan-stand').scrollIntoView({ block: 'center' }); true");
+  await wait(100);
+  await capturePage(cdp, "demo-assets/fan-stand-final.png");
+  await evaluate(cdp, "document.querySelector('.score-hero').scrollIntoView({ block: 'start' }); true");
+  await wait(100);
+  await capturePage(cdp, "demo-assets/pulse-play-final.png");
   await evaluate(cdp, "document.querySelectorAll('.hero-view-toggle button')[0].click(); true");
-  const desktopCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/desktop-final.png"), Buffer.from(desktopCapture.data, "base64"));
+  await capturePage(cdp, "demo-assets/desktop-final.png");
+
+  await cdp.send("Page.navigate", { url: redCardReplayUrl });
+  await waitForCondition(cdp, "Boolean(document.querySelector('.hero-view-toggle'))", 30_000);
+  await evaluate(cdp, "document.querySelectorAll('.hero-view-toggle button')[1].click(); true");
+  await waitForCondition(cdp, "Boolean(document.querySelector('.pulse-play'))", 5_000);
+  const redCardState = await evaluate(cdp, `(() => {
+    const slider = document.querySelector('.timeline-slider');
+    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+    setter.call(slider, '53');
+    slider.dispatchEvent(new Event('input', { bubbles: true }));
+    return {
+      slider: slider.value,
+      moments: [...document.querySelectorAll('.key-event-strip button')].map((button) => button.textContent?.trim() || ''),
+    };
+  })()`);
+  console.log(`Red-card route ${JSON.stringify(redCardState)}`);
+  await wait(120);
+  assert.equal(redCardState.slider, "53");
+  assert.equal(await elementCount(cdp, ".figure-event-red_card"), 1);
+  assert.equal(await elementCount(cdp, ".pulse-player.being-sent-off"), 1);
+  assert.deepEqual(await evaluate(cdp, "[...document.querySelectorAll('.pulse-play-scoreboard em')].map((element) => Number.parseInt(element.textContent, 10)).sort((a, b) => a - b)"), [10, 11]);
+  await capturePage(cdp, "demo-assets/red-card-final.png");
 
   await cdp.send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   await cdp.send("Page.navigate", { url: baseEntryUrl });
@@ -248,7 +317,7 @@ try {
   console.log(`Mobile layout ${JSON.stringify(mobileLayout)}`);
   assert.equal(mobileLayout.scrollWidth, mobileLayout.viewport);
   assert.doesNotMatch(mobileLayout.body, /FIFA World Cup|Semifinals/i);
-  assert.match(mobileLayout.body, expectedCopy.stage);
+  assert.doesNotMatch(mobileLayout.body, /TBD|undefined|待定/);
   assert.ok(mobileLayout.home.left >= 0 && mobileLayout.home.right <= mobileLayout.viewport);
   assert.ok(mobileLayout.away.left >= 0 && mobileLayout.away.right <= mobileLayout.viewport);
   assert.ok(mobileLayout.awayText.trim().length > 3);
@@ -257,14 +326,23 @@ try {
   assert.ok(mobileLayout.actions.left >= 0 && mobileLayout.actions.right <= mobileLayout.viewport);
   await evaluate(cdp, "document.querySelectorAll('.hero-view-toggle button')[1].click(); true");
   await waitForCondition(cdp, "Boolean(document.querySelector('.pulse-play'))", 5_000);
+  assert.match(await blockText(cdp, ".pulse-sync-badge"), /Pre-match preview|赛前预览/);
+  const mobileToggleStyles = await evaluate(cdp, "[...document.querySelectorAll('.hero-view-toggle button')].map((button) => ({ active: button.classList.contains('active'), background: getComputedStyle(button).backgroundColor, color: getComputedStyle(button).color }))");
+  assert.equal(mobileToggleStyles.filter((item) => item.active).length, 1);
+  assert.notEqual(mobileToggleStyles[0].background, mobileToggleStyles[1].background);
   const mobilePulseLayout = await evaluate(cdp, `(() => {
     const box = document.querySelector('.pulse-play').getBoundingClientRect();
     return { left: box.left, right: box.right, viewport: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth };
   })()`);
   assert.equal(mobilePulseLayout.scrollWidth, mobilePulseLayout.viewport);
   assert.ok(mobilePulseLayout.left >= 0 && mobilePulseLayout.right <= mobilePulseLayout.viewport);
-  const mobilePulseCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/pulse-play-mobile-final.png"), Buffer.from(mobilePulseCapture.data, "base64"));
+  assert.equal(await elementCount(cdp, ".pulse-player"), 22);
+  assert.equal(await elementCount(cdp, ".fan-room-tabs [role='tab']"), 3);
+  await capturePage(cdp, "demo-assets/pulse-play-mobile-final.png");
+  await evaluate(cdp, "document.querySelector('.fan-stand').scrollIntoView({ block: 'start' }); true");
+  await wait(100);
+  assert.equal(await evaluate(cdp, "(() => { const facts = [...document.querySelectorAll('.match-summary-block .match-facts span')].map((item) => item.textContent.trim()); return facts.length === new Set(facts).size; })()"), true);
+  await capturePage(cdp, "demo-assets/fan-stand-mobile-final.png");
   await evaluate(cdp, "document.querySelectorAll('.hero-view-toggle button')[0].click(); true");
 
   await waitForCondition(cdp, "Boolean(document.querySelector('.challenge-block .primary-button:not(:disabled)'))", 30_000);
@@ -312,8 +390,7 @@ try {
   const checkedBeforeFocus = await evaluate(cdp, "document.querySelectorAll('.truth-meta strong')[0]?.textContent ?? ''");
   await evaluate(cdp, "window.dispatchEvent(new Event('focus')); true");
   await waitForCondition(cdp, `document.querySelectorAll('.truth-meta strong')[0]?.textContent !== ${JSON.stringify(checkedBeforeFocus)}`, 30_000);
-  const mobileCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/mobile-final.png"), Buffer.from(mobileCapture.data, "base64"));
+  await capturePage(cdp, "demo-assets/mobile-final.png");
 
   await cdp.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await evaluate(cdp, "document.querySelectorAll('.primary-nav button')[1].click(); true");
@@ -336,8 +413,7 @@ try {
   assert.match(tournamentLayout.text, /FRA|法国|France/);
   assert.match(tournamentLayout.text, /2-0/);
   assert.doesNotMatch(tournamentLayout.text, /Fixture identity|stage label not asserted/);
-  const tournamentCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/tournament-final.png"), Buffer.from(tournamentCapture.data, "base64"));
+  await capturePage(cdp, "demo-assets/tournament-final.png");
 
   assert.equal(await elementCount(cdp, ".spoiler-toggle input"), 1);
   await evaluate(cdp, "document.querySelector('.spoiler-toggle input').click(); true");
@@ -347,8 +423,7 @@ try {
   assert.equal(await elementCount(cdp, ".bracket-section"), 0);
   assert.equal(await elementCount(cdp, ".team-detail-panel"), 0);
   assert.equal(await evaluate(cdp, `[...document.querySelectorAll('.archive-score-row strong')].every((item) => item.textContent.trim() === ${JSON.stringify(expectedCopy.versus)})`), true);
-  const spoilerCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/tournament-spoiler-final.png"), Buffer.from(spoilerCapture.data, "base64"));
+  await capturePage(cdp, "demo-assets/tournament-spoiler-final.png");
   await evaluate(cdp, "document.querySelector('.archive-match-card .archive-open').click(); true");
   await waitForCondition(cdp, "Boolean(document.querySelector('.timeline-slider'))", 30_000);
   assert.equal(await evaluate(cdp, "document.querySelector('.timeline-slider').value"), "1");
@@ -370,8 +445,7 @@ try {
   assert.ok((await elementCount(cdp, ".source-team-card")) >= 2);
   assert.ok((await elementCount(cdp, ".source-team-record")) >= 1);
   assert.ok((await elementCount(cdp, ".team-archive-match")) >= 1);
-  const teamsCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/teams-final.png"), Buffer.from(teamsCapture.data, "base64"));
+  await capturePage(cdp, "demo-assets/teams-final.png");
 
   assert.equal(await evaluate(cdp, "localStorage.getItem('wclp-favorite-team')"), null);
   const favoriteCode = await evaluate(cdp, "document.querySelector('.source-team-card .team-code').textContent.trim()");
@@ -379,8 +453,7 @@ try {
   await evaluate(cdp, "document.querySelector('.source-team-card .team-favorite').click(); true");
   await waitForCondition(cdp, `localStorage.getItem('wclp-favorite-team') === ${JSON.stringify(favoriteCode)}`, 5_000);
   assert.equal(await elementCount(cdp, ".source-team-card.favorite .team-favorite.active"), 1);
-  const favoriteCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/teams-favorite-final.png"), Buffer.from(favoriteCapture.data, "base64"));
+  await capturePage(cdp, "demo-assets/teams-favorite-final.png");
   await evaluate(cdp, "document.querySelectorAll('.primary-nav button')[0].click(); true");
   await waitForCondition(cdp, "Boolean(document.querySelector('.schedule-card'))", 10_000);
   const favoriteScheduleCards = await evaluate(cdp, `[...document.querySelectorAll('.schedule-card')].map((card) => ({ title: card.querySelector(':scope > strong')?.innerText ?? '', favorite: card.classList.contains('favorite-team') })).filter((card) => card.title.includes(${JSON.stringify(favoriteName)}))`);
@@ -403,8 +476,7 @@ try {
   await waitForCondition(cdp, "JSON.parse(localStorage.getItem('wclp-alert-preferences') || '{}').goals === true", 5_000);
   await evaluate(cdp, `(() => { const select = document.querySelector('#language-select'); select.value = 'en'; select.dispatchEvent(new Event('change', { bubbles: true })); return true; })()`);
   await wait(100);
-  const settingsCapture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
-  await fs.writeFile(path.resolve("demo-assets/settings-language-final.png"), Buffer.from(settingsCapture.data, "base64"));
+  await capturePage(cdp, "demo-assets/settings-language-final.png");
   for (const language of ["en", "zh", "es", "pt", "fr", "de", "ja", "ar"]) {
     await evaluate(cdp, `(() => {
       const select = document.querySelector('#language-select');
@@ -514,6 +586,11 @@ function buttonText(cdp, selector) {
 
 function elementCount(cdp, selector) {
   return evaluate(cdp, `document.querySelectorAll(${JSON.stringify(selector)}).length`);
+}
+
+async function capturePage(cdp, outputPath) {
+  const capture = await cdp.send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
+  await fs.writeFile(path.resolve(outputPath), Buffer.from(capture.data, "base64"));
 }
 
 function wait(ms) {

@@ -11,6 +11,13 @@ export type PulsePlayText = {
   cheer: string;
   localCheers: string;
   localOnly: string;
+  liveSync: string;
+  delayedSync: string;
+  scheduledSync: string;
+  replaySync: string;
+  illustrative: string;
+  onPitch: string;
+  confirmedMoment: string;
 };
 
 type PulsePlayProps = {
@@ -27,6 +34,20 @@ type PulsePlayProps = {
 };
 
 type CheerState = { home: number; away: number };
+
+const miniSquad = [
+  { x: 7, y: 50, role: "keeper" },
+  { x: 17, y: 14, role: "defender" },
+  { x: 19, y: 38, role: "defender" },
+  { x: 19, y: 62, role: "defender" },
+  { x: 17, y: 86, role: "defender" },
+  { x: 30, y: 24, role: "midfielder" },
+  { x: 32, y: 50, role: "midfielder" },
+  { x: 30, y: 76, role: "midfielder" },
+  { x: 42, y: 25, role: "forward" },
+  { x: 45, y: 50, role: "forward" },
+  { x: 42, y: 75, role: "forward" },
+] as const;
 
 function readCheers(matchId: string): CheerState {
   if (typeof window === "undefined") return { home: 0, away: 0 };
@@ -49,9 +70,30 @@ export function PulsePlay({ match, frame, latestEvent, minute, isFinal, homeName
   const card = latestEvent?.type === "yellow_card" ? "yellow" : latestEvent?.type === "red_card" ? "red" : null;
   const isPenalty = Boolean(latestEvent?.penalty);
   const isExtraTime = eventMinute > 90 || Boolean(latestEvent?.stoppage);
+  const eventTeamSide = latestEvent?.team === match.home.code ? "home" : latestEvent?.team === match.away.code ? "away" : null;
+  const eventPlayer = readablePlayerName(latestEvent?.player);
+  const eventFigureIndex = figureIndexForEvent(latestEvent);
+  const goalSupportIndexes = eventType === "goal" && eventFigureIndex >= 0
+    ? [(eventFigureIndex + 1) % miniSquad.length, (eventFigureIndex + 2) % miniSquad.length]
+    : [];
+  const visibleEvents = match.events.filter((event) => event.minute <= minute);
+  const sentOff = {
+    home: sentOffIndexes(visibleEvents, match.home.code),
+    away: sentOffIndexes(visibleEvents, match.away.code),
+  };
+  const onPitch = {
+    home: Math.max(7, miniSquad.length - sentOff.home.size),
+    away: Math.max(7, miniSquad.length - sentOff.away.size),
+  };
+  const syncMode = match.dataStatus === "Replay" ? "replay" : match.status === "scheduled" ? "scheduled" : match.dataStatus === "Delay" ? "delayed" : "live";
+  const syncLabel = syncMode === "replay" ? text.replaySync : syncMode === "scheduled" ? text.scheduledSync : syncMode === "delayed" ? text.delayedSync : text.liveSync;
 
   useEffect(() => {
-    window.localStorage.setItem(`wclp-cheers-${match.id}`, JSON.stringify(cheers));
+    try {
+      window.localStorage.setItem(`wclp-cheers-${match.id}`, JSON.stringify(cheers));
+    } catch {
+      // The interaction remains usable when browser storage is unavailable.
+    }
   }, [cheers, match.id]);
 
   const addCheer = (side: keyof CheerState) => {
@@ -61,22 +103,26 @@ export function PulsePlay({ match, frame, latestEvent, minute, isFinal, homeName
   return (
     <section className={`pulse-play pulse-play-${eventType} ${isPenalty ? "is-penalty" : ""} ${isExtraTime ? "is-extra-time" : ""}`} aria-label={text.title}>
       <header className="pulse-play-scoreboard">
-        <span><small>{homeName}</small><b>{match.home.code}</b><strong>{frame.homeScore}</strong></span>
+        <span><small>{homeName}</small><b>{match.home.code}</b><strong>{frame.homeScore}</strong><em>{onPitch.home} {text.onPitch}</em></span>
         <div><small>{isFinal ? "FT" : `${Math.max(1, minute)}'`}</small><b>{text.title}</b></div>
-        <span><strong>{frame.awayScore}</strong><b>{match.away.code}</b><small>{awayName}</small></span>
+        <span><em>{onPitch.away} {text.onPitch}</em><strong>{frame.awayScore}</strong><b>{match.away.code}</b><small>{awayName}</small></span>
       </header>
-      <div className="pulse-pitch" style={{ "--ball-x": `${ballX}%`, "--ball-y": `${ballY}%` } as CSSProperties}>
+      <div className="pulse-pitch" style={{ "--ball-x": `${ballX}%`, "--ball-y": `${ballY}%`, "--trail-left": `${attackingHome ? Math.min(82, ballX - 8) : ballX}%`, "--trail-width": `${Math.max(7, Math.abs(ballX - (attackingHome ? 82 : 18)))}%` } as CSSProperties}>
         <div className="pitch-halfway" aria-hidden="true" />
         <div className="pitch-circle" aria-hidden="true" />
         <div className="pitch-box pitch-box-home" aria-hidden="true" />
         <div className="pitch-box pitch-box-away" aria-hidden="true" />
-        {[0, 1, 2].map((index) => <span className={`pulse-player home player-${index + 1} ${attackingHome ? "attacking" : ""}`} key={`home-${index}`} aria-hidden="true">{match.home.code.slice(0, 1)}</span>)}
-        {[0, 1, 2].map((index) => <span className={`pulse-player away player-${index + 1} ${!attackingHome ? "attacking" : ""}`} key={`away-${index}`} aria-hidden="true">{match.away.code.slice(0, 1)}</span>)}
+        {miniSquad.map((player, index) => <MatchFigure key={`home-${index}`} side="home" index={index} player={player} attacking={attackingHome} eventType={eventType} eventMinute={eventMinute} ballY={ballY} active={eventTeamSide === "home" && eventFigureIndex === index} supportRank={eventTeamSide === "home" ? goalSupportIndexes.indexOf(index) : -1} sentOff={sentOff.home.has(index)} />)}
+        {miniSquad.map((player, index) => <MatchFigure key={`away-${index}`} side="away" index={index} player={player} attacking={!attackingHome} eventType={eventType} eventMinute={eventMinute} ballY={ballY} active={eventTeamSide === "away" && eventFigureIndex === index} supportRank={eventTeamSide === "away" ? goalSupportIndexes.indexOf(index) : -1} sentOff={sentOff.away.has(index)} />)}
+        {eventType === "goal" ? <><span className="pulse-ball-trail" aria-hidden="true" /><span className={`pulse-goal-wave ${attackingHome ? "away" : "home"}`} aria-hidden="true" /></> : null}
         <span className="pulse-ball" aria-hidden="true" />
         {card ? <span className={`pulse-card ${card}`} aria-hidden="true" /> : null}
         {isPenalty ? <span className="pulse-penalty-badge">{text.penalty}</span> : null}
         {isExtraTime ? <span className="pulse-extra-badge">{text.extraTime}</span> : null}
+        <span className={`pulse-sync-badge ${syncMode}`}>{syncLabel}</span>
+        {eventPlayer ? <span className={`pulse-event-actor ${eventTeamSide ?? "neutral"}`}><small>{text.confirmedMoment}</small><strong>{eventPlayer}</strong></span> : null}
       </div>
+      <p className="pulse-play-disclaimer">{text.illustrative}</p>
       <footer className="pulse-play-footer">
         <div className="pulse-moment" aria-live="polite">
           <span>{text.liveMoment}</span>
@@ -91,4 +137,69 @@ export function PulsePlay({ match, frame, latestEvent, minute, isFinal, homeName
       </footer>
     </section>
   );
+}
+
+type MiniSquadPlayer = (typeof miniSquad)[number];
+
+function MatchFigure({ side, index, player, attacking, eventType, eventMinute, ballY, active, supportRank, sentOff }: { side: "home" | "away"; index: number; player: MiniSquadPlayer; attacking: boolean; eventType: string; eventMinute: number; ballY: number; active: boolean; supportRank: number; sentOff: boolean }) {
+  const direction = side === "home" ? 1 : -1;
+  const baseX = side === "home" ? player.x : 100 - player.x;
+  const attackShift = attacking ? (player.role === "keeper" ? 1.5 : player.role === "defender" ? 3 : 6) : -1;
+  const eventShift = eventType === "goal" && active ? 5 : eventType === "red_card" && active ? -2 : 0;
+  const laneMotion = player.role === "keeper" ? 0 : ((eventMinute + index * 5) % 5) - 2;
+  const activeX = eventType === "goal" ? (side === "home" ? 82 : 18)
+    : eventType === "yellow_card" || eventType === "red_card" ? 50 + direction * 3
+      : eventType === "substitution" ? (side === "home" ? 8 : 92)
+        : baseX + direction * (attackShift + eventShift);
+  const activeY = eventType === "goal" ? ballY : eventType === "yellow_card" || eventType === "red_card" ? 50 : player.y;
+  const supportX = side === "home" ? 73 - supportRank * 4 : 27 + supportRank * 4;
+  const supportY = Math.max(14, Math.min(86, ballY + (supportRank === 0 ? -13 : 14)));
+  const style = {
+    "--figure-x": `${supportRank >= 0 ? supportX : active ? activeX : baseX + direction * (attackShift + eventShift)}%`,
+    "--figure-y": `${supportRank >= 0 ? supportY : active ? activeY : Math.max(10, Math.min(90, player.y + laneMotion))}%`,
+    "--figure-delay": `${index * 45}ms`,
+  } as CSSProperties;
+  const eventMark = active ? eventSymbol(eventType) : "";
+  const beingSentOff = sentOff && active && eventType === "red_card";
+  const classes = ["pulse-player", side, player.role, attacking ? "attacking" : "", active ? "event-player" : "", supportRank >= 0 ? "supporting-event" : "", eventType === "goal" && active ? "celebrating" : "", eventType === "substitution" && active ? "substituting" : "", beingSentOff ? "being-sent-off" : "", sentOff && !beingSentOff ? "sent-off" : ""].filter(Boolean).join(" ");
+
+  return <span className={classes} style={style} aria-hidden="true"><i className="figure-head" /><i className="figure-arms" /><i className="figure-body">{index + 1}</i><i className="figure-legs" />{eventMark ? <b className={`figure-event figure-event-${eventType}`}>{eventMark}</b> : null}</span>;
+}
+
+function readablePlayerName(candidate?: string) {
+  if (!candidate) return undefined;
+  const normalized = candidate.trim();
+  if (!normalized || /^#?\d+$/.test(normalized) || /^player\s*#?\d+$/i.test(normalized)) return undefined;
+  return normalized;
+}
+
+function figureIndexForEvent(event?: MatchEvent) {
+  if (!event) return -1;
+  const seed = readablePlayerName(event.player) ?? `${event.team ?? "neutral"}-${event.minute}-${event.type}`;
+  return stableHash(seed) % miniSquad.length;
+}
+
+function sentOffIndexes(events: MatchEvent[], teamCode: string) {
+  const indexes = new Set<number>();
+  for (const event of events) {
+    if (event.type !== "red_card" || event.team !== teamCode) continue;
+    let candidate = figureIndexForEvent(event);
+    while (indexes.has(candidate)) candidate = (candidate + 1) % miniSquad.length;
+    indexes.add(candidate);
+  }
+  return indexes;
+}
+
+function stableHash(value: string) {
+  let hash = 0;
+  for (let index = 0; index < value.length; index += 1) hash = ((hash << 5) - hash + value.charCodeAt(index)) | 0;
+  return Math.abs(hash);
+}
+
+function eventSymbol(eventType: string) {
+  if (eventType === "goal") return "G";
+  if (eventType === "yellow_card") return "Y";
+  if (eventType === "red_card") return "R";
+  if (eventType === "substitution") return "S";
+  return "";
 }

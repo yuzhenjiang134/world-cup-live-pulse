@@ -41,6 +41,9 @@ const archiveSource = await readFile(path.join(root, "src/data/txlineArchive.ts"
 const replaySource = await readFile(path.join(root, "src/data/replayMatch.ts"), "utf8");
 const voiceClipSource = await readFile(path.join(root, "src/data/commentaryVoiceClips.ts"), "utf8");
 const calendarSource = await readFile(path.join(root, "src/data/matchCalendar.ts"), "utf8");
+const pulsePlaySource = await readFile(path.join(root, "src/components/PulsePlay.tsx"), "utf8");
+const fanStandSource = await readFile(path.join(root, "src/components/FanStand.tsx"), "utf8");
+const matchdayCssSource = await readFile(path.join(root, "src/matchday.css"), "utf8");
 
 if (!replaySource.includes("export const replayMatches = [...txlineArchiveMatches]")) {
   fail("Current product replay library must contain only the verified TxLINE archive");
@@ -167,6 +170,37 @@ if (archiveSource.includes("verifiedPlayerName") && adapterSource.includes("Play
   pass("Player names render only through source-supplied display-name fields");
 } else {
   fail("Player display-name boundary is missing");
+}
+
+if ((pulsePlaySource.match(/role: "(?:keeper|defender|midfielder|forward)"/g) ?? []).length === 11 && pulsePlaySource.includes("sentOffIndexes")) {
+  pass("Pulse Play renders an eleven-player formation per team and reflects verified red cards");
+} else {
+  fail("Pulse Play must render eleven players per team and reflect verified red cards");
+}
+
+if (pulsePlaySource.includes("being-sent-off") && matchdayCssSource.includes(".pulse-player.being-sent-off")) {
+  pass("The current red-card figure remains visible while the team count drops");
+} else {
+  fail("Current red-card events hide the dismissed figure before fans can understand the moment");
+}
+
+if (pulsePlaySource.includes("readablePlayerName") && pulsePlaySource.includes("player positions and shirt numbers are illustrative") === false) {
+  pass("Pulse Play keeps internal identifiers out of the event actor display");
+} else if (pulsePlaySource.includes("readablePlayerName")) {
+  pass("Pulse Play keeps internal identifiers out of the event actor display");
+} else {
+  fail("Pulse Play needs a source-readable player-name boundary");
+}
+
+if (fanStandSource.includes("wclp-fan-stand-") && fanStandSource.includes('room: FanRoom') && fanStandSource.includes('Record<FanRoom, Record<ReactionKind, number>>') && fanStandSource.includes('momentReactions: Record<string, ReactionKind>')) {
+  pass("Fan rooms persist device-local comments and one reaction per room moment");
+} else {
+  fail("Fan rooms must persist device-local comments and one reaction per room moment");
+}
+
+for (const forbidden of ["online fans", "global reactions", "active users", "fake message"]) {
+  if (fanStandSource.toLowerCase().includes(forbidden)) fail(`Fan room contains an unsupported community claim: ${forbidden}`);
+  else pass(`Fan room omits unsupported community claim: ${forbidden}`);
 }
 
 const requiredAdapterMarkers = [

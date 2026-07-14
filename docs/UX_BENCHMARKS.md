@@ -1,6 +1,6 @@
 # UX Benchmarks
 
-Updated: 2026-06-29
+Updated: 2026-07-14
 
 This note tracks market UX patterns used to sharpen World Cup Live Pulse for the Consumer and Fan Experiences track.
 
@@ -14,6 +14,18 @@ This note tracks market UX patterns used to sharpen World Cup Live Pulse for the
   Source: https://www.flashscore.com/
 - FIFA Match Centre: official match-centre framing for tournament fixtures and results.
   Source: https://www.fifa.com/en/match-centre
+- FIFA World Cup tournament path: scores, schedule, teams, progression, highlights, news, and games stay in the core fan journey.
+  Source: https://www.fifa.com/en/tournaments/mens/worldcup/?app=true
+- OneFootball Live Chat: a match-specific conversation layer keeps community close to live context instead of turning the product into a general social feed.
+  Source: https://onefootballsupport.zendesk.com/hc/en-us/articles/46696657538193-Introduction-to-OneFootball-Live-Chat
+- LiveScore World Cup 2026: live scores, fixtures, route to the final, commentary, key-event alerts, reports and reaction form one before/during/after match loop.
+  Source: https://www.livescore.com/en/media/livescore-features-wc-2026/
+- LiveScore favourites: following a match subscribes the fan to configurable alerts and groups followed matches in one return destination.
+  Source: https://help.livescore.com/hc/en-gb/articles/4408006762898-What-happens-when-I-favourite-a-match-team-or-competition
+- OneFootball community rules: match chat needs topic focus, privacy protection, anti-spam controls and a clear moderation path before it becomes a networked community.
+  Source: https://promo.onefootball.com/community-guidelines/en
+- FIFA World Cup 2026: matches, standings, teams, bracket, highlights, news, games and fan experience remain the official tournament core.
+  Source: https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026
 
 ## UX patterns worth adopting
 
@@ -24,6 +36,7 @@ This note tracks market UX patterns used to sharpen World Cup Live Pulse for the
 - Use match data labels aggressively: Live, Delay, Replay, and Seed must be visible so no-match-day states do not feel fake.
 - Make interactions real: navigation buttons must scroll or reveal content, and score-pick controls must update the displayed choice.
 - Preserve video rights boundaries: video can exist only as a rights-cleared official embed, never as a scraped or unofficial stream.
+- Keep community match-specific and low-friction. Separate the all-match conversation from team rooms, but do not display audience scale unless a real backend measures it.
 
 ## Patterns intentionally rejected
 
@@ -43,6 +56,24 @@ This note tracks market UX patterns used to sharpen World Cup Live Pulse for the
 - Added a downloadable local fan pick card so score prediction becomes shareable without becoming a betting flow.
 - Updated demo and technical docs to explain local fan score pick safety.
 - Added a source trust strip, live signal summary, and visual prediction bars so the first product path behaves more like a mature match center.
+- Expanded Pulse Play to eleven illustrated figures per team and added three fixture-scoped local fan rooms without fake comments or global counts.
+- Limited each local supporter to one saved reaction per room and match minute. A fan may change that choice, but repeated clicks cannot manufacture engagement.
+
+## 2026-07-14 fan-room decision
+
+- One all-match room answers the shared match conversation need.
+- One room per team gives supporters a focused space without adding a general-purpose social network.
+- Reactions and comments are real local actions saved on the current device; the prototype never implies they came from other fans.
+- A commercial club or publisher deployment can replace local persistence with authenticated moderation while preserving the same fan-facing room structure.
+
+## 2026-07-14 retention and trust rescan
+
+- **Return trigger:** a followed match already carries configurable goal, card and final alerts; favourite teams remain prioritised without hiding the full schedule.
+- **Live habit:** Pulse Play, the latest confirmed event, AI catch-up and the three rooms use the same match minute, so a fan does not rebuild context in each module.
+- **Credible interaction:** one reaction per room/minute replaces unlimited tap counts. Comments remain removable and device-local; no online scale is claimed.
+- **Community safety boundary:** the prototype deliberately avoids pretending to offer network moderation. A production community requires login, slow mode, filtering, reporting and human escalation before cross-device publication.
+- **After-match return:** challenge history, verified replay, route to the final and team records provide a reason to reopen the product when no match is live.
+- **Source discipline:** the interface may be less dense than commercial score apps because it omits lineups, xG, injuries, ratings and news when the current TxLINE integration cannot verify them.
 
 ## 2026-06-29 five-iteration upgrade scan
 

@@ -1,6 +1,6 @@
 # World Cup Live Pulse - Technical Submission
 
-Updated: 2026-07-13
+Updated: 2026-07-14
 
 World Cup Live Pulse is a fan-first match companion built for the Superteam Earn / TxODDS World Cup Hackathon, Consumer and Fan Experiences track. It turns a verified match feed into a score challenge, event-driven animated match theatre, key-moment replay, grounded AI-style explanation, followed-match alerts, and team context.
 
@@ -30,7 +30,7 @@ TxLINE authenticated API               Public FIFA World Cup scoreboard
                                    |
             pulse frame / challenge / commentary layer
                                    |
-  Match Center | Pulse Play | Score Challenge | Replay | Teams | Alerts
+  Match Center | Pulse Play | Score Challenge | Fan Rooms | Replay | Teams | Alerts
 ```
 
 The production entry is `src/MatchdayApp.tsx`. Raw TxLINE field knowledge is isolated in `src/lib/txlineAdapter.ts` and `src/lib/txlineScoreNormalizer.ts`. Components consume the normalized types in `src/types.ts`; they do not parse raw API payloads.
@@ -96,15 +96,21 @@ The replay archive accepts a final result only from an action normalized as `gam
 
 `src/components/PulsePlay.tsx` is an original, rights-safe event theatre. It does not show broadcast footage or copyrighted player likenesses.
 
-- The ball position and attacking side react to the current normalized event frame.
+- The pitch contains eleven illustrated figures per team and the ball/attacking side react to the current normalized event frame.
 - Goals animate the ball at the relevant end.
 - Penalty badges use the source penalty flag.
-- Red and yellow cards render from the matching event type.
+- Red and yellow cards render on the event figure; confirmed red cards reduce the displayed on-pitch count.
+- Substitution events animate the event figure without inventing an incoming or outgoing identity.
+- A player name appears only when the source provides a readable name. Illustrated positions and shirt numbers are explicitly labeled as illustrative, not tracking or lineup data.
 - Added time uses minute and stoppage metadata.
 - The score, current minute, and moment explanation stay synchronized with Match Center.
 - Team cheer buttons are local-only fan interactions. Their counts are labeled as the current user's device state and are never presented as global sentiment.
 
 The normal scoreboard remains one click away. Reduced-motion users receive the same state without sustained animation.
+
+## 8.1 Fan rooms
+
+Every fixture has three low-friction rooms: all fans, home-team fans, and away-team fans. Reactions and short comments are stored separately per room and per fixture on the current device. This makes the interaction real and testable without inventing global audience counts, fake comments, or an unsupported account system. The current implementation is a consumer prototype boundary; a paid publisher or club deployment can replace local persistence with moderated authenticated rooms.
 
 ## 9. Score challenge
 
@@ -130,7 +136,7 @@ The product exposes three complementary modes:
 
 Text is generated deterministically from normalized score, event, match state, and source-backed market context. Scheduled matches have distinct pre-match copy for matchup, significance, and catch-up rather than repeating an empty state. The feature does not invent external news or player facts.
 
-Authorized local voice clips are used for prepared replay scenes; browser speech is a transparent fallback. The final English Demo uses the owner's authorized local cloned voice, with scene-specific emotional direction. Voice samples and profile identifiers remain outside the public repository.
+Authorized local voice clips are used for prepared replay scenes; browser speech is a transparent fallback. After local and online acceptance and explicit owner approval, the final English Demo will use the owner's authorized local cloned voice with continuous-chapter emotional direction. Voice samples and profile identifiers remain outside the public repository.
 
 ## 11. Global fan access
 
@@ -179,7 +185,7 @@ npm run txline:probe
 git diff --check
 ```
 
-The local suite covers TypeScript, fixture truth, World Cup scope, score normalization, challenge rules, archive finals, AI briefs, eight-language integrity, security, proxy behavior, and the token helper. Browser E2E covers exact settlement, pre-kickoff edits, Pulse Play penalty state, local cheers, alert preference persistence, three AI modes, key events, replay, favorites, official links, keyboard access, accessible names, and desktop/mobile layouts.
+The local suite covers TypeScript, fixture truth, World Cup scope, score normalization, challenge rules, archive finals, AI briefs, eight-language integrity, security, proxy behavior, and the token helper. Browser E2E covers exact settlement, pre-kickoff edits, 22-figure Pulse Play event states, local cheers, three separately persisted fan rooms, alert preference persistence, three AI modes, key events, replay, favorites, official links, keyboard access, accessible names, and desktop/mobile layouts.
 
 On the final local candidate, two consecutive authenticated probes on 2026-07-13 each accepted 2 World Cup fixtures and 2 score records for fixture `18237038`. The official-odds collection changed from 4 records to 7 between probes. These counts are dated observations, not permanent product claims; they demonstrate why every collection is refreshed and timestamped independently.
 

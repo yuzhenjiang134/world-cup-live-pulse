@@ -1,117 +1,105 @@
-# Final Demo Script
+# Final Demo Script - Recording Draft
 
-Selected version: B, final English judging cut. Target duration: 4:50, below five minutes. Hard maximum: 5:00.
+Status: prepared for owner review. Recording is blocked until local acceptance and same-commit online review pass, then the project owner explicitly approves recording.
 
-The video uses the user's authorized local cloned voice. The voice profile ID and source sample remain local and are never written into the repository, captions, or output metadata.
+Target duration: 4:32. Hard maximum: 5:00. Language: English only.
 
-## 0:00-0:14 - Product promise
+The approved recording will use the user's authorized local cloned voice. The voice profile, source sample, and local paths never enter the repository, captions, browser, or output metadata. Narration should be recorded as continuous chapters with natural bridges, not as a chain of disconnected short clips.
 
-Introduce World Cup Live Pulse as a fan-first companion for live scores, verified moments, score challenges, and fast catch-up.
+## 0:00-0:22 - The fan problem
 
-Voice: warm, confident, inviting. Avoid an advertising tone.
+Show the opening Match Center and move immediately to the score, state, and latest verified moment.
 
-## 0:14-0:26 - Fan-first hierarchy
+Narration intent: Fans should not have to switch between a score app, a social feed, a predictor, and a replay page just to understand one match. World Cup Live Pulse brings the trusted match state, the moments that changed it, and low-friction participation into one fan-first journey.
 
-Show the accepted desktop Match Center. Score, status, freshness, AI brief, replay, and the 1,000-point challenge answer the fan's first questions without exposing developer diagnostics.
+Voice: warm urgency, then a confident product introduction.
 
-Voice: calm and reassuring.
+## 0:22-0:48 - The live answer
 
-## 0:26-0:43 - Pulse Play
+Show score, match status, freshness, one-sentence AI brief, followed-match controls, and the score challenge above the fold.
 
-Show the event-driven animated pitch. Explain that verified goals, cards, source-marked penalties, added time, and final state drive the theatre. Local cheers stay explicitly on-device and never pretend to be global statistics.
+Narration intent: The first view answers four questions quickly: what is the score, what just happened, what should I watch next, and how can I join in? Technical diagnostics stay out of the fan path, while source status and checked time remain visible in plain language.
 
-Voice: excited but controlled matchday energy; slow down on the local-only truth boundary.
+Voice: clear and reassuring.
 
-## 0:43-1:04 - Score challenge and settlement
+## 0:48-1:18 - 11v11 Pulse Play
 
-Compare the challenge before and after settlement. The first prediction costs 50 local points, edits before kickoff are free, one fixture keeps one ledger record, and only a verified final result awards points and XP once.
+Switch to Pulse Play. Jump through a goal, yellow card, red card, substitution, added time, and full time. Show the player count changing from eleven to ten after a confirmed red card.
 
-Voice: energetic on participation, precise on settlement.
+Narration intent: Pulse Play turns the same verified event stream into a rights-safe animated match theatre with eleven illustrated figures per team. Goals, cards, substitutions, added time, and final state change the scene. When the source provides a readable player name, it appears; otherwise we never turn an internal number into a player identity. Positions and shirt numbers are illustrations, not tracking claims.
 
-## 1:04-1:20 - Key-event catch-up
+Voice: matchday energy with a slower, factual delivery for the identity boundary.
 
-Show one-tap jumps to goals, cards, score reviews, half-time, and full-time. The timeline, Pulse Play, and AI brief all use the same normalized event frame.
+## 1:18-1:45 - Score challenge and repeat use
 
-Voice: restrained football urgency.
+Show the 1,000-point starting balance, place a 50-point score pick, edit before kickoff, then show verified one-time settlement and history.
 
-## 1:20-1:39 - Real-time trust rules
+Narration intent: The score challenge adds a reason to return without betting, wallets, or cash. One fixture has one local ledger entry, edits remain free before kickoff, and rewards and experience settle once only after a verified final result. The history demonstrates the full loop without pretending that local demo activity came from real users.
 
-Explain 15-second refresh, focus refresh, World Cup `CompetitionId 72`, provisional-goal reversal, independent odds freshness, checked timestamps, and `game_finalised` settlement.
+Voice: energetic on participation, precise on settlement and safety.
 
-Voice: measured and factual.
+## 1:45-2:10 - AI catch-up and key moments
 
-## 1:39-1:57 - Judgeable 2026 replay
+Show Live Call, Why It Matters, and 30-Second Catch-Up. Jump among goals, cards, reviews, half-time, and full-time.
 
-Show eight verified 2026 TxLINE archive matches, current schedule separation, event totals, and source-confirmed tournament progression. Replay is never labeled live.
+Narration intent: The AI-style brief never invents a fact. It grounds every sentence in the active score, event, minute, and source-readable identity. Fans can hear the immediate call, understand why the moment matters, or catch up quickly after missing part of the match.
 
-Voice: empathetic catch-up.
+Voice: conversational and human, with restrained football excitement.
 
-## 1:57-2:15 - Spoiler-free replay
+## 2:10-2:34 - Fan rooms
 
-Compare normal and spoiler-free tournament views. Scores, winners, event totals, bracket outcomes, and team records remain hidden until the fan reveals them through playback.
+Open the all-match room, home-team room, and away-team room. Add one reaction and one short comment, switch rooms, and show that their state remains separate.
 
-Voice: considerate and clear.
+Narration intent: Match conversation stays close to the match. This prototype stores real reactions and comments on the current device, separately for each fixture and room. It does not display fake fans, bot messages, or invented global totals. A club or publisher can extend the same structure into authenticated, moderated rooms.
 
-## 2:15-2:31 - Favorite-team shortcut
+Voice: friendly and social, then transparent on the local boundary.
 
-Show a local favorite moving that team to the front of teams, schedule, and replay without an account or invented recommendation feed.
+## 2:34-2:59 - Schedule, progression, replay, teams
 
-Voice: friendly and practical.
+Show current schedule separation, verified 2026 replay fixtures, tournament progression, spoiler-free replay, favorite-team priority, and source-gated team/player detail.
 
-## 2:31-2:49 - Source-gated team and player detail
+Narration intent: Fans can see what is next, how the tournament progressed, and what they missed without mixing upcoming matches with completed ones. Replay, team, and player detail appear only when supported by the source. Numeric IDs and unsupported lineup, assist, or xG fields are omitted.
 
-Show source-derived appearances, results, goals, cards, opponents, and replay evidence. Readable player names appear only when the source supplies them; numeric IDs never become identities.
+Voice: practical and trustworthy.
 
-Voice: transparent and confident.
+## 2:59-3:21 - Global and accessible use
 
-## 2:49-3:05 - Eight complete languages
+Show English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic RTL, then the 390-pixel mobile layout and keyboard focus.
 
-Show English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic, including Arabic RTL. The selected language covers the complete fan journey rather than a translated shell.
+Narration intent: The complete fan journey works in eight languages, not just the navigation shell. Mobile controls fit without horizontal overflow, keyboard names are meaningful, and reduced-motion users keep the same match information without sustained animation.
 
-Voice: globally welcoming.
+Voice: globally welcoming and concise.
 
-## 3:05-3:22 - Mobile and accessibility
+## 3:21-3:42 - Rights-safe viewing
 
-Show the 390-pixel layout with score, Pulse Play, AI, challenge, replay, navigation, keyboard focus, accessible names, and reduced motion without horizontal overflow.
+Open the official viewing and highlights links, then return to timeline replay.
 
-Voice: concise and confident.
-
-## 3:22-3:37 - Rights-safe viewing
-
-Explain that video entry points go only to official FIFA archive, highlights, and updates. Timeline replay remains available when territorial rights differ.
+Narration intent: World Cup Live Pulse never scrapes or rebroadcasts an unauthorized stream. Viewing entry points go only to official FIFA destinations, while the event timeline and Pulse Play remain useful when media rights vary by territory.
 
 Voice: responsible and positive.
 
-## 3:37-3:55 - TxLINE backend value
+## 3:42-4:08 - How TxLINE powers the backend
 
-Show the exact authenticated boundary: guest JWT, World Cup fixture snapshot, score snapshot and events, official odds, and optional final-score validation. No private token enters the public bundle.
+Show a clean architecture frame: guest JWT, `/api/fixtures/snapshot`, `/api/scores/snapshot`, `/api/odds/snapshot`, normalization, refresh, and `game_finalised` settlement. Do not show credentials or developer forms.
 
-Voice: precise and accessible. Pronounce the sponsor as "T X Line."
+Narration intent: T X Line powers the verified core. Authenticated fixture, score, event, and official-odds collections are normalized into one match model. Live data refreshes every fifteen seconds and on focus; provisional changes can reverse; collections keep independent freshness; and the score challenge settles only on `game_finalised`. Tokens and JWTs remain behind a private proxy and never enter the public bundle.
 
-## 3:55-4:17 - Commercial path
+Voice: measured, accessible, and technically confident. Pronounce the sponsor as "T X Line."
 
-Connect the same trusted core to branded challenge rooms, community leaderboards, publisher widgets, venue screens, localization, and clearly labeled sponsor activations without wagers or cash.
+## 4:08-4:32 - Commercial path, proof, and close
 
-Voice: forward-looking but credible.
+Show the product matrix, test evidence, then close on Match Center with challenge, theatre, and community visible.
 
-## 4:17-4:35 - Submission evidence
+Narration intent: The same trusted core can power sponsored non-cash challenge rooms, moderated club communities, publisher match widgets, venue screens, and localization packages. This is a complete product, not a mockup: local and online browser tests cover challenge settlement, 22-player event states, three fan rooms, AI modes, replay, eight languages, accessibility, security, and responsive layouts. World Cup Live Pulse helps fans understand, participate, and return, during the match and after it.
 
-State that three local acceptance rounds, Chinese and English browser E2E, eight-language checks, TxLINE probes, secret scanning, endpoint documentation, detailed API feedback, CI, and same-SHA deployment support the claims.
+Voice: credible commercial confidence, then a warm human finish.
 
-Voice: deliberate proof statement.
+## Approval and final checks
 
-## 4:35-4:50 - Close
-
-Close on World Cup Live Pulse as a complete fan product: useful during or after a match, multilingual, source-aware, repeatable, and built for fans rather than developers.
-
-Voice: warm and confident, with a human sense of completion.
-
-## Final upload checks
-
-- Upload only `demo-assets/world-cup-live-pulse-demo-b-narrated.mp4` after it passes all checks.
-- Confirm duration is 4:50 or less and playback works without login.
-- Confirm every visible product fact matches the accepted worktree.
-- Reverse-transcribe all 17 scenes and compare them with the narration manifest.
-- Check pronunciation, loudness, clipping, silence, audio/video sync, first frame, Pulse Play, challenge settlement, TxLINE boundary, and final safety frame.
-- Watch and listen to the complete English video twice.
-- Put the verified public URL in `docs/SUBMISSION_DRAFT.md` and the Superteam form.
+- Do not record until the project owner approves this script after local and online acceptance.
+- Record continuous chapter narration with natural transitions and consistent pacing, emotion, and loudness.
+- Confirm duration stays under five minutes and every visible fact matches the accepted commit.
+- Reverse-transcribe and compare against this script.
+- Check pronunciation, clipping, silence, loudness, sync, first frame, 11v11 theatre, red-card count, challenge settlement, fan-room truth boundary, TxLINE architecture, and final safety frame.
+- Watch and listen to the complete English video twice before publishing.
+- Publish only after the public video works without login and matches the same accepted product version.

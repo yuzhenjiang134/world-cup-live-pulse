@@ -80,9 +80,9 @@ npm run validate
 
 ## Demo video
 
-The reproducible English judging demo is documented in `docs/DEMO_VIDEO_PACKAGE.md`. It is generated only from the locally accepted product build; the public copy must be replaced only after the same commit passes Pages and online E2E.
+The reproducible English judging demo is documented in `docs/DEMO_VIDEO_PACKAGE.md`. The previous cut is now a stale candidate because the product and narration standard changed. Do not record or replace the public demo until the current build passes local acceptance, the same commit passes online review, and the project owner explicitly approves recording.
 
-After refreshing the final E2E screenshots, run:
+After that approval only, refresh the final E2E screenshots and run:
 
 ```powershell
 npm run demo:video

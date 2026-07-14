@@ -1,5 +1,28 @@
 # World Cup Live Pulse Work Log
 
+## 2026-07-14: Two full demonstrations and three-perspective UX acceptance
+
+- Re-ran the complete English and Chinese matchday E2E independently. Both passed challenge settlement and pre-kickoff edits, 22-player Pulse Play, red-card 10-v-11 state, fan-room isolation and persistence, AI modes, replay, favourites, alerts, eight languages, accessibility and 390px responsive checks.
+- Fixed the multi-scenario E2E URL so the red-card replay inherits the same candidate base URL instead of falling back to the default development port.
+- Re-ran `npm.cmd run validate`, `npm.cmd run build`, browser console review and overflow checks. All passed; no video was recorded.
+- Completed two independent local demonstrations: one for data/state integrity and one for the continuous fan journey from pre-match challenge through Pulse Play, team rooms, catch-up, replay and team discovery.
+- Completed three independent UX reviews for a first-time fan, a returning community fan, and a mobile international judge.
+- Consolidated the evidence in `docs/LOCAL_ACCEPTANCE_SUMMARY_2026-07-14.md`; local acceptance is complete, while same-commit online review and owner approval remain required before recording a new Demo.
+- Rechecked the latest desktop and 390px captures after removing duplicate source labels, moving the mobile character counter inside the input, preserving full team names, and showing honest scheduled/replay/live sync states.
+- Kept the current historical video marked stale. No new narration or video was recorded in this round.
+- Rechecked FIFA, LiveScore and OneFootball fan paths. Converted room reactions from unlimited taps to one persisted choice per room/match minute, with a visible selected state and repeat-click guard.
+- Documented the production community boundary: authenticated identity, slow mode, filtering, reporting and human escalation are required before comments can be shared across devices.
+
+## 2026-07-14: 11v11 match theatre and truthful fan rooms
+
+- Expanded Pulse Play from six markers to eleven humanized figures per team. Goal, yellow-card, red-card, substitution, extra-time, and final states remain driven by normalized match events.
+- Confirmed red cards now reduce the affected team's on-pitch count. The current dismissed figure remains visible long enough to explain the moment; earlier dismissed figures leave the pitch.
+- Kept the identity boundary strict: source-readable names may appear, while numeric player IDs never become fan-facing names. Figure positions and shirt numbers are labeled as illustrations rather than tracking or lineup data.
+- Added all-match, home-team, and away-team fan rooms. Reactions and short comments persist separately by fixture and room on the current device.
+- Added no fake users, global reaction totals, automated messages, or unsupported community scale. The local prototype can later be replaced by moderated authenticated rooms for a club or publisher deployment.
+- Expanded English and Chinese browser E2E to cover 22 figures, yellow and red-card presentation, 11-to-10 player counts, room separation, local persistence, accessibility, and responsive layouts.
+- The previously published demo is now a stale historical candidate because the product and narration standard changed. A new video remains blocked until local acceptance, same-commit online review, final-script delivery, and explicit project-owner approval.
+
 ## 2026-07-14: Three-pass fan-facing online audit
 
 - Pass 1 removed developer-facing refresh intervals, repeated data explanations, duplicate flow panels, and incomplete event-count summaries from the primary fan journey.

@@ -7,6 +7,8 @@ import { localizeTeamName } from "./data/teamNames";
 import { txlineArchiveMatches } from "./data/txlineArchive";
 import { getCommentaryVoiceClip } from "./data/commentaryVoiceClips";
 import { PulsePlay } from "./components/PulsePlay";
+import { FanStand } from "./components/FanStand";
+import { fanStandCopy } from "./data/fanStandCopy";
 import { canLockScorePick, emptyChallengeStats, getFanLevel, settleScorePick, updateChallengeStats } from "./lib/challenge";
 import type { ChallengeStats } from "./lib/challenge";
 import { buildPulseFrame } from "./lib/pulse";
@@ -1046,15 +1048,15 @@ const alertPreferenceCopy: Record<Language, { title: string; note: string; goals
   ar: { title: "تنبيهات المباراة", note: "اختر الأحداث المؤكدة للمباريات التي تتابعها. تعمل تنبيهات المتصفح ما دامت هذه الصفحة مفتوحة.", goals: "الأهداف", cards: "البطاقات الحمراء والصفراء", final: "النتيجة النهائية" },
 };
 
-const pulsePlayCopy: Record<Language, { scoreView: string; playView: string; title: string; liveMoment: string; ready: string; penalty: string; extraTime: string; cheer: string; localCheers: string; localOnly: string }> = {
-  en: { scoreView: "Score", playView: "Pulse Play", title: "Pulse Play", liveMoment: "On the pitch", ready: "Ready for kickoff", penalty: "Penalty", extraTime: "Added time", cheer: "Cheer for", localCheers: "Your match cheers", localOnly: "Saved on this device" },
-  zh: { scoreView: "比分", playView: "比赛剧场", title: "比赛剧场", liveMoment: "场上动态", ready: "等待开赛", penalty: "点球", extraTime: "补时", cheer: "为球队加油", localCheers: "我的助威", localOnly: "仅保存在本设备" },
-  es: { scoreView: "Marcador", playView: "Pulso en juego", title: "Pulso en juego", liveMoment: "En el campo", ready: "Listos para el inicio", penalty: "Penalti", extraTime: "Tiempo añadido", cheer: "Animar a", localCheers: "Tus ánimos", localOnly: "Guardado en este dispositivo" },
-  pt: { scoreView: "Placar", playView: "Pulso em jogo", title: "Pulso em jogo", liveMoment: "Em campo", ready: "Pronto para o início", penalty: "Pênalti", extraTime: "Acréscimos", cheer: "Torcer por", localCheers: "Sua torcida", localOnly: "Salvo neste dispositivo" },
-  fr: { scoreView: "Score", playView: "Pouls du match", title: "Pouls du match", liveMoment: "Sur le terrain", ready: "Prêt pour le coup d'envoi", penalty: "Penalty", extraTime: "Temps additionnel", cheer: "Encourager", localCheers: "Vos encouragements", localOnly: "Enregistré sur cet appareil" },
-  de: { scoreView: "Spielstand", playView: "Spielimpuls", title: "Spielimpuls", liveMoment: "Auf dem Platz", ready: "Bereit zum Anpfiff", penalty: "Elfmeter", extraTime: "Nachspielzeit", cheer: "Anfeuern", localCheers: "Dein Jubel", localOnly: "Auf diesem Gerät gespeichert" },
-  ja: { scoreView: "スコア", playView: "パルスプレイ", title: "パルスプレイ", liveMoment: "ピッチ上", ready: "キックオフ待機", penalty: "ペナルティーキック", extraTime: "アディショナルタイム", cheer: "応援する", localCheers: "あなたの応援", localOnly: "この端末だけに保存" },
-  ar: { scoreView: "النتيجة", playView: "نبض الملعب", title: "نبض الملعب", liveMoment: "على أرض الملعب", ready: "جاهزون للبداية", penalty: "ركلة جزاء", extraTime: "وقت بدل ضائع", cheer: "شجع", localCheers: "تشجيعك", localOnly: "محفوظ على هذا الجهاز" },
+const pulsePlayCopy: Record<Language, { scoreView: string; playView: string; title: string; liveMoment: string; ready: string; penalty: string; extraTime: string; cheer: string; localCheers: string; localOnly: string; liveSync: string; delayedSync: string; scheduledSync: string; replaySync: string; illustrative: string; onPitch: string; confirmedMoment: string }> = {
+  en: { scoreView: "Score", playView: "Pulse Play", title: "Pulse Play", liveMoment: "On the pitch", ready: "Ready for kickoff", penalty: "Penalty", extraTime: "Added time", cheer: "Cheer for", localCheers: "Your match cheers", localOnly: "Saved on this device", liveSync: "Event synced", delayedSync: "Delayed update", scheduledSync: "Pre-match preview", replaySync: "Replay moment", illustrative: "Confirmed events drive this animation; player positions and shirt numbers are illustrative.", onPitch: "on pitch", confirmedMoment: "Confirmed player" },
+  zh: { scoreView: "比分", playView: "比赛剧场", title: "比赛剧场", liveMoment: "场上动态", ready: "等待开赛", penalty: "点球", extraTime: "补时", cheer: "为球队加油", localCheers: "我的助威", localOnly: "仅保存在本设备", liveSync: "赛事同步", delayedSync: "延迟更新", scheduledSync: "赛前预览", replaySync: "回放节点", illustrative: "动画由已确认比赛事件驱动；球员位置和球衣号码为情境演示。", onPitch: "人在场", confirmedMoment: "已确认球员" },
+  es: { scoreView: "Marcador", playView: "Pulso en juego", title: "Pulso en juego", liveMoment: "En el campo", ready: "Listos para el inicio", penalty: "Penalti", extraTime: "Tiempo añadido", cheer: "Animar a", localCheers: "Tus ánimos", localOnly: "Guardado en este dispositivo", liveSync: "Sincronizado", delayedSync: "Actualización con retraso", scheduledSync: "Vista previa", replaySync: "Momento de repetición", illustrative: "Los eventos confirmados mueven la animación; las posiciones y dorsales son ilustrativos.", onPitch: "en campo", confirmedMoment: "Jugador confirmado" },
+  pt: { scoreView: "Placar", playView: "Pulso em jogo", title: "Pulso em jogo", liveMoment: "Em campo", ready: "Pronto para o início", penalty: "Pênalti", extraTime: "Acréscimos", cheer: "Torcer por", localCheers: "Sua torcida", localOnly: "Salvo neste dispositivo", liveSync: "Sincronizado", delayedSync: "Atualização com atraso", scheduledSync: "Prévia da partida", replaySync: "Momento do replay", illustrative: "Eventos confirmados movem a animação; posições e números são ilustrativos.", onPitch: "em campo", confirmedMoment: "Jogador confirmado" },
+  fr: { scoreView: "Score", playView: "Pouls du match", title: "Pouls du match", liveMoment: "Sur le terrain", ready: "Prêt pour le coup d'envoi", penalty: "Penalty", extraTime: "Temps additionnel", cheer: "Encourager", localCheers: "Vos encouragements", localOnly: "Enregistré sur cet appareil", liveSync: "Synchronisé", delayedSync: "Mise à jour différée", scheduledSync: "Aperçu avant-match", replaySync: "Moment du replay", illustrative: "Les événements confirmés animent la scène ; positions et numéros sont illustratifs.", onPitch: "sur le terrain", confirmedMoment: "Joueur confirmé" },
+  de: { scoreView: "Spielstand", playView: "Spielimpuls", title: "Spielimpuls", liveMoment: "Auf dem Platz", ready: "Bereit zum Anpfiff", penalty: "Elfmeter", extraTime: "Nachspielzeit", cheer: "Anfeuern", localCheers: "Dein Jubel", localOnly: "Auf diesem Gerät gespeichert", liveSync: "Ereignis-synchron", delayedSync: "Verzögertes Update", scheduledSync: "Spielvorschau", replaySync: "Replay-Moment", illustrative: "Bestätigte Ereignisse steuern die Animation; Positionen und Nummern sind illustrativ.", onPitch: "auf dem Platz", confirmedMoment: "Bestätigter Spieler" },
+  ja: { scoreView: "スコア", playView: "パルスプレイ", title: "パルスプレイ", liveMoment: "ピッチ上", ready: "キックオフ待機", penalty: "ペナルティーキック", extraTime: "アディショナルタイム", cheer: "応援する", localCheers: "あなたの応援", localOnly: "この端末だけに保存", liveSync: "イベント同期", delayedSync: "遅延更新", scheduledSync: "試合前プレビュー", replaySync: "リプレイ場面", illustrative: "確認済みイベントがアニメを動かします。位置と背番号は演出です。", onPitch: "人出場", confirmedMoment: "確認済み選手" },
+  ar: { scoreView: "النتيجة", playView: "نبض الملعب", title: "نبض الملعب", liveMoment: "على أرض الملعب", ready: "جاهزون للبداية", penalty: "ركلة جزاء", extraTime: "وقت بدل ضائع", cheer: "شجع", localCheers: "تشجيعك", localOnly: "محفوظ على هذا الجهاز", liveSync: "متزامن مع الحدث", delayedSync: "تحديث متأخر", scheduledSync: "معاينة قبل المباراة", replaySync: "لحظة إعادة", illustrative: "تحرك الأحداث المؤكدة الرسوم؛ المواقع والأرقام توضيحية.", onPitch: "في الملعب", confirmedMoment: "لاعب مؤكد" },
 };
 
 const challengeEditCopy: Record<Language, { edit: string; save: string; note: string; updated: string }> = {
@@ -1413,6 +1415,10 @@ function stageLabel(stage: string | undefined, competition: string, copy: UiCopy
   return value;
 }
 
+function uniqueFacts(...values: Array<string | undefined>) {
+  return [...new Set(values.map((value) => value?.trim()).filter((value): value is string => Boolean(value)))];
+}
+
 function localizedTournamentStage(value: string, language: Language) {
   const normalized = value.toLowerCase().replace(/[-_]/g, " ");
   const text = tournamentCopy[language];
@@ -1461,6 +1467,7 @@ export default function MatchdayApp() {
   const commentaryAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const copy = ui[language];
+  const standText = fanStandCopy[language];
   const helperUrl = `${import.meta.env.BASE_URL}tools/txline-subscribe/index.html?v=2026-07-10`;
   const configuredVideoUrl = safeVideoUrl(import.meta.env.VITE_AUTHORIZED_VIDEO_EMBED_URL);
   const videoUrl = configuredVideoUrl ?? officialVideoSources[0].url;
@@ -1978,8 +1985,7 @@ export default function MatchdayApp() {
             <section className="score-hero" aria-label={copy.scorePulse}>
               <div className="hero-meta">
                 <span className={`match-status ${match.status}`}>{statusText}</span>
-                <span>{stageLabel(match.stage, match.competition, copy, language)}</span>
-               <span>{venueLabel(match.venue, copy)}</span>
+                {uniqueFacts(stageLabel(match.stage, match.competition, copy, language), venueLabel(match.venue, copy)).map((fact) => <span key={fact}>{fact}</span>)}
                 <div className="hero-view-toggle" role="tablist" aria-label={pulseText.title}>
                   <button className={heroDisplay === "score" ? "active" : ""} type="button" role="tab" aria-selected={heroDisplay === "score"} onClick={() => setHeroDisplay("score")}>{pulseText.scoreView}</button>
                   <button className={heroDisplay === "play" ? "active" : ""} type="button" role="tab" aria-selected={heroDisplay === "play"} onClick={() => setHeroDisplay("play")}>{pulseText.playView}</button>
@@ -2032,13 +2038,15 @@ export default function MatchdayApp() {
               <Signal label={copy.yellow} value={yellowCount} tone="yellow" />
               <Signal label={copy.red} value={redCount} tone="red" />
               <Signal label={copy.extraTime} value={extraTime ? "✓" : "0"} tone="neutral" />
-               <div className="signal-next"><span>{copy.latest}</span><strong>{latestEvent ? `${minuteLabel(latestEvent)} ${localizedEventLabel(latestEvent, copy, language)}${latestEvent.player ? ` · ${latestEvent.player}` : ""}` : copy.noEvents}</strong></div>
+               <div className="signal-next"><span>{copy.latest}</span><strong>{latestEvent ? `${minuteLabel(latestEvent)} ${localizedEventLabel(latestEvent, copy, language)}${readableSourcePlayer(latestEvent.player) ? ` · ${readableSourcePlayer(latestEvent.player)}` : ""}` : copy.noEvents}</strong></div>
             </div> : null}
 
             {keyEvents.length ? <div className="key-event-strip" aria-label={copy.keyMoments}>
               <strong>{copy.keyMoments}</strong>
               <div>{keyEvents.map((event) => mode === "replay" ? <button type="button" key={event.id} onClick={() => { setIsPlaying(false); setMinute(event.minute); }}>{minuteLabel(event)} {localizedEventLabel(event, copy, language)}</button> : <span key={event.id}>{minuteLabel(event)} {localizedEventLabel(event, copy, language)}</span>)}</div>
             </div> : null}
+
+            <FanStand key={match.id} matchId={match.id} minute={minute} homeName={teamName(match.home, language)} awayName={teamName(match.away, language)} momentLabel={pulseMomentLabel} momentDescription={pulseMomentDescription} copy={standText} />
 
             <section className="match-context-grid">
               <section className="section-block match-summary-block">
@@ -2048,10 +2056,7 @@ export default function MatchdayApp() {
                   <Metric label={copy.fanPulse} value={`${Math.round(frame.market.sentiment)}/100`} />
                 </div>
                 <div className="match-facts">
-                  <span>{stageLabel(match.stage, match.competition, copy, language)}</span>
-                   <span>{venueLabel(match.venue, copy)}</span>
-                  {match.referee ? <span>{match.referee}</span> : null}
-                  {match.kickoffIso ? <span>{formatKickoffLabel(match.kickoffIso, language)}</span> : null}
+                  {uniqueFacts(stageLabel(match.stage, match.competition, copy, language), venueLabel(match.venue, copy), match.referee, match.kickoffIso ? formatKickoffLabel(match.kickoffIso, language) : undefined).map((fact) => <span key={fact}>{fact}</span>)}
                 </div>
                 {match.groupTable?.length ? <GroupTable table={match.groupTable} home={match.home.code} away={match.away.code} title={copy.advancement} copy={copy} language={language} /> : null}
                 <KeyPlayersStrip copy={copy} match={match} language={language} />
@@ -2134,6 +2139,13 @@ function Metric({ label, value }: { label: string; value: string }) {
 
 function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
   return <header className="section-heading"><span>{eyebrow}</span><h2>{title}</h2></header>;
+}
+
+function readableSourcePlayer(candidate?: string) {
+  if (!candidate) return undefined;
+  const normalized = candidate.trim();
+  if (!normalized || /^#?\d+$/.test(normalized) || /^player\s*#?\d+$/i.test(normalized)) return undefined;
+  return normalized;
 }
 
 function EventRow({ event, copy, home, away, language }: { event: MatchEvent; copy: UiCopy; home: Team; away: Team; language: Language }) {

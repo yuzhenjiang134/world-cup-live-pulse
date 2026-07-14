@@ -275,18 +275,22 @@ export function localizeRecap(language: PulseLanguage, match: MatchData, frame: 
   const score = `${frame.homeScore}-${frame.awayScore}`;
   const home = localizeTeamName(match.home.code, match.home.name, language);
   const away = localizeTeamName(match.away.code, match.away.name, language);
-  const latest = frame.latestEvent ? localizeEventDescription(language, frame.latestEvent) : localizedWaiting(language, match);
+  const recent = events
+    .filter((event) => ["goal", "yellow_card", "red_card", "substitution", "halftime", "fulltime", "score_update"].includes(event.type))
+    .slice(-2)
+    .map((event) => `${event.minute}' ${localizeEventDescription(language, event)}`)
+    .join(" / ") || localizedWaiting(language, match);
 
-  if (language === "zh") return `快速补课：${home} ${score} ${away}。已确认 ${goals} 个进球和 ${cards} 张牌。最新节点：${latest}`;
-  if (language === "es") return `Resumen rápido: ${home} ${score} ${away}. Hay ${goals} goles y ${cards} tarjetas verificadas. Último momento: ${latest}`;
-  if (language === "pt") return `Resumo rápido: ${home} ${score} ${away}. Há ${goals} gols e ${cards} cartões verificados. Último momento: ${latest}`;
-  if (language === "fr") return `Récap express : ${home} ${score} ${away}. ${goals} buts et ${cards} cartons sont vérifiés. Dernier moment : ${latest}`;
-  if (language === "de") return `Schnellüberblick: ${home} ${score} ${away}. Bestätigt sind ${goals} Tore und ${cards} Karten. Letzter Moment: ${latest}`;
-  if (language === "ja") return `30秒まとめ：${home} ${score} ${away}。確認済みはゴール${goals}件、カード${cards}件。最新：${latest}`;
-  if (language === "ar") return `ملخص سريع: ${home} ${score} ${away}. تم توثيق ${goals} أهداف و${cards} بطاقات. آخر لحظة: ${latest}`;
+  if (language === "zh") return `快速补课：${home} ${score} ${away}。已确认 ${goals} 个进球和 ${cards} 张牌。最近两个关键节点：${recent}`;
+  if (language === "es") return `Resumen rápido: ${home} ${score} ${away}. Hay ${goals} goles y ${cards} tarjetas verificadas. Dos momentos recientes: ${recent}`;
+  if (language === "pt") return `Resumo rápido: ${home} ${score} ${away}. Há ${goals} gols e ${cards} cartões verificados. Dois momentos recentes: ${recent}`;
+  if (language === "fr") return `Récap express : ${home} ${score} ${away}. ${goals} buts et ${cards} cartons sont vérifiés. Deux moments récents : ${recent}`;
+  if (language === "de") return `Schnellüberblick: ${home} ${score} ${away}. Bestätigt sind ${goals} Tore und ${cards} Karten. Zwei letzte Momente: ${recent}`;
+  if (language === "ja") return `30秒まとめ：${home} ${score} ${away}。確認済みはゴール${goals}件、カード${cards}件。直近2場面：${recent}`;
+  if (language === "ar") return `ملخص سريع: ${home} ${score} ${away}. تم توثيق ${goals} أهداف و${cards} بطاقات. آخر لحظتين: ${recent}`;
   const goalLabel = goals === 1 ? "goal" : "goals";
   const cardLabel = cards === 1 ? "card" : "cards";
-  return `Quick catch-up: ${home} ${score} ${away}. ${goals} ${goalLabel} and ${cards} ${cardLabel} are verified. Latest: ${latest}`;
+  return `Quick catch-up: ${home} ${score} ${away}. ${goals} ${goalLabel} and ${cards} ${cardLabel} are verified. Two latest moments: ${recent}`;
 }
 
 export function localizeEventDescription(language: PulseLanguage, event: MatchEvent) {
