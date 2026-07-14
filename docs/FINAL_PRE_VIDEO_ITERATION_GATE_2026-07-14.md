@@ -62,11 +62,22 @@ Ship a fan-facing competition product whose live/replay facts remain honest, who
 
 ## Online release gate
 
-- [ ] Commit and push the final local candidate only after the local release gate is complete.
-- [ ] GitHub Actions and Pages deploy the same candidate successfully.
-- [ ] Online QA round 1: English desktop, core flow, console and live/replay state.
-- [ ] Online QA round 2: Chinese/mobile, community persistence, Pulse Play and public bundle audit.
-- [ ] Record the deployed commit, bundle hashes and remaining honest product limits.
+- [x] Commit and push the final local candidate only after the local release gate is complete.
+- [x] GitHub Actions and Pages deploy the same candidate successfully.
+- [x] Online QA round 1: English desktop, core flow, console and live/replay state.
+- [x] Online QA round 2: Chinese/mobile, community persistence, Pulse Play and public bundle audit.
+- [x] Record the deployed commit, bundle hashes and remaining honest product limits.
+
+Accepted online evidence:
+
+- Deployed commit: `4a033b17e5c8a676ed7b51828335a5b2fb0284b2`.
+- GitHub Actions: CI run 60 and Pages run 59 completed successfully for that commit.
+- Public JavaScript: `index-CejLFIAl.js`, SHA-256 `50066362D1656B399E2A6F05694E01E834C7AA76F8C77C7E58B8382FC03AD667`.
+- Public CSS: `index-CWq-wxmX.css`, SHA-256 `83748D66C575528C6A5B63F349F008C0C3DA7BEF9273FDFBB55414037608BB86`.
+- Online English E2E: pass, including challenge settlement, replay, Pulse Play, fan rooms, AI modes, official links, accessibility and desktop/mobile layout.
+- Online Chinese E2E: pass, including localized product labels, challenge flow, community state and 390 px layout without horizontal overflow.
+- Public browser audit: zero console errors; no `.env.local`, devnet-token setup, `INFO` event fallback or absolute local path in the fan UI.
+- Honest limits remain explicit: comments and reactions are device-local; positions and shirt numbers are illustrative; official video availability depends on regional rights; live freshness depends on the available TxLINE feed.
 
 ## Demo gate
 
@@ -79,4 +90,4 @@ Ship a fan-facing competition product whose live/replay facts remain honest, who
 
 ## Current stop line
 
-Video recording has not started. The next permitted step after this checklist is implementation and local acceptance, not recording.
+Video recording has not started. Local and same-commit online acceptance are complete. The next permitted step is owner review and explicit approval; recording remains blocked until that approval is given.
