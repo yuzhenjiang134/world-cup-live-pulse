@@ -15,7 +15,7 @@
 - [x] 讨论提示随当前事件类型和球队自动变化；场景观点明确标为讨论引子，用户留言按比赛与频道保存在本设备，不冒充在线社区规模。
 - [x] 桌面端采用“关键时刻 + 讨论”双栏，390px 手机端收为单列；焦点、键盘、按钮名称、动态内容稳定性和横向溢出均通过复检。
 - [x] 本地 `npm run validate` 全量通过；中文与英文桌面/移动端完整 E2E 均通过。
-- [ ] 提交并发布本次球迷频道候选版本后，执行中文和英文两轮线上 QA；Demo 仍须等待项目所有者明确批准。
+- [x] 提交并发布本次球迷频道候选版本后，执行中文和英文两轮线上 QA；Demo 仍须等待项目所有者明确批准。
 
 本轮公开参考：[FIFA Match Predictor](https://play.fifa.com/match-predictor/en/help/guidelines)、[FIFA Play Zone](https://play.fifa.com/goalscorer/help)、[Sofascore Attack Momentum](https://www.sofascore.com/news/how-live-attack-momentum-works-at-the-world-cup)、[Meta football fan experience](https://about.fb.com/news/2026/06/going-all-in-for-global-football-fans-across-meta-apps/amp/)、[Fanzium](https://play.google.com/store/apps/details?id=com.fanzium.football)、[Reddit World Cup Daily Hub](https://www.reddit.com/r/soccer/comments/1u3rvcx/2026_fifa_world_cup_daily_hub/)。
 
@@ -264,10 +264,11 @@
 
 ## 2026-07-15 线上 QA 证据
 
-- 产品候选提交：`6d16b71`。
+- 产品候选提交：`c3a5236`。
 - 公开网站：`https://yuzhenjiang134.github.io/world-cup-live-pulse/`，HTTP 200。
 - 线上第一轮：中文桌面与 390px 移动端完整 E2E 通过，覆盖挑战锁定/结算、预测到对应看台、22 人比赛剧场、AI 三模式与语音、关键节点、回放、收藏、提醒、持久化和公开入口。
 - 线上第二轮：英文完整 E2E 通过；同一流程逐项切换八种语言并检查阿拉伯语 RTL、键盘可达名称、刷新恢复和无页面级横向溢出。
+- 球迷频道专项：线上确认关键时刻可跳回比赛剧场，进球/罚牌/换人/完场自动更新讨论语境；只有来源提供可读姓名时才显示球员本场履历，内部编号零显示。
 - 公开包核对：线上加载独立 React vendor 包；生产 JS 的 token、JWT、私钥、`.env.local`、本机路径和声线配置标记扫描为零命中。
 - 视频状态：仍为锁定；下一步只能由项目所有者明确批准后开始首版英文 Demo 录制。
 
