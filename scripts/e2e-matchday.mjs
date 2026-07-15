@@ -539,7 +539,10 @@ try {
     select.dispatchEvent(new Event('change', { bubbles: true }));
     return true;
   })()`);
-  assert.doesNotMatch(await evaluate(cdp, "document.body.innerText"), /VITE_TXLINE_API_TOKEN|Bearer\s+[A-Za-z0-9_-]+/);
+  await wait(80);
+  const chineseVisibleText = await evaluate(cdp, "document.body.innerText");
+  assert.doesNotMatch(chineseVisibleText, /VITE_TXLINE_API_TOKEN|Bearer\s+[A-Za-z0-9_-]+/);
+  assert.doesNotMatch(chineseVisibleText, /public scoreboard|fixture feed|schedule snapshot/i);
   assert.deepEqual(runtimeIssues, []);
 
   console.log("PASS browser challenge settlement plus pre-kickoff edits, event-driven Pulse Play and local cheers, three AI modes, key events, replay, favorites, persisted match-alert preferences, official links, verified 2026 data, eight languages, keyboard access, accessible names, safety, and responsive layouts");

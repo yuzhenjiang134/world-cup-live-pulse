@@ -1409,6 +1409,7 @@ function teamGroupLabel(group: string | undefined, copy: UiCopy, language: Langu
   if (!group) return copy.matchCenter;
   const normalized = group.toLowerCase();
   if (normalized.includes("txline") || normalized.includes("fixture")) return copy.officialFeed;
+  if (normalized.includes("espn") || normalized.includes("public scoreboard")) return copy.publicFeed;
   const localizedStage = localizedTournamentStage(group, language);
   if (localizedStage) return localizedStage;
   return group;
