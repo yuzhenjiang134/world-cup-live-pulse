@@ -293,6 +293,16 @@ npm run txline:probe
 - The countdown widget showed an inconsistent zero value, so release decisions use the explicit `Open` state and published date range rather than the countdown rendering.
 - Reconfirmed the required package: accessible working application, public repository, sub-five-minute Demo, brief technical documentation with exact TxLINE endpoints, and API experience feedback. The repository also contains a longer judge-facing technical note and dated probe evidence.
 - Submission counts and endpoint record counts remain labeled as timestamped observations because both can change after this release.
+
+## 2026-07-15: Fan-facing match room and event language
+
+- Removed developer-style match-room prompts and score-review wording from the visible product across all eight supported languages.
+- Added three distinct home, neutral, and away viewpoints that respond to pre-match, goal, yellow-card, red-card, full-time, and general match states.
+- Kept the community truth boundary explicit: viewpoint cards are labeled examples; actual comments and reactions remain the viewer's own device-local activity.
+- Replaced the desktop quick-topic scroller with a responsive grid and retained a compact two-column mobile layout.
+- Extended product-data audit and browser E2E coverage so the old wording, fixed generic viewpoints, duplicate cards, and mobile overflow cannot silently return.
+- Local Chinese and English browser acceptance includes the real current feed state: scheduled fixtures allow the pre-kickoff edit flow, while completed fixtures correctly close the challenge.
+- Final video recording remains blocked until this revision is accepted online and the owner explicitly approves recording.
 # 2026-07-14 final fan-language and pre-video iteration
 
 - Added a single final pre-video gate covering completed work, three product iterations, local acceptance, two online QA rounds and the owner approval stop line.
@@ -302,3 +312,16 @@ npm run txline:probe
 - Upgraded fan-room prompts to react to the current goal/card/match moment and both teams without fabricating profiles, comments or global counts.
 - Persisted the last active fan room and wrapped mobile discussion prompts so every action remains visible without horizontal hunting.
 - Video recording remains blocked until local acceptance, same-release online acceptance and explicit owner approval.
+
+## 2026-07-15: Rounds seven and eight local release candidate
+
+- Joined the score challenge and match room into one fan journey: the current pick, device-local points, one-time settlement award and predicted-team room now remain in the same match context.
+- Kept the community honest: comments, reactions and room choice stay fixture-scoped on the device; event-driven viewpoint cards are labeled as examples and never claim real accounts or global activity.
+- Simplified Match Center by removing its duplicate schedule/context panel. Schedule & Replay and Teams remain first-class navigation destinations, while the opening path focuses on score, AI brief, challenge, key moments and interaction.
+- Added favorite-team priority and a visible favorite marker to confirmed current fixtures without fabricating an upcoming match when the source has none.
+- Hid an unsupported knockout winner when the source supplied a confirmed tied score but no reliable advancing-team field; confirmed cards and score remain visible.
+- Split the production bundle into a 329.77 kB application chunk and a separately cacheable 193.81 kB React vendor chunk, removing the previous large-chunk build warning.
+- Passed the full `npm run validate` suite, production build, product-data audit, secret scan and `git diff --check` on the final local candidate.
+- Passed final Chinese and English browser E2E runs covering challenge settlement, predicted-team room routing, 22-player Pulse Play, AI modes and speech, replay, favorites, reminders, eight languages, keyboard access, RTL and 390 px mobile layout.
+- Completed desktop and mobile visual review of Match Center, score challenge, Pulse Play, match room, Tournament & Replays and Teams. Local rounds one through eight are complete; deployment and two online QA rounds remain next.
+- Final Demo recording remains blocked until the deployed candidate passes both online QA rounds and the project owner explicitly approves recording.

@@ -63,5 +63,14 @@ export default defineConfig(({ mode }) => {
       port: 5177,
       strictPort: false,
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            return id.includes("node_modules") ? "vendor" : undefined;
+          },
+        },
+      },
+    },
   };
 });

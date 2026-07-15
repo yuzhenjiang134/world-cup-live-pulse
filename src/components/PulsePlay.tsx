@@ -18,6 +18,15 @@ export type PulsePlayText = {
   illustrative: string;
   onPitch: string;
   confirmedMoment: string;
+  matchStory: string;
+};
+
+export type PulseStoryEvent = {
+  id: string;
+  minute: string;
+  label: string;
+  team?: string;
+  score: string;
 };
 
 type PulsePlayProps = {
@@ -30,6 +39,7 @@ type PulsePlayProps = {
   awayName: string;
   momentLabel: string;
   momentDescription: string;
+  storyEvents: PulseStoryEvent[];
   text: PulsePlayText;
 };
 
@@ -59,7 +69,7 @@ function readCheers(matchId: string): CheerState {
   }
 }
 
-export function PulsePlay({ match, frame, latestEvent, minute, isFinal, homeName, awayName, momentLabel, momentDescription, text }: PulsePlayProps) {
+export function PulsePlay({ match, frame, latestEvent, minute, isFinal, homeName, awayName, momentLabel, momentDescription, storyEvents, text }: PulsePlayProps) {
   const [cheers, setCheers] = useState<CheerState>(() => readCheers(match.id));
   const eventType = latestEvent?.type ?? (match.status === "scheduled" ? "scheduled" : "kickoff");
   const attackingHome = latestEvent?.team ? latestEvent.team === match.home.code : minute % 2 === 0;
@@ -112,17 +122,19 @@ export function PulsePlay({ match, frame, latestEvent, minute, isFinal, homeName
         <div className="pitch-circle" aria-hidden="true" />
         <div className="pitch-box pitch-box-home" aria-hidden="true" />
         <div className="pitch-box pitch-box-away" aria-hidden="true" />
-        {miniSquad.map((player, index) => <MatchFigure key={`home-${index}`} side="home" index={index} player={player} attacking={attackingHome} eventType={eventType} eventMinute={eventMinute} ballY={ballY} active={eventTeamSide === "home" && eventFigureIndex === index} supportRank={eventTeamSide === "home" ? goalSupportIndexes.indexOf(index) : -1} sentOff={sentOff.home.has(index)} />)}
-        {miniSquad.map((player, index) => <MatchFigure key={`away-${index}`} side="away" index={index} player={player} attacking={!attackingHome} eventType={eventType} eventMinute={eventMinute} ballY={ballY} active={eventTeamSide === "away" && eventFigureIndex === index} supportRank={eventTeamSide === "away" ? goalSupportIndexes.indexOf(index) : -1} sentOff={sentOff.away.has(index)} />)}
+        {miniSquad.map((player, index) => <MatchFigure key={`home-${index}`} side="home" index={index} player={player} attacking={attackingHome} eventType={eventType} eventMinute={eventMinute} ballY={ballY} active={eventTeamSide === "home" && eventFigureIndex === index} supportRank={eventTeamSide === "home" ? goalSupportIndexes.indexOf(index) : -1} sentOff={sentOff.home.has(index)} concedingGoalkeeper={eventType === "goal" && eventTeamSide === "away" && player.role === "keeper"} />)}
+        {miniSquad.map((player, index) => <MatchFigure key={`away-${index}`} side="away" index={index} player={player} attacking={!attackingHome} eventType={eventType} eventMinute={eventMinute} ballY={ballY} active={eventTeamSide === "away" && eventFigureIndex === index} supportRank={eventTeamSide === "away" ? goalSupportIndexes.indexOf(index) : -1} sentOff={sentOff.away.has(index)} concedingGoalkeeper={eventType === "goal" && eventTeamSide === "home" && player.role === "keeper"} />)}
         {eventType === "goal" ? <><span className="pulse-ball-trail" aria-hidden="true" /><span className={`pulse-goal-wave ${attackingHome ? "away" : "home"}`} aria-hidden="true" /></> : null}
         <span className="pulse-ball" aria-hidden="true" />
-        {card ? <span className={`pulse-card ${card}`} aria-hidden="true" /> : null}
+        {card ? <><span className="pulse-referee" aria-hidden="true"><i /><b /></span><span className={`pulse-card ${card}`} aria-hidden="true" /></> : null}
+        {eventType === "substitution" ? <span className="pulse-substitution-board" aria-hidden="true">↕</span> : null}
         {isPenalty ? <span className="pulse-penalty-badge">{text.penalty}</span> : null}
         {isExtraTime ? <span className="pulse-extra-badge">{text.extraTime}</span> : null}
         <span className={`pulse-sync-badge ${syncMode}`}>{syncLabel}</span>
         {eventPlayer ? <span className={`pulse-event-actor ${eventTeamSide ?? "neutral"}`}><small>{text.confirmedMoment}</small><strong>{eventPlayer}</strong></span> : null}
       </div>
       <p className="pulse-play-disclaimer">{text.illustrative}</p>
+      {storyEvents.length ? <div className="pulse-match-story"><strong>{text.matchStory}</strong><div>{storyEvents.map((event) => <span key={event.id}><time>{event.minute}</time><b>{event.label}</b><small>{event.team ? `${event.team} · ` : ""}{event.score}</small></span>)}</div></div> : null}
       <footer className="pulse-play-footer">
         <div className="pulse-moment" aria-live="polite">
           <span>{text.liveMoment}</span>
@@ -141,7 +153,7 @@ export function PulsePlay({ match, frame, latestEvent, minute, isFinal, homeName
 
 type MiniSquadPlayer = (typeof miniSquad)[number];
 
-function MatchFigure({ side, index, player, attacking, eventType, eventMinute, ballY, active, supportRank, sentOff }: { side: "home" | "away"; index: number; player: MiniSquadPlayer; attacking: boolean; eventType: string; eventMinute: number; ballY: number; active: boolean; supportRank: number; sentOff: boolean }) {
+function MatchFigure({ side, index, player, attacking, eventType, eventMinute, ballY, active, supportRank, sentOff, concedingGoalkeeper }: { side: "home" | "away"; index: number; player: MiniSquadPlayer; attacking: boolean; eventType: string; eventMinute: number; ballY: number; active: boolean; supportRank: number; sentOff: boolean; concedingGoalkeeper: boolean }) {
   const direction = side === "home" ? 1 : -1;
   const baseX = side === "home" ? player.x : 100 - player.x;
   const attackShift = attacking ? (player.role === "keeper" ? 1.5 : player.role === "defender" ? 3 : 6) : -1;
@@ -161,7 +173,7 @@ function MatchFigure({ side, index, player, attacking, eventType, eventMinute, b
   } as CSSProperties;
   const eventMark = active ? eventSymbol(eventType) : "";
   const beingSentOff = sentOff && active && eventType === "red_card";
-  const classes = ["pulse-player", side, player.role, attacking ? "attacking" : "", active ? "event-player" : "", supportRank >= 0 ? "supporting-event" : "", eventType === "goal" && active ? "celebrating" : "", eventType === "substitution" && active ? "substituting" : "", beingSentOff ? "being-sent-off" : "", sentOff && !beingSentOff ? "sent-off" : ""].filter(Boolean).join(" ");
+  const classes = ["pulse-player", side, player.role, attacking ? "attacking" : "", active ? "event-player" : "", supportRank >= 0 ? "supporting-event" : "", eventType === "goal" && active ? "celebrating" : "", concedingGoalkeeper ? "goalkeeper-dive" : "", eventType === "substitution" && active ? "substituting" : "", beingSentOff ? "being-sent-off" : "", sentOff && !beingSentOff ? "sent-off" : ""].filter(Boolean).join(" ");
 
   return <span className={classes} style={style} aria-hidden="true"><i className="figure-head" /><i className="figure-arms" /><i className="figure-body">{index + 1}</i><i className="figure-legs" />{eventMark ? <b className={`figure-event figure-event-${eventType}`}>{eventMark}</b> : null}</span>;
 }

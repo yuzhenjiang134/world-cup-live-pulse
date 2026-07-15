@@ -146,12 +146,12 @@ const ui: Record<Language, UiCopy> = {
     navSettings: "Settings",
     source: "Match status",
     refresh: "Refresh",
-    loading: "Loading verified match data",
+    loading: "Loading the match",
     live: "Live",
     delayed: "Delayed",
     replay: "Replay",
     seed: "Upcoming",
-    fallback: "Fallback",
+    fallback: "Match coverage",
     verifiedAt: "Updated",
     officialFeed: "Official data",
     publicFeed: "Public scoreboard",
@@ -164,7 +164,7 @@ const ui: Record<Language, UiCopy> = {
     scheduled: "Scheduled",
     events: "Match events",
     latest: "Latest moment",
-    noEvents: "No verified events in this window.",
+    noEvents: "No match events yet.",
     keyMoments: "Key moments",
     goals: "Goals",
     wins: "Wins",
@@ -191,7 +191,7 @@ const ui: Record<Language, UiCopy> = {
     pointsNote: "Local-only points. No cash value, wallet, or betting.",
     currentPoints: "Current points",
     pickCost: "Pick cost",
-    settlementRule: "Settles from the verified final score",
+    settlementRule: "Settles from the final score",
     streak: "Streak",
     bestStreak: "Best",
     accuracy: "Accuracy",
@@ -208,7 +208,7 @@ const ui: Record<Language, UiCopy> = {
     locked: "Pick locked",
     pointsNeeded: "Not enough test points",
     settle: "Settle from final score",
-    waitingSettlement: "Settlement unlocks when the verified final score is available.",
+    waitingSettlement: "Settlement unlocks when the final score is available.",
     exact: "Exact score",
     result: "Result",
     noBetting: "Discussion game only. Never a wager or trading signal.",
@@ -244,7 +244,7 @@ const ui: Record<Language, UiCopy> = {
     connectionReady: "Match data is up to date",
     connectionFallback: "Showing verified replay data",
     refreshData: "Refresh match",
-    languageNote: "UI labels are translated; team and player names remain source-of-truth names.",
+    languageNote: "The interface is translated; team and player names keep their official spelling.",
     dataRules: "Data and updates",
     onlyVerified: "Scores and key events come from confirmed match records.",
   },
@@ -257,12 +257,12 @@ const ui: Record<Language, UiCopy> = {
     navSettings: "设置",
     source: "比赛状态",
     refresh: "刷新",
-    loading: "正在加载已核验比赛数据",
+    loading: "正在加载比赛",
     live: "实时",
     delayed: "延迟",
     replay: "回放",
     seed: "未开赛",
-    fallback: "兜底",
+    fallback: "比赛动态",
     verifiedAt: "最近更新",
     officialFeed: "官方数据",
     publicFeed: "公开比分源",
@@ -274,8 +274,8 @@ const ui: Record<Language, UiCopy> = {
     final: "全场结束",
     scheduled: "未开赛",
     events: "比赛事件",
-    latest: "最新节点",
-    noEvents: "当前时间窗没有已核验事件。",
+    latest: "最新动态",
+    noEvents: "当前还没有比赛事件。",
     keyMoments: "关键事件",
     goals: "进球",
     wins: "胜场",
@@ -302,7 +302,7 @@ const ui: Record<Language, UiCopy> = {
     pointsNote: "仅本地积分，无现金价值，不连接钱包，不是下注。",
     currentPoints: "当前积分",
     pickCost: "本次消耗",
-    settlementRule: "按核验后的最终比分结算",
+    settlementRule: "按最终比分结算",
     streak: "连胜",
     bestStreak: "最佳",
     accuracy: "命中率",
@@ -319,7 +319,7 @@ const ui: Record<Language, UiCopy> = {
     locked: "已锁定",
     pointsNeeded: "测试积分不足",
     settle: "按最终比分结算",
-    waitingSettlement: "已核验最终比分后才可结算。",
+    waitingSettlement: "最终比分公布后即可结算。",
     exact: "精确比分",
     result: "赛果",
     noBetting: "仅用于球迷讨论，不是下注或交易信号。",
@@ -368,12 +368,12 @@ const ui: Record<Language, UiCopy> = {
     navSettings: "Ajustes",
     source: "Estado del partido",
     refresh: "Actualizar",
-    loading: "Cargando datos verificados",
+    loading: "Cargando el partido",
     live: "En vivo",
     delayed: "Retrasado",
     replay: "Repetición",
     seed: "Calendario",
-    fallback: "Respaldo",
+    fallback: "Cobertura del partido",
     verifiedAt: "Actualizado",
     officialFeed: "Datos oficiales",
     publicFeed: "Marcador público",
@@ -386,7 +386,7 @@ const ui: Record<Language, UiCopy> = {
     scheduled: "Programado",
     events: "Eventos",
     latest: "Último momento",
-    noEvents: "No hay eventos verificados en esta ventana.",
+    noEvents: "Todavía no hay eventos del partido.",
     keyMoments: "Momentos clave",
     goals: "Goles",
     wins: "Victorias",
@@ -413,7 +413,7 @@ const ui: Record<Language, UiCopy> = {
     pointsNote: "Solo local. Sin valor monetario ni apuestas.",
     currentPoints: "Puntos actuales",
     pickCost: "Coste de la jugada",
-    settlementRule: "Se resuelve con el marcador final verificado",
+    settlementRule: "Se resuelve con el marcador final",
     streak: "Racha",
     bestStreak: "Mejor",
     accuracy: "Acierto",
@@ -430,7 +430,7 @@ const ui: Record<Language, UiCopy> = {
     locked: "Bloqueado",
     pointsNeeded: "Puntos insuficientes",
     settle: "Resolver con el resultado final",
-    waitingSettlement: "Disponible cuando exista un resultado final verificado.",
+    waitingSettlement: "Disponible cuando se publique el resultado final.",
     exact: "Marcador exacto",
     result: "Resultado",
     noBetting: "Juego de conversación, no apuesta ni señal de trading.",
@@ -479,12 +479,12 @@ const ui: Record<Language, UiCopy> = {
     navSettings: "Configurações",
     source: "Estado do jogo",
     refresh: "Atualizar",
-    loading: "Carregando dados verificados",
+    loading: "Carregando a partida",
     live: "Ao vivo",
     delayed: "Atrasado",
     replay: "Reprise",
     seed: "Calendário",
-    fallback: "Reserva",
+    fallback: "Cobertura da partida",
     verifiedAt: "Atualizado",
     officialFeed: "Dados oficiais",
     publicFeed: "Placar público",
@@ -497,7 +497,7 @@ const ui: Record<Language, UiCopy> = {
     scheduled: "Agendado",
     events: "Eventos",
     latest: "Último momento",
-    noEvents: "Nenhum evento verificado nesta janela.",
+    noEvents: "Ainda não há eventos da partida.",
     keyMoments: "Momentos-chave",
     goals: "Gols",
     wins: "Vitórias",
@@ -524,7 +524,7 @@ const ui: Record<Language, UiCopy> = {
     pointsNote: "Somente local. Sem valor em dinheiro ou apostas.",
     currentPoints: "Pontos atuais",
     pickCost: "Custo da escolha",
-    settlementRule: "Resolvido pelo placar final verificado",
+    settlementRule: "Resolvido pelo placar final",
     streak: "Sequência",
     bestStreak: "Melhor",
     accuracy: "Acerto",
@@ -541,7 +541,7 @@ const ui: Record<Language, UiCopy> = {
     locked: "Travado",
     pointsNeeded: "Pontos insuficientes",
     settle: "Apurar pelo placar final",
-    waitingSettlement: "Disponível quando houver placar final verificado.",
+    waitingSettlement: "Disponível quando o placar final for publicado.",
     exact: "Placar exato",
     result: "Resultado",
     noBetting: "Jogo de conversa, não aposta nem sinal de trading.",
@@ -590,12 +590,12 @@ const ui: Record<Language, UiCopy> = {
     navSettings: "Réglages",
     source: "État du match",
     refresh: "Actualiser",
-    loading: "Chargement des données vérifiées",
+    loading: "Chargement du match",
     live: "Direct",
     delayed: "Retardé",
     replay: "Replay",
     seed: "Calendrier",
-    fallback: "Secours",
+    fallback: "Couverture du match",
     verifiedAt: "Actualisé",
     officialFeed: "Données officielles",
     publicFeed: "Score public",
@@ -608,7 +608,7 @@ const ui: Record<Language, UiCopy> = {
     scheduled: "Programmé",
     events: "Événements",
     latest: "Dernier moment",
-    noEvents: "Aucun événement vérifié dans cette fenêtre.",
+    noEvents: "Aucun événement de match pour le moment.",
     keyMoments: "Moments clés",
     goals: "Buts",
     wins: "Victoires",
@@ -635,7 +635,7 @@ const ui: Record<Language, UiCopy> = {
     pointsNote: "Local uniquement. Sans valeur monétaire ni pari.",
     currentPoints: "Points actuels",
     pickCost: "Coût du choix",
-    settlementRule: "Réglé selon le score final vérifié",
+    settlementRule: "Réglé selon le score final",
     streak: "Série",
     bestStreak: "Record",
     accuracy: "Précision",
@@ -652,7 +652,7 @@ const ui: Record<Language, UiCopy> = {
     locked: "Verrouillé",
     pointsNeeded: "Points insuffisants",
     settle: "Régler avec le score final",
-    waitingSettlement: "Disponible avec un score final vérifié.",
+    waitingSettlement: "Disponible dès la publication du score final.",
     exact: "Score exact",
     result: "Résultat",
     noBetting: "Jeu de discussion, pas un pari ni un signal de trading.",
@@ -701,12 +701,12 @@ const ui: Record<Language, UiCopy> = {
     navSettings: "Einstellungen",
     source: "Spielstatus",
     refresh: "Aktualisieren",
-    loading: "Verifizierte Spieldaten werden geladen",
+    loading: "Spiel wird geladen",
     live: "Live",
     delayed: "Verzögert",
     replay: "Wiederholung",
     seed: "Spielplan",
-    fallback: "Ersatz",
+    fallback: "Spielübersicht",
     verifiedAt: "Aktualisiert",
     officialFeed: "Offizielle Daten",
     publicFeed: "Öffentliche Anzeige",
@@ -719,7 +719,7 @@ const ui: Record<Language, UiCopy> = {
     scheduled: "Geplant",
     events: "Ereignisse",
     latest: "Letzter Moment",
-    noEvents: "Keine verifizierten Ereignisse in diesem Fenster.",
+    noEvents: "Noch keine Spielereignisse.",
     keyMoments: "Schlüsselmomente",
     goals: "Tore",
     wins: "Siege",
@@ -746,7 +746,7 @@ const ui: Record<Language, UiCopy> = {
     pointsNote: "Nur lokal. Kein Geldwert und keine Wette.",
     currentPoints: "Aktuelle Punkte",
     pickCost: "Tippkosten",
-    settlementRule: "Auswertung nach verifiziertem Endstand",
+    settlementRule: "Auswertung nach dem Endstand",
     streak: "Serie",
     bestStreak: "Bestwert",
     accuracy: "Trefferquote",
@@ -763,7 +763,7 @@ const ui: Record<Language, UiCopy> = {
     locked: "Festgelegt",
     pointsNeeded: "Nicht genügend Punkte",
     settle: "Mit Endstand abrechnen",
-    waitingSettlement: "Nach verifiziertem Endstand verfügbar.",
+    waitingSettlement: "Nach Veröffentlichung des Endstands verfügbar.",
     exact: "Exakter Stand",
     result: "Ergebnis",
     noBetting: "Diskussionsspiel, keine Wette oder Trading-Signal.",
@@ -812,12 +812,12 @@ const ui: Record<Language, UiCopy> = {
     navSettings: "設定",
     source: "試合状況",
     refresh: "更新",
-    loading: "検証済みデータを読み込み中",
+    loading: "試合を読み込み中",
     live: "ライブ",
     delayed: "遅延",
     replay: "リプレイ",
     seed: "予定",
-    fallback: "フォールバック",
+    fallback: "試合情報",
     verifiedAt: "最終更新",
     officialFeed: "公式データ",
     publicFeed: "公開スコア",
@@ -830,7 +830,7 @@ const ui: Record<Language, UiCopy> = {
     scheduled: "予定",
     events: "試合イベント",
     latest: "最新の瞬間",
-    noEvents: "この時間帯に検証済みイベントはありません。",
+    noEvents: "まだ試合イベントはありません。",
     keyMoments: "重要イベント",
     goals: "ゴール",
     wins: "勝利",
@@ -857,7 +857,7 @@ const ui: Record<Language, UiCopy> = {
     pointsNote: "ローカル専用。金銭価値・賭けなし。",
     currentPoints: "現在のポイント",
     pickCost: "予想コスト",
-    settlementRule: "検証済みの最終スコアで判定",
+    settlementRule: "最終スコアで判定",
     streak: "連勝",
     bestStreak: "最高",
     accuracy: "的中率",
@@ -874,7 +874,7 @@ const ui: Record<Language, UiCopy> = {
     locked: "確定済み",
     pointsNeeded: "ポイント不足",
     settle: "最終スコアで確定",
-    waitingSettlement: "検証済みの最終スコアで利用できます。",
+    waitingSettlement: "最終スコアの発表後に利用できます。",
     exact: "完全一致",
     result: "結果",
     noBetting: "会話型ゲームです。賭けや取引シグナルではありません。",
@@ -923,12 +923,12 @@ const ui: Record<Language, UiCopy> = {
     navSettings: "الإعدادات",
     source: "حالة المباراة",
     refresh: "تحديث",
-    loading: "جار تحميل البيانات الموثقة",
+    loading: "جار تحميل المباراة",
     live: "مباشر",
     delayed: "متأخر",
     replay: "إعادة",
     seed: "الجدول",
-    fallback: "بديل",
+    fallback: "تغطية المباراة",
     verifiedAt: "آخر تحديث",
     officialFeed: "بيانات رسمية",
     publicFeed: "نتيجة عامة",
@@ -941,7 +941,7 @@ const ui: Record<Language, UiCopy> = {
     scheduled: "مجدولة",
     events: "أحداث المباراة",
     latest: "آخر لحظة",
-    noEvents: "لا توجد أحداث موثقة في هذه النافذة.",
+    noEvents: "لا توجد أحداث للمباراة حتى الآن.",
     keyMoments: "اللحظات المهمة",
     goals: "أهداف",
     wins: "انتصارات",
@@ -968,7 +968,7 @@ const ui: Record<Language, UiCopy> = {
     pointsNote: "محلية فقط. بلا قيمة نقدية أو مراهنة.",
     currentPoints: "النقاط الحالية",
     pickCost: "تكلفة الاختيار",
-    settlementRule: "تُحسم بالنتيجة النهائية الموثقة",
+    settlementRule: "تُحسم بالنتيجة النهائية",
     streak: "سلسلة",
     bestStreak: "الأفضل",
     accuracy: "الدقة",
@@ -985,7 +985,7 @@ const ui: Record<Language, UiCopy> = {
     locked: "مثبتة",
     pointsNeeded: "النقاط غير كافية",
     settle: "تسوية من النتيجة النهائية",
-    waitingSettlement: "تتوفر بعد ظهور نتيجة نهائية موثقة.",
+    waitingSettlement: "تتوفر بعد إعلان النتيجة النهائية.",
     exact: "نتيجة دقيقة",
     result: "النتيجة",
     noBetting: "لعبة نقاش فقط، وليست مراهنة أو إشارة تداول.",
@@ -1039,25 +1039,36 @@ const languages: Array<{ code: Language; label: string; region: string }> = [
 ];
 
 const alertPreferenceCopy: Record<Language, { title: string; note: string; goals: string; cards: string; final: string }> = {
-  en: { title: "Match alerts", note: "Choose verified events for followed matches. Browser alerts work while this page is open.", goals: "Goals", cards: "Red and yellow cards", final: "Full-time result" },
-  zh: { title: "比赛提醒", note: "选择关注比赛的已核验事件。页面保持打开时可接收浏览器提醒。", goals: "进球", cards: "红牌与黄牌", final: "完场结果" },
-  es: { title: "Alertas del partido", note: "Elige eventos verificados para los partidos seguidos. Las alertas funcionan mientras la página esté abierta.", goals: "Goles", cards: "Tarjetas rojas y amarillas", final: "Resultado final" },
-  pt: { title: "Alertas da partida", note: "Escolha eventos verificados para partidas seguidas. Os alertas funcionam enquanto a página estiver aberta.", goals: "Gols", cards: "Cartões vermelhos e amarelos", final: "Resultado final" },
-  fr: { title: "Alertes du match", note: "Choisissez les événements vérifiés des matchs suivis. Les alertes fonctionnent tant que cette page reste ouverte.", goals: "Buts", cards: "Cartons rouges et jaunes", final: "Résultat final" },
-  de: { title: "Spielbenachrichtigungen", note: "Wähle bestätigte Ereignisse für verfolgte Spiele. Browser-Hinweise funktionieren, solange diese Seite geöffnet ist.", goals: "Tore", cards: "Rote und gelbe Karten", final: "Endergebnis" },
-  ja: { title: "試合アラート", note: "フォロー中の試合で通知する確認済みイベントを選べます。このページを開いている間にブラウザー通知を受け取れます。", goals: "ゴール", cards: "レッドカードとイエローカード", final: "試合終了結果" },
-  ar: { title: "تنبيهات المباراة", note: "اختر الأحداث المؤكدة للمباريات التي تتابعها. تعمل تنبيهات المتصفح ما دامت هذه الصفحة مفتوحة.", goals: "الأهداف", cards: "البطاقات الحمراء والصفراء", final: "النتيجة النهائية" },
+  en: { title: "Match alerts", note: "Choose which moments matter to you. Browser alerts work while this page is open.", goals: "Goals", cards: "Red and yellow cards", final: "Full-time result" },
+  zh: { title: "比赛提醒", note: "选择你最关心的比赛时刻。页面保持打开时可接收浏览器提醒。", goals: "进球", cards: "红牌与黄牌", final: "完场结果" },
+  es: { title: "Alertas del partido", note: "Elige los momentos que te interesan. Las alertas funcionan mientras la página esté abierta.", goals: "Goles", cards: "Tarjetas rojas y amarillas", final: "Resultado final" },
+  pt: { title: "Alertas da partida", note: "Escolha os momentos que mais importam. Os alertas funcionam enquanto a página estiver aberta.", goals: "Gols", cards: "Cartões vermelhos e amarelos", final: "Resultado final" },
+  fr: { title: "Alertes du match", note: "Choisissez les moments qui vous intéressent. Les alertes fonctionnent tant que cette page reste ouverte.", goals: "Buts", cards: "Cartons rouges et jaunes", final: "Résultat final" },
+  de: { title: "Spielbenachrichtigungen", note: "Wähle die Spielmomente, die dir wichtig sind. Browser-Hinweise funktionieren, solange diese Seite geöffnet ist.", goals: "Tore", cards: "Rote und gelbe Karten", final: "Endergebnis" },
+  ja: { title: "試合アラート", note: "気になる試合の瞬間を選べます。このページを開いている間にブラウザー通知を受け取れます。", goals: "ゴール", cards: "レッドカードとイエローカード", final: "試合終了結果" },
+  ar: { title: "تنبيهات المباراة", note: "اختر اللحظات التي تهمك. تعمل تنبيهات المتصفح ما دامت هذه الصفحة مفتوحة.", goals: "الأهداف", cards: "البطاقات الحمراء والصفراء", final: "النتيجة النهائية" },
 };
 
-const pulsePlayCopy: Record<Language, { scoreView: string; playView: string; title: string; liveMoment: string; ready: string; penalty: string; extraTime: string; cheer: string; localCheers: string; localOnly: string; liveSync: string; delayedSync: string; scheduledSync: string; replaySync: string; illustrative: string; onPitch: string; confirmedMoment: string }> = {
-  en: { scoreView: "Score", playView: "Pulse Play", title: "Pulse Play", liveMoment: "On the pitch", ready: "Ready for kickoff", penalty: "Penalty", extraTime: "Added time", cheer: "Cheer for", localCheers: "Your match cheers", localOnly: "Saved on this device", liveSync: "Event synced", delayedSync: "Delayed update", scheduledSync: "Pre-match preview", replaySync: "Replay moment", illustrative: "Confirmed events drive this animation; player positions and shirt numbers are illustrative.", onPitch: "on pitch", confirmedMoment: "Confirmed player" },
-  zh: { scoreView: "比分", playView: "比赛剧场", title: "比赛剧场", liveMoment: "场上动态", ready: "等待开赛", penalty: "点球", extraTime: "补时", cheer: "为球队加油", localCheers: "我的助威", localOnly: "仅保存在本设备", liveSync: "赛事同步", delayedSync: "延迟更新", scheduledSync: "赛前预览", replaySync: "回放节点", illustrative: "动画由已确认比赛事件驱动；球员位置和球衣号码为情境演示。", onPitch: "人在场", confirmedMoment: "已确认球员" },
-  es: { scoreView: "Marcador", playView: "Pulso en juego", title: "Pulso en juego", liveMoment: "En el campo", ready: "Listos para el inicio", penalty: "Penalti", extraTime: "Tiempo añadido", cheer: "Animar a", localCheers: "Tus ánimos", localOnly: "Guardado en este dispositivo", liveSync: "Sincronizado", delayedSync: "Actualización con retraso", scheduledSync: "Vista previa", replaySync: "Momento de repetición", illustrative: "Los eventos confirmados mueven la animación; las posiciones y dorsales son ilustrativos.", onPitch: "en campo", confirmedMoment: "Jugador confirmado" },
-  pt: { scoreView: "Placar", playView: "Pulso em jogo", title: "Pulso em jogo", liveMoment: "Em campo", ready: "Pronto para o início", penalty: "Pênalti", extraTime: "Acréscimos", cheer: "Torcer por", localCheers: "Sua torcida", localOnly: "Salvo neste dispositivo", liveSync: "Sincronizado", delayedSync: "Atualização com atraso", scheduledSync: "Prévia da partida", replaySync: "Momento do replay", illustrative: "Eventos confirmados movem a animação; posições e números são ilustrativos.", onPitch: "em campo", confirmedMoment: "Jogador confirmado" },
-  fr: { scoreView: "Score", playView: "Pouls du match", title: "Pouls du match", liveMoment: "Sur le terrain", ready: "Prêt pour le coup d'envoi", penalty: "Penalty", extraTime: "Temps additionnel", cheer: "Encourager", localCheers: "Vos encouragements", localOnly: "Enregistré sur cet appareil", liveSync: "Synchronisé", delayedSync: "Mise à jour différée", scheduledSync: "Aperçu avant-match", replaySync: "Moment du replay", illustrative: "Les événements confirmés animent la scène ; positions et numéros sont illustratifs.", onPitch: "sur le terrain", confirmedMoment: "Joueur confirmé" },
-  de: { scoreView: "Spielstand", playView: "Spielimpuls", title: "Spielimpuls", liveMoment: "Auf dem Platz", ready: "Bereit zum Anpfiff", penalty: "Elfmeter", extraTime: "Nachspielzeit", cheer: "Anfeuern", localCheers: "Dein Jubel", localOnly: "Auf diesem Gerät gespeichert", liveSync: "Ereignis-synchron", delayedSync: "Verzögertes Update", scheduledSync: "Spielvorschau", replaySync: "Replay-Moment", illustrative: "Bestätigte Ereignisse steuern die Animation; Positionen und Nummern sind illustrativ.", onPitch: "auf dem Platz", confirmedMoment: "Bestätigter Spieler" },
-  ja: { scoreView: "スコア", playView: "パルスプレイ", title: "パルスプレイ", liveMoment: "ピッチ上", ready: "キックオフ待機", penalty: "ペナルティーキック", extraTime: "アディショナルタイム", cheer: "応援する", localCheers: "あなたの応援", localOnly: "この端末だけに保存", liveSync: "イベント同期", delayedSync: "遅延更新", scheduledSync: "試合前プレビュー", replaySync: "リプレイ場面", illustrative: "確認済みイベントがアニメを動かします。位置と背番号は演出です。", onPitch: "人出場", confirmedMoment: "確認済み選手" },
-  ar: { scoreView: "النتيجة", playView: "نبض الملعب", title: "نبض الملعب", liveMoment: "على أرض الملعب", ready: "جاهزون للبداية", penalty: "ركلة جزاء", extraTime: "وقت بدل ضائع", cheer: "شجع", localCheers: "تشجيعك", localOnly: "محفوظ على هذا الجهاز", liveSync: "متزامن مع الحدث", delayedSync: "تحديث متأخر", scheduledSync: "معاينة قبل المباراة", replaySync: "لحظة إعادة", illustrative: "تحرك الأحداث المؤكدة الرسوم؛ المواقع والأرقام توضيحية.", onPitch: "في الملعب", confirmedMoment: "لاعب مؤكد" },
+const commentaryAudioCopy: Record<Language, { autoOn: string; autoOff: string; rewards: string }> = {
+  en: { autoOn: "Auto commentary on", autoOff: "Auto commentary", rewards: "Points you can earn" },
+  zh: { autoOn: "自动播报已开启", autoOff: "自动播报", rewards: "本场可赢积分" },
+  es: { autoOn: "Narración automática activa", autoOff: "Narración automática", rewards: "Puntos que puedes ganar" },
+  pt: { autoOn: "Narração automática ativa", autoOff: "Narração automática", rewards: "Pontos que você pode ganhar" },
+  fr: { autoOn: "Commentaire auto activé", autoOff: "Commentaire automatique", rewards: "Points à gagner" },
+  de: { autoOn: "Auto-Kommentar aktiv", autoOff: "Auto-Kommentar", rewards: "Mögliche Punkte" },
+  ja: { autoOn: "自動実況オン", autoOff: "自動実況", rewards: "獲得できるポイント" },
+  ar: { autoOn: "التعليق التلقائي مفعّل", autoOff: "التعليق التلقائي", rewards: "النقاط التي يمكنك كسبها" },
+};
+
+const pulsePlayCopy: Record<Language, { scoreView: string; playView: string; title: string; liveMoment: string; ready: string; penalty: string; extraTime: string; cheer: string; localCheers: string; localOnly: string; liveSync: string; delayedSync: string; scheduledSync: string; replaySync: string; illustrative: string; onPitch: string; confirmedMoment: string; matchStory: string }> = {
+  en: { scoreView: "Score", playView: "Pulse Play", title: "Pulse Play", liveMoment: "On the pitch", ready: "Ready for kickoff", penalty: "Penalty", extraTime: "Added time", cheer: "Cheer for", localCheers: "Your match cheers", localOnly: "Saved on this device", liveSync: "Live moment", delayedSync: "Update pending", scheduledSync: "Pre-match preview", replaySync: "Replay moment", illustrative: "The event, score and cards follow the match record; animated positions and shirt numbers are illustrative.", onPitch: "on pitch", confirmedMoment: "Player involved", matchStory: "Match story" },
+  zh: { scoreView: "比分", playView: "比赛剧场", title: "比赛剧场", liveMoment: "场上动态", ready: "等待开赛", penalty: "点球", extraTime: "补时", cheer: "为球队加油", localCheers: "我的助威", localOnly: "仅保存在本设备", liveSync: "实时动态", delayedSync: "稍后更新", scheduledSync: "赛前预览", replaySync: "回放时刻", illustrative: "事件、比分和罚牌来自比赛记录；动画位置与号码仅用于呈现场面。", onPitch: "人在场", confirmedMoment: "本次事件球员", matchStory: "比赛故事线" },
+  es: { scoreView: "Marcador", playView: "Pulso en juego", title: "Pulso en juego", liveMoment: "En el campo", ready: "Listos para el inicio", penalty: "Penalti", extraTime: "Tiempo añadido", cheer: "Animar a", localCheers: "Tus ánimos", localOnly: "Guardado en este dispositivo", liveSync: "Momento en vivo", delayedSync: "Actualización pendiente", scheduledSync: "Vista previa", replaySync: "Momento de repetición", illustrative: "El evento, el marcador y las tarjetas siguen el acta; las posiciones y dorsales animados son ilustrativos.", onPitch: "en campo", confirmedMoment: "Jugador implicado", matchStory: "Historia del partido" },
+  pt: { scoreView: "Placar", playView: "Pulso em jogo", title: "Pulso em jogo", liveMoment: "Em campo", ready: "Pronto para o início", penalty: "Pênalti", extraTime: "Acréscimos", cheer: "Torcer por", localCheers: "Sua torcida", localOnly: "Salvo neste dispositivo", liveSync: "Momento ao vivo", delayedSync: "Atualização pendente", scheduledSync: "Prévia da partida", replaySync: "Momento do replay", illustrative: "Evento, placar e cartões seguem o registro da partida; posições e números animados são ilustrativos.", onPitch: "em campo", confirmedMoment: "Jogador envolvido", matchStory: "História da partida" },
+  fr: { scoreView: "Score", playView: "Pouls du match", title: "Pouls du match", liveMoment: "Sur le terrain", ready: "Prêt pour le coup d'envoi", penalty: "Penalty", extraTime: "Temps additionnel", cheer: "Encourager", localCheers: "Vos encouragements", localOnly: "Enregistré sur cet appareil", liveSync: "Moment en direct", delayedSync: "Mise à jour en attente", scheduledSync: "Aperçu avant-match", replaySync: "Moment du replay", illustrative: "L'événement, le score et les cartons suivent le compte rendu; positions et numéros animés sont illustratifs.", onPitch: "sur le terrain", confirmedMoment: "Joueur impliqué", matchStory: "Fil du match" },
+  de: { scoreView: "Spielstand", playView: "Spielimpuls", title: "Spielimpuls", liveMoment: "Auf dem Platz", ready: "Bereit zum Anpfiff", penalty: "Elfmeter", extraTime: "Nachspielzeit", cheer: "Anfeuern", localCheers: "Dein Jubel", localOnly: "Auf diesem Gerät gespeichert", liveSync: "Live-Moment", delayedSync: "Update ausstehend", scheduledSync: "Spielvorschau", replaySync: "Replay-Moment", illustrative: "Ereignis, Spielstand und Karten folgen dem Spielbericht; animierte Positionen und Nummern sind illustrativ.", onPitch: "auf dem Platz", confirmedMoment: "Beteiligter Spieler", matchStory: "Spielverlauf" },
+  ja: { scoreView: "スコア", playView: "パルスプレイ", title: "パルスプレイ", liveMoment: "ピッチ上", ready: "キックオフ待機", penalty: "ペナルティーキック", extraTime: "アディショナルタイム", cheer: "応援する", localCheers: "あなたの応援", localOnly: "この端末だけに保存", liveSync: "ライブ場面", delayedSync: "更新待ち", scheduledSync: "試合前プレビュー", replaySync: "リプレイ場面", illustrative: "試合イベントに合わせて場面を再現します。位置と背番号は演出です。", onPitch: "人出場", confirmedMoment: "関与した選手", matchStory: "試合の流れ" },
+  ar: { scoreView: "النتيجة", playView: "نبض الملعب", title: "نبض الملعب", liveMoment: "على أرض الملعب", ready: "جاهزون للبداية", penalty: "ركلة جزاء", extraTime: "وقت بدل ضائع", cheer: "شجع", localCheers: "تشجيعك", localOnly: "محفوظ على هذا الجهاز", liveSync: "لحظة مباشرة", delayedSync: "التحديث قادم", scheduledSync: "معاينة قبل المباراة", replaySync: "لحظة إعادة", illustrative: "الحدث والنتيجة والبطاقات تتبع سجل المباراة؛ المواقع والأرقام المتحركة توضيحية.", onPitch: "في الملعب", confirmedMoment: "اللاعب المعني", matchStory: "قصة المباراة" },
 };
 
 const challengeEditCopy: Record<Language, { edit: string; save: string; note: string; updated: string }> = {
@@ -1299,11 +1310,11 @@ function eventLabel(event: MatchEvent, copy: UiCopy) {
   if (event.type === "yellow_card") return copy.yellow;
   if (event.type === "red_card") return copy.red;
   if (event.type === "fulltime") return copy.final;
-  if (event.type === "halftime") return "HT";
-  if (event.type === "substitution") return "SUB";
-  if (event.type === "odds_shift") return copy.fanPulse;
-  if (event.type === "score_update") return "Score review";
-  return "Match update";
+  if (event.type === "halftime") return "Half-time";
+  if (event.type === "substitution") return "Substitution";
+  if (event.type === "odds_shift") return "Momentum shift";
+  if (event.type === "score_update") return "Score update";
+  return "Play continues";
 }
 
 function localizedEventLabel(event: MatchEvent, copy: UiCopy, language: Language) {
@@ -1326,20 +1337,20 @@ function localizedEventLabel(event: MatchEvent, copy: UiCopy, language: Language
     if (language === "ar") return "تبديل";
   }
   if (event.type === "odds_shift") {
-    if (language === "zh") return "市场脉冲";
-    if (language === "es") return "Pulso de mercado";
-    if (language === "pt") return "Pulso do mercado";
-    if (language === "fr") return "Pouls du marché";
-    if (language === "de") return "Marktimpuls";
-    if (language === "ja") return "市場の脈動";
-    if (language === "ar") return "نبض السوق";
+    if (language === "zh") return "场面升温";
+    if (language === "es") return "Sube la intensidad";
+    if (language === "pt") return "Jogo esquenta";
+    if (language === "fr") return "Le rythme monte";
+    if (language === "de") return "Das Spiel wird intensiver";
+    if (language === "ja") return "試合がヒートアップ";
+    if (language === "ar") return "ارتفاع إيقاع المباراة";
   }
   if (event.type === "score_update" || event.type === "kickoff") {
     if (language === "zh") return event.type === "kickoff" ? "开赛" : "比分更新";
-    if (language === "es") return event.type === "kickoff" ? "Inicio" : "Marcador";
-    if (language === "pt") return event.type === "kickoff" ? "Início" : "Placar";
-    if (language === "fr") return event.type === "kickoff" ? "Coup d'envoi" : "Score";
-    if (language === "de") return event.type === "kickoff" ? "Anstoß" : "Spielstand";
+    if (language === "es") return event.type === "kickoff" ? "Inicio" : "Marcador actualizado";
+    if (language === "pt") return event.type === "kickoff" ? "Início" : "Placar atualizado";
+    if (language === "fr") return event.type === "kickoff" ? "Coup d'envoi" : "Score actualisé";
+    if (language === "de") return event.type === "kickoff" ? "Anstoß" : "Spielstand aktualisiert";
     if (language === "ja") return event.type === "kickoff" ? "キックオフ" : "スコア更新";
     if (language === "ar") return event.type === "kickoff" ? "البداية" : "تحديث النتيجة";
   }
@@ -1471,6 +1482,7 @@ export default function MatchdayApp() {
   const [pickLedger, setPickLedger] = useState(readPickLedger);
   const [settlementMatches, setSettlementMatches] = useState<MatchData[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [autoCommentary, setAutoCommentary] = useState(() => window.localStorage.getItem("wclp-auto-commentary") === "1");
   const [commentaryMode, setCommentaryMode] = useState<CommentaryMode>("call");
   const [followedMatchId, setFollowedMatchId] = useState(() => window.localStorage.getItem("wclp-followed-match"));
   const [favoriteTeamCode, setFavoriteTeamCode] = useState(() => window.localStorage.getItem("wclp-favorite-team"));
@@ -1479,6 +1491,7 @@ export default function MatchdayApp() {
   const settlementGuardRef = useRef(new Set(readPickLedger().filter((pick) => pick.settled).map((pick) => pick.matchId)));
   const notifiedEventRef = useRef<string | null>(null);
   const commentaryAudioRef = useRef<HTMLAudioElement | null>(null);
+  const autoCommentaryEventRef = useRef<string | null>(null);
 
   const copy = ui[language];
   const standText = fanStandCopy[language];
@@ -1735,6 +1748,14 @@ export default function MatchdayApp() {
     }
   }, [alertPreferences, followedMatchId, frame, language, match, mode]);
 
+  useEffect(() => {
+    if (!autoCommentary || !match || !frame || match.status === "scheduled") return;
+    const event = frame.latestEvent;
+    if (!event || autoCommentaryEventRef.current === event.id) return;
+    autoCommentaryEventRef.current = event.id;
+    playCommentaryLine(localizeCommentary(language, match, frame), "call", event.type);
+  }, [autoCommentary, frame, language, match]);
+
   if (!match || !frame) {
     return (
       <main className="matchday-app loading-screen">
@@ -1749,6 +1770,7 @@ export default function MatchdayApp() {
   }
 
   const sourceState = sourceMeta(source, mode, match, copy);
+  const activePick = pickLedger.find((pick) => pick.matchId === match.id);
   const isScheduled = match.status === "scheduled";
   const activeEvents = isScheduled ? frame.activeEvents.filter((event) => event.type !== "kickoff") : frame.activeEvents;
   const latestEvent = isScheduled ? undefined : frame.latestEvent;
@@ -1781,6 +1803,7 @@ export default function MatchdayApp() {
     recap: isScheduled ? localizeScheduledBrief(language, match, "recap") : localizeRecap(language, match, frame),
   };
   const aiCommentary = commentaryByMode[commentaryMode];
+  const audioText = commentaryAudioCopy[language];
   const pulseText = pulsePlayCopy[language];
   const pulseMomentLabel = latestEvent
     ? `${latestEvent.penalty ? `${pulseText.penalty} · ` : ""}${localizedEventLabel(latestEvent, copy, language)}${latestEvent.team ? ` · ${latestEvent.team}` : ""}`
@@ -1788,10 +1811,28 @@ export default function MatchdayApp() {
       ? pulseText.ready
       : statusText;
   const pulseMomentDescription = latestEvent ? localizeEventDescription(language, latestEvent) : "";
+  const pulseStoryEvents = activeEvents
+    .filter((event) => ["goal", "yellow_card", "red_card", "substitution", "halftime", "fulltime", "score_update"].includes(event.type))
+    .slice(-4)
+    .map((event) => ({ id: event.id, minute: minuteLabel(event), label: localizedEventLabel(event, copy, language), team: event.team, score: `${event.homeScore}-${event.awayScore}` }));
   const prioritizedReplays = [...replayMatches].sort((left, right) => {
     const includesFavorite = (candidate: MatchData) => Boolean(favoriteTeamCode && (candidate.home.code === favoriteTeamCode || candidate.away.code === favoriteTeamCode));
     return Number(includesFavorite(right)) - Number(includesFavorite(left));
   });
+  const challengeRoom = !activePick
+    ? undefined
+    : activePick.homeScore > activePick.awayScore
+      ? "home" as const
+      : activePick.awayScore > activePick.homeScore
+        ? "away" as const
+        : "match" as const;
+  const challengeRoomLabel = challengeRoom === "home"
+    ? standText.teamFans(teamName(match.home, language))
+    : challengeRoom === "away"
+      ? standText.teamFans(teamName(match.away, language))
+      : challengeRoom === "match"
+        ? standText.allFans
+        : undefined;
 
   function startLive() {
     setView("match");
@@ -1871,7 +1912,15 @@ export default function MatchdayApp() {
       return;
     }
 
-    const clipPath = getCommentaryVoiceClip(match.id, language, commentaryMode, latestEvent?.type, aiCommentary);
+    playCommentaryLine(aiCommentary, commentaryMode, latestEvent?.type);
+  }
+
+  function playCommentaryLine(line: string, voiceMode: CommentaryMode, eventType?: MatchEvent["type"]) {
+    if (!match) return;
+    window.speechSynthesis?.cancel();
+    commentaryAudioRef.current?.pause();
+    commentaryAudioRef.current = null;
+    const clipPath = getCommentaryVoiceClip(match.id, language, voiceMode, eventType, line);
     if (clipPath) {
       const audio = new Audio(`${import.meta.env.BASE_URL}${clipPath}`);
       let fallbackStarted = false;
@@ -1879,7 +1928,7 @@ export default function MatchdayApp() {
         if (fallbackStarted) return;
         fallbackStarted = true;
         commentaryAudioRef.current = null;
-        speakWithBrowserVoice();
+        speakWithBrowserVoice(line, voiceMode);
       };
       audio.onended = () => {
         commentaryAudioRef.current = null;
@@ -1892,16 +1941,16 @@ export default function MatchdayApp() {
       return;
     }
 
-    speakWithBrowserVoice();
+    speakWithBrowserVoice(line, voiceMode);
   }
 
-  function speakWithBrowserVoice() {
+  function speakWithBrowserVoice(line = aiCommentary, voiceMode: CommentaryMode = commentaryMode) {
     if (!("speechSynthesis" in window)) {
       setIsSpeaking(false);
       return;
     }
-    const utterance = new SpeechSynthesisUtterance(aiCommentary);
-    const profile = getSpeechProfile(language, commentaryMode);
+    const utterance = new SpeechSynthesisUtterance(line);
+    const profile = getSpeechProfile(language, voiceMode);
     const voices = window.speechSynthesis.getVoices();
     utterance.lang = profile.locale;
     utterance.voice = selectSpeechVoice(voices, language);
@@ -1912,6 +1961,22 @@ export default function MatchdayApp() {
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
     setIsSpeaking(true);
+  }
+
+  function toggleAutoCommentary() {
+    setAutoCommentary((current) => {
+      const next = !current;
+      window.localStorage.setItem("wclp-auto-commentary", next ? "1" : "0");
+      if (!next) {
+        window.speechSynthesis?.cancel();
+        commentaryAudioRef.current?.pause();
+        commentaryAudioRef.current = null;
+        setIsSpeaking(false);
+      } else {
+        autoCommentaryEventRef.current = null;
+      }
+      return next;
+    });
   }
 
   async function toggleMatchFollow() {
@@ -2010,7 +2075,7 @@ export default function MatchdayApp() {
                   <span>{minuteLabelForFrame(match, minute, isFinal, copy)}</span>
                 </div>
                 <TeamSide team={match.away} score={frame.awayScore} align="right" copy={copy} language={language} />
-              </div> : <PulsePlay key={match.id} match={match} frame={frame} latestEvent={latestEvent} minute={minute} isFinal={isFinal} homeName={teamName(match.home, language)} awayName={teamName(match.away, language)} momentLabel={pulseMomentLabel} momentDescription={pulseMomentDescription} text={pulseText} />}
+              </div> : <PulsePlay key={match.id} match={match} frame={frame} latestEvent={latestEvent} minute={minute} isFinal={isFinal} homeName={teamName(match.home, language)} awayName={teamName(match.away, language)} momentLabel={pulseMomentLabel} momentDescription={pulseMomentDescription} storyEvents={pulseStoryEvents} text={pulseText} />}
               <div className="pulse-strip">
                 <span>{copy.fanPulse} {Math.round(frame.market.sentiment)}/100</span>
                 <div className="pulse-track"><span style={{ width: `${frame.market.sentiment}%` }} /></div>
@@ -2023,7 +2088,7 @@ export default function MatchdayApp() {
                   </div></div>
                   <strong aria-live="polite">{aiCommentary}</strong>
                 </div>
-                <button className="commentary-audio" type="button" onClick={toggleCommentaryAudio} title={isSpeaking ? copy.stopCommentary : copy.listenCommentary}>{isSpeaking ? copy.stopCommentary : copy.listenCommentary}</button>
+                <div className="commentary-audio-actions"><button className="commentary-audio" type="button" onClick={toggleCommentaryAudio} title={isSpeaking ? copy.stopCommentary : copy.listenCommentary}>{isSpeaking ? copy.stopCommentary : copy.listenCommentary}</button><button className={`commentary-auto ${autoCommentary ? "active" : ""}`} type="button" aria-pressed={autoCommentary} onClick={toggleAutoCommentary}>{autoCommentary ? audioText.autoOn : audioText.autoOff}</button></div>
               </div>
               <div className="hero-actions">
                 <button className="primary-button" type="button" onClick={() => setView("match")}>
@@ -2042,7 +2107,7 @@ export default function MatchdayApp() {
             </section>
 
             <section className="prediction-focus" aria-label={copy.scoreChallenge}>
-              <ScoreChallenge copy={copy} language={language} match={match} picks={pickLedger} homeScore={pickHome} awayScore={pickAway} setHomeScore={setPickHome} setAwayScore={setPickAway} locked={pickLocked} editing={pickEditing} settled={pickSettled} points={points} stats={challengeStats} settlement={settlement} onSave={savePick} onEdit={editPick} onDownload={downloadPickCard} canLock={canLockPick} />
+              <ScoreChallenge copy={copy} language={language} match={match} picks={pickLedger} homeScore={pickHome} awayScore={pickAway} setHomeScore={setPickHome} setAwayScore={setPickAway} locked={pickLocked} editing={pickEditing} settled={pickSettled} points={points} stats={challengeStats} settlement={settlement} onSave={savePick} onEdit={editPick} onDownload={downloadPickCard} onJoinRoom={() => document.querySelector<HTMLElement>(".fan-stand")?.scrollIntoView({ behavior: "smooth", block: "start" })} roomLabel={standText.title} canLock={canLockPick} />
             </section>
 
             {!isScheduled && activeEvents.length ? <div className="signal-row" aria-label={copy.events}>
@@ -2058,23 +2123,7 @@ export default function MatchdayApp() {
               <div>{keyEvents.map((event) => mode === "replay" ? <button type="button" key={event.id} onClick={() => { setIsPlaying(false); setMinute(event.minute); }}>{minuteLabel(event)} {localizedEventLabel(event, copy, language)}</button> : <span key={event.id}>{minuteLabel(event)} {localizedEventLabel(event, copy, language)}</span>)}</div>
             </div> : null}
 
-            <FanStand key={match.id} matchId={match.id} minute={minute} homeName={teamName(match.home, language)} awayName={teamName(match.away, language)} momentLabel={pulseMomentLabel} momentDescription={pulseMomentDescription} copy={standText} />
-
-            <section className="match-context-grid">
-              <section className="section-block match-summary-block">
-                <SectionHeading eyebrow={copy.summary} title={stageLabel(match.stage, match.competition, copy, language)} />
-                 <div className="summary-metrics">
-                   <Metric label={copy.commentaryRecap} value={commentaryByMode.recap} />
-                  <Metric label={copy.fanPulse} value={`${Math.round(frame.market.sentiment)}/100`} />
-                </div>
-                <div className="match-facts">
-                  {uniqueFacts(stageLabel(match.stage, match.competition, copy, language), venueLabel(match.venue, copy), match.referee, match.kickoffIso ? formatKickoffLabel(match.kickoffIso, language) : undefined).map((fact) => <span key={fact}>{fact}</span>)}
-                </div>
-                {match.groupTable?.length ? <GroupTable table={match.groupTable} home={match.home.code} away={match.away.code} title={copy.advancement} copy={copy} language={language} /> : null}
-                <KeyPlayersStrip copy={copy} match={match} language={language} />
-              </section>
-              <ScheduleBoard copy={copy} items={schedule} selectedId={match.id} onOpenReplay={startReplay} language={language} favoriteTeamCode={favoriteTeamCode} />
-            </section>
+            <FanStand key={match.id} matchId={match.id} minute={minute} homeName={teamName(match.home, language)} awayName={teamName(match.away, language)} homeScore={frame.homeScore} awayScore={frame.awayScore} eventType={latestEvent?.type} eventTeam={latestEvent?.team === match.home.code ? teamName(match.home, language) : latestEvent?.team === match.away.code ? teamName(match.away, language) : undefined} fallbackLabel={pulseMomentLabel} momentDescription={pulseMomentDescription} language={language} copy={standText} challenge={{ title: copy.scoreChallenge, status: activePick?.settled ? copy.alreadySettled : activePick?.locked ? copy.locked : canLockPick ? copy.lockPick : copy.pickClosed, score: activePick ? `${match.home.code} ${activePick.homeScore}:${activePick.awayScore} ${match.away.code}` : undefined, points: `${points.toLocaleString()} ${copy.pointsUnit}`, action: copy.scoreChallenge, room: challengeRoom, roomLabel: challengeRoomLabel, award: activePick?.settled ? `+${activePick.award ?? 0} ${copy.pointsUnit}` : undefined }} onOpenChallenge={() => { document.querySelector<HTMLElement>(".challenge-block")?.scrollIntoView({ behavior: "smooth", block: "center" }); window.setTimeout(() => document.querySelector<HTMLInputElement>(".challenge-score input")?.focus(), 350); }} />
 
             <section className="content-grid">
               <div className="feed-column">
@@ -2109,7 +2158,7 @@ export default function MatchdayApp() {
             </section>
           </>
         ) : view === "tournament" ? (
-          <TournamentView language={language} copy={copy} schedule={schedule} onOpenReplay={startReplay} />
+          <TournamentView language={language} copy={copy} schedule={schedule} onOpenReplay={startReplay} favoriteTeamCode={favoriteTeamCode} />
         ) : (
           <TeamsView copy={copy} language={language} match={match} schedule={schedule} onOpenReplay={startReplay} favoriteTeamCode={favoriteTeamCode} onToggleFavorite={(code) => setFavoriteTeamCode((current) => current === code ? null : code)} />
         )}
@@ -2179,7 +2228,7 @@ function OddsContext({ copy, label, match, market }: { copy: UiCopy; label: stri
   return <section className="odds-context"><SectionHeading eyebrow={copy.fanPulse} title={label} /><div className="odds-grid">{visibleValues.map((item) => <div className="odds-cell" key={item.label}><span>{item.label}</span><strong>{`x${item.value.toFixed(2)}`}</strong></div>)}</div><p className="muted-copy">{copy.noBetting}</p></section>;
 }
 
-function ScoreChallenge({ copy, language, match, picks, homeScore, awayScore, setHomeScore, setAwayScore, locked, editing, settled, points, stats, settlement, onSave, onEdit, onDownload, canLock }: { copy: UiCopy; language: Language; match: MatchData; picks: StoredPick[]; homeScore: number; awayScore: number; setHomeScore: (value: number) => void; setAwayScore: (value: number) => void; locked: boolean; editing: boolean; settled: boolean; points: number; stats: ChallengeStats; settlement: string | null; onSave: () => void; onEdit: () => void; onDownload: () => void; canLock: boolean }) {
+function ScoreChallenge({ copy, language, match, picks, homeScore, awayScore, setHomeScore, setAwayScore, locked, editing, settled, points, stats, settlement, onSave, onEdit, onDownload, onJoinRoom, roomLabel, canLock }: { copy: UiCopy; language: Language; match: MatchData; picks: StoredPick[]; homeScore: number; awayScore: number; setHomeScore: (value: number) => void; setAwayScore: (value: number) => void; locked: boolean; editing: boolean; settled: boolean; points: number; stats: ChallengeStats; settlement: string | null; onSave: () => void; onEdit: () => void; onDownload: () => void; onJoinRoom: () => void; roomLabel: string; canLock: boolean }) {
   const matchState = match.status === "finished" ? copy.final : match.status === "live" ? copy.live : copy.scheduled;
   const accuracy = stats.played ? `${Math.round((stats.correct / stats.played) * 100)}%` : null;
   const editText = challengeEditCopy[language];
@@ -2202,13 +2251,14 @@ function ScoreChallenge({ copy, language, match, picks, homeScore, awayScore, se
             <div className="challenge-level-track"><span style={{ width: `${level.progress}%` }} /></div>
           </div>
           <div className="challenge-meta"><div><span>{copy.pickCost}</span><strong>{pointsPerPick} {copy.pointsUnit}</strong></div><div><span>{copy.settlementRule}</span><strong>{locked ? copy.locked : matchState}</strong></div></div>
+          <div className="challenge-rewards" aria-label={commentaryAudioCopy[language].rewards}><span><small>{copy.exact}</small><strong>+250 {copy.pointsUnit}</strong></span><span><small>{copy.result}</small><strong>+100 {copy.pointsUnit}</strong></span></div>
           <div className="challenge-stats"><span>{copy.streak} <b>{stats.streak}</b> <small>{copy.bestStreak} {stats.bestStreak}</small></span>{accuracy ? <span>{copy.accuracy} <b>{accuracy}</b> <small>{stats.correct}/{stats.played}</small></span> : null}</div>
         </div>
         <div className="challenge-play-column">
           <div className={`challenge-score ${editing ? "editing" : ""}`}><ScoreInput label={match.home.code} value={homeScore} disabled={(locked && !editing) || !canLock} onChange={setHomeScore} /><span>:</span><ScoreInput label={match.away.code} value={awayScore} disabled={(locked && !editing) || !canLock} onChange={setAwayScore} /></div>
           {match.status === "scheduled" ? <p className="challenge-rule-note">{editText.note}</p> : null}
           <p className="muted-copy">{copy.pointsNote}</p>
-          <div className="challenge-actions"><button className="primary-button" type="button" onClick={onSave} disabled={settled || (!editing && locked) || (!editing && points < pointsPerPick) || !canLock}>{actionLabel}</button>{canEdit && !editing ? <button className="secondary-button edit-pick-button" type="button" onClick={onEdit}>{editText.edit}</button> : null}{locked && !editing ? <button className="secondary-button" type="button" onClick={onDownload}>{copy.downloadPick}</button> : null}</div>
+          <div className="challenge-actions"><button className="primary-button" type="button" onClick={onSave} disabled={settled || (!editing && locked) || (!editing && points < pointsPerPick) || !canLock}>{actionLabel}</button>{canEdit && !editing ? <button className="secondary-button edit-pick-button" type="button" onClick={onEdit}>{editText.edit}</button> : null}{locked && !editing ? <button className="secondary-button" type="button" onClick={onDownload}>{copy.downloadPick}</button> : null}{locked && !editing ? <button className="secondary-button challenge-room-button" type="button" onClick={onJoinRoom}>{roomLabel}</button> : null}</div>
         </div>
       </div>
       {settlement ? <p className="challenge-result">{settlement}</p> : null}
@@ -2222,7 +2272,7 @@ function ScoreInput({ label, value, disabled, onChange }: { label: string; value
   return <label className="score-input"><span>{label}</span><div className="score-stepper"><button type="button" disabled={disabled || value <= 0} onClick={() => onChange(Math.max(0, value - 1))} aria-label={`${label} -`}>-</button><input type="number" min="0" max="20" value={value} disabled={disabled} aria-label={label} onChange={(event) => onChange(Math.max(0, Math.min(20, Number(event.target.value) || 0)))} /><button type="button" disabled={disabled || value >= 20} onClick={() => onChange(Math.min(20, value + 1))} aria-label={`${label} +`}>+</button></div></label>;
 }
 
-function TournamentView({ language, copy, schedule, onOpenReplay }: { language: Language; copy: UiCopy; schedule: MatchScheduleItem[]; onOpenReplay: (id: string) => void }) {
+function TournamentView({ language, copy, schedule, onOpenReplay, favoriteTeamCode }: { language: Language; copy: UiCopy; schedule: MatchScheduleItem[]; onOpenReplay: (id: string) => void; favoriteTeamCode: string | null }) {
   const text = tournamentCopy[language];
   const teams = useMemo(() => {
     const map = new Map<string, Team>();
@@ -2242,21 +2292,27 @@ function TournamentView({ language, copy, schedule, onOpenReplay }: { language: 
   });
   const round16 = txlineArchiveMatches.filter((match) => match.stage === "Round of 16");
   const quarter = txlineArchiveMatches.filter((match) => match.stage === "Quarter-final");
-  const currentFixtures = schedule.filter((item) => item.status === "scheduled" && !item.home.code.endsWith("XX") && !item.away.code.endsWith("XX")).slice(0, 4);
+  const includesFavorite = (item: Pick<MatchScheduleItem, "home" | "away">) => Boolean(favoriteTeamCode && (item.home.code === favoriteTeamCode || item.away.code === favoriteTeamCode));
+  const currentFixtures = schedule
+    .filter((item) => item.status === "scheduled" && !item.home.code.endsWith("XX") && !item.away.code.endsWith("XX"))
+    .sort((left, right) => Number(includesFavorite(right)) - Number(includesFavorite(left)))
+    .slice(0, 4);
 
   return <section className="tournament-view">
     <header className="tournament-intro"><div><p className="overline">{text.verified}</p><h2>{text.subtitle}</h2></div><div className="tournament-intro-actions"><p>{text.sourceRule}</p><label className="spoiler-toggle"><input type="checkbox" checked={spoilerFree} onChange={(event) => setSpoilerFree(event.target.checked)} /><span>{copy.spoilerFree}</span></label></div></header>
 
-    {currentFixtures.length ? <section className="tournament-band current-fixtures"><SectionHeading eyebrow={copy.schedule} title={text.current} /><div className="current-fixture-grid">{currentFixtures.map((item) => <article key={item.id}><div><span className="data-chip seed">{dataStatusLabel(item.dataStatus, copy)}</span>{item.kickoffIso ? <small>{formatKickoffLabel(item.kickoffIso, language)}</small> : null}</div><strong>{teamName(item.home, language)} <b>{copy.versus}</b> {teamName(item.away, language)}</strong><p>{currentFixtureNote(language)}</p></article>)}</div></section> : null}
+    {currentFixtures.length ? <section className="tournament-band current-fixtures"><SectionHeading eyebrow={copy.schedule} title={text.current} /><div className="current-fixture-grid">{currentFixtures.map((item) => { const favorite = includesFavorite(item); return <article className={favorite ? "favorite-team" : ""} key={item.id}><div><span className="data-chip seed">{dataStatusLabel(item.dataStatus, copy)}</span>{favorite ? <span className="favorite-marker" title={copy.favoriteTeam}>★</span> : null}{item.kickoffIso ? <small>{formatKickoffLabel(item.kickoffIso, language)}</small> : null}</div><strong>{teamName(item.home, language)} <b>{copy.versus}</b> {teamName(item.away, language)}</strong><p>{currentFixtureNote(language)}</p></article>; })}</div></section> : null}
 
     <section className="tournament-band"><SectionHeading eyebrow="2026" title={text.archive} /><div className="archive-match-grid">{txlineArchiveMatches.map((archive) => {
       const finalEvent = archive.events.filter((event) => event.type === "fulltime").at(-1) ?? archive.events.at(-1);
       if (!finalEvent) return null;
       const score = `${finalEvent.homeScore}-${finalEvent.awayScore}`;
-      const winner = finalEvent && finalEvent.homeScore !== finalEvent.awayScore ? (finalEvent.homeScore > finalEvent.awayScore ? teamName(archive.home, language) : teamName(archive.away, language)) : text.undecided;
+      const winner = finalEvent && finalEvent.homeScore !== finalEvent.awayScore ? (finalEvent.homeScore > finalEvent.awayScore ? teamName(archive.home, language) : teamName(archive.away, language)) : null;
       const yellowCards = archive.events.filter((event) => event.type === "yellow_card").length;
       const redCards = archive.events.filter((event) => event.type === "red_card").length;
-      return <article className={`archive-match-card ${spoilerFree ? "spoilered" : ""}`} key={archive.id}><div className="archive-match-top"><span>{localizedStage(archive.stage, text)}</span><small>{text.verified}</small></div><div className="archive-score-row"><button type="button" onClick={() => setSelectedCode(archive.home.code)}>{archive.home.code}</button><strong>{spoilerFree ? copy.versus : score}</strong><button type="button" onClick={() => setSelectedCode(archive.away.code)}>{archive.away.code}</button></div>{spoilerFree ? null : <p>{text.winner}: <b>{winner}</b>{yellowCards ? <> · {copy.yellow} {yellowCards}</> : null}{redCards ? <> · {copy.red} {redCards}</> : null}</p>}<button className="archive-open" type="button" onClick={() => onOpenReplay(archive.id)}>{text.open}<span>→</span></button></article>;
+      const finalMinute = Math.max(90, ...archive.events.map((event) => event.minute + (event.stoppage ?? 0)));
+      const aiRecap = localizeRecap(language, archive, buildPulseFrame(archive, finalMinute));
+      return <article className={`archive-match-card ${spoilerFree ? "spoilered" : ""}`} key={archive.id}><div className="archive-match-top"><span>{localizedStage(archive.stage, text)}</span><small>{text.verified}</small></div><div className="archive-score-row"><button type="button" onClick={() => setSelectedCode(archive.home.code)}>{archive.home.code}</button><strong>{spoilerFree ? copy.versus : score}</strong><button type="button" onClick={() => setSelectedCode(archive.away.code)}>{archive.away.code}</button></div>{spoilerFree ? null : <>{winner || yellowCards || redCards ? <p>{winner ? <>{text.winner}: <b>{winner}</b></> : null}{yellowCards ? <>{winner ? <> · </> : null}{copy.yellow} {yellowCards}</> : null}{redCards ? <>{winner || yellowCards ? <> · </> : null}{copy.red} {redCards}</> : null}</p> : null}<div className="archive-ai-summary"><span>{text.aiRecap}</span><p>{aiRecap}</p></div></>}<button className="archive-open" type="button" onClick={() => onOpenReplay(archive.id)}>{text.open}<span>→</span></button></article>;
     })}</div></section>
 
     {!spoilerFree ? <section className="tournament-band bracket-section"><SectionHeading eyebrow={copy.advancement} title={text.path} /><div className="bracket-scroll"><div className="bracket-grid">

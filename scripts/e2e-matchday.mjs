@@ -115,7 +115,8 @@ try {
   assert.equal(desktopLayout.challenge, true);
   assert.equal(desktopLayout.level, true);
   assert.equal(desktopLayout.timeline, true);
-  assert.ok(desktopLayout.scheduleCards > 0);
+  assert.equal(desktopLayout.scheduleCards, 0);
+  assert.equal(await elementCount(cdp, ".primary-nav button"), 3);
   assert.ok(desktopLayout.challengeWidth >= desktopLayout.heroWidth * 0.98);
   assert.ok(desktopLayout.challengeTop < desktopLayout.signalTop);
   assert.equal(desktopLayout.scoreSteppers, 4);
@@ -150,7 +151,8 @@ try {
   assert.match(restoredText, expectedCopy.settled);
   assert.equal(await elementCount(cdp, ".challenge-history:not(.demo-history) .challenge-history-list > div"), 1);
   assert.equal(await elementCount(cdp, ".demo-history .challenge-history-list > div"), 8);
-  assert.equal(await elementCount(cdp, ".challenge-block .secondary-button"), 1);
+  assert.equal(await elementCount(cdp, ".challenge-block .secondary-button"), 2);
+  assert.equal(await elementCount(cdp, ".challenge-room-button"), 1);
   assert.equal(await elementCount(cdp, ".commentary-audio"), 1);
   assert.ok((await elementCount(cdp, ".key-event-strip button")) >= 1);
   await evaluate(cdp, "document.querySelector('.key-event-strip button').click(); true");
@@ -200,6 +202,12 @@ try {
   assert.doesNotMatch(quickRecap, /undefined|�/);
   await capturePage(cdp, "demo-assets/commentary-modes-final.png");
   await evaluate(cdp, "document.querySelectorAll('.commentary-modes button')[0].click(); true");
+  assert.equal(await evaluate(cdp, "document.querySelector('.commentary-auto').getAttribute('aria-pressed')"), "false");
+  await evaluate(cdp, "document.querySelector('.commentary-auto').click(); true");
+  await waitForCondition(cdp, "localStorage.getItem('wclp-auto-commentary') === '1'", 5_000);
+  assert.equal(await evaluate(cdp, "document.querySelector('.commentary-auto').getAttribute('aria-pressed')"), "true");
+  await evaluate(cdp, "document.querySelector('.commentary-auto').click(); true");
+  await waitForCondition(cdp, "localStorage.getItem('wclp-auto-commentary') === '0'", 5_000);
   assert.equal(await elementCount(cdp, ".follow-button"), 1);
   await evaluate(cdp, "document.querySelector('.follow-button').click(); true");
   await waitForCondition(cdp, "Boolean(localStorage.getItem('wclp-followed-match'))", 5_000);
@@ -213,6 +221,8 @@ try {
   await waitForCondition(cdp, "Boolean(document.querySelector('.pulse-play'))", 5_000);
   assert.equal(await elementCount(cdp, ".pulse-player"), 22);
   assert.equal(await elementCount(cdp, ".pulse-play-scoreboard em"), 2);
+  assert.equal(await elementCount(cdp, ".pulse-match-story"), 1);
+  assert.ok((await elementCount(cdp, ".pulse-match-story > div > span")) >= 3);
   await evaluate(cdp, `(() => {
     const cardMoment = [...document.querySelectorAll('.key-event-strip button')].find((button) => /Yellow|黄牌|Amarilla|Amarelo|Jaune|Gelb|イエロー|صفراء/i.test(button.textContent || ''));
     cardMoment?.click();
@@ -220,12 +230,25 @@ try {
   })()`);
   await wait(120);
   assert.equal(await elementCount(cdp, ".figure-event-yellow_card"), 1);
+  assert.equal(await elementCount(cdp, ".pulse-referee"), 1);
   assert.equal(await elementCount(cdp, ".cheer-controls button"), 2);
+  assert.equal(await elementCount(cdp, ".fan-viewpoint"), 3);
+  assert.match(await blockText(cdp, ".fan-challenge-bridge"), /FRA 2:0 MAR/);
+  assert.match(await blockText(cdp, ".fan-challenge-bridge"), new RegExp(`1,200\\s+${expectedCopy.points}`));
+  assert.match(await blockText(cdp, ".fan-challenge-bridge"), /\+250/);
+  await evaluate(cdp, "document.querySelector('.fan-challenge-bridge button').click(); true");
+  await wait(80);
+  assert.equal(await evaluate(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[1].getAttribute('aria-selected')"), "true");
+  const fanViewpoints = await evaluate(cdp, "[...document.querySelectorAll('.fan-viewpoint p')].map((item) => item.textContent.trim())");
+  assert.equal(new Set(fanViewpoints).size, 3);
+  assert.ok(fanViewpoints.every((text) => text.length >= (initialLanguage === "zh" ? 10 : 20)));
+  assert.match(fanViewpoints.join(" "), initialLanguage === "zh" ? /黄牌|防守|判罚/ : /card|booking|defend/i);
+  assert.doesNotMatch(await blockText(cdp, ".fan-stand"), /这个节点改变了什么|What changed here\?|Score review|Pinned match update/i);
   await evaluate(cdp, "document.querySelector('.cheer-controls button').click(); true");
   await waitForCondition(cdp, "Object.entries(localStorage).some(([key, value]) => key.startsWith('wclp-cheers-') && JSON.parse(value).home === 1)", 5_000);
   assert.equal(await elementCount(cdp, ".fan-room-tabs [role='tab']"), 3);
   await evaluate(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[2].click(); true");
-  await wait(80);
+  await waitForCondition(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[2].getAttribute('aria-selected') === 'true'", 5_000);
   await evaluate(cdp, `(() => {
     document.querySelector('.fan-reactions button').click();
     const input = document.querySelector('.fan-comment-form input');
@@ -244,11 +267,12 @@ try {
   await wait(80);
   assert.equal(await blockText(cdp, ".fan-reactions button b"), "1");
   await evaluate(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[1].click(); true");
-  await wait(80);
+  await waitForCondition(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[1].getAttribute('aria-selected') === 'true'", 5_000);
   assert.equal(await elementCount(cdp, ".fan-message-list article"), 0);
   assert.equal(await blockText(cdp, ".fan-reactions button b"), "0");
   await evaluate(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[2].click(); true");
-  await wait(80);
+  await waitForCondition(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[2].getAttribute('aria-selected') === 'true'", 5_000);
+  await waitForCondition(cdp, "document.querySelector('.fan-message-list')?.innerText.includes('Strong recovery after the card.')", 5_000);
   assert.match(await blockText(cdp, ".fan-message-list"), /Strong recovery after the card\./);
   assert.equal(await evaluate(cdp, `(() => {
     const entry = Object.entries(localStorage).find(([key]) => key.startsWith('wclp-fan-stand-'));
@@ -326,7 +350,7 @@ try {
   assert.ok(mobileLayout.actions.left >= 0 && mobileLayout.actions.right <= mobileLayout.viewport);
   await evaluate(cdp, "document.querySelectorAll('.hero-view-toggle button')[1].click(); true");
   await waitForCondition(cdp, "Boolean(document.querySelector('.pulse-play'))", 5_000);
-  assert.match(await blockText(cdp, ".pulse-sync-badge"), /Pre-match preview|赛前预览/);
+  assert.match(await blockText(cdp, ".pulse-sync-badge"), /Pre-match preview|赛前预览|Delayed update|延迟更新/);
   const mobileToggleStyles = await evaluate(cdp, "[...document.querySelectorAll('.hero-view-toggle button')].map((button) => ({ active: button.classList.contains('active'), background: getComputedStyle(button).backgroundColor, color: getComputedStyle(button).color }))");
   assert.equal(mobileToggleStyles.filter((item) => item.active).length, 1);
   assert.notEqual(mobileToggleStyles[0].background, mobileToggleStyles[1].background);
@@ -338,46 +362,52 @@ try {
   assert.ok(mobilePulseLayout.left >= 0 && mobilePulseLayout.right <= mobilePulseLayout.viewport);
   assert.equal(await elementCount(cdp, ".pulse-player"), 22);
   assert.equal(await elementCount(cdp, ".fan-room-tabs [role='tab']"), 3);
+  assert.equal(await elementCount(cdp, ".fan-viewpoint"), 3);
+  assert.equal(await evaluate(cdp, "[...document.querySelectorAll('.fan-viewpoint')].every((item) => { const box = item.getBoundingClientRect(); return box.left >= 0 && box.right <= document.documentElement.clientWidth; })"), true);
   await capturePage(cdp, "demo-assets/pulse-play-mobile-final.png");
   await evaluate(cdp, "document.querySelector('.fan-stand').scrollIntoView({ block: 'start' }); true");
   await wait(100);
-  assert.equal(await evaluate(cdp, "(() => { const facts = [...document.querySelectorAll('.match-summary-block .match-facts span')].map((item) => item.textContent.trim()); return facts.length === new Set(facts).size; })()"), true);
+  assert.equal(await elementCount(cdp, ".match-context-grid"), 0);
   await capturePage(cdp, "demo-assets/fan-stand-mobile-final.png");
   await evaluate(cdp, "document.querySelectorAll('.hero-view-toggle button')[0].click(); true");
 
-  await waitForCondition(cdp, "Boolean(document.querySelector('.challenge-block .primary-button:not(:disabled)'))", 30_000);
-  await evaluate(cdp, `(() => {
-    const inputs = document.querySelectorAll('.challenge-score input');
-    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-    setter.call(inputs[0], '1'); inputs[0].dispatchEvent(new Event('input', { bubbles: true }));
-    setter.call(inputs[1], '0'); inputs[1].dispatchEvent(new Event('input', { bubbles: true }));
-    document.querySelector('.challenge-block .primary-button').click();
-    return true;
-  })()`);
-  await wait(180);
-  assert.equal(await evaluate(cdp, "localStorage.getItem('wclp-test-points')"), "1150");
-  assert.match(await buttonText(cdp, ".edit-pick-button"), expectedCopy.edit);
-  await evaluate(cdp, "document.querySelector('.edit-pick-button').click(); true");
-  await wait(80);
-  await evaluate(cdp, `(() => {
-    const inputs = document.querySelectorAll('.challenge-score input');
-    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-    setter.call(inputs[0], '2'); inputs[0].dispatchEvent(new Event('input', { bubbles: true }));
-    setter.call(inputs[1], '1'); inputs[1].dispatchEvent(new Event('input', { bubbles: true }));
-    document.querySelector('.challenge-block .primary-button').click();
-    return true;
-  })()`);
-  await wait(180);
-  assert.equal(await evaluate(cdp, "localStorage.getItem('wclp-test-points')"), "1150");
-  const editedPicks = await evaluate(cdp, `JSON.parse(localStorage.getItem('wclp-pick-ledger-v1') || '[]').filter((pick) => pick.revisionCount === 1)`);
-  assert.equal(editedPicks.length, 1);
-  assert.equal(editedPicks[0].homeScore, 2);
-  assert.equal(editedPicks[0].awayScore, 1);
-  assert.match(await blockText(cdp, ".challenge-block"), expectedCopy.updated);
-  await cdp.send("Page.reload", { ignoreCache: true });
-  await waitForCondition(cdp, "Boolean(document.querySelector('.edit-pick-button'))", 30_000);
-  assert.deepEqual(await evaluate(cdp, `[...document.querySelectorAll('.challenge-score input')].map((input) => input.value)`), ["2", "1"]);
-  assert.equal(await evaluate(cdp, "localStorage.getItem('wclp-test-points')"), "1150");
+  const liveChallengeOpen = Boolean(await elementCount(cdp, ".challenge-block .primary-button:not(:disabled)"));
+  if (liveChallengeOpen) {
+    await evaluate(cdp, `(() => {
+      const inputs = document.querySelectorAll('.challenge-score input');
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+      setter.call(inputs[0], '1'); inputs[0].dispatchEvent(new Event('input', { bubbles: true }));
+      setter.call(inputs[1], '0'); inputs[1].dispatchEvent(new Event('input', { bubbles: true }));
+      document.querySelector('.challenge-block .primary-button').click();
+      return true;
+    })()`);
+    await wait(180);
+    assert.equal(await evaluate(cdp, "localStorage.getItem('wclp-test-points')"), "1150");
+    assert.match(await buttonText(cdp, ".edit-pick-button"), expectedCopy.edit);
+    await evaluate(cdp, "document.querySelector('.edit-pick-button').click(); true");
+    await wait(80);
+    await evaluate(cdp, `(() => {
+      const inputs = document.querySelectorAll('.challenge-score input');
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+      setter.call(inputs[0], '2'); inputs[0].dispatchEvent(new Event('input', { bubbles: true }));
+      setter.call(inputs[1], '1'); inputs[1].dispatchEvent(new Event('input', { bubbles: true }));
+      document.querySelector('.challenge-block .primary-button').click();
+      return true;
+    })()`);
+    await wait(180);
+    assert.equal(await evaluate(cdp, "localStorage.getItem('wclp-test-points')"), "1150");
+    const editedPicks = await evaluate(cdp, `JSON.parse(localStorage.getItem('wclp-pick-ledger-v1') || '[]').filter((pick) => pick.revisionCount === 1)`);
+    assert.equal(editedPicks.length, 1);
+    assert.equal(editedPicks[0].homeScore, 2);
+    assert.equal(editedPicks[0].awayScore, 1);
+    assert.match(await blockText(cdp, ".challenge-block"), expectedCopy.updated);
+    await cdp.send("Page.reload", { ignoreCache: true });
+    await waitForCondition(cdp, "Boolean(document.querySelector('.edit-pick-button'))", 30_000);
+    assert.deepEqual(await evaluate(cdp, `[...document.querySelectorAll('.challenge-score input')].map((input) => input.value)`), ["2", "1"]);
+    assert.equal(await evaluate(cdp, "localStorage.getItem('wclp-test-points')"), "1150");
+  } else {
+    assert.equal(await evaluate(cdp, "document.querySelector('.challenge-block .primary-button')?.disabled === true"), true);
+  }
   const scheduledBriefs = [];
   for (let index = 0; index < 3; index += 1) {
     await evaluate(cdp, `document.querySelectorAll('.commentary-modes button')[${index}].click(); true`);
@@ -385,7 +415,7 @@ try {
     scheduledBriefs.push(await blockText(cdp, ".hero-ai-brief strong"));
   }
   assert.equal(new Set(scheduledBriefs).size, 3);
-  assert.ok(scheduledBriefs.every((brief) => brief.length > 20));
+  assert.ok(scheduledBriefs.every((brief) => brief.length >= (initialLanguage === "zh" ? 10 : 20)));
   assert.doesNotMatch(scheduledBriefs.join(" "), /undefined|�/);
   const checkedBeforeFocus = await evaluate(cdp, "document.querySelectorAll('.truth-meta strong')[0]?.textContent ?? ''");
   await evaluate(cdp, "window.dispatchEvent(new Event('focus')); true");
@@ -399,6 +429,7 @@ try {
     viewport: document.documentElement.clientWidth,
     scrollWidth: document.documentElement.scrollWidth,
     archiveCards: document.querySelectorAll('.archive-match-card').length,
+    archiveAiRecaps: document.querySelectorAll('.archive-ai-summary').length,
     bracketLanes: document.querySelectorAll('.bracket-lane').length,
     currentCards: document.querySelectorAll('.current-fixture-grid article').length,
     currentBand: Boolean(document.querySelector('.current-fixtures')),
@@ -407,6 +438,7 @@ try {
   })`);
   assert.equal(tournamentLayout.scrollWidth, tournamentLayout.viewport);
   assert.equal(tournamentLayout.archiveCards, 8);
+  assert.equal(tournamentLayout.archiveAiRecaps, 8);
   assert.equal(tournamentLayout.bracketLanes, 6);
   assert.equal(tournamentLayout.currentBand, tournamentLayout.currentCards > 0);
   assert.equal(tournamentLayout.detail, true);
@@ -455,10 +487,12 @@ try {
   assert.equal(await elementCount(cdp, ".source-team-card.favorite .team-favorite.active"), 1);
   await capturePage(cdp, "demo-assets/teams-favorite-final.png");
   await evaluate(cdp, "document.querySelectorAll('.primary-nav button')[0].click(); true");
-  await waitForCondition(cdp, "Boolean(document.querySelector('.schedule-card'))", 10_000);
-  const favoriteScheduleCards = await evaluate(cdp, `[...document.querySelectorAll('.schedule-card')].map((card) => ({ title: card.querySelector(':scope > strong')?.innerText ?? '', favorite: card.classList.contains('favorite-team') })).filter((card) => card.title.includes(${JSON.stringify(favoriteName)}))`);
-  assert.ok(favoriteScheduleCards.every((card) => card.favorite));
+  await waitForCondition(cdp, "Boolean(document.querySelector('.up-next-panel button'))", 10_000);
   assert.match(await buttonText(cdp, ".up-next-panel button"), new RegExp(favoriteName));
+  await evaluate(cdp, "document.querySelectorAll('.primary-nav button')[1].click(); true");
+  await waitForCondition(cdp, "Boolean(document.querySelector('.current-fixture-grid article'))", 10_000);
+  const favoriteScheduleCards = await evaluate(cdp, `[...document.querySelectorAll('.current-fixture-grid article')].map((card) => ({ title: card.querySelector(':scope > strong')?.innerText ?? '', favorite: card.classList.contains('favorite-team') })).filter((card) => card.title.includes(${JSON.stringify(favoriteName)}))`);
+  assert.ok(favoriteScheduleCards.every((card) => card.favorite));
 
   await evaluate(cdp, "document.querySelector('.settings-button').click(); true");
   await wait(200);

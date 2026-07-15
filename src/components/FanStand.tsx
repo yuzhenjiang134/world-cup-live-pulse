@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
-import type { FanStandCopy } from "../data/fanStandCopy";
+import { fanMomentPrompts, fanMomentTakes, fanMomentTitle } from "../data/fanStandCopy";
+import type { FanStandCopy, FanStandLanguage, FanStandMoment } from "../data/fanStandCopy";
+import type { MatchEventType } from "../types";
 
 type FanRoom = "match" | "home" | "away";
 type ReactionKind = "celebrate" | "applaud" | "surprised";
@@ -24,9 +26,25 @@ type FanStandProps = {
   minute: number;
   homeName: string;
   awayName: string;
-  momentLabel: string;
+  homeScore: number;
+  awayScore: number;
+  eventType?: MatchEventType;
+  eventTeam?: string;
+  fallbackLabel: string;
   momentDescription?: string;
+  language: FanStandLanguage;
   copy: FanStandCopy;
+  challenge: {
+    title: string;
+    status: string;
+    score?: string;
+    points: string;
+    action: string;
+    room?: FanRoom;
+    roomLabel?: string;
+    award?: string;
+  };
+  onOpenChallenge: () => void;
 };
 
 const emptyState: FanStandState = {
@@ -74,7 +92,7 @@ function readFanStand(matchId: string): FanStandState {
   }
 }
 
-export function FanStand({ matchId, minute, homeName, awayName, momentLabel, momentDescription, copy }: FanStandProps) {
+export function FanStand({ matchId, minute, homeName, awayName, homeScore, awayScore, eventType, eventTeam, fallbackLabel, momentDescription, language, copy, challenge, onOpenChallenge }: FanStandProps) {
   const [draft, setDraft] = useState("");
   const [stand, setStand] = useState<FanStandState>(() => readFanStand(matchId));
   const room = stand.activeRoom;
@@ -99,9 +117,10 @@ export function FanStand({ matchId, minute, homeName, awayName, momentLabel, mom
   const reactionMinute = Math.max(1, Math.round(minute));
   const reactionKey = `${room}:${reactionMinute}`;
   const selectedReaction = stand.momentReactions[reactionKey];
-  const quickPrompts = momentLabel
-    ? copy.momentPrompts(momentLabel, homeName, awayName)
-    : copy.prompts;
+  const moment = useMemo<FanStandMoment>(() => ({ minute, eventType, team: eventTeam, home: homeName, away: awayName, homeScore, awayScore }), [awayName, awayScore, eventTeam, eventType, homeName, homeScore, minute]);
+  const momentTitle = eventType ? fanMomentTitle(language, moment) : `${Math.max(1, Math.round(minute))}' · ${fallbackLabel}`;
+  const quickPrompts = eventType ? fanMomentPrompts(language, moment) : copy.prompts;
+  const fanTakes = fanMomentTakes(language, moment);
 
   const addReaction = (kind: ReactionKind) => {
     setStand((current) => {
@@ -134,6 +153,15 @@ export function FanStand({ matchId, minute, homeName, awayName, momentLabel, mom
     setStand((current) => ({ ...current, messages: current.messages.filter((message) => message.id !== id) }));
   };
 
+  const openChallengeRoom = () => {
+    if (!challenge.room) {
+      onOpenChallenge();
+      return;
+    }
+    setStand((current) => ({ ...current, activeRoom: challenge.room ?? "match" }));
+    requestAnimationFrame(() => document.getElementById(`fan-comment-${matchId}`)?.focus());
+  };
+
   return (
     <section className="fan-stand" aria-labelledby="fan-stand-title">
       <header className="fan-stand-heading">
@@ -142,15 +170,29 @@ export function FanStand({ matchId, minute, homeName, awayName, momentLabel, mom
           <h2 id="fan-stand-title">{copy.title}</h2>
           <p>{copy.description}</p>
         </div>
-        {momentLabel ? <span className="fan-stand-moment">{Math.max(1, minute)}' · {momentLabel}</span> : null}
       </header>
+
+      <div className="fan-challenge-bridge">
+        <div>
+          <span>{challenge.title}</span>
+          <strong>{challenge.score ?? challenge.status}</strong>
+          {challenge.score ? <small>{challenge.status}</small> : null}
+        </div>
+        <div className="fan-challenge-points"><span>{challenge.points}</span>{challenge.award ? <b>{challenge.award}</b> : null}</div>
+        <button type="button" onClick={openChallengeRoom}>{challenge.roomLabel ?? challenge.action}</button>
+      </div>
 
       <div className="fan-room-tabs" role="tablist" aria-label={copy.title}>
         {rooms.map((item) => <button id={`fan-room-${scopeId}-${item.id}`} type="button" role="tab" aria-controls={panelId} aria-selected={room === item.id} className={room === item.id ? "active" : ""} key={item.id} onClick={() => setStand((current) => ({ ...current, activeRoom: item.id }))}><span>{item.label}</span>{roomCount(item.id) ? <b>{roomCount(item.id)}</b> : null}</button>)}
       </div>
 
       <div id={panelId} className="fan-stand-body" role="tabpanel" aria-labelledby={`fan-room-${scopeId}-${room}`}>
-        {momentLabel ? <aside className="fan-live-update" aria-live="polite"><span>{copy.matchUpdate}</span><strong>{Math.max(1, minute)}' · {momentLabel}</strong>{momentDescription ? <p>{momentDescription}</p> : null}</aside> : null}
+        <aside className="fan-live-update" aria-live="polite"><span>{copy.matchUpdate}</span><strong>{momentTitle}</strong>{momentDescription ? <p>{momentDescription}</p> : null}</aside>
+
+        <section className="fan-viewpoints" aria-label={`${copy.voices} · ${copy.scenario}`}>
+          <header><strong>{copy.voices}</strong><span>{copy.scenario}</span></header>
+          <div>{fanTakes.map((take) => <article className={`fan-viewpoint fan-viewpoint-${take.side}`} key={take.side}><span><i aria-hidden="true" />{take.label}</span><p>{take.text}</p></article>)}</div>
+        </section>
         <div className="fan-reactions" aria-label={copy.react}>
           <span>{copy.react}</span>
           {(["celebrate", "applaud", "surprised"] as const).map((kind) => <button type="button" className={selectedReaction === kind ? "active" : ""} aria-pressed={selectedReaction === kind} key={kind} onClick={() => addReaction(kind)}><span>{copy[kind]}</span><b>{stand.reactions[room][kind]}</b></button>)}
@@ -169,7 +211,7 @@ export function FanStand({ matchId, minute, homeName, awayName, momentLabel, mom
         </div>
 
         <div className="fan-message-list" aria-live="polite">
-          {messages.length ? messages.map((message) => <article key={message.id}><header><span>{copy.yourPost} · {copy.minute} {message.minute}'</span><button type="button" onClick={() => removeMessage(message.id)} aria-label={copy.removePost} title={copy.removePost}>×</button></header><p>{message.text}</p></article>) : <p className="fan-room-empty">{momentLabel ? copy.emptyMoment(momentLabel) : copy.empty}</p>}
+          {messages.length ? messages.map((message) => <article key={message.id}><header><span>{copy.yourPost} · {copy.minute} {message.minute}'</span><button type="button" onClick={() => removeMessage(message.id)} aria-label={copy.removePost} title={copy.removePost}>×</button></header><p>{message.text}</p></article>) : <p className="fan-room-empty">{copy.empty}</p>}
         </div>
       </div>
       <small className="fan-stand-privacy">{copy.saved}</small>

@@ -44,6 +44,7 @@ const voiceClipSource = await readFile(path.join(root, "src/data/commentaryVoice
 const calendarSource = await readFile(path.join(root, "src/data/matchCalendar.ts"), "utf8");
 const pulsePlaySource = await readFile(path.join(root, "src/components/PulsePlay.tsx"), "utf8");
 const fanStandSource = await readFile(path.join(root, "src/components/FanStand.tsx"), "utf8");
+const fanStandCopySource = await readFile(path.join(root, "src/data/fanStandCopy.ts"), "utf8");
 const localizedPulseSource = await readFile(path.join(root, "src/lib/localizedPulse.ts"), "utf8");
 const matchdayCssSource = await readFile(path.join(root, "src/matchday.css"), "utf8");
 
@@ -108,10 +109,16 @@ const requiredAppMarkers = [
   ["source-derived 2026 team records", "summarizeArchiveTeam"],
   ["active tournament schedule", "schedule={schedule}"],
   ["focus-triggered refresh", 'addEventListener("focus"'],
+  ["15-second live refresh", "liveRefreshMs = 15_000"],
+  ["visibility-triggered refresh", 'addEventListener("visibilitychange"'],
   ["event-driven AI live region", 'className="hero-ai-brief"'],
   ["three fan commentary modes", "commentaryRecap"],
+  ["automatic event commentary", "wclp-auto-commentary"],
   ["prebuilt natural-voice playback", "getCommentaryVoiceClip"],
   ["browser speech fallback", "SpeechSynthesisUtterance"],
+  ["automatic challenge settlement", "challengeSettlementRefreshMs"],
+  ["historical AI match recaps", "archive-ai-summary"],
+  ["score challenge reward preview", "challenge-rewards"],
   ["key-event shortcut strip", "key-event-strip"],
   ["replay key-event navigation persists", 'mode === "replay" ? match.events : activeEvents'],
   ["spoiler-free replay control", "spoiler-toggle"],
@@ -124,6 +131,7 @@ const requiredAppMarkers = [
   ["verified event browser alerts", "Notification.permission"],
   ["official tournament updates entry", "officialUpdates"],
   ["replay mode boundary", 'setMode("replay")'],
+  ["prediction-led fan room", "challengeRoomLabel"],
 ];
 for (const [label, marker] of requiredAppMarkers) {
   if (appSource.includes(marker)) pass(`App contains ${label}`);
@@ -198,6 +206,17 @@ if (pulsePlaySource.includes("being-sent-off") && matchdayCssSource.includes(".p
   fail("Current red-card events hide the dismissed figure before fans can understand the moment");
 }
 
+for (const [label, marker] of [
+  ["goalkeeper save animation", "goalkeeper-dive"],
+  ["referee card figure", "pulse-referee"],
+  ["substitution board", "pulse-substitution-board"],
+  ["localized match-story strip", "pulse-match-story"],
+  ["event-led story data", "storyEvents"],
+]) {
+  if (pulsePlaySource.includes(marker) || matchdayCssSource.includes(`.${marker}`)) pass(`Pulse Play contains ${label}`);
+  else fail(`Pulse Play is missing ${label}`);
+}
+
 if (pulsePlaySource.includes("readablePlayerName") && pulsePlaySource.includes("player positions and shirt numbers are illustrative") === false) {
   pass("Pulse Play keeps internal identifiers out of the event actor display");
 } else if (pulsePlaySource.includes("readablePlayerName")) {
@@ -212,9 +231,38 @@ if (fanStandSource.includes("wclp-fan-stand-") && fanStandSource.includes('room:
   fail("Fan rooms must persist device-local comments and one reaction per room moment");
 }
 
+if (fanStandSource.includes("fan-challenge-bridge") && fanStandSource.includes("openChallengeRoom")) {
+  pass("Fan room links the score challenge to the matching discussion room");
+} else {
+  fail("Fan room must link the score challenge to the matching discussion room");
+}
+
 for (const forbidden of ["online fans", "global reactions", "active users", "fake message"]) {
   if (fanStandSource.toLowerCase().includes(forbidden)) fail(`Fan room contains an unsupported community claim: ${forbidden}`);
   else pass(`Fan room omits unsupported community claim: ${forbidden}`);
+}
+
+if (fanStandSource.includes("fan-viewpoints") && fanStandCopySource.includes("fanMomentTakes") && fanStandCopySource.includes("scenario:")) {
+  pass("Fan room includes three event-driven viewpoints with an honest scenario label");
+} else {
+  fail("Fan room needs event-driven viewpoints and an explicit scenario boundary");
+}
+
+const retiredDeveloperCopy = [
+  ["fan prompt", "这个节点改变了什么", fanStandCopySource],
+  ["fan prompt", "What changed here?", fanStandCopySource],
+  ["pinned update", "Pinned match update", fanStandCopySource],
+  ["score-review wording", "score state was reviewed", localizedPulseSource.toLowerCase()],
+  ["score-review wording", "比分经过复核", localizedPulseSource],
+  ["technical moment label", "最新节点", appSource],
+  ["technical source label", "source-of-truth", appSource.toLowerCase()],
+  ["technical fallback label", 'fallback: "Fallback"', appSource],
+  ["technical fallback label", 'fallback: "兜底"', appSource],
+  ["technical event label", "No verified events in this window.", appSource],
+];
+for (const [label, phrase, source] of retiredDeveloperCopy) {
+  if (source.includes(phrase)) fail(`Fan-facing ${label} still exposes developer wording: ${phrase}`);
+  else pass(`Fan-facing ${label} omits retired developer wording: ${phrase}`);
 }
 
 const requiredAdapterMarkers = [

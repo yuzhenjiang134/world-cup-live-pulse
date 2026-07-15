@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "source": "TxLINE authenticated historical score API",
   "competitionId": 72,
-  "capturedAtIso": "2026-07-11T23:29:33.067Z",
+  "capturedAtIso": "2026-07-15T06:30:10.317Z",
   "note": "Sanitized judgeable archive. No API token, JWT, wallet, or private key is stored.",
   "matches": [
     {
