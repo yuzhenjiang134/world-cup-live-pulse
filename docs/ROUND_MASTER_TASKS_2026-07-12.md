@@ -4,6 +4,21 @@
 
 这是当前唯一执行清单。旧版“已经发布”“视频已完成”等状态不再作为本轮结论；只有本地最终候选通过本清单，才重新发布线上版和最终 Demo。
 
+## 2026-07-15 球迷频道专项升级与复检
+
+- [x] 参考 FIFA Match Predictor、FIFA Play Zone、Sofascore Attack Momentum、Meta 比赛日社区、Fanzium 和 Reddit Match Thread 的成熟路径，确认本产品应把“预测 -> 关键时刻 -> 讨论 -> 回看”做成一条连续球迷旅程，而不是增加更多独立面板。
+- [x] “比赛看台”重构为“球迷频道”：首屏只保留本场积分选择、主客队频道、当前赛况、最近关键时刻、球迷讨论、反应和本设备留言。
+- [x] 进球、罚牌、换人、半场、完场和比分更新自动进入频道；实时模式随 15 秒数据刷新更新，历史回放随时间线逐帧出现，不在开赛前伪造事件。
+- [x] 历史回放中的关键时刻可以直接跳回比赛剧场对应分钟；比赛剧场故事条也可以直接定位同一事件。
+- [x] 只有来源提供可读球员姓名时，频道才显示该球员以及由本场已确认事件推导的进球、罚牌、换人和参与分钟；不编造生涯履历、位置、号码或助攻。
+- [x] 来源只有内部球员编号时整段球员信息隐藏；中英文 E2E 均验证页面不出现 `#数字`、`Player 123` 或其他内部标识。
+- [x] 讨论提示随当前事件类型和球队自动变化；场景观点明确标为讨论引子，用户留言按比赛与频道保存在本设备，不冒充在线社区规模。
+- [x] 桌面端采用“关键时刻 + 讨论”双栏，390px 手机端收为单列；焦点、键盘、按钮名称、动态内容稳定性和横向溢出均通过复检。
+- [x] 本地 `npm run validate` 全量通过；中文与英文桌面/移动端完整 E2E 均通过。
+- [ ] 提交并发布本次球迷频道候选版本后，执行中文和英文两轮线上 QA；Demo 仍须等待项目所有者明确批准。
+
+本轮公开参考：[FIFA Match Predictor](https://play.fifa.com/match-predictor/en/help/guidelines)、[FIFA Play Zone](https://play.fifa.com/goalscorer/help)、[Sofascore Attack Momentum](https://www.sofascore.com/news/how-live-attack-momentum-works-at-the-world-cup)、[Meta football fan experience](https://about.fb.com/news/2026/06/going-all-in-for-global-football-fans-across-meta-apps/amp/)、[Fanzium](https://play.google.com/store/apps/details?id=com.fanzium.football)、[Reddit World Cup Daily Hub](https://www.reddit.com/r/soccer/comments/1u3rvcx/2026_fifa_world_cup_daily_hub/)。
+
 ## 0. 2026-07-15 八轮成品、发布与 Demo 门槛
 
 ### 第一轮：AI 实时与历史叙事

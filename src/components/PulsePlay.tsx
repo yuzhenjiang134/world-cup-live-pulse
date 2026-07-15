@@ -23,6 +23,7 @@ export type PulsePlayText = {
 
 export type PulseStoryEvent = {
   id: string;
+  at: number;
   minute: string;
   label: string;
   team?: string;
@@ -41,6 +42,7 @@ type PulsePlayProps = {
   momentDescription: string;
   storyEvents: PulseStoryEvent[];
   text: PulsePlayText;
+  onSelectStory?: (minute: number) => void;
 };
 
 type CheerState = { home: number; away: number };
@@ -69,7 +71,7 @@ function readCheers(matchId: string): CheerState {
   }
 }
 
-export function PulsePlay({ match, frame, latestEvent, minute, isFinal, homeName, awayName, momentLabel, momentDescription, storyEvents, text }: PulsePlayProps) {
+export function PulsePlay({ match, frame, latestEvent, minute, isFinal, homeName, awayName, momentLabel, momentDescription, storyEvents, text, onSelectStory }: PulsePlayProps) {
   const [cheers, setCheers] = useState<CheerState>(() => readCheers(match.id));
   const eventType = latestEvent?.type ?? (match.status === "scheduled" ? "scheduled" : "kickoff");
   const attackingHome = latestEvent?.team ? latestEvent.team === match.home.code : minute % 2 === 0;
@@ -134,7 +136,10 @@ export function PulsePlay({ match, frame, latestEvent, minute, isFinal, homeName
         {eventPlayer ? <span className={`pulse-event-actor ${eventTeamSide ?? "neutral"}`}><small>{text.confirmedMoment}</small><strong>{eventPlayer}</strong></span> : null}
       </div>
       <p className="pulse-play-disclaimer">{text.illustrative}</p>
-      {storyEvents.length ? <div className="pulse-match-story"><strong>{text.matchStory}</strong><div>{storyEvents.map((event) => <span key={event.id}><time>{event.minute}</time><b>{event.label}</b><small>{event.team ? `${event.team} · ` : ""}{event.score}</small></span>)}</div></div> : null}
+      {storyEvents.length ? <div className="pulse-match-story"><strong>{text.matchStory}</strong><div>{storyEvents.map((event) => {
+        const content = <><time>{event.minute}</time><b>{event.label}</b><small>{event.team ? `${event.team} · ` : ""}{event.score}</small></>;
+        return onSelectStory ? <button type="button" key={event.id} data-minute={event.at} onClick={() => onSelectStory(event.at)}>{content}</button> : <span key={event.id}>{content}</span>;
+      })}</div></div> : null}
       <footer className="pulse-play-footer">
         <div className="pulse-moment" aria-live="polite">
           <span>{text.liveMoment}</span>

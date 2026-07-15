@@ -862,13 +862,22 @@ summary:focus-visible {
   gap: 5px;
 }
 
-.pulse-match-story span {
+.pulse-match-story span,
+.pulse-match-story button {
   display: grid;
   min-width: 0;
   padding: 6px 7px;
   border: 1px solid #35504f;
   border-radius: 5px;
   background: #183235;
+  color: inherit;
+  text-align: left;
+}
+
+.pulse-match-story button:hover,
+.pulse-match-story button:focus-visible {
+  border-color: #ffe49a;
+  background: #224246;
 }
 
 .pulse-match-story time,
@@ -1208,15 +1217,130 @@ summary:focus-visible {
 
 .fan-reactions {
   display: grid;
-  grid-column: 1;
-  grid-row: 3 / span 3;
+  grid-column: 2;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-content: start;
   gap: 6px;
 }
 
+.fan-channel-moments {
+  display: grid;
+  grid-column: 1;
+  grid-row: 2 / span 5;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #355a59;
+  border-radius: 7px;
+  background: #152f32;
+}
+
+.fan-channel-moments > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.fan-channel-moments > header strong {
+  font-size: 11px;
+}
+
+.fan-channel-moments > header span {
+  display: grid;
+  min-width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: 50%;
+  background: #244648;
+  color: #b8ceca;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.fan-channel-moments > div {
+  display: grid;
+  gap: 6px;
+}
+
+.fan-channel-moments button,
+.fan-channel-moments article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 54px;
+  margin: 0;
+  padding: 8px 9px;
+  border: 1px solid #365654;
+  border-radius: 6px;
+  background: #1a383a;
+  color: #f2f7f5;
+  text-align: left;
+}
+
+.fan-channel-moments button:hover,
+.fan-channel-moments button:focus-visible,
+.fan-channel-moments button.active,
+.fan-channel-moments article.active {
+  border-color: #ffe49a;
+  background: #244648;
+}
+
+.fan-channel-moments time,
+.fan-channel-moments > div > * > b {
+  color: #ffe49a;
+  font-size: 10px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.fan-channel-moments > div > * > span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.fan-channel-moments > div > * > span strong {
+  overflow: hidden;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fan-channel-moments > div > * > span strong em {
+  margin-inline-start: 5px;
+  color: #ffe49a;
+  font-size: 7px;
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+.fan-channel-moments > div > * > span small {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #a9c0bc;
+  font-size: 8px;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.fan-channel-moments > div > * > span .fan-moment-player {
+  display: block;
+  color: #dceae7;
+  -webkit-line-clamp: 1;
+}
+
+.fan-moment-player b {
+  color: #ffffff;
+  font-size: inherit;
+}
+
 .fan-viewpoints {
-  grid-column: 1 / -1;
+  grid-column: 2;
   display: grid;
   gap: 8px;
   padding: 12px;
@@ -3944,12 +4068,17 @@ details summary {
   }
 
   .fan-live-update,
+  .fan-channel-moments,
   .fan-viewpoints,
   .fan-reactions,
   .fan-comment-form,
   .fan-quick-prompts,
   .fan-message-list {
     grid-column: 1;
+  }
+
+  .fan-channel-moments {
+    grid-row: auto;
   }
 
   .team-side {

@@ -265,7 +265,7 @@ const ui: Record<Language, UiCopy> = {
     fallback: "比赛动态",
     verifiedAt: "最近更新",
     officialFeed: "官方数据",
-    publicFeed: "公开比分源",
+    publicFeed: "公开比分",
     replayFeed: "2026 比赛记录",
     noLiveFeed: "当前没有正在进行的比赛",
     scorePulse: "比分脉冲",
@@ -1814,7 +1814,34 @@ export default function MatchdayApp() {
   const pulseStoryEvents = activeEvents
     .filter((event) => ["goal", "yellow_card", "red_card", "substitution", "halftime", "fulltime", "score_update"].includes(event.type))
     .slice(-4)
-    .map((event) => ({ id: event.id, minute: minuteLabel(event), label: localizedEventLabel(event, copy, language), team: event.team, score: `${event.homeScore}-${event.awayScore}` }));
+    .map((event) => ({ id: event.id, at: event.minute, minute: minuteLabel(event), label: localizedEventLabel(event, copy, language), team: event.team, score: `${event.homeScore}-${event.awayScore}` }));
+  const fanChannelMoments = activeEvents
+    .filter((event) => ["goal", "yellow_card", "red_card", "substitution", "halftime", "fulltime", "score_update"].includes(event.type))
+    .slice(-5)
+    .reverse()
+    .map((event) => {
+      const eventTeamName = event.team === match.home.code ? teamName(match.home, language) : event.team === match.away.code ? teamName(match.away, language) : undefined;
+      const playerName = readableSourcePlayer(event.player);
+      const playerEvents = playerName
+        ? activeEvents.filter((candidate) => readableSourcePlayer(candidate.player)?.toLocaleLowerCase() === playerName.toLocaleLowerCase())
+        : [];
+      const playerRecord: PlayerProfile | undefined = playerName ? {
+        name: playerName,
+        goals: playerEvents.filter((candidate) => candidate.type === "goal").length || undefined,
+        cards: playerEvents.filter((candidate) => candidate.type === "yellow_card" || candidate.type === "red_card").length || undefined,
+        substitutions: playerEvents.filter((candidate) => candidate.type === "substitution").length || undefined,
+        minutes: [...new Set(playerEvents.map((candidate) => candidate.minute))],
+      } : undefined;
+      return {
+        id: event.id,
+        minute: event.minute,
+        minuteLabel: minuteLabel(event),
+        label: [localizedEventLabel(event, copy, language), eventTeamName, playerName].filter(Boolean).join(" · "),
+        description: localizeEventDescription(language, event),
+        score: `${event.homeScore}-${event.awayScore}`,
+        player: playerRecord ? { name: playerRecord.name, detail: playerFactText(playerRecord, copy, language) || undefined } : undefined,
+      };
+    });
   const prioritizedReplays = [...replayMatches].sort((left, right) => {
     const includesFavorite = (candidate: MatchData) => Boolean(favoriteTeamCode && (candidate.home.code === favoriteTeamCode || candidate.away.code === favoriteTeamCode));
     return Number(includesFavorite(right)) - Number(includesFavorite(left));
@@ -2075,7 +2102,7 @@ export default function MatchdayApp() {
                   <span>{minuteLabelForFrame(match, minute, isFinal, copy)}</span>
                 </div>
                 <TeamSide team={match.away} score={frame.awayScore} align="right" copy={copy} language={language} />
-              </div> : <PulsePlay key={match.id} match={match} frame={frame} latestEvent={latestEvent} minute={minute} isFinal={isFinal} homeName={teamName(match.home, language)} awayName={teamName(match.away, language)} momentLabel={pulseMomentLabel} momentDescription={pulseMomentDescription} storyEvents={pulseStoryEvents} text={pulseText} />}
+              </div> : <PulsePlay key={match.id} match={match} frame={frame} latestEvent={latestEvent} minute={minute} isFinal={isFinal} homeName={teamName(match.home, language)} awayName={teamName(match.away, language)} momentLabel={pulseMomentLabel} momentDescription={pulseMomentDescription} storyEvents={pulseStoryEvents} text={pulseText} onSelectStory={mode === "replay" ? (targetMinute) => { setIsPlaying(false); setMinute(targetMinute); } : undefined} />}
               <div className="pulse-strip">
                 <span>{copy.fanPulse} {Math.round(frame.market.sentiment)}/100</span>
                 <div className="pulse-track"><span style={{ width: `${frame.market.sentiment}%` }} /></div>
@@ -2123,7 +2150,7 @@ export default function MatchdayApp() {
               <div>{keyEvents.map((event) => mode === "replay" ? <button type="button" key={event.id} onClick={() => { setIsPlaying(false); setMinute(event.minute); }}>{minuteLabel(event)} {localizedEventLabel(event, copy, language)}</button> : <span key={event.id}>{minuteLabel(event)} {localizedEventLabel(event, copy, language)}</span>)}</div>
             </div> : null}
 
-            <FanStand key={match.id} matchId={match.id} minute={minute} homeName={teamName(match.home, language)} awayName={teamName(match.away, language)} homeScore={frame.homeScore} awayScore={frame.awayScore} eventType={latestEvent?.type} eventTeam={latestEvent?.team === match.home.code ? teamName(match.home, language) : latestEvent?.team === match.away.code ? teamName(match.away, language) : undefined} fallbackLabel={pulseMomentLabel} momentDescription={pulseMomentDescription} language={language} copy={standText} challenge={{ title: copy.scoreChallenge, status: activePick?.settled ? copy.alreadySettled : activePick?.locked ? copy.locked : canLockPick ? copy.lockPick : copy.pickClosed, score: activePick ? `${match.home.code} ${activePick.homeScore}:${activePick.awayScore} ${match.away.code}` : undefined, points: `${points.toLocaleString()} ${copy.pointsUnit}`, action: copy.scoreChallenge, room: challengeRoom, roomLabel: challengeRoomLabel, award: activePick?.settled ? `+${activePick.award ?? 0} ${copy.pointsUnit}` : undefined }} onOpenChallenge={() => { document.querySelector<HTMLElement>(".challenge-block")?.scrollIntoView({ behavior: "smooth", block: "center" }); window.setTimeout(() => document.querySelector<HTMLInputElement>(".challenge-score input")?.focus(), 350); }} />
+            <FanStand key={match.id} matchId={match.id} minute={minute} homeName={teamName(match.home, language)} awayName={teamName(match.away, language)} homeScore={frame.homeScore} awayScore={frame.awayScore} eventType={latestEvent?.type} eventTeam={latestEvent?.team === match.home.code ? teamName(match.home, language) : latestEvent?.team === match.away.code ? teamName(match.away, language) : undefined} fallbackLabel={pulseMomentLabel} momentDescription={pulseMomentDescription} language={language} copy={standText} moments={fanChannelMoments} challenge={{ title: copy.scoreChallenge, status: activePick?.settled ? copy.alreadySettled : activePick?.locked ? copy.locked : canLockPick ? copy.lockPick : copy.pickClosed, score: activePick ? `${match.home.code} ${activePick.homeScore}:${activePick.awayScore} ${match.away.code}` : undefined, points: `${points.toLocaleString()} ${copy.pointsUnit}`, action: copy.scoreChallenge, room: challengeRoom, roomLabel: challengeRoomLabel, award: activePick?.settled ? `+${activePick.award ?? 0} ${copy.pointsUnit}` : undefined }} onOpenChallenge={() => { document.querySelector<HTMLElement>(".challenge-block")?.scrollIntoView({ behavior: "smooth", block: "center" }); window.setTimeout(() => document.querySelector<HTMLInputElement>(".challenge-score input")?.focus(), 350); }} onSelectMoment={mode === "replay" ? (targetMinute) => { setHeroDisplay("play"); setIsPlaying(false); setMinute(targetMinute); document.querySelector<HTMLElement>(".score-hero")?.scrollIntoView({ behavior: "smooth", block: "start" }); } : undefined} />
 
             <section className="content-grid">
               <div className="feed-column">

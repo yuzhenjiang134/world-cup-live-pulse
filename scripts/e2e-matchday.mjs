@@ -21,11 +21,11 @@ const profileDir = path.join(os.tmpdir(), `wclp-e2e-${process.pid}-${Date.now()}
 let edgeDiagnostics = "";
 const edge = spawn(edgePath, [
   "--headless=new",
+  "--no-sandbox",
+  "--disable-gpu-sandbox",
   "--disable-gpu",
-  "--disable-gpu-compositing",
-  "--disable-gpu-rasterization",
-  "--use-angle=swiftshader",
-  "--use-gl=swiftshader",
+  "--disable-software-rasterizer",
+  "--disable-features=VizDisplayCompositor",
   "--no-first-run",
   `--remote-debugging-port=${port}`,
   `--user-data-dir=${profileDir}`,
@@ -222,7 +222,10 @@ try {
   assert.equal(await elementCount(cdp, ".pulse-player"), 22);
   assert.equal(await elementCount(cdp, ".pulse-play-scoreboard em"), 2);
   assert.equal(await elementCount(cdp, ".pulse-match-story"), 1);
-  assert.ok((await elementCount(cdp, ".pulse-match-story > div > span")) >= 3);
+  assert.ok((await elementCount(cdp, ".pulse-match-story > div > button")) >= 3);
+  const storyMinute = await evaluate(cdp, "document.querySelector('.pulse-match-story button').dataset.minute");
+  await evaluate(cdp, "document.querySelector('.pulse-match-story button').click(); true");
+  await waitForCondition(cdp, `document.querySelector('.timeline-slider').value === '${storyMinute}'`, 5_000);
   await evaluate(cdp, `(() => {
     const cardMoment = [...document.querySelectorAll('.key-event-strip button')].find((button) => /Yellow|黄牌|Amarilla|Amarelo|Jaune|Gelb|イエロー|صفراء/i.test(button.textContent || ''));
     cardMoment?.click();
@@ -233,6 +236,12 @@ try {
   assert.equal(await elementCount(cdp, ".pulse-referee"), 1);
   assert.equal(await elementCount(cdp, ".cheer-controls button"), 2);
   assert.equal(await elementCount(cdp, ".fan-viewpoint"), 3);
+  assert.ok((await elementCount(cdp, ".fan-channel-moments > div > button")) >= 2);
+  assert.doesNotMatch((await evaluate(cdp, "[...document.querySelectorAll('.fan-moment-player')].map((item) => item.textContent).join(' ')")), /#?\d{6,}|Player\s*#?\d+/i);
+  const channelMinute = await evaluate(cdp, "document.querySelector('.fan-channel-moments button').dataset.minute");
+  await evaluate(cdp, "document.querySelector('.fan-channel-moments button').click(); true");
+  await waitForCondition(cdp, `document.querySelector('.timeline-slider').value === '${channelMinute}'`, 5_000);
+  assert.equal(await evaluate(cdp, "document.querySelectorAll('.hero-view-toggle button')[1].getAttribute('aria-selected')"), "true");
   assert.match(await blockText(cdp, ".fan-challenge-bridge"), /FRA 2:0 MAR/);
   assert.match(await blockText(cdp, ".fan-challenge-bridge"), new RegExp(`1,200\\s+${expectedCopy.points}`));
   assert.match(await blockText(cdp, ".fan-challenge-bridge"), /\+250/);

@@ -212,6 +212,7 @@ for (const [label, marker] of [
   ["substitution board", "pulse-substitution-board"],
   ["localized match-story strip", "pulse-match-story"],
   ["event-led story data", "storyEvents"],
+  ["interactive replay chapters", "onSelectStory"],
 ]) {
   if (pulsePlaySource.includes(marker) || matchdayCssSource.includes(`.${marker}`)) pass(`Pulse Play contains ${label}`);
   else fail(`Pulse Play is missing ${label}`);
@@ -235,6 +236,18 @@ if (fanStandSource.includes("fan-challenge-bridge") && fanStandSource.includes("
   pass("Fan room links the score challenge to the matching discussion room");
 } else {
   fail("Fan room must link the score challenge to the matching discussion room");
+}
+
+if (fanStandSource.includes("fan-channel-moments") && fanStandSource.includes("onSelectMoment") && appSource.includes("fanChannelMoments")) {
+  pass("Fan channel turns verified match events into replayable discussion moments");
+} else {
+  fail("Fan channel must connect verified events, discussion, and replay navigation");
+}
+
+if (fanStandSource.includes("fan-moment-player") && appSource.includes("playerRecord") && appSource.includes("playerFactText(playerRecord")) {
+  pass("Fan channel adds source-derived player match records without synthetic biographies");
+} else {
+  fail("Fan channel player context must be derived from confirmed match events");
 }
 
 for (const forbidden of ["online fans", "global reactions", "active users", "fake message"]) {

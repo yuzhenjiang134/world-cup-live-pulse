@@ -21,6 +21,19 @@ type FanStandState = {
   momentReactions: Record<string, ReactionKind>;
 };
 
+export type FanChannelMoment = {
+  id: string;
+  minute: number;
+  minuteLabel: string;
+  label: string;
+  description: string;
+  score: string;
+  player?: {
+    name: string;
+    detail?: string;
+  };
+};
+
 type FanStandProps = {
   matchId: string;
   minute: number;
@@ -34,6 +47,7 @@ type FanStandProps = {
   momentDescription?: string;
   language: FanStandLanguage;
   copy: FanStandCopy;
+  moments: FanChannelMoment[];
   challenge: {
     title: string;
     status: string;
@@ -45,6 +59,7 @@ type FanStandProps = {
     award?: string;
   };
   onOpenChallenge: () => void;
+  onSelectMoment?: (minute: number) => void;
 };
 
 const emptyState: FanStandState = {
@@ -92,7 +107,7 @@ function readFanStand(matchId: string): FanStandState {
   }
 }
 
-export function FanStand({ matchId, minute, homeName, awayName, homeScore, awayScore, eventType, eventTeam, fallbackLabel, momentDescription, language, copy, challenge, onOpenChallenge }: FanStandProps) {
+export function FanStand({ matchId, minute, homeName, awayName, homeScore, awayScore, eventType, eventTeam, fallbackLabel, momentDescription, language, copy, moments, challenge, onOpenChallenge, onSelectMoment }: FanStandProps) {
   const [draft, setDraft] = useState("");
   const [stand, setStand] = useState<FanStandState>(() => readFanStand(matchId));
   const room = stand.activeRoom;
@@ -188,6 +203,17 @@ export function FanStand({ matchId, minute, homeName, awayName, homeScore, awayS
 
       <div id={panelId} className="fan-stand-body" role="tabpanel" aria-labelledby={`fan-room-${scopeId}-${room}`}>
         <aside className="fan-live-update" aria-live="polite"><span>{copy.matchUpdate}</span><strong>{momentTitle}</strong>{momentDescription ? <p>{momentDescription}</p> : null}</aside>
+
+        {moments.length ? <section className="fan-channel-moments" aria-label={copy.matchMoments}>
+          <header><strong>{copy.matchMoments}</strong><span>{moments.length}</span></header>
+          <div>{moments.map((item) => {
+            const isCurrent = Math.round(item.minute) === Math.round(minute);
+            const content = <><time>{item.minuteLabel}</time><span><strong>{item.label}{isCurrent ? <em>{copy.currentMoment}</em> : null}</strong><small>{item.description}</small>{item.player ? <small className="fan-moment-player"><b>{item.player.name}</b>{item.player.detail ? ` · ${item.player.detail}` : ""}</small> : null}</span><b>{item.score}</b></>;
+            return onSelectMoment
+              ? <button className={isCurrent ? "active" : ""} type="button" key={item.id} data-minute={item.minute} onClick={() => onSelectMoment(item.minute)} aria-label={`${copy.replayMoment}: ${item.minuteLabel} ${item.label}`}>{content}</button>
+              : <article className={isCurrent ? "active" : ""} key={item.id}>{content}</article>;
+          })}</div>
+        </section> : null}
 
         <section className="fan-viewpoints" aria-label={`${copy.voices} · ${copy.scenario}`}>
           <header><strong>{copy.voices}</strong><span>{copy.scenario}</span></header>
