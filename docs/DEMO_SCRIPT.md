@@ -48,9 +48,9 @@ Voice: conversational and human, with restrained football excitement.
 
 ## 2:10-2:34 - Fan rooms
 
-Open the all-match room, home-team room, and away-team room. Add one reaction and one short comment, switch rooms, and show that their state remains separate.
+Show the settled score pick and points change in the match room, then use the prediction shortcut to enter the matching team room. Open the all-match, home-team, and away-team rooms, add one reaction and one short comment, and show that their state remains separate.
 
-Narration intent: Match conversation stays close to the match. This prototype stores real reactions and comments on the current device, separately for each fixture and room. It does not display fake fans, bot messages, or invented global totals. A club or publisher can extend the same structure into authenticated, moderated rooms.
+Narration intent: Prediction and conversation form one fan loop instead of two isolated widgets. A score pick leads directly to the relevant team room, and full time keeps the one-time points result beside the discussion. This prototype stores real reactions and comments on the current device, separately for each fixture and room. It does not display fake fans, bot messages, or invented global totals. A club or publisher can extend the same structure into authenticated, moderated rooms.
 
 Voice: friendly and social, then transparent on the local boundary.
 

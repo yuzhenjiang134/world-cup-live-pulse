@@ -325,3 +325,11 @@ npm run txline:probe
 - Passed final Chinese and English browser E2E runs covering challenge settlement, predicted-team room routing, 22-player Pulse Play, AI modes and speech, replay, favorites, reminders, eight languages, keyboard access, RTL and 390 px mobile layout.
 - Completed desktop and mobile visual review of Match Center, score challenge, Pulse Play, match room, Tournament & Replays and Teams. Local rounds one through eight are complete; deployment and two online QA rounds remain next.
 - Final Demo recording remains blocked until the deployed candidate passes both online QA rounds and the project owner explicitly approves recording.
+
+## 2026-07-15: Published candidate and two online QA rounds
+
+- Published product candidate `6d16b71` to GitHub Pages and confirmed the public site returned HTTP 200 with the new split production assets.
+- Passed the complete Chinese online E2E on desktop and 390 px mobile, including score settlement, prediction-to-room routing, Pulse Play, commentary, replay, favorites, alerts and persistence.
+- Passed the complete English online E2E and its eight-language/Arabic-RTL, keyboard, responsive, refresh and safety checks.
+- Scanned the public application bundle for token, JWT, private-key, `.env.local`, machine-path and local-voice markers; all checks returned zero hits.
+- Updated the continuous English Demo script to show the new prediction -> team room -> full-time points loop. Recording remains blocked until explicit owner approval.
