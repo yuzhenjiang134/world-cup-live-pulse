@@ -40,13 +40,7 @@ Official TxLINE documentation distinguishes mainnet Level 1 (60-second delay), m
 
 If TxLINE token access is unavailable during judging, Live mode still loads the no-token ESPN FIFA World Cup public scoreboard by default. That source is labeled separately and treated as `Delay`, not as official TxLINE data.
 
-The 2026-07-11 authenticated snapshot returned three `CompetitionId 72` World Cup fixtures:
-
-- Fixture `18213979`: Norway vs England.
-- Fixture `18222446`: Argentina vs Switzerland.
-- Fixture `18237038`: France vs Spain.
-
-The adapter sends `competitionId=72` and applies a second response-side filter, preventing `CompetitionId 430` Friendlies from entering the World Cup Match Center or Teams view. The latest two consecutive probes on 2026-07-12 returned three current fixtures; fixture `18222446` returned 42 score records and zero official-odds records in both runs. The production fixture override stays blank so selection follows the latest source response, and numerical odds remain hidden while the current official payload is empty.
+The adapter sends `competitionId=72` for official `CompetitionId 72` World Cup scope and applies a second response-side filter, preventing records from other competitions from entering the World Cup Match Center or Teams view. Two consecutive authenticated probes on 2026-07-16 each returned two accepted World Cup fixture records and two score records for fixture `18257865`; the official-odds collection changed from three records to two between probes. These are dated integration observations, not permanent match facts. The production fixture override stays blank so selection follows the latest accepted World Cup response, and numerical odds are hidden whenever the current official payload is empty.
 
 Implemented TxLINE endpoint mapping:
 
@@ -92,6 +86,6 @@ World Cup matches are not available every day. The app does not invent live game
 3. Use local fan score pick, then export the prediction card.
 4. Jump through the timeline to show goal swing, late volatility, and final whistle.
 5. Point out the checked timestamp and explain Replay / Seed / Delay / Live.
-6. Switch to Live mode and show either the TxLINE token/proxy path or the free public scoreboard fallback if TxLINE access is still blocked.
+6. Show the TxLINE integration boundary and explain the secure token-holding proxy used for authenticated public Live mode.
 7. Open Settings only to show language support and optional modules.
 8. Close with safety: no betting, no custody, no private token in the public build.

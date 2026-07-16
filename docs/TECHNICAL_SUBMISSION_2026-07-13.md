@@ -136,7 +136,7 @@ The product exposes three complementary modes:
 
 Text is generated deterministically from normalized score, event, match state, and source-backed market context. Scheduled matches have distinct pre-match copy for matchup, significance, and catch-up rather than repeating an empty state. The feature does not invent external news or player facts.
 
-Authorized local voice clips are used for prepared replay scenes; browser speech is a transparent fallback. After local and online acceptance and explicit owner approval, the final English Demo will use the owner's authorized local cloned voice with continuous-chapter emotional direction. Voice samples and profile identifiers remain outside the public repository.
+Authorized local voice clips are used for prepared replay scenes; browser speech is a transparent fallback. After local and online acceptance and explicit owner approval, the published 4:50 English Demo used the owner's authorized local cloned voice with continuous-chapter emotional direction. Voice samples and profile identifiers remain outside the public repository.
 
 ## 11. Global fan access
 
@@ -187,6 +187,6 @@ git diff --check
 
 The local suite covers TypeScript, fixture truth, World Cup scope, score normalization, challenge rules, archive finals, AI briefs, eight-language integrity, security, proxy behavior, and the token helper. Browser E2E covers exact settlement, pre-kickoff edits, 22-figure Pulse Play event states, local cheers, three separately persisted fan rooms, alert preference persistence, three AI modes, key events, replay, favorites, official links, keyboard access, accessible names, and desktop/mobile layouts.
 
-On the final local candidate, two consecutive authenticated probes on 2026-07-13 each accepted 2 World Cup fixtures and 2 score records for fixture `18237038`. The official-odds collection changed from 4 records to 7 between probes. These counts are dated observations, not permanent product claims; they demonstrate why every collection is refreshed and timestamped independently.
+On the final local candidate, two consecutive authenticated probes on 2026-07-16 each accepted 2 World Cup fixtures and 2 score records for fixture `18257865`. The official-odds collection changed from 3 records to 2 between probes. These counts are dated observations, not permanent product claims; they demonstrate why every collection is refreshed and timestamped independently.
 
-The final release process runs the complete product acceptance at least three times, renders the English Demo only from the accepted worktree, reviews audio/video twice, and then verifies the deployed site against the same Git commit.
+The final release process ran the complete product acceptance at least three times, rendered the English Demo only from the accepted worktree, reviewed audio/video twice, and verified the deployed site against the same Git commit. The accepted 4:50 H.264/AAC Demo passed full decode, 17/17 reverse-transcription checks, and 17 distinct scene-midpoint checks before publication.

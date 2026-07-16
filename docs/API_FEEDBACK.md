@@ -105,6 +105,17 @@ These numbers are dated integration observations, not permanent World Cup facts.
 
 `/api/scores/stream` and `/api/odds/stream` are not claimed as implemented product dependencies. They remain a future server-proxy optimization after the polling build is accepted.
 
+## Final verification on 2026-07-16
+
+Two consecutive authenticated release probes completed successfully:
+
+- Guest JWT bootstrap resolved in both runs.
+- `GET /api/fixtures/snapshot?competitionId=72` returned 2 accepted World Cup fixture records in both runs.
+- Fixture `18257865` returned 2 score snapshot records in both runs.
+- The official-odds collection changed from 3 records to 2 between runs, so the product continues to timestamp and replace each current collection independently.
+- Final-score stat validation was not claimed because no final sequence was configured.
+- No token, JWT, wallet secret, or local environment value was printed.
+
 ## Detailed integration consequences
 
 The most important integration lesson is that consumer truth is a state machine, not a single score number:
