@@ -80,7 +80,7 @@ npm run validate
 
 ## Demo video
 
-The reproducible English judging demo is documented in `docs/DEMO_VIDEO_PACKAGE.md`. The previous cut is now a stale candidate because the product and narration standard changed. Do not record or replace the public demo until the current build passes local acceptance, the same commit passes online review, and the project owner explicitly approves recording.
+The accepted English judging demo is documented in `docs/DEMO_VIDEO_PACKAGE.md`. It is 4:50, uses the approved final product build, and is published as an unlisted YouTube video for judges.
 
 After that approval only, refresh the final E2E screenshots and run:
 
@@ -97,7 +97,7 @@ demo-assets/world-cup-live-pulse-demo-b-narrated.mp4
 The public no-login video page is served from:
 
 ```text
-https://yuzhenjiang134.github.io/world-cup-live-pulse/demo/
+https://youtu.be/UcxYgKSGc6Y
 ```
 
 ## Deploy

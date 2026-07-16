@@ -50,8 +50,8 @@ python scripts\render-demo-video.py --variant B
 
 ## Public playback
 
-Only after approval and final video acceptance, publish the selected candidate with GitHub Pages at:
+After owner approval and final video acceptance, the selected 4:50 candidate was published as an unlisted YouTube video at:
 
-`https://yuzhenjiang134.github.io/world-cup-live-pulse/demo/`
+`https://youtu.be/UcxYgKSGc6Y`
 
-Verify this URL in a clean browser session after the final Pages workflow succeeds, then add it to the Superteam form. A secondary YouTube/Loom mirror is optional, not required for judge access.
+YouTube completed its copyright check without finding an issue. This is the canonical Demo URL for the Superteam form.

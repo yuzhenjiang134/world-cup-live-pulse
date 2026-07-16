@@ -1,8 +1,8 @@
 # Final Submission Checklist
 
-Updated: 2026-07-11
+Updated: 2026-07-16
 
-Official listing checked 2026-07-12: the syncing public submission counter moved from 25 to 27 across consecutive fetches. This track still lists 16,000 USDT total prizes (10,000 / 4,000 / 2,000) and a July 29, 2026 winner announcement. Recheck the dynamic count and close timer immediately before submission.
+Official listing checked 2026-07-16: the track is open with 57 public submissions. It lists 16,000 USDT total prizes (10,000 / 4,000 / 2,000), a July 19, 2026 23:59 UTC deadline, and a July 29, 2026 winner announcement.
 
 This is the checklist for the current matchday shell. Older Source Board / Judge Demo prototype labels are retired from the primary interface and must not be described as visible product features.
 
@@ -78,8 +78,10 @@ Local-first rule: no push and no final video until the data-truth, complete-prod
 - [x] GitHub Pages workflow is configured and the public URL returns HTTP 200.
 - [x] Generate the final English judging cut only after local acceptance; the accepted candidate is 4:50, 1280x720, H.264/AAC, and contains 17 scenes.
 - [x] Review the final candidate twice: all 17 narration segments pass reverse transcription and audio metrics; the complete MP4 decodes and all 17 scene midpoints pass visual inspection.
-- [ ] Push the accepted worktree, confirm CI/Pages on the same SHA, then verify no-login page access, MP4 playback/download, remote hash, public E2E, and secret scan.
-- [ ] Re-check the live Superteam listing and submit before the stated deadline if unchanged.
+- [x] Push the accepted worktree and confirm CI/Pages on the same SHA.
+- [x] Publish the accepted 4:50 Demo as an unlisted YouTube video and pass YouTube's copyright check.
+- [x] Re-check the live Superteam listing immediately before submission.
+- [ ] Submit the completed package before the July 19, 2026 23:59 UTC deadline.
 
 ## Required Track Language
 
