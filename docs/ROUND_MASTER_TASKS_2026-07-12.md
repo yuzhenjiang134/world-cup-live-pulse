@@ -294,3 +294,18 @@
 - [ ] 仅在线上候选通过后重录最终 Demo；此前生成的候选 1 只用于声线检查，不作为提交视频。
 
 线上积分证据：新用户从 1,000 积分开始；每场首次提交扣 50；精确命中奖励 250，卡片与历史显示净变化 +200；刷新不重复扣分或派奖；旧版本 735 积分迁移后仍为 735。线上页面无横向溢出、无运行时错误，公开包安全扫描为零命中。
+
+## 2026-07-16 Final Demo and Submission Gate
+
+- [x] Final narrated Demo generated after the accepted online product build and owner approval.
+- [x] Final Demo duration is 290 seconds, within the 5-minute requirement.
+- [x] Final Demo covers the required story: fan problem, live product walkthrough, and how TxLINE/TxODDS powers fixtures, scores, events, and odds.
+- [x] English narration uses the authorized local voice workflow; no voice profile id, voice sample, local voice path, token, JWT, wallet secret, or `.env.local` value is committed or shown in public media.
+- [x] Reverse-transcription QA passed 17/17 scenes after targeted fixes for unclear phrases.
+- [x] Final video container QA passed: MP4, H.264 video, AAC audio, 1280x720, 24 fps, 290.000 seconds.
+- [x] Full FFmpeg decode passed with no errors.
+- [x] Visual QA sampled the start, middle, and final frames; no black frame, overlap, or missing ending screen was found.
+- [x] Draft candidates remain local review artifacts only; `demo-assets/world-cup-live-pulse-demo-final.mp4` is the current submission video candidate.
+- [x] Generated videos, narration WAV files, ASR reports, and local frame extracts remain ignored and are not committed to the public repository.
+
+Submission readiness note: the public website and GitHub repository are ready for judge access. The final video file is local and must be uploaded to Loom or YouTube before Superteam submission because large generated media is intentionally excluded from Git.

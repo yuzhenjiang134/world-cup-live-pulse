@@ -130,7 +130,7 @@ const sceneSets = {
       seconds: 17,
       title: "Verified events become a matchday mini-game",
       subtitle: "Pulse Play turns the same score and event frames into a rights-safe animated pitch for goals, cards, penalties, added time, and local team cheers.",
-      narration: "Pulse Play turns verified goals, cards, penalties, and added time into a rights-safe animated pitch, with local team cheers that never pretend to be global statistics.",
+      narration: "The animated pitch turns goals, yellow cards, penalties, and stoppage time into original match action. Local reactions stay on this device.",
       voiceTone: "excited but controlled matchday energy",
       voiceNote: "Lift the energy for the football action, then clearly stress that cheers are local-only.",
       badges: ["Event-driven", "Rights-safe", "Local cheers"]
@@ -173,7 +173,7 @@ const sceneSets = {
       seconds: 18,
       title: "Schedule, results, and progression are judgeable between matches",
       subtitle: "Current fixtures stay separate from eight verified 2026 replay sequences and source-confirmed knockout progress.",
-      narration: "When no live match is playing, eight verified matches from the 2026 World Cup preserve scores, events, challenges, schedule, and progress. Archive data is never presented as live.",
+      narration: "Between matches, official 2026 World Cup archives preserve scores, events, challenges, and progression. Every archive is labeled as completed.",
       voiceTone: "helpful catch-up",
       voiceNote: "Sound empathetic to a fan who missed the match and wants to catch up quickly.",
       badges: ["Current schedule", "8 verified replays", "Source-confirmed progression"]
@@ -185,7 +185,7 @@ const sceneSets = {
       seconds: 18,
       title: "Spoiler-free replay protects the catch-up experience",
       subtitle: "One switch masks final scores, winners, event totals, bracket outcomes, and team records, then starts the replay at minute one.",
-      narration: "No-spoiler replay hides every field that could reveal the outcome, including scores, winners, event totals, bracket results, and team records, before playback starts at minute one.",
+      narration: "No-spoiler replay masks scores, winners, event totals, bracket results, and team records. Fans start at minute one and reveal the story through the timeline.",
       voiceTone: "considerate and clear",
       voiceNote: "Make this feel like a thoughtful fan feature, not a technical setting.",
       badges: ["Before: results visible", "After: outcomes masked", "Reveal through events"]
@@ -197,7 +197,7 @@ const sceneSets = {
       seconds: 16,
       title: "A favorite team shortens the next fan task",
       subtitle: "One local star moves that team to the front of team, schedule, and next-replay views without creating an account or an empty recommendation feed.",
-      narration: "A local favorite team moves to the front of team, schedule, and next-replay views. No account is required, and no recommendation data is invented behind the scenes.",
+      narration: "A favorite team moves to the front of the team directory, schedule, and replay views. It stays on this device, with no account or invented recommendations.",
       voiceTone: "friendly and practical",
       voiceNote: "Use an easy conversational rhythm and a subtle smile.",
       badges: ["Local preference", "Schedule priority", "No account required"]
@@ -217,7 +217,7 @@ const sceneSets = {
       seconds: 16,
       title: "Eight complete languages, not a half-translated shell",
       subtitle: "English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic share the full flow; Arabic uses RTL.",
-      narration: "Eight complete language packs cover the same fan journey, including Arabic right-to-left layout, without mixing untranslated interface fragments into the selected language.",
+      narration: "Eight language packs cover the full supporter journey, including Arabic right-to-left, without untranslated interface fragments.",
       voiceTone: "inclusive and assured",
       voiceNote: "Sound globally welcoming while keeping the pace natural.",
       badges: ["8 languages", "Arabic RTL", "Shared feature parity"]
@@ -238,7 +238,7 @@ const sceneSets = {
       title: "Official viewing entries, not unauthorized streams",
       kicker: "FIFA+ archive / highlights / official updates",
       subtitle: "The product keeps timeline replay available and opens official video or coverage only when territorial rights allow.",
-      narration: "For video, the product links only to official FIFA archive, highlights, and updates, while timeline replay remains available when territorial video rights differ.",
+      narration: "Official FIFA archives, highlights, and updates are the only video links. Timeline replay remains available wherever viewing access differs.",
       voiceTone: "responsible and reassuring",
       voiceNote: "Keep the rights and safety statement clear, steady, and positive.",
       bullets: ["Official links only", "Territory-aware wording", "No scraped stream", "Timeline always available"]
@@ -249,7 +249,7 @@ const sceneSets = {
       title: "TxLINE powers the authenticated live boundary",
       kicker: "CompetitionId 72 / World Cup only",
       subtitle: "The secure adapter loads fixtures, score snapshots, score events, and official odds when supplied. The public build contains no private token.",
-      narration: "The official TxODDS data layer powers fixtures, score history, events, and official odds. Replay keeps judging repeatable, but is never presented as a live feed.",
+      narration: "T X Line, from T X Odds, powers fixtures, score history, events, and official odds. Replay keeps judging repeatable, but is never presented as a live feed.",
       voiceTone: "precise and authoritative",
       voiceNote: "Pronounce T X Line as separate letters followed by Line. Keep the delivery technical but accessible.",
       bullets: ["POST /auth/guest/start", "GET /api/fixtures/snapshot", "GET /api/scores/snapshot/{fixtureId}", "GET /api/odds/snapshot/{fixtureId}"]
@@ -271,7 +271,7 @@ const sceneSets = {
       title: "Every submission claim has release evidence",
       kicker: "Research / tests / same-SHA deployment",
       subtitle: "Three acceptance rounds, public E2E, secret scanning, endpoint documentation, API feedback, CI, and Pages verification support the final build.",
-      narration: "Three acceptance rounds, public end-to-end tests, secret scanning, endpoint documentation, API feedback, continuous integration, and Pages verification support every final claim.",
+      narration: "Public tests, credential scans, endpoint docs, API feedback, continuous integration, and Pages verification support every claim.",
       voiceTone: "measured and evidential",
       voiceNote: "Sound like a concise proof statement. Give each evidence item enough space.",
       bullets: ["Public site and repository", "No runtime errors", "Bundle secret scan", "Claims backed by tests"]
