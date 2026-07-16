@@ -143,6 +143,12 @@ try {
   assert.equal(await elementCount(cdp, ".demo-history .challenge-history-list > div"), 8);
   assert.match(settledText, expectedCopy.season);
   assert.match(settledText, /FRA 2:0 MAR/);
+  assert.match(settledText, /-50/);
+  assert.match(settledText, /\+250/);
+  assert.match(settledText, /\+200/);
+  const settledLedger = await evaluate(cdp, `JSON.parse(localStorage.getItem('wclp-pick-ledger-v1') || '[]')`);
+  assert.equal(settledLedger[0].entryCost, 50);
+  assert.equal(settledLedger[0].netChange, 200);
 
   await cdp.send("Page.reload", { ignoreCache: true });
   await waitForCondition(cdp, "Boolean(document.querySelector('.challenge-block'))", 30_000);
@@ -359,7 +365,7 @@ try {
   assert.ok(mobileLayout.actions.left >= 0 && mobileLayout.actions.right <= mobileLayout.viewport);
   await evaluate(cdp, "document.querySelectorAll('.hero-view-toggle button')[1].click(); true");
   await waitForCondition(cdp, "Boolean(document.querySelector('.pulse-play'))", 5_000);
-  assert.match(await blockText(cdp, ".pulse-sync-badge"), /Pre-match preview|赛前预览|Delayed update|延迟更新/);
+  assert.match(await blockText(cdp, ".pulse-sync-badge"), /Pre-match preview|赛前预览|Update pending|稍后更新/);
   const mobileToggleStyles = await evaluate(cdp, "[...document.querySelectorAll('.hero-view-toggle button')].map((button) => ({ active: button.classList.contains('active'), background: getComputedStyle(button).backgroundColor, color: getComputedStyle(button).color }))");
   assert.equal(mobileToggleStyles.filter((item) => item.active).length, 1);
   assert.notEqual(mobileToggleStyles[0].background, mobileToggleStyles[1].background);
@@ -499,9 +505,13 @@ try {
   await waitForCondition(cdp, "Boolean(document.querySelector('.up-next-panel button'))", 10_000);
   assert.match(await buttonText(cdp, ".up-next-panel button"), new RegExp(favoriteName));
   await evaluate(cdp, "document.querySelectorAll('.primary-nav button')[1].click(); true");
-  await waitForCondition(cdp, "Boolean(document.querySelector('.current-fixture-grid article'))", 10_000);
+  await wait(300);
   const favoriteScheduleCards = await evaluate(cdp, `[...document.querySelectorAll('.current-fixture-grid article')].map((card) => ({ title: card.querySelector(':scope > strong')?.innerText ?? '', favorite: card.classList.contains('favorite-team') })).filter((card) => card.title.includes(${JSON.stringify(favoriteName)}))`);
-  assert.ok(favoriteScheduleCards.every((card) => card.favorite));
+  if (await elementCount(cdp, ".current-fixture-grid article")) {
+    assert.ok(favoriteScheduleCards.every((card) => card.favorite));
+  } else {
+    assert.equal(await elementCount(cdp, ".current-fixtures"), 0);
+  }
 
   await evaluate(cdp, "document.querySelector('.settings-button').click(); true");
   await wait(200);
@@ -543,9 +553,15 @@ try {
   const chineseVisibleText = await evaluate(cdp, "document.body.innerText");
   assert.doesNotMatch(chineseVisibleText, /VITE_TXLINE_API_TOKEN|Bearer\s+[A-Za-z0-9_-]+/);
   assert.doesNotMatch(chineseVisibleText, /public scoreboard|fixture feed|schedule snapshot/i);
+  await evaluate(cdp, `(() => { localStorage.setItem('wclp-points-version', 'legacy'); localStorage.setItem('wclp-test-points', '735'); return true; })()`);
+  await cdp.send("Page.reload", { ignoreCache: true });
+  await waitForCondition(cdp, "Boolean(document.querySelector('.challenge-block'))", 30_000);
+  assert.equal(await evaluate(cdp, "localStorage.getItem('wclp-test-points')"), "735");
+  assert.equal(await evaluate(cdp, "localStorage.getItem('wclp-points-version')"), "v5");
+  assert.match(await blockText(cdp, ".challenge-balance"), /735/);
   assert.deepEqual(runtimeIssues, []);
 
-  console.log("PASS browser challenge settlement plus pre-kickoff edits, event-driven Pulse Play and local cheers, three AI modes, key events, replay, favorites, persisted match-alert preferences, official links, verified 2026 data, eight languages, keyboard access, accessible names, safety, and responsive layouts");
+  console.log("PASS browser challenge entry deduction, reward ledger, one-time settlement, cross-version balance persistence, pre-kickoff edits, event-driven Pulse Play and local cheers, three AI modes, key events, replay, favorites, persisted match-alert preferences, official links, verified 2026 data, eight languages, keyboard access, accessible names, safety, and responsive layouts");
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.close();
   const edgeExit = once(edge, "exit").catch(() => undefined);

@@ -281,3 +281,14 @@
 - Community: fixture/team rooms now retain the active room and use event-aware conversation starters; fabricated profiles and fake global totals remain prohibited.
 - Release: local validation comes first, followed by one to three final iterations, one push candidate and two online QA rounds.
 - Demo: no recording before the accepted online release and explicit owner approval; final English narration must pass two full watch/listen reviews.
+
+## 2026-07-16 积分挑战持久化与流水终审
+
+- [x] 取消部署版本变化时强制把用户积分重置为 1,000；已有合法余额跨版本迁移并保留，只有首次进入或损坏数据才初始化为 1,000。
+- [x] 区分“从未保存积分”和“合法的 0 积分”，避免浏览器把空值转换为 0 后错误初始化。
+- [x] 每场预测保存参赛消耗、提交后的余额、结算奖励和本场净变化；赛前修改同一预测不重复扣分。
+- [x] 完场只结算一次；挑战主卡和历史记录明确展示 `-50` 参赛消耗、奖励以及净变化，刷新后不重复派奖。
+- [x] 中文与英文完整浏览器回归通过；自动化额外验证旧版本 735 积分刷新后仍为 735，并迁移到当前积分版本。
+- [x] 桌面与 390px 移动端复检通过；长语言下的挑战流水和历史明细保持逐行可读，无横向溢出。
+- [ ] 将本次积分修复作为正式线上候选发布，再对同一提交执行中英文两轮线上 QA。
+- [ ] 仅在线上候选通过后重录最终 Demo；此前生成的候选 1 只用于声线检查，不作为提交视频。

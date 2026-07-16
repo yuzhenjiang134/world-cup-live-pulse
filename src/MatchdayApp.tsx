@@ -1082,6 +1082,17 @@ const challengeEditCopy: Record<Language, { edit: string; save: string; note: st
   ar: { edit: "تعديل النتيجة", save: "حفظ التعديل", note: "توقع واحد لكل مباراة. يمكن تعديله حتى البداية دون خصم نقاط إضافية.", updated: "تم تحديث التوقع" },
 };
 
+const challengeLedgerCopy: Record<Language, { entry: string; reward: string; net: string }> = {
+  en: { entry: "Entry cost", reward: "Reward", net: "Net change" },
+  zh: { entry: "参赛消耗", reward: "结算奖励", net: "本场净变化" },
+  es: { entry: "Coste de entrada", reward: "Recompensa", net: "Cambio neto" },
+  pt: { entry: "Custo de entrada", reward: "Recompensa", net: "Variação líquida" },
+  fr: { entry: "Coût d'entrée", reward: "Récompense", net: "Variation nette" },
+  de: { entry: "Teilnahmekosten", reward: "Belohnung", net: "Nettoänderung" },
+  ja: { entry: "参加コスト", reward: "獲得ポイント", net: "増減" },
+  ar: { entry: "تكلفة المشاركة", reward: "المكافأة", net: "صافي التغيير" },
+};
+
 const standingStatusCopy: Record<Language, Record<string, string>> = {
   en: { "Top seed path": "Group winner", Qualified: "Qualified", Eliminated: "Eliminated" },
   zh: { "Top seed path": "小组第一", Qualified: "晋级", Eliminated: "出局" },
@@ -1136,11 +1147,15 @@ type StoredPick = {
   finalHomeScore?: number;
   finalAwayScore?: number;
   award?: number;
+  entryCost?: number;
+  netChange?: number;
+  balanceAfterEntry?: number;
   sourceKind?: DataSourceState["kind"];
   sourceCheckedAtIso?: string;
 };
 
 const pickLedgerKey = "wclp-pick-ledger-v1";
+const pointsVersion = "v5";
 const alertPreferencesKey = "wclp-alert-preferences";
 const defaultAlertPreferences: AlertPreferences = { goals: true, cards: true, final: true };
 
@@ -1201,6 +1216,9 @@ function readStoredPick(matchId: string): StoredPick | null {
       finalHomeScore: parsed.finalHomeScore,
       finalAwayScore: parsed.finalAwayScore,
       award: parsed.award,
+      entryCost: Number.isFinite(parsed.entryCost) ? Math.max(0, Math.round(Number(parsed.entryCost))) : undefined,
+      netChange: Number.isFinite(parsed.netChange) ? Math.round(Number(parsed.netChange)) : undefined,
+      balanceAfterEntry: Number.isFinite(parsed.balanceAfterEntry) ? Math.max(0, Math.round(Number(parsed.balanceAfterEntry))) : undefined,
       sourceKind: parsed.sourceKind,
       sourceCheckedAtIso: parsed.sourceCheckedAtIso,
     };
@@ -1274,13 +1292,15 @@ function detectLanguage(): Language {
 
 function readPoints() {
   if (typeof window === "undefined") return 1000;
-  if (window.localStorage.getItem("wclp-points-version") !== "v4") {
-    window.localStorage.setItem("wclp-points-version", "v4");
-    window.localStorage.setItem("wclp-test-points", "1000");
-    return 1000;
+  const rawStored = window.localStorage.getItem("wclp-test-points");
+  const stored = rawStored === null || rawStored.trim() === "" ? Number.NaN : Number(rawStored);
+  if (Number.isFinite(stored) && stored >= 0) {
+    window.localStorage.setItem("wclp-points-version", pointsVersion);
+    return Math.round(stored);
   }
-  const stored = Number(window.localStorage.getItem("wclp-test-points"));
-  return Number.isFinite(stored) && stored >= 0 ? Math.round(stored) : 1000;
+  window.localStorage.setItem("wclp-points-version", pointsVersion);
+  window.localStorage.setItem("wclp-test-points", "1000");
+  return 1000;
 }
 
 function sourceMeta(source: DataSourceState | null, mode: MatchMode, match: MatchData | null, copy: UiCopy) {
@@ -1508,7 +1528,7 @@ export default function MatchdayApp() {
   }, [language]);
 
   useEffect(() => {
-    window.localStorage.setItem("wclp-points-version", "v4");
+    window.localStorage.setItem("wclp-points-version", pointsVersion);
     window.localStorage.setItem("wclp-test-points", String(points));
   }, [points]);
 
@@ -1584,6 +1604,8 @@ export default function MatchdayApp() {
         finalHomeScore: verified.homeScore,
         finalAwayScore: verified.awayScore,
         award: result.award,
+        entryCost: pick.entryCost ?? pointsPerPick,
+        netChange: result.award - (pick.entryCost ?? pointsPerPick),
         sourceKind: pick.sourceKind ?? source?.kind,
         sourceCheckedAtIso: pick.sourceCheckedAtIso ?? source?.checkedAtIso,
       };
@@ -1907,6 +1929,8 @@ export default function MatchdayApp() {
       lockedAtIso: previous?.lockedAtIso ?? now,
       updatedAtIso: now,
       revisionCount: isUpdating ? (previous?.revisionCount ?? 0) + 1 : previous?.revisionCount ?? 0,
+      entryCost: previous?.entryCost ?? pointsPerPick,
+      balanceAfterEntry: previous?.balanceAfterEntry ?? Math.max(0, points - pointsPerPick),
       sourceKind: source?.kind,
       sourceCheckedAtIso: source?.checkedAtIso,
     };
@@ -2026,7 +2050,7 @@ export default function MatchdayApp() {
   }
 
   function resetPoints() {
-    window.localStorage.setItem("wclp-points-version", "v4");
+    window.localStorage.setItem("wclp-points-version", pointsVersion);
     window.localStorage.setItem("wclp-test-points", "1000");
     setPoints(1000);
     setPickLocked(false);
@@ -2265,6 +2289,12 @@ function ScoreChallenge({ copy, language, match, picks, homeScore, awayScore, se
   const level = getFanLevel(stats);
   const levelDetail = level.ceiling ? `${copy.nextLevel} · ${level.xp}/${level.ceiling} XP` : `${level.xp} XP`;
   const demoText = seasonDemoCopy[language];
+  const ledgerText = challengeLedgerCopy[language];
+  const activePick = picks.find((pick) => pick.matchId === match.id);
+  const activeEntryCost = activePick?.entryCost ?? pointsPerPick;
+  const activeAward = activePick?.settled ? activePick.award ?? 0 : null;
+  const activeNet = activeAward === null ? -activeEntryCost : activeAward - activeEntryCost;
+  const signedPoints = (value: number) => `${value > 0 ? "+" : ""}${value} ${copy.pointsUnit}`;
   return (
     <section className="challenge-block">
       <div className="challenge-heading-row">
@@ -2286,11 +2316,12 @@ function ScoreChallenge({ copy, language, match, picks, homeScore, awayScore, se
           <div className={`challenge-score ${editing ? "editing" : ""}`}><ScoreInput label={match.home.code} value={homeScore} disabled={(locked && !editing) || !canLock} onChange={setHomeScore} /><span>:</span><ScoreInput label={match.away.code} value={awayScore} disabled={(locked && !editing) || !canLock} onChange={setAwayScore} /></div>
           {match.status === "scheduled" ? <p className="challenge-rule-note">{editText.note}</p> : null}
           <p className="muted-copy">{copy.pointsNote}</p>
+          {activePick?.locked ? <div className="challenge-transaction" aria-label={copy.scoreChallenge}><span><small>{ledgerText.entry}</small><strong>-{activeEntryCost} {copy.pointsUnit}</strong></span><span><small>{ledgerText.reward}</small><strong>{activeAward === null ? copy.waitingSettlement : `+${activeAward} ${copy.pointsUnit}`}</strong></span><span><small>{ledgerText.net}</small><strong>{signedPoints(activeNet)}</strong></span></div> : null}
           <div className="challenge-actions"><button className="primary-button" type="button" onClick={onSave} disabled={settled || (!editing && locked) || (!editing && points < pointsPerPick) || !canLock}>{actionLabel}</button>{canEdit && !editing ? <button className="secondary-button edit-pick-button" type="button" onClick={onEdit}>{editText.edit}</button> : null}{locked && !editing ? <button className="secondary-button" type="button" onClick={onDownload}>{copy.downloadPick}</button> : null}{locked && !editing ? <button className="secondary-button challenge-room-button" type="button" onClick={onJoinRoom}>{roomLabel}</button> : null}</div>
         </div>
       </div>
       {settlement ? <p className="challenge-result">{settlement}</p> : null}
-      {picks.length ? <details className="challenge-history" open><summary>{demoText.myHistory} · {picks.length}</summary><div className="challenge-history-list">{picks.slice(0, 4).map((pick) => <div key={pick.matchId}><strong>{pick.homeCode} {pick.homeScore}:{pick.awayScore} {pick.awayCode}</strong><span>{pick.settled && Number.isFinite(pick.finalHomeScore) && Number.isFinite(pick.finalAwayScore) ? `${copy.final} ${pick.finalHomeScore}:${pick.finalAwayScore} · +${pick.award ?? 0}` : pick.revisionCount ? editText.updated : copy.locked}</span><small>{copy.verifiedAt} {formatCheckedAt(pick.updatedAtIso ?? pick.sourceCheckedAtIso, language)}</small></div>)}</div></details> : null}
+      {picks.length ? <details className="challenge-history" open><summary>{demoText.myHistory} · {picks.length}</summary><div className="challenge-history-list">{picks.slice(0, 4).map((pick) => { const entryCost = pick.entryCost ?? pointsPerPick; const award = pick.award ?? 0; const net = pick.settled ? award - entryCost : -entryCost; return <div key={pick.matchId}><strong>{pick.homeCode} {pick.homeScore}:{pick.awayScore} {pick.awayCode}</strong><span>{pick.settled && Number.isFinite(pick.finalHomeScore) && Number.isFinite(pick.finalAwayScore) ? `${copy.final} ${pick.finalHomeScore}:${pick.finalAwayScore} · ${ledgerText.entry} -${entryCost} · ${ledgerText.reward} +${award} · ${ledgerText.net} ${signedPoints(net)}` : `${pick.revisionCount ? editText.updated : copy.locked} · ${ledgerText.entry} -${entryCost}`}</span><small>{copy.verifiedAt} {formatCheckedAt(pick.updatedAtIso ?? pick.sourceCheckedAtIso, language)}</small></div>; })}</div></details> : null}
       <details className="challenge-history demo-history"><summary>{demoText.title} · {demoSeasonSummary.played} {demoText.matches} · {demoSeasonSummary.correct} {demoText.correct} · {demoSeasonSummary.exact} {demoText.exact} · {demoSeasonSummary.netPoints >= 0 ? "+" : ""}{demoSeasonSummary.netPoints} {copy.pointsUnit}</summary><p className="muted-copy">{demoText.note}</p><div className="challenge-history-list">{demoSeasonHistory.map((pick) => <div key={pick.matchId}><strong>{pick.homeCode} {pick.homeScore}:{pick.awayScore} {pick.awayCode}</strong><span>{copy.final} {pick.finalHomeScore}:{pick.finalAwayScore} · +{pick.award}</span><small>{pick.kickoffIso ? formatKickoffLabel(pick.kickoffIso, language) : copy.replay}</small></div>)}</div></details>
     </section>
   );

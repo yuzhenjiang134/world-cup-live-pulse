@@ -148,14 +148,14 @@ const sceneSets = {
       badges: ["Before: 1,000 pts", "After: settled ledger", "No cash or wallet"]
     },
     {
-      image: "key-event-final.png",
+      image: "fan-stand-final.png",
       seconds: 16,
-      title: "One tap returns a fan to the moment that matters",
-      subtitle: "Goal, card, score review, half-time, and full-time shortcuts move the replay and regenerate the same event-grounded AI brief.",
-      narration: "Key-event shortcuts jump straight to goals, cards, reviews, half-time, or full-time, while AI commentary stays grounded in the same verified event stream.",
-      voiceTone: "immediate football commentary",
-      voiceNote: "Use restrained matchday urgency on goals and cards, while keeping the explanation intelligible.",
-      badges: ["Event jump", "AI recap", "Optional spoken brief"]
+      title: "Verified moments become a match channel",
+      subtitle: "Goals, cards, substitutions, and full time open the matching replay moment, fan viewpoints, local reactions, and source-derived player records.",
+      narration: "Each verified moment becomes a match channel with replay jumps, fan viewpoints, local reactions, and source-derived player records, all tied to the same event stream.",
+      voiceTone: "immediate and inclusive matchday energy",
+      voiceNote: "Sound like you are inviting fans into a useful conversation. Keep the event-source boundary clear without sounding technical.",
+      badges: ["Event jump", "Fan viewpoints", "Player match record"]
     },
     {
       kind: "card",

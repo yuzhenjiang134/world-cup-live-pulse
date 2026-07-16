@@ -2722,6 +2722,35 @@ summary:focus-visible {
   justify-content: stretch;
 }
 
+.challenge-transaction {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.challenge-transaction span {
+  min-width: 0;
+  padding: 10px 11px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.challenge-transaction small,
+.challenge-transaction strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.challenge-transaction small {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.challenge-transaction strong {
+  margin-top: 3px;
+  font-size: 0.84rem;
+}
+
 .challenge-actions .primary-button {
   flex: 1 1 220px;
   min-height: 48px;
@@ -2766,8 +2795,8 @@ summary:focus-visible {
 
 .challenge-history-list > div {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 3px 10px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
   padding: 10px 11px;
   border: 1px solid #eadcad;
   border-radius: 7px;
@@ -2782,11 +2811,11 @@ summary:focus-visible {
 .challenge-history-list span {
   color: var(--md-teal);
   font-weight: 900;
-  text-align: right;
+  line-height: 1.45;
+  text-align: left;
 }
 
 .challenge-history-list small {
-  grid-column: 1 / -1;
   color: var(--md-muted);
   font-size: 9px;
 }
