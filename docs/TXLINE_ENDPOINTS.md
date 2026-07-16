@@ -87,13 +87,13 @@ The probe verifies guest JWT, fixture snapshot, score snapshot, and odds snapsho
 
 ## Public Live proxy mode
 
-Use this mode for any deployed build that needs real TxLINE data:
+Use this mode for any deployed build that needs real TxLINE data. The included Vercel function is discovered automatically at same-origin `/api/txline` on `*.vercel.app`; other hosting platforms should set:
 
 ```bash
 VITE_TXLINE_PROXY_BASE=https://your-secure-proxy.example.com
 ```
 
-The proxy should keep these server-side secrets:
+The proxy should keep these server-side secrets. `ALLOWED_ORIGIN` is optional on Vercel because same-origin requests are accepted automatically; set it when a separate frontend origin calls the proxy:
 
 ```bash
 TXLINE_API_TOKEN=real_txline_x_api_token

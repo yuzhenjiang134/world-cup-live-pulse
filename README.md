@@ -142,7 +142,7 @@ Never publish JWTs or API tokens. If TxLINE support needs to inspect a failed ac
 
 The browser helpers are the preferred project flow. The same devnet defaults are also confirmed by the official TypeScript examples and the Rust helper shared in TxLINEChat: service level `1`, duration `4` weeks, activation message `txSig:selectedLeagues:jwt` or `txSig::jwt` for the standard bundle.
 
-For public Live mode, keep the real token on a server-side proxy and set:
+For public Live mode, keep the real token on a server-side proxy. Vercel deployments automatically use the included same-origin `/api/txline` function; configure `TXLINE_API_TOKEN` as a server-side Vercel environment variable. On another hosting platform, point the frontend at its secure proxy with:
 
 ```bash
 VITE_TXLINE_PROXY_BASE=https://your-secure-proxy.example.com

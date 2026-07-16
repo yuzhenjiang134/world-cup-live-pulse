@@ -38,6 +38,19 @@ assert.match(success.headers["Cache-Control"], /no-store/);
 assert.equal(success.headers["CDN-Cache-Control"], "no-store");
 assert.equal(success.headers["Vercel-CDN-Cache-Control"], "no-store");
 
+const sameOrigin = mockResponse();
+await handler({
+  method: "GET",
+  url: "/api/txline/__health",
+  headers: {
+    origin: "https://world-cup-live-pulse.vercel.app",
+    host: "world-cup-live-pulse.vercel.app",
+    "x-forwarded-proto": "https",
+  },
+}, sameOrigin);
+assert.equal(sameOrigin.statusCode, 200);
+assert.equal(sameOrigin.headers["Access-Control-Allow-Origin"], "https://world-cup-live-pulse.vercel.app");
+
 const forbidden = mockResponse();
 await handler({ method: "GET", url: "/api/txline/api/fixtures/snapshot", headers: { origin: "https://evil.example" } }, forbidden);
 assert.equal(forbidden.statusCode, 403);

@@ -1519,6 +1519,8 @@ export default function MatchdayApp() {
   const helperUrl = `${import.meta.env.BASE_URL}tools/txline-subscribe/index.html?v=2026-07-10`;
   const configuredVideoUrl = safeVideoUrl(import.meta.env.VITE_AUTHORIZED_VIDEO_EMBED_URL);
   const videoUrl = configuredVideoUrl ?? officialVideoSources[0].url;
+  const txlineProxyBase = (import.meta.env.VITE_TXLINE_PROXY_BASE || "").trim()
+    || (import.meta.env.DEV ? "/__txline" : window.location.hostname.endsWith(".vercel.app") ? "/api/txline" : "");
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -1634,7 +1636,7 @@ export default function MatchdayApp() {
       inFlight = true;
       try {
         const results = await Promise.allSettled(pending.map((pick) => loadMatchData("live", {
-          proxyBase: import.meta.env.VITE_TXLINE_PROXY_BASE || (import.meta.env.DEV ? "/__txline" : ""),
+          proxyBase: txlineProxyBase,
           asOfMs: import.meta.env.VITE_TXLINE_AS_OF_MS,
           competitionId: import.meta.env.VITE_TXLINE_COMPETITION_ID,
           fixtureId: pick.matchId,
@@ -1653,7 +1655,7 @@ export default function MatchdayApp() {
       cancelled = true;
       window.clearInterval(interval);
     };
-  }, [match?.id, mode, pickLedger]);
+  }, [match?.id, mode, pickLedger, txlineProxyBase]);
 
   useEffect(() => {
     window.speechSynthesis?.cancel();
@@ -1677,7 +1679,7 @@ export default function MatchdayApp() {
       setLoadError(null);
       try {
         const result = await loadMatchData(mode, {
-          proxyBase: import.meta.env.VITE_TXLINE_PROXY_BASE || (import.meta.env.DEV ? "/__txline" : ""),
+          proxyBase: txlineProxyBase,
           asOfMs: import.meta.env.VITE_TXLINE_AS_OF_MS,
           competitionId: import.meta.env.VITE_TXLINE_COMPETITION_ID,
           fixtureId: import.meta.env.VITE_TXLINE_FIXTURE_ID,
@@ -1715,7 +1717,7 @@ export default function MatchdayApp() {
       cancelled = true;
       window.clearInterval(interval);
     };
-  }, [mode, refreshNonce, selectedReplayId]);
+  }, [mode, refreshNonce, selectedReplayId, txlineProxyBase]);
 
   useEffect(() => {
     if (mode !== "live") return;

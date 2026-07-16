@@ -12,8 +12,11 @@ const allowedPaths = [
 
 export default async function handler(request, response) {
   const origin = headerValue(request.headers, "origin");
-  const allowedOrigin = clean(process.env.ALLOWED_ORIGIN) || defaultAllowedOrigin;
-  setCors(response, allowedOrigin);
+  const configuredOrigin = clean(process.env.ALLOWED_ORIGIN);
+  const sameOrigin = requestOrigin(request);
+  const allowedOrigins = new Set([defaultAllowedOrigin, configuredOrigin, sameOrigin].filter(Boolean));
+  const responseOrigin = origin && allowedOrigins.has(origin) ? origin : configuredOrigin || sameOrigin || defaultAllowedOrigin;
+  setCors(response, responseOrigin);
 
   if (request.method === "OPTIONS") {
     response.statusCode = 204;
@@ -21,7 +24,7 @@ export default async function handler(request, response) {
     return;
   }
 
-  if (origin && origin !== allowedOrigin) {
+  if (origin && !allowedOrigins.has(origin)) {
     sendJson(response, 403, { error: "origin_not_allowed" });
     return;
   }
@@ -139,6 +142,13 @@ function setNoStore(response) {
 function headerValue(headers, key) {
   const value = headers?.[key] ?? headers?.[key.toLowerCase()];
   return Array.isArray(value) ? value[0] ?? "" : value ?? "";
+}
+
+function requestOrigin(request) {
+  const host = headerValue(request.headers, "x-forwarded-host") || headerValue(request.headers, "host");
+  if (!host) return "";
+  const protocol = headerValue(request.headers, "x-forwarded-proto") || "https";
+  return `${protocol}://${host}`;
 }
 
 function clean(value) {
