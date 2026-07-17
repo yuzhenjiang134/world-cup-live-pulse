@@ -1472,7 +1472,7 @@ function localizedTournamentStage(value: string, language: Language) {
   if (normalized.includes("round of 16")) return text.round16;
   if (normalized.includes("quarter")) return text.quarter;
   if (normalized.includes("semi")) return text.semi;
-  if (normalized.includes("bronze") || normalized.includes("third place")) return bronzeStageLabels[language];
+  if (normalized.includes("bronze") || normalized.includes("third place") || normalized.includes("3rd place")) return bronzeStageLabels[language];
   if (/\bfinals?\b/.test(normalized)) return text.final;
   return null;
 }
