@@ -6,7 +6,7 @@ Use this as the final project packet index.
 
 - App: https://yuzhenjiang134.github.io/world-cup-live-pulse/
 - GitHub: https://github.com/yuzhenjiang134/world-cup-live-pulse
-- Demo video: https://youtu.be/cBFamfSz28A
+- Demo video: https://youtu.be/tjbY4NHeV1E
 - Project title: World Cup Live Pulse
 - Track: Consumer and Fan Experiences
 
@@ -14,6 +14,7 @@ Use this as the final project packet index.
 
 - `README.md`
 - `TASKS.md`
+- `docs/SUPERTEAM_FINAL_SUBMISSION.md`
 - `docs/submission-draft.md`
 - `docs/demo-script.md`
 - `docs/technical-writeup.md`
@@ -61,9 +62,9 @@ It does not:
 ```text
 Deployed URL: https://yuzhenjiang134.github.io/world-cup-live-pulse/
 GitHub URL: https://github.com/yuzhenjiang134/world-cup-live-pulse
-Demo video URL: https://youtu.be/cBFamfSz28A
+Demo video URL: https://youtu.be/tjbY4NHeV1E
 TxLINE endpoints used:
 POST /auth/guest/start; GET /api/fixtures/snapshot; GET /api/scores/snapshot/{fixtureId}; GET /api/odds/snapshot/{fixtureId}
 TxLINE feedback: see docs/API_FEEDBACK.md; update again after real token testing
-Submission date:
+Submission date: 2026-07-17
 ```

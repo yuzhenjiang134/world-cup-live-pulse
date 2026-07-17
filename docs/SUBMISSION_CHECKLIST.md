@@ -1,6 +1,6 @@
 # Final Submission Checklist
 
-Updated: 2026-07-16
+Updated: 2026-07-17
 
 Official listing checked 2026-07-16: the track is open with 57 public submissions. It lists 16,000 USDT total prizes (10,000 / 4,000 / 2,000), a July 19, 2026 23:59 UTC deadline, and a July 29, 2026 winner announcement.
 
@@ -76,10 +76,10 @@ Local-first rule: no push and no final video until the data-truth, complete-prod
 - [x] Five-criterion evidence audit: `docs/JUDGING_AUDIT_2026-07-11.md`.
 - [x] Official track requirements are reflected: working app/API access, public repo, specific TxLINE endpoint list, API feedback, TxLINE live input, and Solana sign-up path.
 - [x] GitHub Pages workflow is configured and the public URL returns HTTP 200.
-- [x] Generate the final English judging cut only after local acceptance; the accepted candidate is 4:50, 1280x720, H.264/AAC, and contains 17 scenes.
+- [x] Generate the final English judging cut only after local acceptance; the accepted candidate is displayed as 4:51 on YouTube, is 1280x720 H.264/AAC, and contains 17 scenes.
 - [x] Review the final candidate twice: all 17 narration segments pass reverse transcription and audio metrics; the complete MP4 decodes and all 17 scene midpoints pass visual inspection.
 - [x] Push the accepted worktree and confirm CI/Pages on the same SHA.
-- [x] Publish the accepted 4:50 Demo as an unlisted YouTube video and pass YouTube's copyright check.
+- [x] Publish the refreshed final Demo as an unlisted YouTube video and pass YouTube's copyright check: `https://youtu.be/tjbY4NHeV1E`.
 - [x] Re-check the live Superteam listing immediately before submission.
 - [ ] Submit the completed package before the July 19, 2026 23:59 UTC deadline.
 

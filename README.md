@@ -80,7 +80,7 @@ npm run validate
 
 ## Demo video
 
-The accepted English judging demo is documented in `docs/DEMO_VIDEO_PACKAGE.md`. It is 4:50, uses the approved final product build, and is published as an unlisted YouTube video for judges.
+The accepted English judging demo is documented in `docs/DEMO_VIDEO_PACKAGE.md`. YouTube displays it as 4:51, it uses the approved final product build, and it is published as an unlisted video for judges.
 
 After that approval only, refresh the final E2E screenshots and run:
 
@@ -97,7 +97,7 @@ demo-assets/world-cup-live-pulse-demo-b-narrated.mp4
 The public no-login video page is served from:
 
 ```text
-https://youtu.be/cBFamfSz28A
+https://youtu.be/tjbY4NHeV1E
 ```
 
 ## Deploy

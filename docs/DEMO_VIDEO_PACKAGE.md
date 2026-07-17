@@ -1,6 +1,6 @@
 # Demo Video Package
 
-Updated: 2026-07-14
+Updated: 2026-07-17
 
 ## Recording gate
 
@@ -50,8 +50,8 @@ python scripts\render-demo-video.py --variant B
 
 ## Public playback
 
-After owner approval and final video acceptance, the selected 4:50 candidate was published as an unlisted YouTube video at:
+After owner approval and final video acceptance, the refreshed final candidate was published as an unlisted YouTube video at:
 
-`https://youtu.be/cBFamfSz28A`
+`https://youtu.be/tjbY4NHeV1E`
 
-YouTube completed its copyright check without finding an issue. This is the canonical Demo URL for the Superteam form.
+YouTube displays the final upload as 4:51 and completed its copyright check without finding an issue. This is the canonical Demo URL for the Superteam form.

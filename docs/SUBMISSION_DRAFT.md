@@ -16,7 +16,7 @@ A fan-first World Cup dashboard that turns match events, score changes, market m
 
 - Deployed app: https://yuzhenjiang134.github.io/world-cup-live-pulse/
 - GitHub repo: https://github.com/yuzhenjiang134/world-cup-live-pulse
-- Demo video: https://youtu.be/cBFamfSz28A
+- Demo video: https://youtu.be/tjbY4NHeV1E
 
 ## What it does
 
