@@ -818,7 +818,7 @@ function buildTxlineSchedule(fixtures: TxlineFixture[], selectedMatch: MatchData
         home: participant1IsHome ? participant1 : participant2,
         away: participant1IsHome ? participant2 : participant1,
         kickoffIso,
-        stage: fixture.Competition ?? seed?.stage ?? "TxLINE World Cup fixture",
+        stage: seed?.stage ?? fixture.Competition ?? "TxLINE World Cup fixture",
         status: "scheduled" as const,
         dataStatus: "Seed" as const,
         sourceLabel: "TxLINE fixture feed",

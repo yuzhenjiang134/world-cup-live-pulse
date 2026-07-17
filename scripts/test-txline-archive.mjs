@@ -5,11 +5,12 @@ const archive = JSON.parse(fs.readFileSync("src/data/txlineArchiveSnapshot.json"
 const expected = new Map([
   [18188721, [0, 1]], [18187298, [1, 2]], [18192996, [2, 3]], [18198205, [0, 1]],
   [18193785, [1, 4]], [18202701, [3, 2]], [18202783, [0, 0]], [18209181, [2, 0]],
+  [18237038, [0, 2]], [18241006, [1, 2]],
 ]);
 
 assert.equal(archive.schemaVersion, 1);
 assert.equal(archive.competitionId, 72);
-assert.equal(archive.matches.length, 8);
+assert.equal(archive.matches.length, 10);
 assert.doesNotMatch(JSON.stringify(archive), /api[_-]?token|session[_-]?jwt|private[_-]?key|seed phrase/i);
 
 for (const match of archive.matches) {
@@ -23,4 +24,4 @@ for (const match of archive.matches) {
   assert.equal(final.FixtureId, match.fixtureId);
 }
 
-console.log("PASS 8 credential-free TxLINE 2026 archive fixtures and game_finalised scores");
+console.log("PASS 10 credential-free TxLINE 2026 archive fixtures and game_finalised scores");

@@ -14,8 +14,8 @@ const baseEntryUrl = new URL(".", appUrl).toString();
 const redCardReplayUrl = new URL("?mode=replay&replay=txline-archive-18192996&minute=54", baseEntryUrl).toString();
 const initialLanguage = process.env.E2E_LANGUAGE === "en" ? "en" : "zh";
 const expectedCopy = initialLanguage === "en"
-  ? { points: "pts", settled: /Settled/, season: /Demo season/, score: /France 2-0 Morocco/, otherTeamLanguage: /法国|摩洛哥/, stage: /Semi-finals/, versus: "vs", edit: /Edit score/, updated: /Pick updated/, audio: "fra-mar-fulltime-en-call.wav" }
-  : { points: "积分", settled: /已结算/, season: /赛季演示/, score: /法国 2-0 摩洛哥/, otherTeamLanguage: /France|Morocco/, stage: /四强/, versus: "对阵", edit: /修改比分/, updated: /预测已更新/, audio: "fra-mar-fulltime-zh-call.wav" };
+  ? { points: "pts", settled: /Settled/, season: /Demo season/, score: /France 2-0 Morocco/, otherTeamLanguage: /法国|摩洛哥/, stage: /Semi-finals/, thirdPlace: /Third-place match/, scheduled: /Scheduled/, versus: "vs", edit: /Edit score/, updated: /Pick updated/, audio: "fra-mar-fulltime-en-call.wav" }
+  : { points: "积分", settled: /已结算/, season: /赛季演示/, score: /法国 2-0 摩洛哥/, otherTeamLanguage: /France|Morocco/, stage: /四强/, thirdPlace: /季军赛/, scheduled: /未开赛/, versus: "对阵", edit: /修改比分/, updated: /预测已更新/, audio: "fra-mar-fulltime-zh-call.wav" };
 const port = 20_000 + Math.floor(Math.random() * 20_000);
 const profileDir = path.join(os.tmpdir(), `wclp-e2e-${process.pid}-${Date.now()}-${port}`);
 let edgeDiagnostics = "";
@@ -140,7 +140,7 @@ try {
   assert.match(settledText, new RegExp(`1,200\\s+${expectedCopy.points}`));
   assert.match(settledText, expectedCopy.settled);
   assert.equal(await elementCount(cdp, ".challenge-history:not(.demo-history) .challenge-history-list > div"), 1);
-  assert.equal(await elementCount(cdp, ".demo-history .challenge-history-list > div"), 8);
+  assert.equal(await elementCount(cdp, ".demo-history .challenge-history-list > div"), 10);
   assert.match(settledText, expectedCopy.season);
   assert.match(settledText, /FRA 2:0 MAR/);
   assert.match(settledText, /-50/);
@@ -156,7 +156,7 @@ try {
   assert.match(restoredText, new RegExp(`1,200\\s+${expectedCopy.points}`));
   assert.match(restoredText, expectedCopy.settled);
   assert.equal(await elementCount(cdp, ".challenge-history:not(.demo-history) .challenge-history-list > div"), 1);
-  assert.equal(await elementCount(cdp, ".demo-history .challenge-history-list > div"), 8);
+  assert.equal(await elementCount(cdp, ".demo-history .challenge-history-list > div"), 10);
   assert.equal(await elementCount(cdp, ".challenge-block .secondary-button"), 2);
   assert.equal(await elementCount(cdp, ".challenge-room-button"), 1);
   assert.equal(await elementCount(cdp, ".commentary-audio"), 1);
@@ -264,11 +264,12 @@ try {
   assert.equal(await elementCount(cdp, ".fan-room-tabs [role='tab']"), 3);
   await evaluate(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[2].click(); true");
   await waitForCondition(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[2].getAttribute('aria-selected') === 'true'", 5_000);
+  const fanComment = initialLanguage === "zh" ? "这张黄牌之后，球队的防守更稳了。" : "Strong recovery after the card.";
   await evaluate(cdp, `(() => {
     document.querySelector('.fan-reactions button').click();
     const input = document.querySelector('.fan-comment-form input');
     const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-    setter.call(input, 'Strong recovery after the card.');
+    setter.call(input, ${JSON.stringify(fanComment)});
     input.dispatchEvent(new Event('input', { bubbles: true }));
     return true;
   })()`);
@@ -287,13 +288,13 @@ try {
   assert.equal(await blockText(cdp, ".fan-reactions button b"), "0");
   await evaluate(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[2].click(); true");
   await waitForCondition(cdp, "document.querySelectorAll('.fan-room-tabs [role=tab]')[2].getAttribute('aria-selected') === 'true'", 5_000);
-  await waitForCondition(cdp, "document.querySelector('.fan-message-list')?.innerText.includes('Strong recovery after the card.')", 5_000);
-  assert.match(await blockText(cdp, ".fan-message-list"), /Strong recovery after the card\./);
+  await waitForCondition(cdp, `document.querySelector('.fan-message-list')?.innerText.includes(${JSON.stringify(fanComment)})`, 5_000);
+  assert.ok((await blockText(cdp, ".fan-message-list")).includes(fanComment));
   assert.equal(await evaluate(cdp, `(() => {
     const entry = Object.entries(localStorage).find(([key]) => key.startsWith('wclp-fan-stand-'));
     if (!entry) return false;
     const state = JSON.parse(entry[1]);
-    return state.messages.some((message) => message.room === 'away' && message.text === 'Strong recovery after the card.')
+    return state.messages.some((message) => message.room === 'away' && message.text === ${JSON.stringify(fanComment)})
       && state.reactions.away.celebrate === 1
       && state.reactions.home.celebrate === 0
       && Object.values(state.momentReactions).includes('celebrate');
@@ -438,6 +439,7 @@ try {
   await capturePage(cdp, "demo-assets/mobile-final.png");
 
   await cdp.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
+  await waitForCondition(cdp, "document.querySelectorAll('.primary-nav button').length >= 2", 5_000);
   await evaluate(cdp, "document.querySelectorAll('.primary-nav button')[1].click(); true");
   await wait(350);
   const tournamentLayout = await evaluate(cdp, `({
@@ -446,16 +448,22 @@ try {
     archiveCards: document.querySelectorAll('.archive-match-card').length,
     archiveAiRecaps: document.querySelectorAll('.archive-ai-summary').length,
     bracketLanes: document.querySelectorAll('.bracket-lane').length,
+    semiMatches: document.querySelectorAll('.bracket-lane')[3]?.querySelectorAll('button').length ?? 0,
     currentCards: document.querySelectorAll('.current-fixture-grid article').length,
+    currentLabels: [...document.querySelectorAll('.current-fixture-grid .data-chip')].map((item) => item.textContent).join(' '),
     currentBand: Boolean(document.querySelector('.current-fixtures')),
     detail: Boolean(document.querySelector('.team-detail-panel')),
     text: document.querySelector('.tournament-view')?.innerText ?? '',
   })`);
   assert.equal(tournamentLayout.scrollWidth, tournamentLayout.viewport);
-  assert.equal(tournamentLayout.archiveCards, 8);
-  assert.equal(tournamentLayout.archiveAiRecaps, 8);
+  assert.equal(tournamentLayout.archiveCards, 10);
+  assert.equal(tournamentLayout.archiveAiRecaps, 10);
   assert.equal(tournamentLayout.bracketLanes, 6);
+  assert.equal(tournamentLayout.semiMatches, 2);
   assert.equal(tournamentLayout.currentBand, tournamentLayout.currentCards > 0);
+  assert.match(tournamentLayout.currentLabels, expectedCopy.scheduled);
+  assert.doesNotMatch(tournamentLayout.currentLabels, /Delayed|延迟/);
+  assert.match(tournamentLayout.text, expectedCopy.thirdPlace);
   assert.equal(tournamentLayout.detail, true);
   assert.match(tournamentLayout.text, /FRA|法国|France/);
   assert.match(tournamentLayout.text, /2-0/);
@@ -465,7 +473,7 @@ try {
   assert.equal(await elementCount(cdp, ".spoiler-toggle input"), 1);
   await evaluate(cdp, "document.querySelector('.spoiler-toggle input').click(); true");
   await wait(120);
-  assert.equal(await elementCount(cdp, ".archive-match-card.spoilered"), 8);
+  assert.equal(await elementCount(cdp, ".archive-match-card.spoilered"), 10);
   assert.equal(await elementCount(cdp, ".archive-match-card p"), 0);
   assert.equal(await elementCount(cdp, ".bracket-section"), 0);
   assert.equal(await elementCount(cdp, ".team-detail-panel"), 0);
@@ -481,7 +489,7 @@ try {
   await wait(120);
   const tournamentMobile = await evaluate(cdp, `({ viewport: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth, cards: document.querySelectorAll('.archive-match-card').length })`);
   assert.equal(tournamentMobile.scrollWidth, tournamentMobile.viewport);
-  assert.equal(tournamentMobile.cards, 8);
+  assert.equal(tournamentMobile.cards, 10);
 
   await cdp.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
   await evaluate(cdp, "document.querySelectorAll('.primary-nav button')[2].click(); true");

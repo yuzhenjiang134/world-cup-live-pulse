@@ -16,11 +16,11 @@ This project is not a betting product. It does not place bets, recommend trades,
 - Following a match enables persisted, configurable goal/card/full-time browser alerts while the page is open.
 - Live mode uses the official TxLINE fixture, score, odds, and final-score validation endpoints through `src/lib/txlineAdapter.ts`.
 - TxLINE fixture scope is locked to World Cup `CompetitionId 72` in both request and response validation; Friendlies `CompetitionId 430` cannot enter the World Cup UI.
-- Eight credential-free 2026 TxLINE historical sequences keep the complete workflow judgeable when no current match is active. Legacy editorial fixtures are excluded from the current product replay library.
+- Ten credential-free 2026 TxLINE historical sequences keep the complete workflow judgeable when no current match is active. Legacy editorial fixtures are excluded from the current product replay library.
 - Schedule cards show stage, localized kickoff, source status, score, and verified event/goal/extra-time summaries. The source-first Teams view shows current fixture count and opponents before an optional collapsed historical atlas.
 - Event-driven AI commentary turns verified goals, cards, score reviews, half-time, full-time, and momentum changes into a concise multilingual match brief. Browser speech playback makes the same grounded brief accessible without introducing an unverified external narrative.
 - Verified key-event shortcuts reduce the path to goals, cards, reviews, half-time, and full-time. Spoiler-free replay masks the outcome and starts the selected match at minute 1.
-- A clearly labeled season demonstration shows how eight verified 2026 replay results would settle score picks over time. It is separate from the user's real local challenge history and never changes the user's points.
+- A clearly labeled season demonstration shows how ten verified 2026 replay results would settle score picks over time. It is separate from the user's real local challenge history and never changes the user's points.
 - Eight complete UI languages are validated: English, Chinese, Spanish, Portuguese, French, German, Japanese, and Arabic.
 - Official FIFA+ archive/highlight links are the legal watch path. No unofficial stream is scraped or embedded.
 - Automated gates cover TypeScript, fixture truth, i18n parity, product/data audit, World Cup scope, challenge rules, security, build, and real-browser mobile behavior.

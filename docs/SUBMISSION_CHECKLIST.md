@@ -38,7 +38,7 @@ This is the checklist for the current matchday shell. Older Source Board / Judge
 - [x] Unknown source team codes are shown as pending confirmation instead of being invented as real teams.
 - [x] TxLINE fixture requests default to World Cup `CompetitionId 72`, and a second adapter-side filter rejects Friendlies `CompetitionId 430` before selection, schedule rendering, or team extraction.
 - [x] Legacy 2022 demos are absent from the primary fan path; the active replay library uses verified 2026 TxLINE sequences.
-- [x] The primary replay library uses eight authenticated, sanitized 2026 TxLINE historical sequences with `game_finalised` results.
+- [x] The primary replay library uses ten authenticated, sanitized 2026 TxLINE historical sequences with `game_finalised` results.
 - [x] `npm run audit` checks replay dates, event scores, market values, team identities, video domains, feature markers, and data boundaries.
 - [x] Repeated `npm run txline:probe` checks on 2026-07-11 kept 3 World Cup fixtures and 2 score records for fixture `18213979` stable. Official odds varied between 0 and 27 records across checks; the final local pair returned 3 then 5. Empty odds are shown honestly and never backfilled with invented values.
 - [x] The latest 2026-07-12 probe pair returned 3 World Cup fixtures; fixture `18222446` returned 42 score records and 0 official-odds records both times. Production follows the current source fixture and hides numerical odds while the official payload is empty.

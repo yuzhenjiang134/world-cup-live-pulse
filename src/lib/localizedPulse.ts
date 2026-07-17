@@ -244,19 +244,20 @@ function localizedScheduledStage(language: PulseLanguage, stage?: string) {
     : normalized.includes("round of 16") ? "round16"
       : normalized.includes("quarter") ? "quarter"
         : normalized.includes("semi") ? "semi"
-          : /\bfinals?\b/.test(normalized) ? "final"
-            : normalized.includes("group") ? "group"
-              : undefined;
+          : normalized.includes("bronze") || normalized.includes("third place") ? "bronze"
+            : /\bfinals?\b/.test(normalized) ? "final"
+              : normalized.includes("group") ? "group"
+                : undefined;
   if (!key) return undefined;
   const labels = {
-    en: { round32: "Round of 32", round16: "Round of 16", quarter: "Quarter-final", semi: "Semi-final", final: "Final", group: "Group stage" },
-    zh: { round32: "32 强", round16: "16 强", quarter: "四分之一决赛", semi: "半决赛", final: "决赛", group: "小组赛" },
-    es: { round32: "Dieciseisavos", round16: "Octavos", quarter: "Cuartos", semi: "Semifinal", final: "Final", group: "Fase de grupos" },
-    pt: { round32: "Fase de 32", round16: "Oitavas", quarter: "Quartas", semi: "Semifinal", final: "Final", group: "Fase de grupos" },
-    fr: { round32: "Seizièmes", round16: "Huitièmes", quarter: "Quart de finale", semi: "Demi-finale", final: "Finale", group: "Phase de groupes" },
-    de: { round32: "Runde der 32", round16: "Achtelfinale", quarter: "Viertelfinale", semi: "Halbfinale", final: "Finale", group: "Gruppenphase" },
-    ja: { round32: "ラウンド32", round16: "ベスト16", quarter: "準々決勝", semi: "準決勝", final: "決勝", group: "グループステージ" },
-    ar: { round32: "دور 32", round16: "دور 16", quarter: "ربع النهائي", semi: "نصف النهائي", final: "النهائي", group: "دور المجموعات" },
+    en: { round32: "Round of 32", round16: "Round of 16", quarter: "Quarter-final", semi: "Semi-final", bronze: "Third-place match", final: "Final", group: "Group stage" },
+    zh: { round32: "32 强", round16: "16 强", quarter: "四分之一决赛", semi: "半决赛", bronze: "季军赛", final: "决赛", group: "小组赛" },
+    es: { round32: "Dieciseisavos", round16: "Octavos", quarter: "Cuartos", semi: "Semifinal", bronze: "Partido por el tercer puesto", final: "Final", group: "Fase de grupos" },
+    pt: { round32: "Fase de 32", round16: "Oitavas", quarter: "Quartas", semi: "Semifinal", bronze: "Disputa do terceiro lugar", final: "Final", group: "Fase de grupos" },
+    fr: { round32: "Seizièmes", round16: "Huitièmes", quarter: "Quart de finale", semi: "Demi-finale", bronze: "Match pour la troisième place", final: "Finale", group: "Phase de groupes" },
+    de: { round32: "Runde der 32", round16: "Achtelfinale", quarter: "Viertelfinale", semi: "Halbfinale", bronze: "Spiel um Platz drei", final: "Finale", group: "Gruppenphase" },
+    ja: { round32: "ラウンド32", round16: "ベスト16", quarter: "準々決勝", semi: "準決勝", bronze: "3位決定戦", final: "決勝", group: "グループステージ" },
+    ar: { round32: "دور 32", round16: "دور 16", quarter: "ربع النهائي", semi: "نصف النهائي", bronze: "مباراة المركز الثالث", final: "النهائي", group: "دور المجموعات" },
   } as const;
   return labels[language][key];
 }
@@ -264,21 +265,22 @@ function localizedScheduledStage(language: PulseLanguage, stage?: string) {
 function localizedStageImportance(language: PulseLanguage, stage?: string) {
   if (!stage) return undefined;
   const normalized = stage.toLowerCase().replace(/[-_]/g, " ");
-  const key = /\bfinals?\b/.test(normalized) && !normalized.includes("semi") && !normalized.includes("quarter") ? "title"
-    : normalized.includes("semi") ? "final"
-      : normalized.includes("quarter") ? "semi"
-        : normalized.includes("round of 16") || normalized.includes("round of 32") ? "next"
-          : undefined;
+  const key = normalized.includes("bronze") || normalized.includes("third place") ? "bronze"
+    : /\bfinals?\b/.test(normalized) && !normalized.includes("semi") && !normalized.includes("quarter") ? "title"
+      : normalized.includes("semi") ? "final"
+        : normalized.includes("quarter") ? "semi"
+          : normalized.includes("round of 16") || normalized.includes("round of 32") ? "next"
+            : undefined;
   if (!key) return undefined;
   const lines = {
-    en: { title: "The World Cup title is at stake.", final: "A place in the final is at stake.", semi: "A place in the semi-final is at stake.", next: "Progress to the next knockout round is at stake." },
-    zh: { title: "世界杯冠军将在这里决出。", final: "胜者将晋级决赛。", semi: "胜者将晋级半决赛。", next: "胜者将进入下一轮淘汰赛。" },
-    es: { title: "Está en juego el título mundial.", final: "Está en juego un lugar en la final.", semi: "Está en juego un lugar en semifinales.", next: "Está en juego el pase a la siguiente ronda." },
-    pt: { title: "O título mundial está em jogo.", final: "Uma vaga na final está em jogo.", semi: "Uma vaga na semifinal está em jogo.", next: "A classificação à próxima fase está em jogo." },
-    fr: { title: "Le titre mondial est en jeu.", final: "Une place en finale est en jeu.", semi: "Une place en demi-finale est en jeu.", next: "La qualification pour le tour suivant est en jeu." },
-    de: { title: "Es geht um den WM-Titel.", final: "Ein Platz im Finale steht auf dem Spiel.", semi: "Ein Platz im Halbfinale steht auf dem Spiel.", next: "Es geht um den Einzug in die nächste Runde." },
-    ja: { title: "ワールドカップ優勝が懸かります。", final: "決勝進出が懸かります。", semi: "準決勝進出が懸かります。", next: "次の決勝トーナメント進出が懸かります。" },
-    ar: { title: "لقب كأس العالم على المحك.", final: "بطاقة التأهل إلى النهائي على المحك.", semi: "بطاقة التأهل إلى نصف النهائي على المحك.", next: "التأهل إلى الدور الإقصائي التالي على المحك." },
+    en: { bronze: "Third place is at stake.", title: "The World Cup title is at stake.", final: "A place in the final is at stake.", semi: "A place in the semi-final is at stake.", next: "Progress to the next knockout round is at stake." },
+    zh: { bronze: "两队将争夺世界杯季军。", title: "世界杯冠军将在这里决出。", final: "胜者将晋级决赛。", semi: "胜者将晋级半决赛。", next: "胜者将进入下一轮淘汰赛。" },
+    es: { bronze: "Está en juego el tercer puesto.", title: "Está en juego el título mundial.", final: "Está en juego un lugar en la final.", semi: "Está en juego un lugar en semifinales.", next: "Está en juego el pase a la siguiente ronda." },
+    pt: { bronze: "O terceiro lugar está em jogo.", title: "O título mundial está em jogo.", final: "Uma vaga na final está em jogo.", semi: "Uma vaga na semifinal está em jogo.", next: "A classificação à próxima fase está em jogo." },
+    fr: { bronze: "La troisième place est en jeu.", title: "Le titre mondial est en jeu.", final: "Une place en finale est en jeu.", semi: "Une place en demi-finale est en jeu.", next: "La qualification pour le tour suivant est en jeu." },
+    de: { bronze: "Platz drei steht auf dem Spiel.", title: "Es geht um den WM-Titel.", final: "Ein Platz im Finale steht auf dem Spiel.", semi: "Ein Platz im Halbfinale steht auf dem Spiel.", next: "Es geht um den Einzug in die nächste Runde." },
+    ja: { bronze: "3位を懸けた一戦です。", title: "ワールドカップ優勝が懸かります。", final: "決勝進出が懸かります。", semi: "準決勝進出が懸かります。", next: "次の決勝トーナメント進出が懸かります。" },
+    ar: { bronze: "المركز الثالث على المحك.", title: "لقب كأس العالم على المحك.", final: "بطاقة التأهل إلى النهائي على المحك.", semi: "بطاقة التأهل إلى نصف النهائي على المحك.", next: "التأهل إلى الدور الإقصائي التالي على المحك." },
   } as const;
   return lines[language][key];
 }

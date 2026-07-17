@@ -3202,6 +3202,17 @@ details summary {
   font-size: 20px;
 }
 
+.current-fixture-grid .current-stage {
+  display: block;
+  margin-top: 14px;
+  color: var(--md-teal);
+  font-weight: 800;
+}
+
+.current-fixture-grid .current-stage + strong {
+  margin-top: 4px;
+}
+
 .current-fixture-grid article > strong b {
   color: var(--md-muted);
   font-size: 12px;

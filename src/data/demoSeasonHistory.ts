@@ -10,6 +10,8 @@ const demoPicks: Record<string, [number, number]> = {
   "txline-archive-18202701": [2, 1],
   "txline-archive-18202783": [0, 0],
   "txline-archive-18209181": [2, 0],
+  "txline-archive-18237038": [1, 2],
+  "txline-archive-18241006": [1, 2],
 };
 
 export const demoSeasonHistory = txlineArchiveMatches.map((match) => {

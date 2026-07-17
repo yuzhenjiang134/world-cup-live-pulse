@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "source": "TxLINE authenticated historical score API",
   "competitionId": 72,
-  "capturedAtIso": "2026-07-15T06:30:10.317Z",
+  "capturedAtIso": "2026-07-17T03:38:39.842Z",
   "note": "Sanitized judgeable archive. No API token, JWT, wallet, or private key is stored.",
   "matches": [
     {
@@ -8894,6 +8894,2202 @@
             "Participant2": {
               "Total": {
                 "YellowCards": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "fixtureId": 18237038,
+      "stage": "Semi-final",
+      "homeCode": "FRA",
+      "homeName": "France",
+      "awayCode": "ESP",
+      "awayName": "Spain",
+      "sourceEndpoint": "/api/scores/historical/18237038",
+      "records": [
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "kickoff",
+          "Id": 27,
+          "Ts": 1784055609068,
+          "Seq": 18,
+          "Clock": {
+            "Seconds": 0
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "kickoff",
+          "Id": 27,
+          "Ts": 1784055611895,
+          "Seq": 20,
+          "Clock": {
+            "Seconds": 0
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "yellow_card",
+          "Id": 113,
+          "Ts": 1784056127958,
+          "Seq": 109,
+          "Clock": {
+            "Seconds": 518
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {}
+            }
+          },
+          "Participant": 1
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "yellow_card",
+          "Id": 113,
+          "Ts": 1784056129395,
+          "Seq": 110,
+          "Clock": {
+            "Seconds": 518
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {}
+            }
+          },
+          "Participant": 1
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "yellow_card",
+          "Id": 113,
+          "Ts": 1784056134108,
+          "Seq": 111,
+          "Clock": {
+            "Seconds": 518
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {}
+            }
+          },
+          "Participant": 1,
+          "Data": {
+            "PlayerId": 182068
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "kickoff",
+          "Id": 215,
+          "Ts": 1784056997943,
+          "Seq": 224,
+          "Clock": {
+            "Seconds": 1388
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 234,
+          "Ts": 1784057381717,
+          "Seq": 250,
+          "Clock": {
+            "Seconds": 1772
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 234,
+          "Ts": 1784057386932,
+          "Seq": 251,
+          "Clock": {
+            "Seconds": 1777
+          },
+          "Data": {
+            "PlayerInId": 1044257,
+            "PlayerOutId": 1023287
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "yellow_card",
+          "Id": 240,
+          "Ts": 1784057439701,
+          "Seq": 259,
+          "Clock": {
+            "Seconds": 1830
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "yellow_card",
+          "Id": 240,
+          "Ts": 1784057441047,
+          "Seq": 260,
+          "Clock": {
+            "Seconds": 1830
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "yellow_card",
+          "Id": 240,
+          "Ts": 1784057444286,
+          "Seq": 261,
+          "Clock": {
+            "Seconds": 1830
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 2,
+          "Data": {
+            "PlayerId": 409307
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "action_discarded",
+          "Id": 360,
+          "Ts": 1784058256078,
+          "Seq": 405,
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            }
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "additional_time",
+          "Id": 375,
+          "Ts": 1784058318464,
+          "Seq": 418,
+          "Clock": {
+            "Seconds": 2709
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "additional_time",
+          "Id": 375,
+          "Ts": 1784058320292,
+          "Seq": 419,
+          "Clock": {
+            "Seconds": 2709
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "action_discarded",
+          "Id": 423,
+          "Ts": 1784058685343,
+          "Seq": 474,
+          "Clock": {
+            "Seconds": 3063
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            }
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "halftime_finalised",
+          "Id": 427,
+          "Ts": 1784058876702,
+          "Seq": 478,
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            }
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "kickoff",
+          "Id": 430,
+          "Ts": 1784059621320,
+          "Seq": 481,
+          "Clock": {
+            "Seconds": 2700
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "kickoff",
+          "Id": 430,
+          "Ts": 1784059625081,
+          "Seq": 483,
+          "Clock": {
+            "Seconds": 2700
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 443,
+          "Ts": 1784059698394,
+          "Seq": 497,
+          "Clock": {
+            "Seconds": 2778
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 443,
+          "Ts": 1784059711164,
+          "Seq": 498,
+          "Clock": {
+            "Seconds": 2790
+          },
+          "Data": {
+            "PlayerInId": 1088303,
+            "PlayerOutId": 182068
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 537,
+          "Ts": 1784060284825,
+          "Seq": 601,
+          "Clock": {
+            "Seconds": 3364
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 537,
+          "Ts": 1784060291985,
+          "Seq": 602,
+          "Clock": {
+            "Seconds": 3371
+          },
+          "Data": {
+            "PlayerInId": 10094001,
+            "PlayerOutId": 10096031
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "goal",
+          "Id": 551,
+          "Ts": 1784060376027,
+          "Seq": 617,
+          "Clock": {
+            "Seconds": 3455
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "goal",
+          "Id": 551,
+          "Ts": 1784060478302,
+          "Seq": 618,
+          "Clock": {
+            "Seconds": 3455
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 2,
+          "Data": {
+            "GoalType": "Shot"
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "goal",
+          "Id": 551,
+          "Ts": 1784060481148,
+          "Seq": 620,
+          "Clock": {
+            "Seconds": 3455
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 2,
+          "Data": {
+            "GoalType": "Shot",
+            "PlayerId": 907005
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "kickoff",
+          "Id": 554,
+          "Ts": 1784060481899,
+          "Seq": 622,
+          "Clock": {
+            "Seconds": 3561
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "goal",
+          "Id": 570,
+          "Ts": 1784060549958,
+          "Seq": 638,
+          "Clock": {
+            "Seconds": 3629
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 3,
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "var",
+          "Id": 571,
+          "Ts": 1784060561485,
+          "Seq": 639,
+          "Clock": {
+            "Seconds": 3641
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "var",
+          "Id": 571,
+          "Ts": 1784060562861,
+          "Seq": 640,
+          "Clock": {
+            "Seconds": 3641
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "var_end",
+          "Id": 571,
+          "Ts": 1784060573720,
+          "Seq": 641,
+          "Clock": {
+            "Seconds": 3653
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 3,
+                "YellowCards": 1
+              }
+            }
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "action_discarded",
+          "Id": 570,
+          "Ts": 1784060575609,
+          "Seq": 642,
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 1
+              }
+            }
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 656,
+          "Ts": 1784061213334,
+          "Seq": 739,
+          "Clock": {
+            "Seconds": 4292
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 656,
+          "Ts": 1784061229509,
+          "Seq": 740,
+          "Clock": {
+            "Seconds": 4309
+          },
+          "Data": {
+            "PlayerInId": 517705,
+            "PlayerOutId": 50556
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 657,
+          "Ts": 1784061229572,
+          "Seq": 741,
+          "Clock": {
+            "Seconds": 4309
+          },
+          "Data": {
+            "PlayerInId": 1206139,
+            "PlayerOutId": 1101562
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 672,
+          "Ts": 1784061331173,
+          "Seq": 758,
+          "Clock": {
+            "Seconds": 4410
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 672,
+          "Ts": 1784061338816,
+          "Seq": 759,
+          "Clock": {
+            "Seconds": 4418
+          },
+          "Data": {
+            "PlayerInId": 889209,
+            "PlayerOutId": 463984
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 697,
+          "Ts": 1784061529233,
+          "Seq": 787,
+          "Clock": {
+            "Seconds": 4608
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 697,
+          "Ts": 1784061545457,
+          "Seq": 788,
+          "Clock": {
+            "Seconds": 4625
+          },
+          "Data": {
+            "PlayerInId": 525288,
+            "PlayerOutId": 533573
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 698,
+          "Ts": 1784061545530,
+          "Seq": 789,
+          "Clock": {
+            "Seconds": 4625
+          },
+          "Data": {
+            "PlayerInId": 224293,
+            "PlayerOutId": 464544
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 761,
+          "Ts": 1784061890823,
+          "Seq": 863,
+          "Clock": {
+            "Seconds": 4970
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 761,
+          "Ts": 1784061899624,
+          "Seq": 864,
+          "Clock": {
+            "Seconds": 4979
+          },
+          "Data": {
+            "PlayerInId": 251153,
+            "PlayerOutId": 907005
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "substitution",
+          "Id": 762,
+          "Ts": 1784061899688,
+          "Seq": 865,
+          "Clock": {
+            "Seconds": 4979
+          },
+          "Data": {
+            "PlayerInId": 10035611,
+            "PlayerOutId": 10008043
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "action_discarded",
+          "Id": 759,
+          "Ts": 1784061929766,
+          "Seq": 866,
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 1
+              }
+            }
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "yellow_card",
+          "Id": 787,
+          "Ts": 1784062067854,
+          "Seq": 895,
+          "Clock": {
+            "Seconds": 5147
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 2
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 1
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "yellow_card",
+          "Id": 787,
+          "Ts": 1784062069191,
+          "Seq": 896,
+          "Clock": {
+            "Seconds": 5147
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 2
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 1
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "yellow_card",
+          "Id": 787,
+          "Ts": 1784062070495,
+          "Seq": 897,
+          "Clock": {
+            "Seconds": 5147
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 2
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 1,
+          "Data": {
+            "PlayerId": 453928
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "additional_time",
+          "Id": 822,
+          "Ts": 1784062337419,
+          "Seq": 936,
+          "Clock": {
+            "Seconds": 5417
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "additional_time",
+          "Id": 822,
+          "Ts": 1784062340261,
+          "Seq": 937,
+          "Clock": {
+            "Seconds": 5417
+          }
+        },
+        {
+          "FixtureId": 18237038,
+          "StartTime": 1784055600000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1999,
+          "Participant2Id": 3021,
+          "Action": "game_finalised",
+          "Id": 905,
+          "Ts": 1784063054751,
+          "Seq": 1026,
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 2
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "fixtureId": 18241006,
+      "stage": "Semi-final",
+      "homeCode": "ENG",
+      "homeName": "England",
+      "awayCode": "ARG",
+      "awayName": "Argentina",
+      "sourceEndpoint": "/api/scores/historical/18241006",
+      "records": [
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "kickoff",
+          "Id": 23,
+          "Ts": 1784142020270,
+          "Seq": 15,
+          "Clock": {
+            "Seconds": 0
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "kickoff",
+          "Id": 23,
+          "Ts": 1784142023104,
+          "Seq": 17,
+          "Clock": {
+            "Seconds": 0
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "action_discarded",
+          "Id": 107,
+          "Ts": 1784142751448,
+          "Seq": 114,
+          "Clock": {
+            "Seconds": 662
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {}
+            },
+            "Participant2": {
+              "Total": {}
+            }
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "action_discarded",
+          "Id": 153,
+          "Ts": 1784143057479,
+          "Seq": 164,
+          "Clock": {
+            "Seconds": 1019
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {}
+            },
+            "Participant2": {
+              "Total": {}
+            }
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "action_discarded",
+          "Id": 161,
+          "Ts": 1784143105912,
+          "Seq": 173,
+          "Clock": {
+            "Seconds": 1058
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {}
+            },
+            "Participant2": {
+              "Total": {}
+            }
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 273,
+          "Ts": 1784144194922,
+          "Seq": 303,
+          "Clock": {
+            "Seconds": 2174
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {}
+            }
+          },
+          "Participant": 1
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 273,
+          "Ts": 1784144233366,
+          "Seq": 304,
+          "Clock": {
+            "Seconds": 2174
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {}
+            }
+          },
+          "Participant": 1
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 273,
+          "Ts": 1784144235892,
+          "Seq": 305,
+          "Clock": {
+            "Seconds": 2174
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {}
+            }
+          },
+          "Participant": 1,
+          "Data": {
+            "PlayerId": 10015384
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 306,
+          "Ts": 1784144493887,
+          "Seq": 342,
+          "Clock": {
+            "Seconds": 2473
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 306,
+          "Ts": 1784144507247,
+          "Seq": 343,
+          "Clock": {
+            "Seconds": 2473
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 306,
+          "Ts": 1784144510576,
+          "Seq": 344,
+          "Clock": {
+            "Seconds": 2473
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "YellowCards": 1
+              }
+            }
+          },
+          "Participant": 2,
+          "Data": {
+            "PlayerId": 1103557
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "additional_time",
+          "Id": 342,
+          "Ts": 1784144724306,
+          "Seq": 385,
+          "Clock": {
+            "Seconds": 2703
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "additional_time",
+          "Id": 342,
+          "Ts": 1784144726458,
+          "Seq": 386,
+          "Clock": {
+            "Seconds": 2703
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "action_discarded",
+          "Id": 373,
+          "Ts": 1784144919031,
+          "Seq": 421,
+          "Clock": {
+            "Seconds": 2888
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "YellowCards": 1
+              }
+            }
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "halftime_finalised",
+          "Id": 377,
+          "Ts": 1784145044821,
+          "Seq": 425,
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "YellowCards": 1
+              }
+            }
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "kickoff",
+          "Id": 380,
+          "Ts": 1784145933513,
+          "Seq": 428,
+          "Clock": {
+            "Seconds": 2700
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "kickoff",
+          "Id": 380,
+          "Ts": 1784145937242,
+          "Seq": 430,
+          "Clock": {
+            "Seconds": 2700
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 448,
+          "Ts": 1784146314598,
+          "Seq": 501,
+          "Clock": {
+            "Seconds": 3046
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 448,
+          "Ts": 1784146328277,
+          "Seq": 502,
+          "Clock": {
+            "Seconds": 3046
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 448,
+          "Ts": 1784146337554,
+          "Seq": 503,
+          "Clock": {
+            "Seconds": 3046
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 2,
+          "Data": {
+            "PlayerId": 1055356
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "goal",
+          "Id": 482,
+          "Ts": 1784146532764,
+          "Seq": 539,
+          "Clock": {
+            "Seconds": 3264
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 1
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "goal",
+          "Id": 482,
+          "Ts": 1784146626116,
+          "Seq": 540,
+          "Clock": {
+            "Seconds": 3264
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 1,
+          "Data": {
+            "GoalType": "Shot"
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "goal",
+          "Id": 482,
+          "Ts": 1784146628266,
+          "Seq": 542,
+          "Clock": {
+            "Seconds": 3264
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 1,
+          "Data": {
+            "GoalType": "Shot",
+            "PlayerId": 911404
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "kickoff",
+          "Id": 485,
+          "Ts": 1784146629362,
+          "Seq": 544,
+          "Clock": {
+            "Seconds": 3361
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 564,
+          "Ts": 1784147095328,
+          "Seq": 629,
+          "Clock": {
+            "Seconds": 3827
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 564,
+          "Ts": 1784147103296,
+          "Seq": 630,
+          "Clock": {
+            "Seconds": 3835
+          },
+          "Data": {
+            "PlayerInId": 1027429,
+            "PlayerOutId": 223309
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 608,
+          "Ts": 1784147554628,
+          "Seq": 681,
+          "Clock": {
+            "Seconds": 4286
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 608,
+          "Ts": 1784147562958,
+          "Seq": 682,
+          "Clock": {
+            "Seconds": 4295
+          },
+          "Data": {
+            "PlayerInId": 607553,
+            "PlayerOutId": 911404
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 609,
+          "Ts": 1784147572085,
+          "Seq": 683,
+          "Clock": {
+            "Seconds": 4304
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 609,
+          "Ts": 1784147602550,
+          "Seq": 684,
+          "Clock": {
+            "Seconds": 4334
+          },
+          "Data": {
+            "PlayerInId": 10093937,
+            "PlayerOutId": 1103557
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 610,
+          "Ts": 1784147602617,
+          "Seq": 685,
+          "Clock": {
+            "Seconds": 4334
+          },
+          "Data": {
+            "PlayerInId": 46945,
+            "PlayerOutId": 10093427
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 611,
+          "Ts": 1784147605485,
+          "Seq": 686,
+          "Clock": {
+            "Seconds": 4337
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 611,
+          "Ts": 1784147606119,
+          "Seq": 687,
+          "Clock": {
+            "Seconds": 4338
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 698,
+          "Ts": 1784148089036,
+          "Seq": 788,
+          "Clock": {
+            "Seconds": 4821
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 698,
+          "Ts": 1784148103500,
+          "Seq": 789,
+          "Clock": {
+            "Seconds": 4835
+          },
+          "Data": {
+            "PlayerInId": 948167,
+            "PlayerOutId": 10092897
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 700,
+          "Ts": 1784148167878,
+          "Seq": 794,
+          "Clock": {
+            "Seconds": 4900
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 700,
+          "Ts": 1784148179201,
+          "Seq": 796,
+          "Clock": {
+            "Seconds": 4911
+          },
+          "Data": {
+            "PlayerInId": 10194364,
+            "PlayerOutId": 720122
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 702,
+          "Ts": 1784148179284,
+          "Seq": 797,
+          "Clock": {
+            "Seconds": 4911
+          },
+          "Data": {
+            "PlayerInId": 186778,
+            "PlayerOutId": 787880
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "goal",
+          "Id": 729,
+          "Ts": 1784148363119,
+          "Seq": 828,
+          "Clock": {
+            "Seconds": 5095
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "goal",
+          "Id": 729,
+          "Ts": 1784148471906,
+          "Seq": 831,
+          "Clock": {
+            "Seconds": 5095
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 2,
+          "Data": {
+            "GoalType": "Shot"
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "goal",
+          "Id": 729,
+          "Ts": 1784148474161,
+          "Seq": 832,
+          "Clock": {
+            "Seconds": 5095
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 2,
+          "Data": {
+            "GoalType": "Shot",
+            "PlayerId": 10035609
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "kickoff",
+          "Id": 733,
+          "Ts": 1784148475793,
+          "Seq": 834,
+          "Clock": {
+            "Seconds": 5207
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "additional_time",
+          "Id": 747,
+          "Ts": 1784148669835,
+          "Seq": 851,
+          "Clock": {
+            "Seconds": 5401
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "additional_time",
+          "Id": 747,
+          "Ts": 1784148673813,
+          "Seq": 852,
+          "Clock": {
+            "Seconds": 5401
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "goal",
+          "Id": 764,
+          "Ts": 1784148756800,
+          "Seq": 870,
+          "Clock": {
+            "Seconds": 5488
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "goal",
+          "Id": 764,
+          "Ts": 1784148871889,
+          "Seq": 871,
+          "Clock": {
+            "Seconds": 5488
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 2,
+          "Data": {
+            "GoalType": "Head"
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "goal",
+          "Id": 764,
+          "Ts": 1784148874142,
+          "Seq": 872,
+          "Clock": {
+            "Seconds": 5488
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 2
+              }
+            }
+          },
+          "Participant": 2,
+          "Data": {
+            "GoalType": "Head",
+            "PlayerId": 948167
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 765,
+          "Ts": 1784148885589,
+          "Seq": 873,
+          "Clock": {
+            "Seconds": 5617
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 3
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 765,
+          "Ts": 1784148891536,
+          "Seq": 874,
+          "Clock": {
+            "Seconds": 5617
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 3
+              }
+            }
+          },
+          "Participant": 2
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "yellow_card",
+          "Id": 765,
+          "Ts": 1784148893959,
+          "Seq": 875,
+          "Clock": {
+            "Seconds": 5617
+          },
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 3
+              }
+            }
+          },
+          "Participant": 2,
+          "Data": {
+            "PlayerId": 10093937
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "kickoff",
+          "Id": 767,
+          "Ts": 1784148900480,
+          "Seq": 877,
+          "Clock": {
+            "Seconds": 5632
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 779,
+          "Ts": 1784148976704,
+          "Seq": 892,
+          "Clock": {
+            "Seconds": 5708
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 779,
+          "Ts": 1784148987234,
+          "Seq": 893,
+          "Clock": {
+            "Seconds": 5719
+          },
+          "Data": {
+            "PlayerInId": 591416,
+            "PlayerOutId": 162605
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "substitution",
+          "Id": 780,
+          "Ts": 1784148987314,
+          "Seq": 894,
+          "Clock": {
+            "Seconds": 5719
+          },
+          "Data": {
+            "PlayerInId": 189771,
+            "PlayerOutId": 1030722
+          }
+        },
+        {
+          "FixtureId": 18241006,
+          "StartTime": 1784142000000,
+          "Participant1IsHome": true,
+          "Participant1Id": 1888,
+          "Participant2Id": 1489,
+          "Action": "game_finalised",
+          "Id": 843,
+          "Ts": 1784150064772,
+          "Seq": 962,
+          "Score": {
+            "Participant1": {
+              "Total": {
+                "Goals": 1,
+                "YellowCards": 1
+              }
+            },
+            "Participant2": {
+              "Total": {
+                "Goals": 2,
+                "YellowCards": 3
               }
             }
           }

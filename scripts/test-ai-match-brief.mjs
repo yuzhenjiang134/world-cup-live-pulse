@@ -52,6 +52,19 @@ const minimalScheduled = module.localizeScheduledBrief("en", {
 assert.doesNotMatch(minimalScheduled, /undefined|Invalid|�/);
 assert.match(minimalScheduled, /The match has not started yet/);
 
+const bronzeMatch = {
+  home: { code: "FRA", name: "France" },
+  away: { code: "ENG", name: "England" },
+  status: "scheduled",
+  stage: "Bronze final",
+  kickoffIso: "2026-07-18T21:00:00Z",
+};
+assert.match(module.localizeScheduledBrief("en", bronzeMatch, "call"), /Third-place match/);
+assert.match(module.localizeScheduledBrief("en", bronzeMatch, "why"), /Third place is at stake/);
+assert.match(module.localizeScheduledBrief("zh", bronzeMatch, "call"), /季军赛/);
+assert.match(module.localizeScheduledBrief("zh", bronzeMatch, "why"), /争夺世界杯季军/);
+assert.doesNotMatch(module.localizeScheduledBrief("zh", bronzeMatch, "why"), /冠军/);
+
 const englishRecapFrame = frame("fulltime", 90, 2, 0, market);
 englishRecapFrame.activeEvents.unshift({ type: "yellow_card", minute: 54, homeScore: 1, awayScore: 0, title: "Yellow card" });
 assert.match(module.localizeRecap("en", match, englishRecapFrame), /1 card\b/);

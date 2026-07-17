@@ -69,8 +69,8 @@ const sceneSets = {
       image: "02-current-tournament.png",
       seconds: 24,
       title: "2. Schedule, results, and progression are readable at a glance",
-      subtitle: "Current source-backed fixtures stay separate from eight verified 2026 replays. Stage, score, winner, and event totals appear only when the source confirms them.",
-      badges: ["Current schedule", "8 verified replays", "6 progression stages"]
+      subtitle: "Current source-backed fixtures stay separate from ten verified 2026 replays. Stage, score, winner, and event totals appear only when the source confirms them.",
+      badges: ["Current schedule", "10 verified replays", "6 progression stages"]
     },
     {
       image: "03-current-spoiler.png",
@@ -172,11 +172,11 @@ const sceneSets = {
       image: "tournament-final.png",
       seconds: 18,
       title: "Schedule, results, and progression are judgeable between matches",
-      subtitle: "Current fixtures stay separate from eight verified 2026 replay sequences and source-confirmed knockout progress.",
+      subtitle: "Current fixtures stay separate from ten verified 2026 replay sequences and source-confirmed knockout progress.",
       narration: "Between matches, official 2026 World Cup archives preserve scores, events, challenges, and progression. Every archive is labeled as completed.",
       voiceTone: "helpful catch-up",
       voiceNote: "Sound empathetic to a fan who missed the match and wants to catch up quickly.",
-      badges: ["Current schedule", "8 verified replays", "Source-confirmed progression"]
+      badges: ["Current schedule", "10 verified replays", "Source-confirmed progression"]
     },
     {
       kind: "compare",

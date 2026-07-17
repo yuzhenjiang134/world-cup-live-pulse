@@ -10,6 +10,8 @@ const fixtures = [
   { fixtureId: 18202701, stage: "Round of 16", homeCode: "ARG", homeName: "Argentina", awayCode: "EGY", awayName: "Egypt" },
   { fixtureId: 18202783, stage: "Round of 16", homeCode: "SUI", homeName: "Switzerland", awayCode: "COL", awayName: "Colombia" },
   { fixtureId: 18209181, stage: "Quarter-final", homeCode: "FRA", homeName: "France", awayCode: "MAR", awayName: "Morocco" },
+  { fixtureId: 18237038, stage: "Semi-final", homeCode: "FRA", homeName: "France", awayCode: "ESP", awayName: "Spain" },
+  { fixtureId: 18241006, stage: "Semi-final", homeCode: "ENG", homeName: "England", awayCode: "ARG", awayName: "Argentina" },
 ];
 
 const keyActions = new Set([

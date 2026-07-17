@@ -161,7 +161,7 @@ Current fan-first research and implementation list: `docs/FAN_PRODUCT_RESEARCH_2
 - [x] Official listing rechecked on 2026-07-12: the syncing submission counter changed from 25 to 27 across consecutive fetches; Consumer and Fan Experiences still lists 16,000 USDT (10,000 / 4,000 / 2,000), and the winner announcement remains scheduled for 2026-07-29. Recheck the dynamic count and close timer immediately before submission.
 - [x] Match Center is the primary fan workflow: verified score state first, then the score challenge, events, AI-style commentary, market context, and schedule/replay entry points.
 - [x] The score challenge starts each local session with 1,000 browser-only test points. It settles from the verified final score and never touches cash, wallets, tokens, wagering, or trading.
-- [x] Primary Replay now uses eight authenticated TxLINE 2026 historical sequences. The two 2022 editorial stories remain secondary legacy examples and are never presented as current data.
+- [x] Primary Replay now uses ten authenticated TxLINE 2026 historical sequences, including both completed semi-finals. The two 2022 editorial stories remain secondary legacy examples and are never presented as current data.
 - [x] Data states are explicit: Live, Delay, Seed, Replay, or public fallback. Unknown source teams remain pending confirmation instead of being guessed.
 - [x] Official FIFA+ archive and highlights/replay links are available from the match view. No unofficial stream is scraped or embedded; rights and territory availability remain visible.
 - [x] `npm run audit` checks replay dates, score/event consistency, market ranges, team identities, official video domains, localization markers, and source-boundary markers.
@@ -184,7 +184,7 @@ Do not push or record the final video until all three local rounds pass on the s
 ## 2026-07-11 tournament and replay gate
 
 - [x] Normalize PascalCase and camelCase TxLINE score payloads at one tested adapter boundary.
-- [x] Sync eight credential-free 2026 historical sequences through `GET /api/scores/historical/{fixtureId}`.
+- [x] Sync ten credential-free 2026 historical sequences through `GET /api/scores/historical/{fixtureId}`.
 - [x] Use `game_finalised` for the displayed final score and retain source fixture ID, sequence, endpoint, and capture time.
 - [x] Treat an overturned provisional goal as a score review, not as a confirmed goal count.
 - [x] Add a dedicated Schedule & Replay view with current fixtures, 2026 archive cards, Round of 32 / 16 / 8 / 4 / Final / Champion lanes, and team/source-player detail.

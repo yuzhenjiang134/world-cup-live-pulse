@@ -26,7 +26,7 @@ Current fan-product research and iteration plan: `docs/FAN_PRODUCT_RESEARCH_2026
 - [x] Hide numerical odds whenever the current official odds payload is empty.
 - [x] Build 2026 team records only from authenticated archive results and events: matches, wins, goals for/against, cards, player IDs, and replay links.
 - [x] Drive the tournament current-match lane from the active adapter schedule; hide the lane when no active source exists.
-- [x] Preserve eight credential-free 2026 TxLINE replay sequences so judges can evaluate the complete product outside live match hours.
+- [x] Preserve ten credential-free 2026 TxLINE replay sequences so judges can evaluate the complete product outside live match hours.
 
 ## Local acceptance
 

@@ -59,7 +59,7 @@ If a record has a numeric competition ID, only `72` is accepted. This blocks obs
 
 Scheduled fixtures display no synthetic score or kickoff event. Empty official odds remain empty. Unknown facts are hidden or marked pending instead of inferred.
 
-The bundled judgeable replay archive contains eight sanitized 2026 TxLINE historical sequences. Every result is resolved from `Action = game_finalised`; provisional goals that are later removed are shown as review/correction events and are excluded from confirmed goal counts. The archive retains fixture IDs, source endpoint, record sequence, and capture time but contains no credentials.
+The bundled judgeable replay archive contains ten sanitized 2026 TxLINE historical sequences, including both completed semi-finals. Every result is resolved from `Action = game_finalised`; provisional goals that are later removed are shown as review/correction events and are excluded from confirmed goal counts. The archive retains fixture IDs, source endpoint, record sequence, and capture time but contains no credentials.
 
 For knockout final results, the documented proof path starts from the TxLINE record where `Action = "game_finalised"`, then requests participant total-goal proof with `statKeys=1,2`.
 
@@ -106,7 +106,7 @@ npm run txline:probe
 npm run e2e:matchday
 ```
 
-The validation suite covers TypeScript, replay fixtures, eight-language parity, data truth, challenge rules, World Cup scope, eight 2026 archive finals, submission files, secret scanning, and the TxLINE subscribe helper. Browser E2E covers one-time challenge settlement, pre-kickoff edits, Pulse Play event states, local cheers, persisted alert preferences, replay, tournament progression, team detail, controls, keyboard access, and 1440px/390px layouts.
+The validation suite covers TypeScript, replay fixtures, eight-language parity, data truth, challenge rules, World Cup scope, ten 2026 archive finals, submission files, secret scanning, and the TxLINE subscribe helper. Browser E2E covers one-time challenge settlement, pre-kickoff edits, Pulse Play event states, local cheers, persisted alert preferences, replay, tournament progression, team detail, controls, keyboard access, and 1440px/390px layouts.
 
 ## Source truth model
 

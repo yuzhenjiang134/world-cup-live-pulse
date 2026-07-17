@@ -1472,9 +1472,21 @@ function localizedTournamentStage(value: string, language: Language) {
   if (normalized.includes("round of 16")) return text.round16;
   if (normalized.includes("quarter")) return text.quarter;
   if (normalized.includes("semi")) return text.semi;
+  if (normalized.includes("bronze") || normalized.includes("third place")) return bronzeStageLabels[language];
   if (/\bfinals?\b/.test(normalized)) return text.final;
   return null;
 }
+
+const bronzeStageLabels: Record<Language, string> = {
+  en: "Third-place match",
+  zh: "季军赛",
+  es: "Partido por el tercer puesto",
+  pt: "Disputa do terceiro lugar",
+  fr: "Match pour la troisième place",
+  de: "Spiel um Platz drei",
+  ja: "3位決定戦",
+  ar: "مباراة المركز الثالث",
+};
 
 export default function MatchdayApp() {
   const [language, setLanguage] = useState<Language>(detectLanguage);
@@ -2353,6 +2365,7 @@ function TournamentView({ language, copy, schedule, onOpenReplay, favoriteTeamCo
   });
   const round16 = txlineArchiveMatches.filter((match) => match.stage === "Round of 16");
   const quarter = txlineArchiveMatches.filter((match) => match.stage === "Quarter-final");
+  const semi = txlineArchiveMatches.filter((match) => match.stage === "Semi-final");
   const includesFavorite = (item: Pick<MatchScheduleItem, "home" | "away">) => Boolean(favoriteTeamCode && (item.home.code === favoriteTeamCode || item.away.code === favoriteTeamCode));
   const currentFixtures = schedule
     .filter((item) => item.status === "scheduled" && !item.home.code.endsWith("XX") && !item.away.code.endsWith("XX"))
@@ -2362,7 +2375,7 @@ function TournamentView({ language, copy, schedule, onOpenReplay, favoriteTeamCo
   return <section className="tournament-view">
     <header className="tournament-intro"><div><p className="overline">{text.verified}</p><h2>{text.subtitle}</h2></div><div className="tournament-intro-actions"><p>{text.sourceRule}</p><label className="spoiler-toggle"><input type="checkbox" checked={spoilerFree} onChange={(event) => setSpoilerFree(event.target.checked)} /><span>{copy.spoilerFree}</span></label></div></header>
 
-    {currentFixtures.length ? <section className="tournament-band current-fixtures"><SectionHeading eyebrow={copy.schedule} title={text.current} /><div className="current-fixture-grid">{currentFixtures.map((item) => { const favorite = includesFavorite(item); return <article className={favorite ? "favorite-team" : ""} key={item.id}><div><span className="data-chip seed">{dataStatusLabel(item.dataStatus, copy)}</span>{favorite ? <span className="favorite-marker" title={copy.favoriteTeam}>★</span> : null}{item.kickoffIso ? <small>{formatKickoffLabel(item.kickoffIso, language)}</small> : null}</div><strong>{teamName(item.home, language)} <b>{copy.versus}</b> {teamName(item.away, language)}</strong><p>{currentFixtureNote(language)}</p></article>; })}</div></section> : null}
+    {currentFixtures.length ? <section className="tournament-band current-fixtures"><SectionHeading eyebrow={copy.schedule} title={text.current} /><div className="current-fixture-grid">{currentFixtures.map((item) => { const favorite = includesFavorite(item); const status = scheduleStatusLabel(item, copy); return <article className={favorite ? "favorite-team" : ""} key={item.id}><div><span className={`data-chip ${status.tone}`}>{status.label}</span>{favorite ? <span className="favorite-marker" title={copy.favoriteTeam}>★</span> : null}{item.kickoffIso ? <small>{formatKickoffLabel(item.kickoffIso, language)}</small> : null}</div><small className="current-stage">{stageLabel(item.stage, item.stage, copy, language)}</small><strong>{teamName(item.home, language)} <b>{copy.versus}</b> {teamName(item.away, language)}</strong><p>{currentFixtureNote(language)}</p></article>; })}</div></section> : null}
 
     <section className="tournament-band"><SectionHeading eyebrow="2026" title={text.archive} /><div className="archive-match-grid">{txlineArchiveMatches.map((archive) => {
       const finalEvent = archive.events.filter((event) => event.type === "fulltime").at(-1) ?? archive.events.at(-1);
@@ -2380,7 +2393,7 @@ function TournamentView({ language, copy, schedule, onOpenReplay, favoriteTeamCo
       <BracketLane title={text.round32} matches={[]} waiting={text.waiting} />
       <BracketLane title={text.round16} matches={round16} waiting={text.waiting} onOpen={onOpenReplay} />
       <BracketLane title={text.quarter} matches={quarter} waiting={text.waiting} onOpen={onOpenReplay} />
-      <BracketLane title={text.semi} matches={[]} waiting={text.waiting} />
+      <BracketLane title={text.semi} matches={semi} waiting={text.waiting} onOpen={onOpenReplay} />
       <BracketLane title={text.final} matches={[]} waiting={text.waiting} />
       <BracketLane title={text.champion} matches={[]} waiting={text.waiting} champion />
     </div></div></section> : null}
@@ -2400,6 +2413,7 @@ function BracketLane({ title, matches, waiting, onOpen, champion = false }: { ti
 function localizedStage(stage: string | undefined, text: (typeof tournamentCopy)[Language]) {
   if (stage === "Round of 16") return text.round16;
   if (stage === "Quarter-final") return text.quarter;
+  if (stage === "Semi-final") return text.semi;
   return stage ?? text.waiting;
 }
 
@@ -2526,16 +2540,17 @@ function ScheduleBoard({ copy, items, selectedId, onOpenReplay, language, favori
 
 function scheduleNote(item: MatchScheduleItem, copy: UiCopy) {
   if (item.dataStatus === "Replay" || item.status === "finished") return null;
-  if (item.dataStatus === "Delay") return copy.delayed;
   if (item.status === "scheduled") return copy.scheduled;
+  if (item.dataStatus === "Delay") return copy.delayed;
   return copy.live;
 }
 
 function scheduleStatusLabel(item: MatchScheduleItem, copy: UiCopy) {
   if (item.dataStatus === "Replay") return { label: copy.replay, tone: "replay" };
+  if (item.status === "finished") return { label: copy.final, tone: "replay" };
+  if (item.status === "scheduled") return { label: copy.scheduled, tone: "seed" };
   if (item.dataStatus === "Delay") return { label: copy.delayed, tone: "delay" };
   if (item.dataStatus === "Live") return { label: copy.live, tone: "live" };
-  if (item.status === "finished") return { label: copy.final, tone: "replay" };
   return { label: copy.seed, tone: "seed" };
 }
 
