@@ -52,6 +52,6 @@ python scripts\render-demo-video.py --variant B
 
 After owner approval and final video acceptance, the selected 4:50 candidate was published as an unlisted YouTube video at:
 
-`https://youtu.be/UcxYgKSGc6Y`
+`https://youtu.be/cBFamfSz28A`
 
 YouTube completed its copyright check without finding an issue. This is the canonical Demo URL for the Superteam form.

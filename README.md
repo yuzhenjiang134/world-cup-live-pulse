@@ -97,7 +97,7 @@ demo-assets/world-cup-live-pulse-demo-b-narrated.mp4
 The public no-login video page is served from:
 
 ```text
-https://youtu.be/UcxYgKSGc6Y
+https://youtu.be/cBFamfSz28A
 ```
 
 ## Deploy
